@@ -1,0 +1,10 @@
+Language:        Cpp
+# BasedOnStyle:  LLVM
+AccessModifierOffset: -2
+BreakBeforeBraces: Allman
+IndentWidth: 4
+NamespaceIndentation: All
+PointerAlignment: Left
+ColumnLimit: 200
+AllowShortFunctionsOnASingleLine: Empty
+IndentCaseLabels: true
