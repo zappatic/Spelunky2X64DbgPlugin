@@ -15,8 +15,8 @@ class TreeViewMemoryFields : public QTreeView
     TreeViewMemoryFields(EntityDB* entityDB, QWidget* parent = nullptr);
     void addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent);
 
-    void addRectMemoryFields(const std::string& rectName, QStandardItem* parent = nullptr);
     void addEntityDBMemoryFields(QStandardItem* parent = nullptr);
+    void addStateMemoryFields(QStandardItem* parent = nullptr);
 
     QStandardItem* lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);
     void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent = nullptr);
@@ -29,6 +29,5 @@ class TreeViewMemoryFields : public QTreeView
     EntityDB* mEntityDB;
     std::unique_ptr<HTMLDelegate> mHTMLDelegate;
 
-    void updateRectValues(const std::string& rectName, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent);
     void updateTableHeader();
 };

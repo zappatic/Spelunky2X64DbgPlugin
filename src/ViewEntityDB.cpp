@@ -5,8 +5,6 @@
 #include <QCloseEvent>
 #include <QHeaderView>
 #include <QLineEdit>
-#include <QPushButton>
-#include <QSpacerItem>
 
 ViewEntityDB::ViewEntityDB(EntityDB* entityDB, QWidget* parent) : QWidget(parent), mEntityDB(entityDB)
 {

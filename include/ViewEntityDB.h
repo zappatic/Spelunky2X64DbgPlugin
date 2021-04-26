@@ -3,10 +3,8 @@
 #include "Data/EntityDB.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include <QCompleter>
-#include <QPushButton>
 #include <QStandardItemModel>
 #include <QTreeView>
-#include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QWidget>
 

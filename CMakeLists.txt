@@ -57,16 +57,22 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/pluginmain.cpp
 	src/QtPlugin.cpp
 	include/Spelunky2.h
+	include/Data/MemoryMappedData.h
 	include/Data/EntityDB.h
+	include/Data/State.h
 	include/ViewToolbar.h
 	include/ViewEntityDB.h
+	include/ViewState.h
 	include/EntityList.h
 	include/QtHelpers/HTMLDelegate.h
 	include/QtHelpers/TreeViewMemoryFields.h
 	src/Spelunky2.cpp
+	src/Data/MemoryMappedData.cpp
 	src/Data/EntityDB.cpp
+	src/Data/State.cpp
 	src/ViewToolbar.cpp
 	src/ViewEntityDB.cpp
+	src/ViewState.cpp
 	src/EntityList.cpp
 	src/QtHelpers/HTMLDelegate.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
