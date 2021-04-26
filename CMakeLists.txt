@@ -59,9 +59,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Spelunky2.h
 	include/Data/MemoryMappedData.h
 	include/Data/EntityDB.h
+	include/Data/Entity.h
 	include/Data/State.h
 	include/ViewToolbar.h
 	include/ViewEntityDB.h
+	include/ViewEntity.h
 	include/ViewState.h
 	include/EntityList.h
 	include/QtHelpers/HTMLDelegate.h
@@ -69,9 +71,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Spelunky2.cpp
 	src/Data/MemoryMappedData.cpp
 	src/Data/EntityDB.cpp
+	src/Data/Entity.cpp
 	src/Data/State.cpp
 	src/ViewToolbar.cpp
 	src/ViewEntityDB.cpp
+	src/ViewEntity.cpp
 	src/ViewState.cpp
 	src/EntityList.cpp
 	src/QtHelpers/HTMLDelegate.cpp

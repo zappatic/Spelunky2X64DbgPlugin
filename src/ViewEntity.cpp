@@ -1,4 +1,4 @@
-#include "ViewState.h"
+#include "ViewEntity.h"
 #include "EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
@@ -6,8 +6,9 @@
 #include <QHeaderView>
 #include <QLabel>
 
-ViewState::ViewState(State* state, EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mState(state), mEntityDB(entityDB), mToolbar(toolbar)
+ViewEntity::ViewEntity(size_t entityOffset, EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mEntityDB(entityDB), mToolbar(toolbar)
 {
+    mEntity = std::make_unique<Entity>(entityOffset);
     mMainLayout = new QVBoxLayout();
 
     initializeRefreshStuff();
@@ -17,20 +18,20 @@ ViewState::ViewState(State* state, EntityDB* entityDB, ViewToolbar* toolbar, QWi
     mMainLayout->setMargin(5);
     setLayout(mMainLayout);
 
-    setWindowTitle("State");
+    setWindowTitle(QString::asprintf("Entity 0x%016llX", entityOffset));
     mMainTreeView->setVisible(true);
 
-    refreshState();
+    refreshEntity();
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
-void ViewState::initializeTreeView()
+void ViewEntity::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mEntityDB, mToolbar, this);
-    mMainTreeView->addStateMemoryFields();
+    mMainTreeView->addEntityFields();
 
     mMainLayout->addWidget(mMainTreeView);
 
@@ -38,49 +39,49 @@ void ViewState::initializeTreeView()
     mMainTreeView->setVisible(false);
 }
 
-void ViewState::initializeRefreshStuff()
+void ViewEntity::initializeRefreshStuff()
 {
     mRefreshLayout = new QHBoxLayout();
     mMainLayout->addLayout(mRefreshLayout);
 
     mRefreshButton = new QPushButton("Refresh", this);
     mRefreshLayout->addWidget(mRefreshButton);
-    QObject::connect(mRefreshButton, &QPushButton::clicked, this, &ViewState::refreshState);
+    QObject::connect(mRefreshButton, &QPushButton::clicked, this, &ViewEntity::refreshEntity);
 
     mAutoRefreshTimer = std::make_unique<QTimer>(this);
-    QObject::connect(mAutoRefreshTimer.get(), &QTimer::timeout, this, &ViewState::autoRefreshTimerTrigger);
+    QObject::connect(mAutoRefreshTimer.get(), &QTimer::timeout, this, &ViewEntity::autoRefreshTimerTrigger);
 
     mAutoRefreshCheckBox = new QCheckBox("Auto-refresh every", this);
     mRefreshLayout->addWidget(mAutoRefreshCheckBox);
-    QObject::connect(mAutoRefreshCheckBox, &QCheckBox::clicked, this, &ViewState::toggleAutoRefresh);
+    QObject::connect(mAutoRefreshCheckBox, &QCheckBox::clicked, this, &ViewEntity::toggleAutoRefresh);
 
     mAutoRefreshIntervalLineEdit = new QLineEdit(this);
     mAutoRefreshIntervalLineEdit->setFixedWidth(50);
     mAutoRefreshIntervalLineEdit->setValidator(new QIntValidator(100, 5000, this));
     mAutoRefreshIntervalLineEdit->setText("500");
     mRefreshLayout->addWidget(mAutoRefreshIntervalLineEdit);
-    QObject::connect(mAutoRefreshIntervalLineEdit, &QLineEdit::textChanged, this, &ViewState::autoRefreshIntervalChanged);
+    QObject::connect(mAutoRefreshIntervalLineEdit, &QLineEdit::textChanged, this, &ViewEntity::autoRefreshIntervalChanged);
 
     mRefreshLayout->addWidget(new QLabel("milliseconds", this));
 
     mRefreshLayout->addStretch();
 }
 
-void ViewState::closeEvent(QCloseEvent* event)
+void ViewEntity::closeEvent(QCloseEvent* event)
 {
     delete this;
 }
 
-void ViewState::refreshState()
+void ViewEntity::refreshEntity()
 {
-    mState->refreshOffsets();
-    for (const auto& field : gsStateFields)
+    mEntity->refreshOffsets();
+    for (const auto& field : gsEntityFields)
     {
-        mMainTreeView->updateValueForField(field, field.name, mState->offsets());
+        mMainTreeView->updateValueForField(field, field.name, mEntity->offsets());
     }
 }
 
-void ViewState::toggleAutoRefresh(int newState)
+void ViewEntity::toggleAutoRefresh(int newState)
 {
     if (newState == Qt::Unchecked)
     {
@@ -95,7 +96,7 @@ void ViewState::toggleAutoRefresh(int newState)
     }
 }
 
-void ViewState::autoRefreshIntervalChanged(const QString& text)
+void ViewEntity::autoRefreshIntervalChanged(const QString& text)
 {
     if (mAutoRefreshCheckBox->checkState() == Qt::Checked)
     {
@@ -103,17 +104,17 @@ void ViewState::autoRefreshIntervalChanged(const QString& text)
     }
 }
 
-void ViewState::autoRefreshTimerTrigger()
+void ViewEntity::autoRefreshTimerTrigger()
 {
-    refreshState();
+    refreshEntity();
 }
 
-QSize ViewState::sizeHint() const
+QSize ViewEntity::sizeHint() const
 {
     return QSize(750, 1050);
 }
 
-QSize ViewState::minimumSizeHint() const
+QSize ViewEntity::minimumSizeHint() const
 {
     return QSize(750, 1050);
 }

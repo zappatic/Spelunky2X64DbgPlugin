@@ -3,7 +3,7 @@
 #include <inttypes.h>
 #include <sstream>
 
-TreeViewMemoryFields::TreeViewMemoryFields(EntityDB* entityDB, QWidget* parent) : QTreeView(parent), mEntityDB(entityDB)
+TreeViewMemoryFields::TreeViewMemoryFields(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent) : QTreeView(parent), mEntityDB(entityDB), mToolbar(toolbar)
 {
     mHTMLDelegate = std::make_unique<HTMLDelegate>();
     setItemDelegate(mHTMLDelegate.get());
@@ -17,16 +17,16 @@ TreeViewMemoryFields::TreeViewMemoryFields(EntityDB* entityDB, QWidget* parent) 
 
 void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
-    auto createAndInsertItem = [](const std::string& fieldName, const std::string& fieldNameUID, const std::string& fieldType, QStandardItem* itemParent) -> QStandardItem* {
+    auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem* {
         auto itemFieldName = new QStandardItem();
-        itemFieldName->setData(QString::fromStdString(fieldName), Qt::DisplayRole);
+        itemFieldName->setData(QString::fromStdString(field.name), Qt::DisplayRole);
         itemFieldName->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
         itemFieldName->setEditable(false);
 
         auto itemFieldValue = new QStandardItem();
         itemFieldValue->setData("", Qt::DisplayRole);
         itemFieldValue->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
-        itemFieldValue->setData(QString::fromStdString(fieldType), gsRoleType); // in case we click on, we can see the type
+        itemFieldValue->setData(QVariant::fromValue(field.type), gsRoleType); // in case we click on, we can see the type
         itemFieldValue->setEditable(false);
 
         auto itemFieldValueHex = new QStandardItem();
@@ -40,7 +40,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         itemFieldMemoryOffset->setEditable(false);
 
         auto itemFieldType = new QStandardItem();
-        itemFieldType->setData(QString::fromStdString(fieldType), Qt::DisplayRole);
+        itemFieldType->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(field.type)), Qt::DisplayRole);
         itemFieldType->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
         itemFieldType->setEditable(false);
 
@@ -59,47 +59,26 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         case MemoryFieldType::Skip:
             break;
         case MemoryFieldType::CodePointer:
-            createAndInsertItem(field.name, fieldNameOverride, "Code pointer", parent);
-            break;
         case MemoryFieldType::DataPointer:
-            createAndInsertItem(field.name, fieldNameOverride, "Data pointer", parent);
-            break;
         case MemoryFieldType::Byte:
-            createAndInsertItem(field.name, fieldNameOverride, "8-bit", parent);
-            break;
         case MemoryFieldType::UnsignedByte:
-            createAndInsertItem(field.name, fieldNameOverride, "8-bit unsigned", parent);
-            break;
         case MemoryFieldType::Word:
-            createAndInsertItem(field.name, fieldNameOverride, "16-bit", parent);
-            break;
         case MemoryFieldType::UnsignedWord:
-            createAndInsertItem(field.name, fieldNameOverride, "16-bit unsigned", parent);
-            break;
         case MemoryFieldType::Dword:
-            createAndInsertItem(field.name, fieldNameOverride, "32-bit", parent);
-            break;
         case MemoryFieldType::UnsignedDword:
-            createAndInsertItem(field.name, fieldNameOverride, "32-bit unsigned", parent);
-            break;
         case MemoryFieldType::Qword:
-            createAndInsertItem(field.name, fieldNameOverride, "64-bit", parent);
-            break;
         case MemoryFieldType::UnsignedQword:
-            createAndInsertItem(field.name, fieldNameOverride, "64-bit unsigned", parent);
-            break;
         case MemoryFieldType::Float:
-            createAndInsertItem(field.name, fieldNameOverride, "Float", parent);
-            break;
         case MemoryFieldType::Bool:
-            createAndInsertItem(field.name, fieldNameOverride, "Bool", parent);
-            break;
         case MemoryFieldType::Flags32:
-            createAndInsertItem(field.name, fieldNameOverride, "32-bit flags", parent);
+        case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::EntityDBPointer:
+            createAndInsertItem(field, fieldNameOverride, parent);
             break;
         case MemoryFieldType::Rect:
         {
-            auto rectangleParent = createAndInsertItem(field.name, fieldNameOverride, "Rectangle", parent);
+            auto rectangleParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsRectFields)
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, rectangleParent);
@@ -108,7 +87,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         }
         case MemoryFieldType::StateIllumination:
         {
-            auto structParent = createAndInsertItem(field.name, fieldNameOverride, "Illumination pointer", parent);
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsStateIlluminationFields)
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
@@ -117,7 +96,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         }
         case MemoryFieldType::StateSaturationVignette:
         {
-            auto structParent = createAndInsertItem(field.name, fieldNameOverride, "Saturation/Vignette", parent);
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsStateSaturationVignetteFields)
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
@@ -126,7 +105,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         }
         case MemoryFieldType::StateItems:
         {
-            auto structParent = createAndInsertItem(field.name, fieldNameOverride, "Items (players)", parent);
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsStateItemsFields)
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
@@ -135,8 +114,26 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         }
         case MemoryFieldType::Layer:
         {
-            auto structParent = createAndInsertItem(field.name, fieldNameOverride, "Layer", parent);
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsLayerFields)
+            {
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+            }
+            break;
+        }
+        case MemoryFieldType::Vector:
+        {
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : gsVectorFields)
+            {
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+            }
+            break;
+        }
+        case MemoryFieldType::Color:
+        {
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : gsColorFields)
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
@@ -157,6 +154,15 @@ void TreeViewMemoryFields::addEntityDBMemoryFields(QStandardItem* parent)
 void TreeViewMemoryFields::addStateMemoryFields(QStandardItem* parent)
 {
     for (const auto& field : gsStateFields)
+    {
+        addMemoryField(field, field.name, parent);
+    }
+    updateTableHeader();
+}
+
+void TreeViewMemoryFields::addEntityFields(QStandardItem* parent)
+{
+    for (const auto& field : gsEntityFields)
     {
         addMemoryField(field, field.name, parent);
     }
@@ -203,6 +209,13 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
         itemValue = lookupTreeViewItem(fieldNameOverride, gsColValue, parent);
         itemValueHex = lookupTreeViewItem(fieldNameOverride, gsColValueHex, parent);
         itemMemoryOffset = lookupTreeViewItem(fieldNameOverride, gsColMemoryOffset, parent);
+
+        if (itemField == nullptr || itemValue == nullptr || itemValueHex == nullptr || itemMemoryOffset == nullptr)
+        {
+            dprintf("ERROR: tried to updateValueForField(%s, %s, ...) but did not find items in treeview", field.name, fieldNameOverride);
+            return;
+        }
+
         itemMemoryOffset->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", memoryOffset), Qt::DisplayRole);
         itemMemoryOffset->setData(memoryOffset, gsRoleRawValue);
     }
@@ -265,14 +278,7 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
         case MemoryFieldType::UnsignedDword:
         {
             uint32_t value = Script::Memory::ReadDword(memoryOffset);
-            if (fieldNameOverride == "id")
-            {
-                itemValue->setData(QString::asprintf("%lu (%s)", value, mEntityDB->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
-            }
-            else
-            {
-                itemValue->setData(QString::asprintf("%lu", value), Qt::DisplayRole);
-            }
+            itemValue->setData(QString::asprintf("%lu", value), Qt::DisplayRole);
             itemValueHex->setData(QString::asprintf("0x%08lX", value), Qt::DisplayRole);
             break;
         }
@@ -319,7 +325,7 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
                 }
                 if ((value & (1 << x)) == (1 << x))
                 {
-                    ss << "<font color='green' alt='bebebeb'>Y</font> ";
+                    ss << "<font color='green'>Y</font> ";
                 }
                 else
                 {
@@ -329,7 +335,31 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             }
             itemValue->setData(QString::fromStdString(ss.str()), Qt::DisplayRole);
             itemValueHex->setData(QString::asprintf("0x%08X", value), Qt::DisplayRole);
-
+            break;
+        }
+        case MemoryFieldType::EntityDBID:
+        {
+            uint32_t value = Script::Memory::ReadDword(memoryOffset);
+            itemValue->setData(QString::asprintf("%lu (%s)", value, mEntityDB->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
+            itemValueHex->setData(QString::asprintf("0x%08lX", value), Qt::DisplayRole);
+            break;
+        }
+        case MemoryFieldType::EntityPointer:
+        {
+            size_t value = Script::Memory::ReadQword(memoryOffset);
+            itemValue->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+            break;
+        }
+        case MemoryFieldType::EntityDBPointer:
+        {
+            size_t value = Script::Memory::ReadQword(memoryOffset);
+            itemValue->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Rect:
@@ -372,6 +402,22 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             }
             break;
         }
+        case MemoryFieldType::Vector:
+        {
+            for (const auto& f : gsVectorFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::Color:
+        {
+            for (const auto& f : gsColorFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
         case MemoryFieldType::Skip:
         {
             break;
@@ -394,18 +440,33 @@ void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
         case gsColValue:
         case gsColValueHex:
         {
-            auto dataType = clickedItem->data(gsRoleType).toString();
-            if (dataType == "Code pointer")
+            auto dataType = clickedItem->data(gsRoleType).value<MemoryFieldType>();
+            switch (dataType)
             {
-                GuiDisasmAt(clickedItem->data(gsRoleRawValue).toULongLong(), GetContextData(UE_CIP));
-                GuiShowCpu();
+                case MemoryFieldType::CodePointer:
+                {
+                    GuiDisasmAt(clickedItem->data(gsRoleRawValue).toULongLong(), GetContextData(UE_CIP));
+                    GuiShowCpu();
+                    break;
+                }
+                case MemoryFieldType::DataPointer:
+                {
+                    GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
+                    GuiShowCpu();
+                    break;
+                }
+                case MemoryFieldType::EntityPointer:
+                {
+                    dprintf("MemoryFieldType::EntityPointer\n");
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    dprintf("offset: %p\n", offset);
+                    if (offset != 0)
+                    {
+                        mToolbar->showEntity(offset);
+                    }
+                    break;
+                }
             }
-            else if (dataType == "Data pointer")
-            {
-                GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
-                GuiShowCpu();
-            }
-            break;
         }
     }
 }

@@ -23,10 +23,13 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Float:
         case MemoryFieldType::Flags32:
+        case MemoryFieldType::EntityDBID:
             offset += 4;
             break;
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
+        case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::EntityPointer:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
             offset += 8;
@@ -69,12 +72,28 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
         }
         case MemoryFieldType::Layer:
         {
-            auto itemsOffset = Script::Memory::ReadQword(offset);
+            auto layersOffset = Script::Memory::ReadQword(offset);
             for (const auto& f : gsLayerFields)
             {
-                itemsOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, itemsOffset, offsets);
+                layersOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, layersOffset, offsets);
             }
             offset += 8;
+            break;
+        }
+        case MemoryFieldType::Vector:
+        {
+            for (const auto& f : gsVectorFields)
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
+            break;
+        }
+        case MemoryFieldType::Color:
+        {
+            for (const auto& f : gsColorFields)
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
             break;
         }
     }

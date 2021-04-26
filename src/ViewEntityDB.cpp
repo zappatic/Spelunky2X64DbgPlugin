@@ -6,7 +6,7 @@
 #include <QHeaderView>
 #include <QLineEdit>
 
-ViewEntityDB::ViewEntityDB(EntityDB* entityDB, QWidget* parent) : QWidget(parent), mEntityDB(entityDB)
+ViewEntityDB::ViewEntityDB(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mEntityDB(entityDB), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout();
 
@@ -30,7 +30,7 @@ ViewEntityDB::ViewEntityDB(EntityDB* entityDB, QWidget* parent) : QWidget(parent
 
 void ViewEntityDB::initializeTreeView()
 {
-    mMainTreeView = new TreeViewMemoryFields(mEntityDB, this);
+    mMainTreeView = new TreeViewMemoryFields(mEntityDB, mToolbar, this);
     mMainTreeView->addEntityDBMemoryFields();
 
     mMainLayout->addWidget(mMainTreeView);

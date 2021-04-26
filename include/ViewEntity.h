@@ -1,7 +1,7 @@
 #pragma once
 
+#include "Data/Entity.h"
 #include "Data/EntityDB.h"
-#include "Data/State.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "ViewToolbar.h"
 #include <QCheckBox>
@@ -12,11 +12,11 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-class ViewState : public QWidget
+class ViewEntity : public QWidget
 {
     Q_OBJECT
   public:
-    ViewState(State* state, EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent = nullptr);
+    ViewEntity(size_t entityOffset, EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent = nullptr);
 
   protected:
     void closeEvent(QCloseEvent* event) override;
@@ -24,7 +24,7 @@ class ViewState : public QWidget
     QSize minimumSizeHint() const override;
 
   private slots:
-    void refreshState();
+    void refreshEntity();
     void toggleAutoRefresh(int newState);
     void autoRefreshTimerTrigger();
     void autoRefreshIntervalChanged(const QString& text);
@@ -38,7 +38,7 @@ class ViewState : public QWidget
     QLineEdit* mAutoRefreshIntervalLineEdit;
     std::unique_ptr<QTimer> mAutoRefreshTimer;
 
-    State* mState;
+    std::unique_ptr<Entity> mEntity;
     EntityDB* mEntityDB;
     ViewToolbar* mToolbar;
 

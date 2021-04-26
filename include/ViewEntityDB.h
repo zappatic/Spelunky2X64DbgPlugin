@@ -2,17 +2,19 @@
 
 #include "Data/EntityDB.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
+#include "ViewToolbar.h"
 #include <QCompleter>
 #include <QStandardItemModel>
 #include <QTreeView>
 #include <QVBoxLayout>
 #include <QWidget>
 
+
 class ViewEntityDB : public QWidget
 {
     Q_OBJECT
   public:
-    ViewEntityDB(EntityDB* entityDB, QWidget* parent = nullptr);
+    ViewEntityDB(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent = nullptr);
     void showEntityDB(size_t index);
 
   protected:
@@ -30,6 +32,7 @@ class ViewEntityDB : public QWidget
     QCompleter* mEntityNameCompleter;
 
     EntityDB* mEntityDB;
+    ViewToolbar* mToolbar;
 
     void initializeTreeView();
     void initializeSearchLineEdit();

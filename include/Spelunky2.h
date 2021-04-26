@@ -1,8 +1,10 @@
 #pragma once
 
+#include <QMetaEnum>
 #include <cstdint>
 #include <qnamespace.h>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 static constexpr uint8_t gsColField = 0;
@@ -21,6 +23,7 @@ static const uint16_t gsRoleUID = Qt::UserRole + 11;
 
 // new types need to be added to
 // - the MemoryFieldType enum below
+// - the string representation of the type in gsMemoryFieldTypeToStringMapping
 // - its fields in a vector<MemoryField> below
 // - MemoryMappedData.h/cpp (setOffsetForField)
 // - TreeViewMemoryFields.cpp (updateValueForField and addMemoryField)
@@ -46,7 +49,41 @@ enum class MemoryFieldType
     StateSaturationVignette,
     StateItems,
     Layer,
+    EntityPointer,
+    EntityDBPointer,
+    EntityDBID,
+    Vector,
+    Color
 };
+Q_DECLARE_METATYPE(MemoryFieldType)
+
+// clang-format off
+const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeToStringMapping{
+    {MemoryFieldType::CodePointer, "Code pointer"},
+    {MemoryFieldType::DataPointer, "Data pointer"},
+    {MemoryFieldType::Byte, "8-bit"},
+    {MemoryFieldType::UnsignedByte, "8-bit unsigned"},
+    {MemoryFieldType::Word, "16-bit"},
+    {MemoryFieldType::UnsignedWord, "16-bit unsigned"},
+    {MemoryFieldType::Dword, "32-bit"},
+    {MemoryFieldType::UnsignedDword, "32-bit unsigned"},
+    {MemoryFieldType::Qword, "64-bit"},
+    {MemoryFieldType::UnsignedQword, "64-bit unsigned"},
+    {MemoryFieldType::Float, "Float"},
+    {MemoryFieldType::Bool, "Bool"},
+    {MemoryFieldType::Flags32, "32-bit flags"},
+    {MemoryFieldType::Rect, "Rectangle"},
+    {MemoryFieldType::StateIllumination, "Illumination"},
+    {MemoryFieldType::StateSaturationVignette, "Saturation/Vignette"},
+    {MemoryFieldType::StateItems, "Items"},
+    {MemoryFieldType::Layer, "Layer"},
+    {MemoryFieldType::EntityPointer, "Entity pointer"},
+    {MemoryFieldType::EntityDBPointer, "EntityDB pointer"},
+    {MemoryFieldType::EntityDBID, "EntityDB ID"},
+    {MemoryFieldType::Vector, "Vector"},
+    {MemoryFieldType::Color, "Color"}
+};
+// clang-format on
 
 struct MemoryField
 {
@@ -60,7 +97,7 @@ const std::vector<MemoryField> gsEntityDBFields = {
     {"create_func", MemoryFieldType::CodePointer}, 
     {"destroy_func", MemoryFieldType::CodePointer},
     {"field_10", MemoryFieldType::UnsignedDword},
-    {"id", MemoryFieldType::UnsignedDword},
+    {"id", MemoryFieldType::EntityDBID},
     {"search_flags", MemoryFieldType::Flags32},
     {"width", MemoryFieldType::Float},
     {"height", MemoryFieldType::Float},
@@ -225,12 +262,11 @@ static const std::vector<MemoryField> gsStateSaturationVignetteFields = {
 
 static const std::vector<MemoryField> gsStateItemsFields = {
     {"__vftable", MemoryFieldType::DataPointer}, 
-    {"player1", MemoryFieldType::DataPointer}, //TODO: player instead of datapointer
-    {"player2", MemoryFieldType::DataPointer}, 
-    {"player3", MemoryFieldType::DataPointer}, 
-    {"player4", MemoryFieldType::DataPointer}, 
+    {"player1", MemoryFieldType::EntityPointer},
+    {"player2", MemoryFieldType::EntityPointer}, 
+    {"player3", MemoryFieldType::EntityPointer}, 
+    {"player4", MemoryFieldType::EntityPointer}, 
 };
-
 
 static const std::vector<MemoryField> gsLayerFields = {
     {"__vftable", MemoryFieldType::DataPointer}, 
@@ -238,6 +274,56 @@ static const std::vector<MemoryField> gsLayerFields = {
     {"b", MemoryFieldType::DataPointer}, 
     {"capacity", MemoryFieldType::Dword}, 
     {"size", MemoryFieldType::Dword}, 
+};
+
+static const std::vector<MemoryField> gsEntityFields = {
+    {"__vftable", MemoryFieldType::DataPointer}, 
+    {"type", MemoryFieldType::EntityDBPointer}, 
+    {"overlay", MemoryFieldType::EntityPointer}, 
+    {"items", MemoryFieldType::Vector}, 
+    {"flags", MemoryFieldType::Flags32}, 
+    {"more_flags", MemoryFieldType::Flags32}, 
+    {"uid", MemoryFieldType::Dword}, 
+    {"animation_frame", MemoryFieldType::UnsignedByte}, 
+    {"b3d", MemoryFieldType::UnsignedByte}, 
+    {"draw_depth", MemoryFieldType::UnsignedByte}, 
+    {"b3f", MemoryFieldType::UnsignedByte}, 
+    {"x", MemoryFieldType::Float}, 
+    {"y", MemoryFieldType::Float}, 
+    {"w", MemoryFieldType::Float}, 
+    {"h", MemoryFieldType::Float}, 
+    {"f50", MemoryFieldType::Float}, 
+    {"f54", MemoryFieldType::Float}, 
+    {"color", MemoryFieldType::Color}, 
+    {"offsetx", MemoryFieldType::Float}, 
+    {"offsety", MemoryFieldType::Float}, 
+    {"hitboxx", MemoryFieldType::Float}, 
+    {"hitboxy", MemoryFieldType::Float}, 
+    {"duckmask", MemoryFieldType::UnsignedDword}, 
+    {"angle", MemoryFieldType::Float}, 
+    {"p80", MemoryFieldType::UnsignedQword}, 
+    {"texture", MemoryFieldType::UnsignedQword}, 
+    {"tilew", MemoryFieldType::Float}, 
+    {"tileh", MemoryFieldType::Float}, 
+    {"camera_layer", MemoryFieldType::UnsignedByte}, 
+    {"b99", MemoryFieldType::UnsignedByte}, 
+    {"b9a", MemoryFieldType::UnsignedByte}, 
+    {"b9b", MemoryFieldType::UnsignedByte}, 
+    {"i9c", MemoryFieldType::UnsignedDword}, 
+};
+
+static const std::vector<MemoryField> gsVectorFields = {
+    {"heap", MemoryFieldType::DataPointer},
+    {"begin", MemoryFieldType::DataPointer},
+    {"size", MemoryFieldType::UnsignedDword},
+    {"count", MemoryFieldType::UnsignedDword}
+};
+
+static const std::vector<MemoryField> gsColorFields = {
+    {"red", MemoryFieldType::Float}, 
+    {"green", MemoryFieldType::Float}, 
+    {"blue", MemoryFieldType::Float}, 
+    {"alpha", MemoryFieldType::Float}
 };
 
 // clang-format on

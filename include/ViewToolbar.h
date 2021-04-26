@@ -11,10 +11,12 @@ class ViewToolbar : public QDockWidget
     Q_OBJECT
   public:
     ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QWidget* parent = nullptr);
+    void showEntity(size_t offset);
 
   private slots:
     void showEntityDB();
     void showState();
+    void test();
 
   private:
     EntityDB* mEntityDB;

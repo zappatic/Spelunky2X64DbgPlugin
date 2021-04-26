@@ -9,7 +9,6 @@ void State::loadState()
         return;
     }
 
-    mMemoryOffsets.clear();
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, spelunky2AfterBundleSize(), "49 0F 44 C0");
     instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, spelunky2AfterBundleSize(), "49 0F 44 C0");
     instructionOffset = Script::Pattern::FindMem(instructionOffset - 0x10, spelunky2AfterBundleSize(), "48 8B");
