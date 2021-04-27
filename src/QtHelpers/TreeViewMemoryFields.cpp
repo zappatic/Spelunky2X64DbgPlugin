@@ -1,4 +1,5 @@
 #include "QtHelpers/TreeViewMemoryFields.h"
+#include "Views/ViewEntityDB.h"
 #include "pluginmain.h"
 #include <inttypes.h>
 #include <sstream>
@@ -379,7 +380,8 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
         case MemoryFieldType::EntityDBPointer:
         {
             size_t value = Script::Memory::ReadQword(memoryOffset);
-            itemValue->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto id = Script::Memory::ReadDword(value + 20);
+            itemValue->setData(QString::asprintf("<font color='blue'><u>Entity DB id %d</u></font>", id), Qt::DisplayRole);
             itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
@@ -484,6 +486,17 @@ void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     if (offset != 0)
                     {
                         mToolbar->showEntity(offset);
+                    }
+                    break;
+                }
+                case MemoryFieldType::EntityDBPointer:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    if (offset != 0)
+                    {
+                        auto id = Script::Memory::ReadDword(offset + 20);
+                        auto view = mToolbar->showEntityDB();
+                        view->showIndex(id);
                     }
                     break;
                 }

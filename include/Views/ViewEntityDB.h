@@ -13,8 +13,8 @@ class ViewEntityDB : public QWidget
 {
     Q_OBJECT
   public:
-    ViewEntityDB(ViewToolbar* toolbar, QWidget* parent = nullptr);
-    void showEntityDB(size_t index);
+    ViewEntityDB(ViewToolbar* toolbar, size_t index = 1, QWidget* parent = nullptr);
+    void showIndex(size_t index);
 
   protected:
     void closeEvent(QCloseEvent* event) override;

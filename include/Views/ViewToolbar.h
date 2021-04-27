@@ -6,6 +6,8 @@
 #include <QMdiArea>
 #include <QVBoxLayout>
 
+class ViewEntityDB;
+
 class ViewToolbar : public QDockWidget
 {
     Q_OBJECT
@@ -16,8 +18,8 @@ class ViewToolbar : public QDockWidget
     State* state();
     EntityDB* entityDB();
 
-  private slots:
-    void showEntityDB();
+  public slots:
+    ViewEntityDB* showEntityDB();
     void showState();
     void showEntities();
 

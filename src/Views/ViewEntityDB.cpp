@@ -6,7 +6,7 @@
 #include <QHeaderView>
 #include <QLineEdit>
 
-ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
 
@@ -25,7 +25,7 @@ ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, QWidget* parent) : QWidget(pare
     setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestEntityID()));
     mSearchLineEdit->setVisible(true);
     mMainTreeView->setVisible(true);
-    showEntityDB(1);
+    showIndex(index);
 }
 
 void ViewEntityDB::initializeTreeView()
@@ -70,19 +70,19 @@ void ViewEntityDB::searchFieldReturnPressed()
     auto enteredID = text.toUInt(&isNumeric);
     if (isNumeric && enteredID <= mToolbar->entityDB()->entityList()->highestEntityID())
     {
-        showEntityDB(enteredID);
+        showIndex(enteredID);
     }
     else
     {
         auto entityID = mToolbar->entityDB()->entityList()->idForName(text.toStdString());
         if (entityID != 0)
         {
-            showEntityDB(entityID);
+            showIndex(entityID);
         }
     }
 }
 
-void ViewEntityDB::showEntityDB(size_t index)
+void ViewEntityDB::showIndex(size_t index)
 {
     for (const auto& field : gsEntityDBFields)
     {

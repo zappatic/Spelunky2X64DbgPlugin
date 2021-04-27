@@ -35,11 +35,12 @@ ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QW
     mMainLayout->addStretch();
 }
 
-void ViewToolbar::showEntityDB()
+ViewEntityDB* ViewToolbar::showEntityDB()
 {
     auto w = new ViewEntityDB(this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
+    return w;
 }
 
 void ViewToolbar::showState()
