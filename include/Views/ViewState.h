@@ -16,7 +16,7 @@ class ViewState : public QWidget
 {
     Q_OBJECT
   public:
-    ViewState(State* state, EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent = nullptr);
+    ViewState(ViewToolbar* toolbar, QWidget* parent = nullptr);
 
   protected:
     void closeEvent(QCloseEvent* event) override;
@@ -38,8 +38,6 @@ class ViewState : public QWidget
     QLineEdit* mAutoRefreshIntervalLineEdit;
     std::unique_ptr<QTimer> mAutoRefreshTimer;
 
-    State* mState;
-    EntityDB* mEntityDB;
     ViewToolbar* mToolbar;
 
     void initializeTreeView();

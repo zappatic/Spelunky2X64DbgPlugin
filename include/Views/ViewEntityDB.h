@@ -9,12 +9,11 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-
 class ViewEntityDB : public QWidget
 {
     Q_OBJECT
   public:
-    ViewEntityDB(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent = nullptr);
+    ViewEntityDB(ViewToolbar* toolbar, QWidget* parent = nullptr);
     void showEntityDB(size_t index);
 
   protected:
@@ -31,7 +30,6 @@ class ViewEntityDB : public QWidget
     QLineEdit* mSearchLineEdit;
     QCompleter* mEntityNameCompleter;
 
-    EntityDB* mEntityDB;
     ViewToolbar* mToolbar;
 
     void initializeTreeView();

@@ -41,10 +41,8 @@ if(QT_NAMESPACE)
     add_definitions(-DQT_NAMESPACE=${QT_NAMESPACE})
 endif()
 
-#add_subdirectory(../x64dbg_sdk ${CMAKE_CURRENT_BINARY_DIR}/x64dbg)
 
 # Create a plugin
-#set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 configure_file(config/pluginconfig.h.in include/pluginconfig.h ESCAPE_QUOTES)
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 	${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
@@ -61,10 +59,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/EntityDB.h
 	include/Data/Entity.h
 	include/Data/State.h
-	include/ViewToolbar.h
-	include/ViewEntityDB.h
-	include/ViewEntity.h
-	include/ViewState.h
+	include/Views/ViewToolbar.h
+	include/Views/ViewEntityDB.h
+	include/Views/ViewEntity.h
+	include/Views/ViewEntities.h
+	include/Views/ViewState.h
 	include/EntityList.h
 	include/QtHelpers/HTMLDelegate.h
 	include/QtHelpers/TreeViewMemoryFields.h
@@ -73,10 +72,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
-	src/ViewToolbar.cpp
-	src/ViewEntityDB.cpp
-	src/ViewEntity.cpp
-	src/ViewState.cpp
+	src/Views/ViewToolbar.cpp
+	src/Views/ViewEntityDB.cpp
+	src/Views/ViewEntity.cpp
+	src/Views/ViewEntities.cpp
+	src/Views/ViewState.cpp
 	src/EntityList.cpp
 	src/QtHelpers/HTMLDelegate.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp

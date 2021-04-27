@@ -1,7 +1,7 @@
 #include "QtPlugin.h"
 #include "Data/EntityDB.h"
 #include "Data/State.h"
-#include "ViewToolbar.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QFile>
 #include <QMainWindow>

@@ -49,3 +49,12 @@ void State::refreshOffsets()
         offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
     }
 }
+
+size_t State::offsetForField(const std::string& fieldName) const
+{
+    if (mMemoryOffsets.count(fieldName) == 0)
+    {
+        return 0;
+    }
+    return mMemoryOffsets.at(fieldName);
+}

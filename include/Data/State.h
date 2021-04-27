@@ -13,6 +13,7 @@ class State : MemoryMappedData
 
     const std::unordered_map<std::string, size_t>& offsets();
     void refreshOffsets();
+    size_t offsetForField(const std::string& fieldName) const;
 
   private:
     size_t mStatePtr = 0;

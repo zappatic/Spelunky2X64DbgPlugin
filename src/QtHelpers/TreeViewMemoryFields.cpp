@@ -3,7 +3,7 @@
 #include <inttypes.h>
 #include <sstream>
 
-TreeViewMemoryFields::TreeViewMemoryFields(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent) : QTreeView(parent), mEntityDB(entityDB), mToolbar(toolbar)
+TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent) : QTreeView(parent), mToolbar(toolbar)
 {
     mHTMLDelegate = std::make_unique<HTMLDelegate>();
     setItemDelegate(mHTMLDelegate.get());
@@ -32,6 +32,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         auto itemFieldValueHex = new QStandardItem();
         itemFieldValueHex->setData("", Qt::DisplayRole);
         itemFieldValueHex->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
+        itemFieldValueHex->setData(QVariant::fromValue(field.type), gsRoleType); // in case we click on, we can see the type
         itemFieldValueHex->setEditable(false);
 
         auto itemFieldMemoryOffset = new QStandardItem();
@@ -176,6 +177,27 @@ void TreeViewMemoryFields::updateTableHeader()
     mModel->setHeaderData(gsColValueHex, Qt::Horizontal, "Value (hex)", Qt::DisplayRole);
     mModel->setHeaderData(gsColType, Qt::Horizontal, "Type", Qt::DisplayRole);
     mModel->setHeaderData(gsColMemoryOffset, Qt::Horizontal, "Memory offset", Qt::DisplayRole);
+
+    if (mSavedColumnWidths[gsColField] != 0)
+    {
+        setColumnWidth(gsColField, mSavedColumnWidths[gsColField]);
+    }
+    if (mSavedColumnWidths[gsColValue] != 0)
+    {
+        setColumnWidth(gsColValue, mSavedColumnWidths[gsColValue]);
+    }
+    if (mSavedColumnWidths[gsColValueHex] != 0)
+    {
+        setColumnWidth(gsColValueHex, mSavedColumnWidths[gsColValueHex]);
+    }
+    if (mSavedColumnWidths[gsColMemoryOffset] != 0)
+    {
+        setColumnWidth(gsColMemoryOffset, mSavedColumnWidths[gsColMemoryOffset]);
+    }
+    if (mSavedColumnWidths[gsColType] != 0)
+    {
+        setColumnWidth(gsColType, mSavedColumnWidths[gsColType]);
+    }
 }
 
 QStandardItem* TreeViewMemoryFields::lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent)
@@ -340,14 +362,15 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
         case MemoryFieldType::EntityDBID:
         {
             uint32_t value = Script::Memory::ReadDword(memoryOffset);
-            itemValue->setData(QString::asprintf("%lu (%s)", value, mEntityDB->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
+            itemValue->setData(QString::asprintf("%lu (%s)", value, mToolbar->entityDB()->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
             itemValueHex->setData(QString::asprintf("0x%08lX", value), Qt::DisplayRole);
             break;
         }
         case MemoryFieldType::EntityPointer:
         {
             size_t value = Script::Memory::ReadQword(memoryOffset);
-            itemValue->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto entityName = getEntityName(value, mToolbar->entityDB());
+            itemValue->setData(QString::asprintf("<font color='blue'><u>%s</u></font>", entityName.c_str()), Qt::DisplayRole);
             itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
@@ -457,9 +480,7 @@ void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 }
                 case MemoryFieldType::EntityPointer:
                 {
-                    dprintf("MemoryFieldType::EntityPointer\n");
                     auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
-                    dprintf("offset: %p\n", offset);
                     if (offset != 0)
                     {
                         mToolbar->showEntity(offset);
@@ -469,4 +490,14 @@ void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
             }
         }
     }
+}
+
+void TreeViewMemoryFields::clear()
+{
+    mSavedColumnWidths[gsColField] = columnWidth(gsColField);
+    mSavedColumnWidths[gsColValue] = columnWidth(gsColValue);
+    mSavedColumnWidths[gsColValueHex] = columnWidth(gsColValueHex);
+    mSavedColumnWidths[gsColMemoryOffset] = columnWidth(gsColMemoryOffset);
+    mSavedColumnWidths[gsColType] = columnWidth(gsColType);
+    mModel->clear();
 }

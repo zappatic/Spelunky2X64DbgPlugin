@@ -1,4 +1,5 @@
 #include "Spelunky2.h"
+#include "Data/EntityDB.h"
 #include "pluginmain.h"
 #include <QMessageBox>
 
@@ -100,4 +101,31 @@ size_t spelunky2AfterBundleSize()
         findSpelunky2InMemory();
     }
     return gSpelunky2AfterBundleSize;
+}
+
+std::string getEntityName(size_t offset, EntityDB* entityDB)
+{
+    std::string entityName = "";
+    if (offset == 0)
+    {
+        return entityName;
+    }
+
+    uint32_t entityDBPtr = Script::Memory::ReadQword(offset + 8);
+    if (entityDBPtr == 0)
+    {
+        return entityName;
+    }
+
+    uint32_t entityID = Script::Memory::ReadDword(entityDBPtr + 20);
+
+    if (entityID > 0 && entityID <= entityDB->entityList()->highestEntityID())
+    {
+        entityName = entityDB->entityList()->nameForID(entityID);
+    }
+    else
+    {
+        entityName = "UNKNOWN/DEAD ENTITY";
+    }
+    return entityName;
 }

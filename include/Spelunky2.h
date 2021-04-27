@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <vector>
 
+class EntityDB;
+
 static constexpr uint8_t gsColField = 0;
 static constexpr uint8_t gsColValue = 1;
 static constexpr uint8_t gsColValueHex = 2;
@@ -223,7 +225,7 @@ static const std::vector<MemoryField> gsStateFields = {
     {"time_last_level", MemoryFieldType::UnsignedDword},
     {"time_level", MemoryFieldType::UnsignedDword},
     {"ia00", MemoryFieldType::Dword},
-    {"money_total", MemoryFieldType::UnsignedDword},
+    {"money_last_levels", MemoryFieldType::UnsignedDword},
     {"hud_flags", MemoryFieldType::Flags32},
     {"-", MemoryFieldType::Skip, 0x12b0 - 0xa14},
     {"items", MemoryFieldType::StateItems},
@@ -301,8 +303,8 @@ static const std::vector<MemoryField> gsEntityFields = {
     {"hitboxy", MemoryFieldType::Float}, 
     {"duckmask", MemoryFieldType::UnsignedDword}, 
     {"angle", MemoryFieldType::Float}, 
-    {"p80", MemoryFieldType::UnsignedQword}, 
-    {"texture", MemoryFieldType::UnsignedQword}, 
+    {"p80", MemoryFieldType::DataPointer}, 
+    {"texture", MemoryFieldType::DataPointer}, 
     {"tilew", MemoryFieldType::Float}, 
     {"tileh", MemoryFieldType::Float}, 
     {"camera_layer", MemoryFieldType::UnsignedByte}, 
@@ -330,3 +332,4 @@ static const std::vector<MemoryField> gsColorFields = {
 
 size_t spelunky2AfterBundle();
 size_t spelunky2AfterBundleSize();
+std::string getEntityName(size_t offset, EntityDB* entityDB);

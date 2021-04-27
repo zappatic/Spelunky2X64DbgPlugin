@@ -1,7 +1,8 @@
-#include "ViewToolbar.h"
-#include "ViewEntity.h"
-#include "ViewEntityDB.h"
-#include "ViewState.h"
+#include "Views/ViewToolbar.h"
+#include "Views/ViewEntities.h"
+#include "Views/ViewEntity.h"
+#include "Views/ViewEntityDB.h"
+#include "Views/ViewState.h"
 #include "pluginmain.h"
 #include <QPushButton>
 
@@ -9,7 +10,7 @@ ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QW
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
-    mMainLayout = new QVBoxLayout();
+    mMainLayout = new QVBoxLayout(this);
     auto container = new QWidget(this);
     container->setLayout(mMainLayout);
     setWidget(container);
@@ -19,48 +20,57 @@ ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QW
     auto btnEntityDB = new QPushButton(this);
     btnEntityDB->setText("Entity DB");
     mMainLayout->addWidget(btnEntityDB);
+    QObject::connect(btnEntityDB, &QPushButton::clicked, this, &ViewToolbar::showEntityDB);
 
     auto btnState = new QPushButton(this);
     btnState->setText("State");
     mMainLayout->addWidget(btnState);
+    QObject::connect(btnState, &QPushButton::clicked, this, &ViewToolbar::showState);
 
-    auto btnTest = new QPushButton(this);
-    btnTest->setText("test");
-    mMainLayout->addWidget(btnTest);
+    auto btnEntities = new QPushButton(this);
+    btnEntities->setText("Entities");
+    mMainLayout->addWidget(btnEntities);
+    QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
 
     mMainLayout->addStretch();
-
-    QObject::connect(btnEntityDB, &QPushButton::clicked, this, &ViewToolbar::showEntityDB);
-    QObject::connect(btnState, &QPushButton::clicked, this, &ViewToolbar::showState);
-    QObject::connect(btnTest, &QPushButton::clicked, this, &ViewToolbar::test);
 }
 
 void ViewToolbar::showEntityDB()
 {
-    mEntityDB->loadEntityDB();
-    auto w = new ViewEntityDB(mEntityDB, this);
+    auto w = new ViewEntityDB(this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
 
 void ViewToolbar::showState()
 {
-    mEntityDB->loadEntityDB();
-    mState->loadState();
-    auto w = new ViewState(mState, mEntityDB, this);
+    auto w = new ViewState(this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
 
 void ViewToolbar::showEntity(size_t offset)
 {
-    dprintf("creating entity window at offset %p\n", offset);
-    auto w = new ViewEntity(offset, mEntityDB, this);
+    auto w = new ViewEntity(offset, this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
 
-void ViewToolbar::test()
+void ViewToolbar::showEntities()
 {
-    showEntity(0x00);
+    auto w = new ViewEntities(this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
+}
+
+State* ViewToolbar::state()
+{
+    mState->loadState();
+    return mState;
+}
+
+EntityDB* ViewToolbar::entityDB()
+{
+    mEntityDB->loadEntityDB();
+    return mEntityDB;
 }

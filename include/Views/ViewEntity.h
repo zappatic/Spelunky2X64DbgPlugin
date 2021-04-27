@@ -16,7 +16,7 @@ class ViewEntity : public QWidget
 {
     Q_OBJECT
   public:
-    ViewEntity(size_t entityOffset, EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent = nullptr);
+    ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent = nullptr);
 
   protected:
     void closeEvent(QCloseEvent* event) override;
@@ -39,7 +39,6 @@ class ViewEntity : public QWidget
     std::unique_ptr<QTimer> mAutoRefreshTimer;
 
     std::unique_ptr<Entity> mEntity;
-    EntityDB* mEntityDB;
     ViewToolbar* mToolbar;
 
     void initializeTreeView();

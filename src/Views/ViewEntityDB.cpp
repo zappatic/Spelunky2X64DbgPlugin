@@ -1,4 +1,4 @@
-#include "ViewEntityDB.h"
+#include "Views/ViewEntityDB.h"
 #include "EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
@@ -6,9 +6,9 @@
 #include <QHeaderView>
 #include <QLineEdit>
 
-ViewEntityDB::ViewEntityDB(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mEntityDB(entityDB), mToolbar(toolbar)
+ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
-    mMainLayout = new QVBoxLayout();
+    mMainLayout = new QVBoxLayout(this);
 
     initializeSearchLineEdit();
     initializeTreeView();
@@ -18,11 +18,11 @@ ViewEntityDB::ViewEntityDB(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* pa
     setLayout(mMainLayout);
     mSearchLineEdit->setFocus();
 
-    mEntityNameCompleter = new QCompleter(mEntityDB->entityList()->entityNames(), this);
+    mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->entityNames(), this);
     mEntityNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     mSearchLineEdit->setCompleter(mEntityNameCompleter);
 
-    setWindowTitle(QString("Entity DB (%1 entities)").arg(mEntityDB->entityList()->highestEntityID()));
+    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestEntityID()));
     mSearchLineEdit->setVisible(true);
     mMainTreeView->setVisible(true);
     showEntityDB(1);
@@ -30,7 +30,7 @@ ViewEntityDB::ViewEntityDB(EntityDB* entityDB, ViewToolbar* toolbar, QWidget* pa
 
 void ViewEntityDB::initializeTreeView()
 {
-    mMainTreeView = new TreeViewMemoryFields(mEntityDB, mToolbar, this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->addEntityDBMemoryFields();
 
     mMainLayout->addWidget(mMainTreeView);
@@ -60,7 +60,7 @@ QSize ViewEntityDB::sizeHint() const
 
 QSize ViewEntityDB::minimumSizeHint() const
 {
-    return QSize(750, 1050);
+    return QSize(150, 150);
 }
 
 void ViewEntityDB::searchFieldReturnPressed()
@@ -68,13 +68,13 @@ void ViewEntityDB::searchFieldReturnPressed()
     auto text = mSearchLineEdit->text();
     bool isNumeric = false;
     auto enteredID = text.toUInt(&isNumeric);
-    if (isNumeric && enteredID <= mEntityDB->entityList()->highestEntityID())
+    if (isNumeric && enteredID <= mToolbar->entityDB()->entityList()->highestEntityID())
     {
         showEntityDB(enteredID);
     }
     else
     {
-        auto entityID = mEntityDB->entityList()->idForName(text.toStdString());
+        auto entityID = mToolbar->entityDB()->entityList()->idForName(text.toStdString());
         if (entityID != 0)
         {
             showEntityDB(entityID);
@@ -86,7 +86,7 @@ void ViewEntityDB::showEntityDB(size_t index)
 {
     for (const auto& field : gsEntityDBFields)
     {
-        mMainTreeView->updateValueForField(field, field.name, mEntityDB->offsetsForIndex(index));
+        mMainTreeView->updateValueForField(field, field.name, mToolbar->entityDB()->offsetsForIndex(index));
     }
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
