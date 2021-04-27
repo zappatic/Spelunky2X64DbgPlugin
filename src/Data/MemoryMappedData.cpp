@@ -7,6 +7,8 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
 
     switch (field.type)
     {
+        case MemoryFieldType::SectionHeaderEntity:
+            break;
         case MemoryFieldType::Skip:
             offset += field.extraInfo;
             break;
@@ -105,6 +107,22 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
                 textureOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, textureOffset, offsets);
             }
             offset += 8;
+            break;
+        }
+        case MemoryFieldType::Map:
+        {
+            for (const auto& f : gsMapFields)
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
+            break;
+        }
+        case MemoryFieldType::SectionHeaderMovable:
+        {
+            for (const auto& f : gsMovableFields)
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
             break;
         }
     }

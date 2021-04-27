@@ -1,5 +1,5 @@
 #include "Views/ViewState.h"
-#include "EntityList.h"
+#include "Data/EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
@@ -30,12 +30,15 @@ ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), m
 void ViewState::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    mMainTreeView->addStateMemoryFields();
-
+    for (const auto& field : gsStateFields)
+    {
+        mMainTreeView->addMemoryField(field, field.name);
+    }
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
+    mMainTreeView->updateTableHeader();
 }
 
 void ViewState::initializeRefreshStuff()

@@ -57,7 +57,10 @@ enum class MemoryFieldType
     Vector,
     Color,
     TexturePointer,
-    ConstCharPointerPointer
+    ConstCharPointerPointer,
+    Map,
+    SectionHeaderEntity,
+    SectionHeaderMovable
 };
 Q_DECLARE_METATYPE(MemoryFieldType)
 
@@ -87,7 +90,10 @@ const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeT
     {MemoryFieldType::Vector, "Vector"},
     {MemoryFieldType::Color, "Color"},
     {MemoryFieldType::TexturePointer, "Texture pointer"},
-    {MemoryFieldType::ConstCharPointerPointer, "Const char**"}
+    {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
+    {MemoryFieldType::Map, "std::map<>"},
+    {MemoryFieldType::SectionHeaderEntity, ""},
+    {MemoryFieldType::SectionHeaderMovable, ""},
 };
 // clang-format on
 
@@ -147,7 +153,7 @@ const std::vector<MemoryField> gsEntityDBFields = {
     {"description", MemoryFieldType::Dword},
     {"field_a0", MemoryFieldType::Dword},
     {"field_a4", MemoryFieldType::Dword},
-    {"field_a8", MemoryFieldType::Dword},
+    {"field_a8", MemoryFieldType::Float},
     {"field_AC", MemoryFieldType::Dword},
     {"-", MemoryFieldType::Skip, 0x40},
     {"attachOffsetX", MemoryFieldType::Float},
@@ -347,6 +353,48 @@ static const std::vector<MemoryField> gsTextureFields = {
     {"tile_height_minus_one_fraction", MemoryFieldType::Float},
     {"one_over_width", MemoryFieldType::Float},
     {"one_over_height", MemoryFieldType::Float}
+};
+
+static const std::vector<MemoryField> gsMapFields = {
+    {"items", MemoryFieldType::DataPointer}, 
+    {"size", MemoryFieldType::UnsignedQword}, 
+};
+
+static const std::vector<MemoryField> gsMovableFields = {
+    {"pa0", MemoryFieldType::Map}, 
+    {"pb0", MemoryFieldType::Map}, 
+    {"anim_func", MemoryFieldType::DataPointer},
+    {"ic8", MemoryFieldType::Dword}, 
+    {"icc", MemoryFieldType::Dword}, 
+    {"movex", MemoryFieldType::Float}, 
+    {"movey", MemoryFieldType::Float}, 
+    {"buttons", MemoryFieldType::UnsignedDword}, 
+    {"stand_counter", MemoryFieldType::UnsignedDword}, 
+    {"fe0", MemoryFieldType::Float},
+    {"price", MemoryFieldType::Dword},
+    {"owner_uid", MemoryFieldType::Dword},
+    {"last_owner_uid", MemoryFieldType::Dword}, 
+    {"animation_func", MemoryFieldType::DataPointer}, 
+    {"idle_counter", MemoryFieldType::UnsignedDword}, 
+    {"standing_on_uid", MemoryFieldType::Dword}, 
+    {"velocityx", MemoryFieldType::Float}, 
+    {"velocityy", MemoryFieldType::Float}, 
+    {"holding_uid", MemoryFieldType::Dword}, 
+    {"state", MemoryFieldType::UnsignedByte}, 
+    {"last_state", MemoryFieldType::UnsignedByte}, 
+    {"move_state", MemoryFieldType::UnsignedByte}, 
+    {"health", MemoryFieldType::UnsignedByte}, 
+    {"stun_timer", MemoryFieldType::UnsignedWord}, 
+    {"stun_state", MemoryFieldType::UnsignedWord}, 
+    {"some_state", MemoryFieldType::UnsignedDword}, 
+    {"poison_tick_timer", MemoryFieldType::Word}, 
+    {"unknown_timer", MemoryFieldType::Word}, 
+    {"i11c", MemoryFieldType::Dword}, 
+    {"i120", MemoryFieldType::Dword}, 
+    {"b124", MemoryFieldType::UnsignedByte}, 
+    {"airtime", MemoryFieldType::UnsignedByte}, 
+    {"b126", MemoryFieldType::UnsignedByte}, 
+    {"b127", MemoryFieldType::UnsignedByte}
 };
 
 // clang-format on

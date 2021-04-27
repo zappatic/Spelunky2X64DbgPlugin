@@ -58,6 +58,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/MemoryMappedData.h
 	include/Data/EntityDB.h
 	include/Data/Entity.h
+	include/Data/EntityList.h
 	include/Data/State.h
 	include/Data/Texture.h
 	include/Views/ViewToolbar.h
@@ -65,13 +66,13 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewEntity.h
 	include/Views/ViewEntities.h
 	include/Views/ViewState.h
-	include/EntityList.h
 	include/QtHelpers/HTMLDelegate.h
 	include/QtHelpers/TreeViewMemoryFields.h
 	src/Spelunky2.cpp
 	src/Data/MemoryMappedData.cpp
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
+	src/Data/EntityList.cpp
 	src/Data/State.cpp
 	src/Data/Texture.cpp
 	src/Views/ViewToolbar.cpp
@@ -79,7 +80,6 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewEntity.cpp
 	src/Views/ViewEntities.cpp
 	src/Views/ViewState.cpp
-	src/EntityList.cpp
 	src/QtHelpers/HTMLDelegate.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h

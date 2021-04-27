@@ -1,5 +1,5 @@
 #include "Views/ViewEntityDB.h"
-#include "EntityList.h"
+#include "Data/EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
@@ -31,12 +31,15 @@ ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) 
 void ViewEntityDB::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    mMainTreeView->addEntityDBMemoryFields();
-
+    for (const auto& field : gsEntityDBFields)
+    {
+        mMainTreeView->addMemoryField(field, field.name);
+    }
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
+    mMainTreeView->updateTableHeader();
 }
 
 void ViewEntityDB::initializeSearchLineEdit()

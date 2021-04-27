@@ -20,4 +20,8 @@ void Entity::refreshOffsets()
     {
         offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
     }
+    for (const auto& field : gsMovableFields)
+    {
+        offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
+    }
 }

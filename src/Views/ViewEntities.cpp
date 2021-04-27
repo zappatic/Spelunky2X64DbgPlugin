@@ -1,5 +1,5 @@
 #include "Views/ViewEntities.h"
-#include "EntityList.h"
+#include "Data/EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QCloseEvent>

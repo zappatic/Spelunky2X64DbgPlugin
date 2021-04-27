@@ -1,5 +1,5 @@
 #include "Views/ViewEntity.h"
-#include "EntityList.h"
+#include "Data/EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
@@ -31,12 +31,12 @@ ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* paren
 void ViewEntity::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    mMainTreeView->addEntityFields();
-
+    populateTreeView();
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
+    mMainTreeView->updateTableHeader();
 }
 
 void ViewEntity::initializeRefreshStuff()
@@ -77,7 +77,34 @@ void ViewEntity::refreshEntity()
     mEntity->refreshOffsets();
     for (const auto& field : gsEntityFields)
     {
-        mMainTreeView->updateValueForField(field, field.name, mEntity->offsets());
+        mMainTreeView->updateValueForField(field, field.name, mEntity->offsets(), mEntitySectionHeaderItem);
+    }
+    for (const auto& field : gsMovableFields)
+    {
+        mMainTreeView->updateValueForField(field, field.name, mEntity->offsets(), mMovableSectionHeaderItem);
+    }
+}
+
+void ViewEntity::populateTreeView()
+{
+    MemoryField headerFieldEntity;
+    headerFieldEntity.name = "<b>Entity</b>";
+    headerFieldEntity.type = MemoryFieldType::SectionHeaderEntity;
+    mEntitySectionHeaderItem = mMainTreeView->addMemoryField(headerFieldEntity, "");
+    mMainTreeView->expandItem(mEntitySectionHeaderItem);
+    for (const auto& field : gsEntityFields)
+    {
+        mMainTreeView->addMemoryField(field, field.name, mEntitySectionHeaderItem);
+    }
+
+    MemoryField headerFieldMovable;
+    headerFieldMovable.name = "<b>Movable</b>";
+    headerFieldMovable.type = MemoryFieldType::SectionHeaderMovable;
+    mMovableSectionHeaderItem = mMainTreeView->addMemoryField(headerFieldMovable, "");
+    mMainTreeView->expandItem(mMovableSectionHeaderItem);
+    for (const auto& field : gsMovableFields)
+    {
+        mMainTreeView->addMemoryField(field, field.name, mMovableSectionHeaderItem);
     }
 }
 

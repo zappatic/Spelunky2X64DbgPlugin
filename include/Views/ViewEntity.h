@@ -40,7 +40,10 @@ class ViewEntity : public QWidget
 
     std::unique_ptr<Entity> mEntity;
     ViewToolbar* mToolbar;
+    QStandardItem* mEntitySectionHeaderItem = nullptr;
+    QStandardItem* mMovableSectionHeaderItem = nullptr;
 
     void initializeTreeView();
     void initializeRefreshStuff();
+    void populateTreeView();
 };

@@ -16,7 +16,7 @@ TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent
     QObject::connect(this, &QTreeView::clicked, this, &TreeViewMemoryFields::cellClicked);
 }
 
-void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
+QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
     auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem* {
         auto itemFieldName = new QStandardItem();
@@ -56,10 +56,13 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         parent = mModel->invisibleRootItem();
     }
 
+    QStandardItem* returnField = nullptr;
     switch (field.type)
     {
         case MemoryFieldType::Skip:
             break;
+        case MemoryFieldType::SectionHeaderEntity:
+        case MemoryFieldType::SectionHeaderMovable:
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
         case MemoryFieldType::Byte:
@@ -77,15 +80,16 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
-            createAndInsertItem(field, fieldNameOverride, parent);
+            returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
         case MemoryFieldType::Rect:
         {
-            auto rectangleParent = createAndInsertItem(field, fieldNameOverride, parent);
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsRectFields)
             {
-                addMemoryField(f, fieldNameOverride + "." + f.name, rectangleParent);
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::StateIllumination:
@@ -95,6 +99,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::StateSaturationVignette:
@@ -104,6 +109,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::StateItems:
@@ -113,6 +119,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::Layer:
@@ -122,6 +129,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::Vector:
@@ -131,6 +139,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::Color:
@@ -140,6 +149,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
         case MemoryFieldType::TexturePointer:
@@ -149,36 +159,21 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
+            break;
+        }
+        case MemoryFieldType::Map:
+        {
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : gsMapFields)
+            {
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+            }
+            returnField = structParent;
             break;
         }
     }
-}
-
-void TreeViewMemoryFields::addEntityDBMemoryFields(QStandardItem* parent)
-{
-    for (const auto& field : gsEntityDBFields)
-    {
-        addMemoryField(field, field.name, parent);
-    }
-    updateTableHeader();
-}
-
-void TreeViewMemoryFields::addStateMemoryFields(QStandardItem* parent)
-{
-    for (const auto& field : gsStateFields)
-    {
-        addMemoryField(field, field.name, parent);
-    }
-    updateTableHeader();
-}
-
-void TreeViewMemoryFields::addEntityFields(QStandardItem* parent)
-{
-    for (const auto& field : gsEntityFields)
-    {
-        addMemoryField(field, field.name, parent);
-    }
-    updateTableHeader();
+    return returnField;
 }
 
 void TreeViewMemoryFields::updateTableHeader()
@@ -230,7 +225,11 @@ QStandardItem* TreeViewMemoryFields::lookupTreeViewItem(const std::string& field
 
 void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent)
 {
-    auto memoryOffset = offsets.at(fieldNameOverride);
+    size_t memoryOffset = 0;
+    if (offsets.count(fieldNameOverride) != 0)
+    {
+        memoryOffset = offsets.at(fieldNameOverride);
+    }
 
     QStandardItem* itemField = nullptr;
     QStandardItem* itemValue = nullptr;
@@ -245,7 +244,7 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
 
         if (itemField == nullptr || itemValue == nullptr || itemValueHex == nullptr || itemMemoryOffset == nullptr)
         {
-            dprintf("ERROR: tried to updateValueForField(%s, %s, ...) but did not find items in treeview", field.name, fieldNameOverride);
+            dprintf("ERROR: tried to updateValueForField('%s', '%s', ...) but did not find items in treeview\n", field.name, fieldNameOverride);
             return;
         }
 
@@ -481,6 +480,30 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             }
             break;
         }
+        case MemoryFieldType::Map:
+        {
+            for (const auto& f : gsMapFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::SectionHeaderEntity:
+        {
+            for (const auto& f : gsEntityFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::SectionHeaderMovable:
+        {
+            for (const auto& f : gsMovableFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
         case MemoryFieldType::Skip:
         {
             break;
@@ -552,4 +575,9 @@ void TreeViewMemoryFields::clear()
     mSavedColumnWidths[gsColMemoryOffset] = columnWidth(gsColMemoryOffset);
     mSavedColumnWidths[gsColType] = columnWidth(gsColType);
     mModel->clear();
+}
+
+void TreeViewMemoryFields::expandItem(QStandardItem* item)
+{
+    expand(mModel->indexFromItem(item));
 }
