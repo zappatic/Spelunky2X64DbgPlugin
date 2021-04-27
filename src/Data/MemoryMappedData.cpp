@@ -32,6 +32,7 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
+        case MemoryFieldType::ConstCharPointerPointer:
             offset += 8;
             break;
         case MemoryFieldType::Rect:
@@ -94,6 +95,16 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
             {
                 offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
             }
+            break;
+        }
+        case MemoryFieldType::TexturePointer:
+        {
+            auto textureOffset = Script::Memory::ReadQword(offset);
+            for (const auto& f : gsTextureFields)
+            {
+                textureOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, textureOffset, offsets);
+            }
+            offset += 8;
             break;
         }
     }

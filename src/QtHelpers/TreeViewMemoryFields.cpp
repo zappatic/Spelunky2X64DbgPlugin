@@ -76,6 +76,7 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::ConstCharPointerPointer:
             createAndInsertItem(field, fieldNameOverride, parent);
             break;
         case MemoryFieldType::Rect:
@@ -136,6 +137,15 @@ void TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::s
         {
             auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : gsColorFields)
+            {
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+            }
+            break;
+        }
+        case MemoryFieldType::TexturePointer:
+        {
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : gsTextureFields)
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
@@ -387,6 +397,26 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
+        case MemoryFieldType::ConstCharPointerPointer:
+        {
+            size_t value = Script::Memory::ReadQword(memoryOffset);
+            size_t chararray = Script::Memory::ReadQword(value);
+            constexpr uint16_t bufferSize = 1024;
+            char buffer[bufferSize] = {0};
+            char c = 0;
+            uint16_t counter = 0;
+            do
+            {
+                c = Script::Memory::ReadByte(chararray + counter);
+                buffer[counter++] = c;
+            } while (c != 0 && counter < bufferSize);
+
+            itemValue->setData(QString(buffer), Qt::DisplayRole);
+            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+            break;
+        }
         case MemoryFieldType::Rect:
         {
             for (const auto& f : gsRectFields)
@@ -443,6 +473,14 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             }
             break;
         }
+        case MemoryFieldType::TexturePointer:
+        {
+            for (const auto& f : gsTextureFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
         case MemoryFieldType::Skip:
         {
             break;
@@ -474,6 +512,7 @@ void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     GuiShowCpu();
                     break;
                 }
+                case MemoryFieldType::ConstCharPointerPointer:
                 case MemoryFieldType::DataPointer:
                 {
                     GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());

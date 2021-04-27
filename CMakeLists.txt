@@ -59,6 +59,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/EntityDB.h
 	include/Data/Entity.h
 	include/Data/State.h
+	include/Data/Texture.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewEntity.h
@@ -72,6 +73,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
+	src/Data/Texture.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewEntity.cpp

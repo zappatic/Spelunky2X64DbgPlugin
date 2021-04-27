@@ -27,7 +27,7 @@ static const uint16_t gsRoleUID = Qt::UserRole + 11;
 // - the MemoryFieldType enum below
 // - the string representation of the type in gsMemoryFieldTypeToStringMapping
 // - its fields in a vector<MemoryField> below
-// - MemoryMappedData.h/cpp (setOffsetForField)
+// - MemoryMappedData.cpp (setOffsetForField)
 // - TreeViewMemoryFields.cpp (updateValueForField and addMemoryField)
 
 enum class MemoryFieldType
@@ -55,7 +55,9 @@ enum class MemoryFieldType
     EntityDBPointer,
     EntityDBID,
     Vector,
-    Color
+    Color,
+    TexturePointer,
+    ConstCharPointerPointer
 };
 Q_DECLARE_METATYPE(MemoryFieldType)
 
@@ -83,7 +85,9 @@ const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeT
     {MemoryFieldType::EntityDBPointer, "EntityDB pointer"},
     {MemoryFieldType::EntityDBID, "EntityDB ID"},
     {MemoryFieldType::Vector, "Vector"},
-    {MemoryFieldType::Color, "Color"}
+    {MemoryFieldType::Color, "Color"},
+    {MemoryFieldType::TexturePointer, "Texture pointer"},
+    {MemoryFieldType::ConstCharPointerPointer, "Const char**"}
 };
 // clang-format on
 
@@ -304,7 +308,7 @@ static const std::vector<MemoryField> gsEntityFields = {
     {"duckmask", MemoryFieldType::UnsignedDword}, 
     {"angle", MemoryFieldType::Float}, 
     {"p80", MemoryFieldType::DataPointer}, 
-    {"texture", MemoryFieldType::DataPointer}, 
+    {"texture", MemoryFieldType::TexturePointer}, 
     {"tilew", MemoryFieldType::Float}, 
     {"tileh", MemoryFieldType::Float}, 
     {"camera_layer", MemoryFieldType::UnsignedByte}, 
@@ -326,6 +330,23 @@ static const std::vector<MemoryField> gsColorFields = {
     {"green", MemoryFieldType::Float}, 
     {"blue", MemoryFieldType::Float}, 
     {"alpha", MemoryFieldType::Float}
+};
+
+static const std::vector<MemoryField> gsTextureFields = {
+    {"id", MemoryFieldType::UnsignedQword}, 
+    {"name", MemoryFieldType::ConstCharPointerPointer}, 
+    {"width", MemoryFieldType::UnsignedDword}, 
+    {"height", MemoryFieldType::UnsignedDword}, 
+    {"num_tiles_width", MemoryFieldType::UnsignedDword}, 
+    {"num_tiles_height", MemoryFieldType::UnsignedDword}, 
+    {"offset_x_weird_math", MemoryFieldType::Float},
+    {"offset_y_weird_math", MemoryFieldType::Float},
+    {"tile_width_fraction", MemoryFieldType::Float},
+    {"tile_height_fraction", MemoryFieldType::Float},
+    {"tile_width_minus_one_fraction", MemoryFieldType::Float},
+    {"tile_height_minus_one_fraction", MemoryFieldType::Float},
+    {"one_over_width", MemoryFieldType::Float},
+    {"one_over_height", MemoryFieldType::Float}
 };
 
 // clang-format on
