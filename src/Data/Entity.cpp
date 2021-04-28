@@ -29,9 +29,15 @@ void Entity::refreshOffsets()
     auto hierarchy = classHierarchy();
     for (auto c : hierarchy)
     {
+        auto headerIdentifier = "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">";
+        MemoryField headerField;
+        headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
+        headerField.type = c;
+        offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets);
+
         for (const auto& field : gsEntityClassFields.at(c))
         {
-            offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
+            offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
         }
     }
 }
@@ -42,10 +48,16 @@ void Entity::refreshValues()
     auto hierarchy = classHierarchy();
     for (auto c : hierarchy)
     {
-        for (const auto& field : gsEntityClassFields.at(c))
-        {
-            mTree->updateValueForField(field, field.name, mMemoryOffsets, mTreeViewSectionItems.at(c));
-        }
+        MemoryField headerField;
+        headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
+        headerField.type = c;
+        mTree->updateValueForField(headerField, "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">", mMemoryOffsets);
+        // mTree->updateValueForField(headerField, headerField.name, mMemoryOffsets, mTreeViewSectionItems.at(c));
+
+        // for (const auto& field : gsEntityClassFields.at(c))
+        // {
+        //     mTree->updateValueForField(field, field.name, mMemoryOffsets, mTreeViewSectionItems.at(c));
+        // }
     }
 }
 
@@ -58,12 +70,12 @@ void Entity::populateTreeView()
         MemoryField headerField;
         headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
         headerField.type = c;
-        auto item = mTree->addMemoryField(headerField, "");
+        auto item = mTree->addMemoryField(headerField, "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">");
         mTree->expandItem(item);
-        for (const auto& field : gsEntityClassFields.at(c))
-        {
-            mTree->addMemoryField(field, field.name, item);
-        }
+        // for (const auto& field : gsEntityClassFields.at(c))
+        // {
+        //     mTree->addMemoryField(field, field.name, item);
+        // }
         mTreeViewSectionItems[c] = item;
     }
 }

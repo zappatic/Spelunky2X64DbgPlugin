@@ -61,7 +61,8 @@ void ViewEntity::initializeUI()
     mTopLayout->addWidget(new QLabel("Interpret as:", this));
     mInterpretAsComboBox = new QComboBox(this);
     mInterpretAsComboBox->addItem("");
-    for (const auto& [classType, fields] : gsEntityClassFields)
+    mInterpretAsComboBox->addItem("Entity");
+    for (const auto& [classType, parentClassType] : gsEntityClassHierarchy)
     {
         mInterpretAsComboBox->addItem(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(classType)));
     }
@@ -134,7 +135,6 @@ void ViewEntity::interpretAsChanged(const QString& text)
         {
             if (textStr == name)
             {
-                dprintf("%s == %s\n", textStr.c_str(), name.c_str());
                 mEntity->interpretAs(classType);
                 break;
             }

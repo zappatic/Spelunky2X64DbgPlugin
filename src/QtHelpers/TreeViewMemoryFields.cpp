@@ -67,10 +67,9 @@ QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, co
     switch (field.type)
     {
         case MemoryFieldType::Skip:
+        {
             break;
-        case MemoryFieldType::ClassEntity:
-        case MemoryFieldType::ClassMovable:
-        case MemoryFieldType::ClassMonster:
+        }
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
         case MemoryFieldType::Byte:
@@ -88,96 +87,21 @@ QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, co
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
+        {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
-        case MemoryFieldType::Rect:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsRectFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
         }
-        case MemoryFieldType::StateIllumination:
+        default: // default is assumed to be a container, listed in gsEntityClassFields
         {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsStateIlluminationFields)
+            if (gsEntityClassFields.count(field.type) > 0)
             {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+                for (const auto& f : gsEntityClassFields.at(field.type))
+                {
+                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                }
+                returnField = structParent;
             }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::StateSaturationVignette:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsStateSaturationVignetteFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::StateItems:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsStateItemsFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::Layer:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsLayerFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::Vector:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsVectorFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::Color:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsColorFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::TexturePointer:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsTextureFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
-            break;
-        }
-        case MemoryFieldType::Map:
-        {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : gsMapFields)
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-            }
-            returnField = structParent;
             break;
         }
     }
@@ -427,105 +351,20 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
-        case MemoryFieldType::Rect:
-        {
-            for (const auto& f : gsRectFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::StateIllumination:
-        {
-            for (const auto& f : gsStateIlluminationFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::StateSaturationVignette:
-        {
-            for (const auto& f : gsStateSaturationVignetteFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::StateItems:
-        {
-            for (const auto& f : gsStateItemsFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::Layer:
-        {
-            for (const auto& f : gsLayerFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::Vector:
-        {
-            for (const auto& f : gsVectorFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::Color:
-        {
-            for (const auto& f : gsColorFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::TexturePointer:
-        {
-            for (const auto& f : gsTextureFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::Map:
-        {
-            for (const auto& f : gsMapFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::ClassEntity:
-        {
-            for (const auto& f : gsEntityFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::ClassMovable:
-        {
-            for (const auto& f : gsMovableFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
-        case MemoryFieldType::ClassMonster:
-        {
-            for (const auto& f : gsMonsterFields)
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-            }
-            break;
-        }
         case MemoryFieldType::Skip:
         {
             break;
+        }
+        default: // default is assumed to be a container, listed in gsEntityClassFields
+        {
+            if (gsEntityClassFields.count(field.type) > 0)
+            {
+                for (const auto& f : gsEntityClassFields.at(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
+                break;
+            }
         }
     }
 }

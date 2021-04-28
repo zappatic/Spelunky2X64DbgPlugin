@@ -409,8 +409,17 @@ static const std::unordered_map<MemoryFieldType, MemoryFieldType> gsEntityClassH
     {MemoryFieldType::ClassMonster, MemoryFieldType::ClassMovable},
 };
 
-// the list of fields belonging to a type
+// the list of fields belonging to a container type
 static const std::unordered_map<MemoryFieldType, std::vector<MemoryField>> gsEntityClassFields = {
+    {MemoryFieldType::Rect, gsRectFields},
+    {MemoryFieldType::StateIllumination, gsStateIlluminationFields},
+    {MemoryFieldType::StateSaturationVignette, gsStateSaturationVignetteFields},
+    {MemoryFieldType::StateItems, gsStateItemsFields},
+    {MemoryFieldType::Layer, gsLayerFields},
+    {MemoryFieldType::Vector, gsVectorFields},
+    {MemoryFieldType::Color, gsColorFields},
+    {MemoryFieldType::TexturePointer, gsTextureFields},
+    {MemoryFieldType::Map, gsMapFields},
     {MemoryFieldType::ClassEntity, gsEntityFields},
     {MemoryFieldType::ClassMovable, gsMovableFields},
     {MemoryFieldType::ClassMonster, gsMonsterFields},
