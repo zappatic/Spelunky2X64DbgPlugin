@@ -10,6 +10,7 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
         case MemoryFieldType::ClassEntity:
         case MemoryFieldType::ClassMovable:
         case MemoryFieldType::ClassMonster:
+        case MemoryFieldType::ClassPlayer:
             break;
         case MemoryFieldType::Skip:
             offset += field.extraInfo;
@@ -117,6 +118,16 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
             {
                 offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
             }
+            break;
+        }
+        case MemoryFieldType::PlayerInventoryPointer:
+        {
+            auto inventoryOffset = Script::Memory::ReadQword(offset);
+            for (const auto& f : gsPlayerInventoryFields)
+            {
+                inventoryOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, inventoryOffset, offsets);
+            }
+            offset += 8;
             break;
         }
     }

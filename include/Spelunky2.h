@@ -28,7 +28,11 @@ static const uint16_t gsRoleUID = Qt::UserRole + 11;
 // - the string representation of the type in gsMemoryFieldTypeToStringMapping
 // - its fields in a vector<MemoryField> below
 // - MemoryMappedData.cpp (setOffsetForField)
-// - TreeViewMemoryFields.cpp (updateValueForField and addMemoryField)
+
+// if it's a container type, add it to gsEntityClassFields
+// if it's a subclass of Entity
+// - add its parent class to gsEntityClassHierarchy
+// - add a regex or list of entity names for which the new subclass applies to gsDefaultEntityClassTypes
 
 enum class MemoryFieldType
 {
@@ -59,9 +63,11 @@ enum class MemoryFieldType
     TexturePointer,
     ConstCharPointerPointer,
     Map,
+    PlayerInventoryPointer,
     ClassEntity,
     ClassMovable,
-    ClassMonster
+    ClassMonster,
+    ClassPlayer,
 };
 Q_DECLARE_METATYPE(MemoryFieldType)
 
@@ -93,9 +99,11 @@ const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeT
     {MemoryFieldType::TexturePointer, "Texture pointer"},
     {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
     {MemoryFieldType::Map, "std::map<>"},
+    {MemoryFieldType::PlayerInventoryPointer, "Inventory"},
     {MemoryFieldType::ClassEntity, "Entity"},
     {MemoryFieldType::ClassMovable, "Movable"},
     {MemoryFieldType::ClassMonster, "Monster"},
+    {MemoryFieldType::ClassPlayer, "Player"},
 };
 // clang-format on
 
@@ -403,10 +411,39 @@ static const std::vector<MemoryField> gsMonsterFields = {
     {"inside", MemoryFieldType::Map}
 };
 
-// a mapping of what type is the parent class of a specific type
+static const std::vector<MemoryField> gsPlayerInventoryFields = {
+    {"money", MemoryFieldType::UnsignedDword},
+    {"bombs", MemoryFieldType::UnsignedByte},
+    {"ropes", MemoryFieldType::UnsignedByte},
+    {"b06", MemoryFieldType::UnsignedByte},
+    {"b07", MemoryFieldType::UnsignedByte},
+    {"-", MemoryFieldType::Skip, 0x141c},
+    {"kills_level", MemoryFieldType::UnsignedDword},
+    {"kills_total", MemoryFieldType::UnsignedDword}
+};
+
+static const std::vector<MemoryField> gsPlayerFields = {
+    {"inventory", MemoryFieldType::PlayerInventoryPointer},
+    {"p140", MemoryFieldType::UnsignedQword},
+    {"i148", MemoryFieldType::Dword},
+    {"i14c", MemoryFieldType::Dword},
+    {"ai_func", MemoryFieldType::CodePointer},
+    {"input_ptr", MemoryFieldType::DataPointer},
+    {"p160", MemoryFieldType::UnsignedQword},
+    {"i168", MemoryFieldType::Dword},
+    {"i16c", MemoryFieldType::Dword},
+    {"jump_flags", MemoryFieldType::UnsignedDword},
+    {"some_timer", MemoryFieldType::UnsignedByte},
+    {"can_use", MemoryFieldType::UnsignedByte},
+    {"b176", MemoryFieldType::UnsignedByte},
+    {"b177", MemoryFieldType::UnsignedByte}
+};
+
+// specifies what the parent class of an entity subclass is
 static const std::unordered_map<MemoryFieldType, MemoryFieldType> gsEntityClassHierarchy = {
     {MemoryFieldType::ClassMovable, MemoryFieldType::ClassEntity},
     {MemoryFieldType::ClassMonster, MemoryFieldType::ClassMovable},
+    {MemoryFieldType::ClassPlayer, MemoryFieldType::ClassMonster},
 };
 
 // the list of fields belonging to a container type
@@ -420,14 +457,16 @@ static const std::unordered_map<MemoryFieldType, std::vector<MemoryField>> gsEnt
     {MemoryFieldType::Color, gsColorFields},
     {MemoryFieldType::TexturePointer, gsTextureFields},
     {MemoryFieldType::Map, gsMapFields},
+    {MemoryFieldType::PlayerInventoryPointer, gsPlayerInventoryFields},
     {MemoryFieldType::ClassEntity, gsEntityFields},
     {MemoryFieldType::ClassMovable, gsMovableFields},
     {MemoryFieldType::ClassMonster, gsMonsterFields},
+    {MemoryFieldType::ClassPlayer, gsPlayerFields},
 };
 
 // the default types of a specific entity; specify a regex to match more than one at the same time
 static const std::unordered_map<std::string, MemoryFieldType> gsDefaultEntityClassTypes = {
-    { "CHAR_.*", MemoryFieldType::ClassMonster }
+    { "CHAR_.*", MemoryFieldType::ClassPlayer }
 };
 
 // clang-format on
