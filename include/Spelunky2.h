@@ -5,6 +5,7 @@
 #include <qnamespace.h>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 class EntityDB;
@@ -24,10 +25,9 @@ static const uint16_t gsRoleRawValue = Qt::UserRole + 10;
 static const uint16_t gsRoleUID = Qt::UserRole + 11;
 
 // new types need to be added to
-// - the MemoryFieldType enum below
+// - the MemoryFieldType enum
 // - the string representation of the type in gsMemoryFieldTypeToStringMapping
-// - its fields in a vector<MemoryField> below
-// - MemoryMappedData.cpp (setOffsetForField)
+// - its fields in a vector<MemoryField>
 
 // if it's a container type, add it to gsEntityClassFields
 // if it's a subclass of Entity
@@ -51,10 +51,10 @@ enum class MemoryFieldType
     Flags32,
     Skip,
     Rect,
-    StateIllumination,
+    StateIlluminationPointer,
     StateSaturationVignette,
-    StateItems,
-    Layer,
+    StateItemsPointer,
+    LayerPointer,
     EntityPointer,
     EntityDBPointer,
     EntityDBID,
@@ -70,6 +70,13 @@ enum class MemoryFieldType
     ClassPlayer,
 };
 Q_DECLARE_METATYPE(MemoryFieldType)
+
+struct MemoryField
+{
+    std::string name;
+    MemoryFieldType type;
+    uint64_t extraInfo = 0;
+};
 
 // clang-format off
 const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeToStringMapping = {
@@ -87,10 +94,10 @@ const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeT
     {MemoryFieldType::Bool, "Bool"},
     {MemoryFieldType::Flags32, "32-bit flags"},
     {MemoryFieldType::Rect, "Rectangle"},
-    {MemoryFieldType::StateIllumination, "Illumination"},
+    {MemoryFieldType::StateIlluminationPointer, "Illumination"},
     {MemoryFieldType::StateSaturationVignette, "Saturation/Vignette"},
-    {MemoryFieldType::StateItems, "Items"},
-    {MemoryFieldType::Layer, "Layer"},
+    {MemoryFieldType::StateItemsPointer, "Items"},
+    {MemoryFieldType::LayerPointer, "Layer"},
     {MemoryFieldType::EntityPointer, "Entity pointer"},
     {MemoryFieldType::EntityDBPointer, "EntityDB pointer"},
     {MemoryFieldType::EntityDBID, "EntityDB ID"},
@@ -105,16 +112,15 @@ const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeT
     {MemoryFieldType::ClassMonster, "Monster"},
     {MemoryFieldType::ClassPlayer, "Player"},
 };
-// clang-format on
 
-struct MemoryField
-{
-    std::string name;
-    MemoryFieldType type;
-    uint64_t extraInfo = 0;
+const static std::unordered_set<MemoryFieldType> gsPointerTypes = {
+    MemoryFieldType::StateIlluminationPointer,
+    MemoryFieldType::StateItemsPointer,
+    MemoryFieldType::LayerPointer,
+    MemoryFieldType::TexturePointer,
+    MemoryFieldType::PlayerInventoryPointer,
 };
 
-// clang-format off
 const std::vector<MemoryField> gsEntityDBFields = {
     {"create_func", MemoryFieldType::CodePointer}, 
     {"destroy_func", MemoryFieldType::CodePointer},
@@ -191,7 +197,7 @@ static const std::vector<MemoryField> gsStateFields = {
     {"screen", MemoryFieldType::UnsignedDword}, 
     {"screen_next", MemoryFieldType::UnsignedDword}, 
     {"loading", MemoryFieldType::UnsignedDword},
-    {"illumination", MemoryFieldType::StateIllumination},
+    {"illumination", MemoryFieldType::StateIlluminationPointer},
     {"i20", MemoryFieldType::Dword},
     {"fadeout", MemoryFieldType::UnsignedDword},
     {"fadein", MemoryFieldType::UnsignedDword},
@@ -248,10 +254,10 @@ static const std::vector<MemoryField> gsStateFields = {
     {"money_last_levels", MemoryFieldType::UnsignedDword},
     {"hud_flags", MemoryFieldType::Flags32},
     {"-", MemoryFieldType::Skip, 0x12b0 - 0xa14},
-    {"items", MemoryFieldType::StateItems},
+    {"items", MemoryFieldType::StateItemsPointer},
     {"-", MemoryFieldType::Skip, 8},
-    {"layer0", MemoryFieldType::Layer}, 
-    {"layer1", MemoryFieldType::Layer}, 
+    {"layer0", MemoryFieldType::LayerPointer}, 
+    {"layer1", MemoryFieldType::LayerPointer}, 
 };
 
 static const std::vector<MemoryField> gsStateIlluminationFields = {
@@ -424,10 +430,10 @@ static const std::vector<MemoryField> gsPlayerInventoryFields = {
 
 static const std::vector<MemoryField> gsPlayerFields = {
     {"inventory", MemoryFieldType::PlayerInventoryPointer},
-    {"p140", MemoryFieldType::UnsignedQword},
+    {"p140", MemoryFieldType::DataPointer},
     {"i148", MemoryFieldType::Dword},
     {"i14c", MemoryFieldType::Dword},
-    {"ai_func", MemoryFieldType::CodePointer},
+    {"ai_func", MemoryFieldType::UnsignedQword},
     {"input_ptr", MemoryFieldType::DataPointer},
     {"p160", MemoryFieldType::UnsignedQword},
     {"i168", MemoryFieldType::Dword},
@@ -449,10 +455,10 @@ static const std::unordered_map<MemoryFieldType, MemoryFieldType> gsEntityClassH
 // the list of fields belonging to a container type
 static const std::unordered_map<MemoryFieldType, std::vector<MemoryField>> gsEntityClassFields = {
     {MemoryFieldType::Rect, gsRectFields},
-    {MemoryFieldType::StateIllumination, gsStateIlluminationFields},
+    {MemoryFieldType::StateIlluminationPointer, gsStateIlluminationFields},
     {MemoryFieldType::StateSaturationVignette, gsStateSaturationVignetteFields},
-    {MemoryFieldType::StateItems, gsStateItemsFields},
-    {MemoryFieldType::Layer, gsLayerFields},
+    {MemoryFieldType::StateItemsPointer, gsStateItemsFields},
+    {MemoryFieldType::LayerPointer, gsLayerFields},
     {MemoryFieldType::Vector, gsVectorFields},
     {MemoryFieldType::Color, gsColorFields},
     {MemoryFieldType::TexturePointer, gsTextureFields},

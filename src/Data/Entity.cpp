@@ -33,7 +33,7 @@ void Entity::refreshOffsets()
         MemoryField headerField;
         headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
         headerField.type = c;
-        offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets);
+        offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
 
         for (const auto& field : gsEntityClassFields.at(c))
         {
@@ -52,12 +52,6 @@ void Entity::refreshValues()
         headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
         headerField.type = c;
         mTree->updateValueForField(headerField, "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">", mMemoryOffsets);
-        // mTree->updateValueForField(headerField, headerField.name, mMemoryOffsets, mTreeViewSectionItems.at(c));
-
-        // for (const auto& field : gsEntityClassFields.at(c))
-        // {
-        //     mTree->updateValueForField(field, field.name, mMemoryOffsets, mTreeViewSectionItems.at(c));
-        // }
     }
 }
 
@@ -72,10 +66,6 @@ void Entity::populateTreeView()
         headerField.type = c;
         auto item = mTree->addMemoryField(headerField, "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">");
         mTree->expandItem(item);
-        // for (const auto& field : gsEntityClassFields.at(c))
-        // {
-        //     mTree->addMemoryField(field, field.name, item);
-        // }
         mTreeViewSectionItems[c] = item;
     }
 }

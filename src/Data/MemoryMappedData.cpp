@@ -1,17 +1,16 @@
 #include "Data/MemoryMappedData.h"
 #include "pluginmain.h"
 
-size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets)
+size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset)
 {
     offsets[fieldNameOverride] = offset;
+    if (!advanceOffset)
+    {
+        return offset;
+    }
 
     switch (field.type)
     {
-        case MemoryFieldType::ClassEntity:
-        case MemoryFieldType::ClassMovable:
-        case MemoryFieldType::ClassMonster:
-        case MemoryFieldType::ClassPlayer:
-            break;
         case MemoryFieldType::Skip:
             offset += field.extraInfo;
             break;
@@ -33,101 +32,37 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
             break;
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
-        case MemoryFieldType::EntityDBPointer:
-        case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::EntityDBPointer: // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::EntityPointer:   // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
             offset += 8;
             break;
-        case MemoryFieldType::Rect:
+        default: // it's either a pointer or an inline struct
         {
-            for (const auto& f : gsRectFields)
+            if (gsPointerTypes.count(field.type) > 0)
             {
-                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                if (gsEntityClassFields.count(field.type) > 0)
+                {
+                    auto pointerOffset = Script::Memory::ReadQword(offset);
+                    for (const auto& f : gsEntityClassFields.at(field.type))
+                    {
+                        pointerOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                    }
+                }
+                offset += 8;
             }
-            break;
-        }
-        case MemoryFieldType::StateSaturationVignette:
-        {
-            for (const auto& f : gsStateSaturationVignetteFields)
+            else
             {
-                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                if (gsEntityClassFields.count(field.type) > 0)
+                {
+                    for (const auto& f : gsEntityClassFields.at(field.type))
+                    {
+                        offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                    }
+                }
             }
-            break;
-        }
-        case MemoryFieldType::StateIllumination:
-        {
-            auto illuOffset = Script::Memory::ReadQword(offset);
-            for (const auto& f : gsStateIlluminationFields)
-            {
-                illuOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, illuOffset, offsets);
-            }
-            offset += 8;
-            break;
-        }
-        case MemoryFieldType::StateItems:
-        {
-            auto itemsOffset = Script::Memory::ReadQword(offset);
-            for (const auto& f : gsStateItemsFields)
-            {
-                itemsOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, itemsOffset, offsets);
-            }
-            offset += 8;
-            break;
-        }
-        case MemoryFieldType::Layer:
-        {
-            auto layersOffset = Script::Memory::ReadQword(offset);
-            for (const auto& f : gsLayerFields)
-            {
-                layersOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, layersOffset, offsets);
-            }
-            offset += 8;
-            break;
-        }
-        case MemoryFieldType::Vector:
-        {
-            for (const auto& f : gsVectorFields)
-            {
-                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
-            }
-            break;
-        }
-        case MemoryFieldType::Color:
-        {
-            for (const auto& f : gsColorFields)
-            {
-                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
-            }
-            break;
-        }
-        case MemoryFieldType::TexturePointer:
-        {
-            auto textureOffset = Script::Memory::ReadQword(offset);
-            for (const auto& f : gsTextureFields)
-            {
-                textureOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, textureOffset, offsets);
-            }
-            offset += 8;
-            break;
-        }
-        case MemoryFieldType::Map:
-        {
-            for (const auto& f : gsMapFields)
-            {
-                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
-            }
-            break;
-        }
-        case MemoryFieldType::PlayerInventoryPointer:
-        {
-            auto inventoryOffset = Script::Memory::ReadQword(offset);
-            for (const auto& f : gsPlayerInventoryFields)
-            {
-                inventoryOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, inventoryOffset, offsets);
-            }
-            offset += 8;
             break;
         }
     }
