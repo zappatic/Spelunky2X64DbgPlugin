@@ -47,7 +47,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             if (gsPointerTypes.count(field.type) > 0)
             {
                 auto pointerOffset = Script::Memory::ReadQword(offset);
-                for (const auto& f : mConfiguration->entityClassFields(field.type))
+                for (const auto& f : mConfiguration->typeFields(field.type))
                 {
                     pointerOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
                 }
@@ -55,7 +55,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             }
             else
             {
-                for (const auto& f : mConfiguration->entityClassFields(field.type))
+                for (const auto& f : mConfiguration->typeFields(field.type))
                 {
                     offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
                 }

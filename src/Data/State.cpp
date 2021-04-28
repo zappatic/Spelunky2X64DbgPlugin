@@ -46,7 +46,7 @@ void S2Plugin::State::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mStatePtr;
-    for (const auto& field : mConfiguration->entityClassFields(MemoryFieldType::ClassState))
+    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::ClassState))
     {
         offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
     }

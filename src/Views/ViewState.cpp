@@ -30,7 +30,7 @@ S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(
 void S2Plugin::ViewState::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassState))
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassState))
     {
         mMainTreeView->addMemoryField(field, field.name);
     }
@@ -77,7 +77,7 @@ void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewState::refreshState()
 {
     mToolbar->state()->refreshOffsets();
-    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassState))
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassState))
     {
         mMainTreeView->updateValueForField(field, field.name, mToolbar->state()->offsets());
     }

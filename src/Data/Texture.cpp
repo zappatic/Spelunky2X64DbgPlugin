@@ -16,7 +16,7 @@ void S2Plugin::Texture::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mTexturePtr;
-    for (const auto& field : mConfiguration->entityClassFields(MemoryFieldType::TexturePointer))
+    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::TexturePointer))
     {
         offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
     }

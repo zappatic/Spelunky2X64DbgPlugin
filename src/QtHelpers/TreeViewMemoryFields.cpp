@@ -94,7 +94,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         default: // default is assumed to be a container
         {
             auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->entityClassFields(field.type))
+            for (const auto& f : mToolbar->configuration()->typeFields(field.type))
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
@@ -184,13 +184,16 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         itemMemoryOffset->setData(memoryOffset, gsRoleRawValue);
     }
 
+    auto highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
     switch (field.type)
     {
         case MemoryFieldType::CodePointer:
         {
             size_t value = Script::Memory::ReadQword(memoryOffset);
-            itemValue->setData(QString::asprintf("<font color='green'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("<font color='green'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='green'><u>0x%016llX</u></font>", value);
+            itemValue->setData(newHexValue, Qt::DisplayRole);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
             break;
@@ -198,8 +201,10 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::DataPointer:
         {
             size_t value = Script::Memory::ReadQword(memoryOffset);
-            itemValue->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemValue->setData(newHexValue, Qt::DisplayRole);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
             break;
@@ -208,56 +213,88 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             int8_t value = Script::Memory::ReadByte(memoryOffset);
             itemValue->setData(QString::asprintf("%d", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%02X", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%02X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::UnsignedByte:
         {
             uint8_t value = Script::Memory::ReadByte(memoryOffset);
             itemValue->setData(QString::asprintf("%u", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%02X", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%02X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Word:
         {
             int16_t value = Script::Memory::ReadWord(memoryOffset);
             itemValue->setData(QString::asprintf("%d", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%04X", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%04X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::UnsignedWord:
         {
             uint16_t value = Script::Memory::ReadWord(memoryOffset);
             itemValue->setData(QString::asprintf("%u", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%04X", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%04X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Dword:
         {
             int32_t value = Script::Memory::ReadDword(memoryOffset);
             itemValue->setData(QString::asprintf("%ld", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%08lX", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::UnsignedDword:
         {
             uint32_t value = Script::Memory::ReadDword(memoryOffset);
             itemValue->setData(QString::asprintf("%lu", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%08lX", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Qword:
         {
             int64_t value = Script::Memory::ReadQword(memoryOffset);
             itemValue->setData(QString::asprintf("%lld", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%016llX", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%016llX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::UnsignedQword:
         {
             uint64_t value = Script::Memory::ReadQword(memoryOffset);
             itemValue->setData(QString::asprintf("%llu", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%016llX", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%016llX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Float:
@@ -265,7 +302,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             uint32_t dword = Script::Memory::ReadDword(memoryOffset);
             float value = reinterpret_cast<float&>(dword);
             itemValue->setData(QString::asprintf("%f", value), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%08lX", dword), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", dword);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Bool:
@@ -273,7 +314,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             uint8_t b = Script::Memory::ReadByte(memoryOffset);
             bool value = reinterpret_cast<bool&>(b);
             itemValue->setData(value ? "True" : "False", Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%02X", b), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%02X", b);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::Flags32:
@@ -298,14 +343,22 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 counter++;
             }
             itemValue->setData(QString::fromStdString(ss.str()), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%08X", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::EntityDBID:
         {
             uint32_t value = Script::Memory::ReadDword(memoryOffset);
             itemValue->setData(QString::asprintf("%lu (%s)", value, mToolbar->entityDB()->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("0x%08lX", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
         case MemoryFieldType::EntityPointer:
@@ -313,7 +366,9 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             size_t value = Script::Memory::ReadQword(memoryOffset);
             auto entityName = getEntityName(value, mToolbar->entityDB());
             itemValue->setData(QString::asprintf("<font color='blue'><u>%s</u></font>", entityName.c_str()), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
             break;
@@ -323,7 +378,9 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             size_t value = Script::Memory::ReadQword(memoryOffset);
             auto id = Script::Memory::ReadDword(value + 20);
             itemValue->setData(QString::asprintf("<font color='blue'><u>Entity DB id %d</u></font>", id), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
             break;
@@ -343,7 +400,9 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             } while (c != 0 && counter < bufferSize);
 
             itemValue->setData(QString(buffer), Qt::DisplayRole);
-            itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
             break;
@@ -354,7 +413,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         default: // default is assumed to be a container
         {
-            for (const auto& f : mToolbar->configuration()->entityClassFields(field.type))
+            for (const auto& f : mToolbar->configuration()->typeFields(field.type))
             {
                 updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
             }
@@ -432,4 +491,9 @@ void S2Plugin::TreeViewMemoryFields::clear()
 void S2Plugin::TreeViewMemoryFields::expandItem(QStandardItem* item)
 {
     expand(mModel->indexFromItem(item));
+}
+
+void S2Plugin::TreeViewMemoryFields::setEnableChangeHighlighting(bool b) noexcept
+{
+    mEnableChangeHighlighting = b;
 }

@@ -20,6 +20,7 @@ namespace S2Plugin
         QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
         void clear();
         void updateTableHeader(bool restoreColumnWidths = true);
+        void setEnableChangeHighlighting(bool b) noexcept;
 
         void expandItem(QStandardItem* item);
         QStandardItem* lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);
@@ -33,5 +34,6 @@ namespace S2Plugin
         ViewToolbar* mToolbar;
         std::unique_ptr<HTMLDelegate> mHTMLDelegate;
         std::array<uint32_t, 5> mSavedColumnWidths = {0};
+        bool mEnableChangeHighlighting = true;
     };
 } // namespace S2Plugin

@@ -19,7 +19,7 @@ namespace S2Plugin
 
         const std::unordered_map<MemoryFieldType, MemoryFieldType>& entityClassHierarchy() const noexcept;
         const std::unordered_map<std::string, MemoryFieldType>& defaultEntityClassTypes() const noexcept;
-        const std::vector<MemoryField>& entityClassFields(const MemoryFieldType& type) const;
+        const std::vector<MemoryField>& typeFields(const MemoryFieldType& type) const;
 
       private:
         bool mIsValid = false;
@@ -27,7 +27,7 @@ namespace S2Plugin
 
         std::unordered_map<MemoryFieldType, MemoryFieldType> mEntityClassHierarchy;
         std::unordered_map<std::string, MemoryFieldType> mDefaultEntityClassTypes;
-        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mEntityClassFields;
+        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFields;
 
         void processJSON(const ordered_json& j);
     };

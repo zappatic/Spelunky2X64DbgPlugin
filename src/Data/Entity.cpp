@@ -36,7 +36,7 @@ void S2Plugin::Entity::refreshOffsets()
         headerField.type = c;
         offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
 
-        for (const auto& field : mConfiguration->entityClassFields(c))
+        for (const auto& field : mConfiguration->typeFields(c))
         {
             offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
         }

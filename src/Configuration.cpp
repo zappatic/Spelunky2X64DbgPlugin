@@ -110,7 +110,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
             vec.emplace_back(memField);
         }
-        mEntityClassFields[gsJSONStringToMemoryFieldTypeMapping.at(key)] = vec;
+        mTypeFields[gsJSONStringToMemoryFieldTypeMapping.at(key)] = vec;
     }
 }
 
@@ -124,11 +124,11 @@ const std::unordered_map<std::string, S2Plugin::MemoryFieldType>& S2Plugin::Conf
     return mDefaultEntityClassTypes;
 }
 
-const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::entityClassFields(const MemoryFieldType& type) const
+const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(const MemoryFieldType& type) const
 {
-    if (mEntityClassFields.count(type) == 0)
+    if (mTypeFields.count(type) == 0)
     {
-        dprintf("unknown key requested in Configuration::entityClassFields() (t=%s)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str());
+        dprintf("unknown key requested in Configuration::typeFields() (t=%s)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str());
     }
-    return mEntityClassFields.at(type);
+    return mTypeFields.at(type);
 }

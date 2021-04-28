@@ -31,7 +31,8 @@ S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget
 void S2Plugin::ViewEntityDB::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassEntityDB))
+    mMainTreeView->setEnableChangeHighlighting(false);
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassEntityDB))
     {
         mMainTreeView->addMemoryField(field, field.name);
     }
@@ -87,7 +88,7 @@ void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
 
 void S2Plugin::ViewEntityDB::showIndex(size_t index)
 {
-    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassEntityDB))
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassEntityDB))
     {
         mMainTreeView->updateValueForField(field, field.name, mToolbar->entityDB()->offsetsForIndex(index));
     }

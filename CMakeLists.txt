@@ -11,6 +11,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STR
 
 project(Spelunky2)
 set(CMAKE_CXX_STANDARD 17)
+add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

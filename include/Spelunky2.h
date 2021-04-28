@@ -29,6 +29,9 @@ namespace S2Plugin
     // new types need to be added to
     // - the MemoryFieldType enum
     // - the string representation of the type in gsMemoryFieldTypeToStringMapping
+    // - the json name of the type in gsJSONStringToMemoryFieldTypeMapping
+    // - if it's a pointer, add to gsPointerTypes, so that the offset is only increased by
+    //   sizeof(size_t) instead of the size of the inline equivalent of what it points to
     // - Spelunky2.json
 
     enum class MemoryFieldType

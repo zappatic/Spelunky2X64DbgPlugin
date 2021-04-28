@@ -31,6 +31,7 @@ S2Plugin::ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QW
 void S2Plugin::ViewEntities::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    mMainTreeView->setEnableChangeHighlighting(false);
 
     mMainLayout->addWidget(mMainTreeView);
 
