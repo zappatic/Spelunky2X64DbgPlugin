@@ -1,7 +1,9 @@
 #include "Data/State.h"
 #include "pluginmain.h"
 
-void State::loadState()
+S2Plugin::State::State(Configuration* config) : MemoryMappedData(config) {}
+
+void S2Plugin::State::loadState()
 {
     auto afterBundle = spelunky2AfterBundle();
     if (afterBundle == 0 || mStatePtr != 0)
@@ -35,22 +37,22 @@ void State::loadState()
     refreshOffsets();
 }
 
-const std::unordered_map<std::string, size_t>& State::offsets()
+const std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()
 {
     return mMemoryOffsets;
 }
 
-void State::refreshOffsets()
+void S2Plugin::State::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mStatePtr;
-    for (const auto& field : gsStateFields)
+    for (const auto& field : mConfiguration->entityClassFields(MemoryFieldType::ClassState))
     {
         offset = setOffsetForField(field, field.name, offset, mMemoryOffsets);
     }
 }
 
-size_t State::offsetForField(const std::string& fieldName) const
+size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
 {
     if (mMemoryOffsets.count(fieldName) == 0)
     {

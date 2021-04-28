@@ -1,7 +1,9 @@
 #include "Data/EntityDB.h"
 #include "pluginmain.h"
 
-void EntityDB::loadEntityDB()
+S2Plugin::EntityDB::EntityDB(Configuration* config) : MemoryMappedData(config) {}
+
+void S2Plugin::EntityDB::loadEntityDB()
 {
     auto afterBundle = spelunky2AfterBundle();
     if (afterBundle == 0 || mEntityDBPtr != 0)
@@ -21,7 +23,7 @@ void EntityDB::loadEntityDB()
     for (auto x = 0; x < mEntityList->highestEntityID() + 1; ++x)
     {
         std::unordered_map<std::string, size_t> offsets;
-        for (const auto& field : gsEntityDBFields)
+        for (const auto& field : mConfiguration->entityClassFields(MemoryFieldType::ClassEntityDB))
         {
             offset = setOffsetForField(field, field.name, offset, offsets);
         }
@@ -29,12 +31,12 @@ void EntityDB::loadEntityDB()
     }
 }
 
-EntityList* EntityDB::entityList() const noexcept
+S2Plugin::EntityList* S2Plugin::EntityDB::entityList() const noexcept
 {
     return mEntityList.get();
 }
 
-const std::unordered_map<std::string, size_t>& EntityDB::offsetsForIndex(uint32_t entityDBIndex)
+const std::unordered_map<std::string, size_t>& S2Plugin::EntityDB::offsetsForIndex(uint32_t entityDBIndex)
 {
     return mMemoryOffsets.at(entityDBIndex);
 }

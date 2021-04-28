@@ -2,7 +2,7 @@
 #include <QPainter>
 #include <QTextDocument>
 
-void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void S2Plugin::HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     QStyleOptionViewItemV4 options = option;
     initStyleOption(&options, index);
@@ -22,7 +22,7 @@ void HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
     painter->restore();
 }
 
-QSize HTMLDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+QSize S2Plugin::HTMLDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     QStyleOptionViewItemV4 options = option;
     initStyleOption(&options, index);

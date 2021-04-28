@@ -6,7 +6,8 @@
 #include "pluginmain.h"
 #include <QPushButton>
 
-ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QWidget* parent) : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mState(state), mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mState(state), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -35,7 +36,7 @@ ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QW
     mMainLayout->addStretch();
 }
 
-ViewEntityDB* ViewToolbar::showEntityDB()
+S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
 {
     auto w = new ViewEntityDB(this);
     mMDIArea->addSubWindow(w);
@@ -43,35 +44,40 @@ ViewEntityDB* ViewToolbar::showEntityDB()
     return w;
 }
 
-void ViewToolbar::showState()
+void S2Plugin::ViewToolbar::showState()
 {
     auto w = new ViewState(this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
 
-void ViewToolbar::showEntity(size_t offset)
+void S2Plugin::ViewToolbar::showEntity(size_t offset)
 {
     auto w = new ViewEntity(offset, this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
 
-void ViewToolbar::showEntities()
+void S2Plugin::ViewToolbar::showEntities()
 {
     auto w = new ViewEntities(this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
 
-State* ViewToolbar::state()
+S2Plugin::State* S2Plugin::ViewToolbar::state()
 {
     mState->loadState();
     return mState;
 }
 
-EntityDB* ViewToolbar::entityDB()
+S2Plugin::EntityDB* S2Plugin::ViewToolbar::entityDB()
 {
     mEntityDB->loadEntityDB();
     return mEntityDB;
+}
+
+S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
+{
+    return mConfiguration;
 }

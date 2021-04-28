@@ -9,29 +9,32 @@
 #include <QVBoxLayout>
 #include <QWidget>
 
-class ViewEntityDB : public QWidget
+namespace S2Plugin
 {
-    Q_OBJECT
-  public:
-    ViewEntityDB(ViewToolbar* toolbar, size_t index = 1, QWidget* parent = nullptr);
-    void showIndex(size_t index);
+    class ViewEntityDB : public QWidget
+    {
+        Q_OBJECT
+      public:
+        ViewEntityDB(ViewToolbar* toolbar, size_t index = 1, QWidget* parent = nullptr);
+        void showIndex(size_t index);
 
-  protected:
-    void closeEvent(QCloseEvent* event) override;
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
+      protected:
+        void closeEvent(QCloseEvent* event) override;
+        QSize sizeHint() const override;
+        QSize minimumSizeHint() const override;
 
-  private slots:
-    void searchFieldReturnPressed();
+      private slots:
+        void searchFieldReturnPressed();
 
-  private:
-    QVBoxLayout* mMainLayout;
-    TreeViewMemoryFields* mMainTreeView;
-    QLineEdit* mSearchLineEdit;
-    QCompleter* mEntityNameCompleter;
+      private:
+        QVBoxLayout* mMainLayout;
+        TreeViewMemoryFields* mMainTreeView;
+        QLineEdit* mSearchLineEdit;
+        QCompleter* mEntityNameCompleter;
 
-    ViewToolbar* mToolbar;
+        ViewToolbar* mToolbar;
 
-    void initializeTreeView();
-    void initializeSearchLineEdit();
-};
+        void initializeTreeView();
+        void initializeSearchLineEdit();
+    };
+} // namespace S2Plugin

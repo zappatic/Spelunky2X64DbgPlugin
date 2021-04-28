@@ -13,36 +13,39 @@
 #include <QTreeView>
 #include <QVBoxLayout>
 
-class ViewEntity : public QWidget
+namespace S2Plugin
 {
-    Q_OBJECT
-  public:
-    ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent = nullptr);
+    class ViewEntity : public QWidget
+    {
+        Q_OBJECT
+      public:
+        ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent = nullptr);
 
-  protected:
-    void closeEvent(QCloseEvent* event) override;
-    QSize sizeHint() const override;
-    QSize minimumSizeHint() const override;
+      protected:
+        void closeEvent(QCloseEvent* event) override;
+        QSize sizeHint() const override;
+        QSize minimumSizeHint() const override;
 
-  private slots:
-    void refreshEntity();
-    void toggleAutoRefresh(int newState);
-    void autoRefreshTimerTrigger();
-    void autoRefreshIntervalChanged(const QString& text);
-    void interpretAsChanged(const QString& text);
+      private slots:
+        void refreshEntity();
+        void toggleAutoRefresh(int newState);
+        void autoRefreshTimerTrigger();
+        void autoRefreshIntervalChanged(const QString& text);
+        void interpretAsChanged(const QString& text);
 
-  private:
-    QVBoxLayout* mMainLayout;
-    QHBoxLayout* mTopLayout;
-    TreeViewMemoryFields* mMainTreeView;
-    QPushButton* mRefreshButton;
-    QCheckBox* mAutoRefreshCheckBox;
-    QLineEdit* mAutoRefreshIntervalLineEdit;
-    std::unique_ptr<QTimer> mAutoRefreshTimer;
-    QComboBox* mInterpretAsComboBox;
+      private:
+        QVBoxLayout* mMainLayout;
+        QHBoxLayout* mTopLayout;
+        TreeViewMemoryFields* mMainTreeView;
+        QPushButton* mRefreshButton;
+        QCheckBox* mAutoRefreshCheckBox;
+        QLineEdit* mAutoRefreshIntervalLineEdit;
+        std::unique_ptr<QTimer> mAutoRefreshTimer;
+        QComboBox* mInterpretAsComboBox;
 
-    std::unique_ptr<Entity> mEntity;
-    ViewToolbar* mToolbar;
+        std::unique_ptr<Entity> mEntity;
+        ViewToolbar* mToolbar;
 
-    void initializeUI();
-};
+        void initializeUI();
+    };
+} // namespace S2Plugin

@@ -1,7 +1,10 @@
 #include "Data/MemoryMappedData.h"
 #include "pluginmain.h"
 
-size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset)
+S2Plugin::MemoryMappedData::MemoryMappedData(Configuration* config) : mConfiguration(config) {}
+
+size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets,
+                                                     bool advanceOffset)
 {
     offsets[fieldNameOverride] = offset;
     if (!advanceOffset)
@@ -43,24 +46,18 @@ size_t MemoryMappedData::setOffsetForField(const MemoryField& field, const std::
         {
             if (gsPointerTypes.count(field.type) > 0)
             {
-                if (gsEntityClassFields.count(field.type) > 0)
+                auto pointerOffset = Script::Memory::ReadQword(offset);
+                for (const auto& f : mConfiguration->entityClassFields(field.type))
                 {
-                    auto pointerOffset = Script::Memory::ReadQword(offset);
-                    for (const auto& f : gsEntityClassFields.at(field.type))
-                    {
-                        pointerOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
-                    }
+                    pointerOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
                 }
                 offset += 8;
             }
             else
             {
-                if (gsEntityClassFields.count(field.type) > 0)
+                for (const auto& f : mConfiguration->entityClassFields(field.type))
                 {
-                    for (const auto& f : gsEntityClassFields.at(field.type))
-                    {
-                        offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
-                    }
+                    offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
                 }
             }
             break;

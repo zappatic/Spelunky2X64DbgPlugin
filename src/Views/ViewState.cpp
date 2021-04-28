@@ -6,7 +6,7 @@
 #include <QHeaderView>
 #include <QLabel>
 
-ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
 
@@ -27,10 +27,10 @@ ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), m
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
-void ViewState::initializeTreeView()
+void S2Plugin::ViewState::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : gsStateFields)
+    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassState))
     {
         mMainTreeView->addMemoryField(field, field.name);
     }
@@ -41,7 +41,7 @@ void ViewState::initializeTreeView()
     mMainTreeView->updateTableHeader();
 }
 
-void ViewState::initializeRefreshStuff()
+void S2Plugin::ViewState::initializeRefreshStuff()
 {
     mRefreshLayout = new QHBoxLayout(this);
     mMainLayout->addLayout(mRefreshLayout);
@@ -69,21 +69,21 @@ void ViewState::initializeRefreshStuff()
     mRefreshLayout->addStretch();
 }
 
-void ViewState::closeEvent(QCloseEvent* event)
+void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
 {
     delete this;
 }
 
-void ViewState::refreshState()
+void S2Plugin::ViewState::refreshState()
 {
     mToolbar->state()->refreshOffsets();
-    for (const auto& field : gsStateFields)
+    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassState))
     {
         mMainTreeView->updateValueForField(field, field.name, mToolbar->state()->offsets());
     }
 }
 
-void ViewState::toggleAutoRefresh(int newState)
+void S2Plugin::ViewState::toggleAutoRefresh(int newState)
 {
     if (newState == Qt::Unchecked)
     {
@@ -98,7 +98,7 @@ void ViewState::toggleAutoRefresh(int newState)
     }
 }
 
-void ViewState::autoRefreshIntervalChanged(const QString& text)
+void S2Plugin::ViewState::autoRefreshIntervalChanged(const QString& text)
 {
     if (mAutoRefreshCheckBox->checkState() == Qt::Checked)
     {
@@ -106,17 +106,17 @@ void ViewState::autoRefreshIntervalChanged(const QString& text)
     }
 }
 
-void ViewState::autoRefreshTimerTrigger()
+void S2Plugin::ViewState::autoRefreshTimerTrigger()
 {
     refreshState();
 }
 
-QSize ViewState::sizeHint() const
+QSize S2Plugin::ViewState::sizeHint() const
 {
     return QSize(750, 1050);
 }
 
-QSize ViewState::minimumSizeHint() const
+QSize S2Plugin::ViewState::minimumSizeHint() const
 {
     return QSize(150, 150);
 }

@@ -1,32 +1,39 @@
 #pragma once
 
+#include "Configuration.h"
 #include "Data/EntityDB.h"
 #include "Data/State.h"
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QVBoxLayout>
 
-class ViewEntityDB;
 
-class ViewToolbar : public QDockWidget
+namespace S2Plugin
 {
-    Q_OBJECT
-  public:
-    ViewToolbar(EntityDB* entityDB, State* state, QMdiArea* mdiArea, QWidget* parent = nullptr);
-    void showEntity(size_t offset);
+    class ViewEntityDB;
 
-    State* state();
-    EntityDB* entityDB();
+    class ViewToolbar : public QDockWidget
+    {
+        Q_OBJECT
+      public:
+        ViewToolbar(EntityDB* entityDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
+        void showEntity(size_t offset);
 
-  public slots:
-    ViewEntityDB* showEntityDB();
-    void showState();
-    void showEntities();
+        State* state();
+        EntityDB* entityDB();
+        Configuration* configuration() const noexcept;
 
-  private:
-    EntityDB* mEntityDB;
-    State* mState;
+      public slots:
+        ViewEntityDB* showEntityDB();
+        void showState();
+        void showEntities();
 
-    QMdiArea* mMDIArea;
-    QVBoxLayout* mMainLayout;
-};
+      private:
+        EntityDB* mEntityDB;
+        State* mState;
+        Configuration* mConfiguration;
+
+        QMdiArea* mMDIArea;
+        QVBoxLayout* mMainLayout;
+    };
+} // namespace S2Plugin

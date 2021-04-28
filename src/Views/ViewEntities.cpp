@@ -7,7 +7,7 @@
 #include <QLabel>
 #include <QTimer>
 
-ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
 
@@ -28,7 +28,7 @@ ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QWidget(pare
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
-void ViewEntities::initializeTreeView()
+void S2Plugin::ViewEntities::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
 
@@ -38,7 +38,7 @@ void ViewEntities::initializeTreeView()
     mMainTreeView->setVisible(false);
 }
 
-void ViewEntities::initializeRefreshAndFilter()
+void S2Plugin::ViewEntities::initializeRefreshAndFilter()
 {
     auto filterLayout = new QGridLayout(this);
 
@@ -123,12 +123,12 @@ void ViewEntities::initializeRefreshAndFilter()
     mMainLayout->addLayout(horLayout);
 }
 
-void ViewEntities::closeEvent(QCloseEvent* event)
+void S2Plugin::ViewEntities::closeEvent(QCloseEvent* event)
 {
     delete this;
 }
 
-void ViewEntities::refreshEntities()
+void S2Plugin::ViewEntities::refreshEntities()
 {
     mMainTreeView->clear();
     std::unordered_map<std::string, size_t> offsets;
@@ -236,17 +236,17 @@ void ViewEntities::refreshEntities()
     mMainTreeView->updateTableHeader();
 }
 
-QSize ViewEntities::sizeHint() const
+QSize S2Plugin::ViewEntities::sizeHint() const
 {
     return QSize(750, 550);
 }
 
-QSize ViewEntities::minimumSizeHint() const
+QSize S2Plugin::ViewEntities::minimumSizeHint() const
 {
     return QSize(150, 150);
 }
 
-void ViewEntities::filterCheckboxClicked()
+void S2Plugin::ViewEntities::filterCheckboxClicked()
 {
     refreshEntities();
 }

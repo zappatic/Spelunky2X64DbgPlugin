@@ -6,7 +6,7 @@
 
 static const std::regex regexEntityLine("^([0-9]+): ENT_TYPE_(.*?)$", std::regex_constants::ECMAScript);
 
-EntityList::EntityList()
+S2Plugin::EntityList::EntityList()
 {
     const std::string pathStr = "C:/Users/main/Downloads/Spelunky2-1.20.4d/entities.txt";
     auto path = std::filesystem::path(pathStr);
@@ -42,7 +42,7 @@ EntityList::EntityList()
     }
 }
 
-uint32_t EntityList::idForName(const std::string& searchName)
+uint32_t S2Plugin::EntityList::idForName(const std::string& searchName)
 {
     for (const auto& [id, name] : mEntities)
     {
@@ -54,17 +54,17 @@ uint32_t EntityList::idForName(const std::string& searchName)
     return 0;
 }
 
-std::string EntityList::nameForID(uint32_t id)
+std::string S2Plugin::EntityList::nameForID(uint32_t id)
 {
     return mEntities.at(id);
 }
 
-uint32_t EntityList::highestEntityID() const noexcept
+uint32_t S2Plugin::EntityList::highestEntityID() const noexcept
 {
     return mHighestEntityID;
 }
 
-QStringList EntityList::entityNames() const noexcept
+QStringList S2Plugin::EntityList::entityNames() const noexcept
 {
     return mEntityNames;
 }

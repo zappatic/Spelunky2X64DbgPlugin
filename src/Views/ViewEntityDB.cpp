@@ -6,7 +6,7 @@
 #include <QHeaderView>
 #include <QLineEdit>
 
-ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
 
@@ -28,10 +28,10 @@ ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) 
     showIndex(index);
 }
 
-void ViewEntityDB::initializeTreeView()
+void S2Plugin::ViewEntityDB::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : gsEntityDBFields)
+    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassEntityDB))
     {
         mMainTreeView->addMemoryField(field, field.name);
     }
@@ -42,7 +42,7 @@ void ViewEntityDB::initializeTreeView()
     mMainTreeView->updateTableHeader();
 }
 
-void ViewEntityDB::initializeSearchLineEdit()
+void S2Plugin::ViewEntityDB::initializeSearchLineEdit()
 {
     mSearchLineEdit = new QLineEdit();
     mSearchLineEdit->setPlaceholderText("Search");
@@ -51,22 +51,22 @@ void ViewEntityDB::initializeSearchLineEdit()
     mSearchLineEdit->setVisible(false);
 }
 
-void ViewEntityDB::closeEvent(QCloseEvent* event)
+void S2Plugin::ViewEntityDB::closeEvent(QCloseEvent* event)
 {
     delete this;
 }
 
-QSize ViewEntityDB::sizeHint() const
+QSize S2Plugin::ViewEntityDB::sizeHint() const
 {
     return QSize(750, 1050);
 }
 
-QSize ViewEntityDB::minimumSizeHint() const
+QSize S2Plugin::ViewEntityDB::minimumSizeHint() const
 {
     return QSize(150, 150);
 }
 
-void ViewEntityDB::searchFieldReturnPressed()
+void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
 {
     auto text = mSearchLineEdit->text();
     bool isNumeric = false;
@@ -85,9 +85,9 @@ void ViewEntityDB::searchFieldReturnPressed()
     }
 }
 
-void ViewEntityDB::showIndex(size_t index)
+void S2Plugin::ViewEntityDB::showIndex(size_t index)
 {
-    for (const auto& field : gsEntityDBFields)
+    for (const auto& field : mToolbar->configuration()->entityClassFields(MemoryFieldType::ClassEntityDB))
     {
         mMainTreeView->updateValueForField(field, field.name, mToolbar->entityDB()->offsetsForIndex(index));
     }

@@ -1,12 +1,13 @@
 #include "Data/Entity.h"
+#include "Configuration.h"
 #include "pluginmain.h"
 #include <regex>
 
-Entity::Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* entityDB) : mEntityPtr(offset), mTree(tree)
+S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* entityDB, S2Plugin::Configuration* config) : MemoryMappedData(config), mEntityPtr(offset), mTree(tree)
 {
     auto entityID = getEntityTypeID(offset);
     auto entityName = getEntityName(offset, entityDB);
-    for (const auto& [regexStr, entityClassType] : gsDefaultEntityClassTypes)
+    for (const auto& [regexStr, entityClassType] : mConfiguration->defaultEntityClassTypes())
     {
         auto r = std::regex(regexStr);
         if (std::regex_match(entityName, r))
@@ -17,12 +18,12 @@ Entity::Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* entityDB) : 
     }
 }
 
-const std::unordered_map<std::string, size_t>& Entity::offsets()
+const std::unordered_map<std::string, size_t>& S2Plugin::Entity::offsets()
 {
     return mMemoryOffsets;
 }
 
-void Entity::refreshOffsets()
+void S2Plugin::Entity::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mEntityPtr;
@@ -35,14 +36,14 @@ void Entity::refreshOffsets()
         headerField.type = c;
         offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
 
-        for (const auto& field : gsEntityClassFields.at(c))
+        for (const auto& field : mConfiguration->entityClassFields(c))
         {
             offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
         }
     }
 }
 
-void Entity::refreshValues()
+void S2Plugin::Entity::refreshValues()
 {
     auto offset = mEntityPtr;
     auto hierarchy = classHierarchy();
@@ -55,7 +56,7 @@ void Entity::refreshValues()
     }
 }
 
-void Entity::populateTreeView()
+void S2Plugin::Entity::populateTreeView()
 {
     mTreeViewSectionItems.clear();
     auto hierarchy = classHierarchy();
@@ -70,7 +71,7 @@ void Entity::populateTreeView()
     }
 }
 
-void Entity::interpretAs(MemoryFieldType classType)
+void S2Plugin::Entity::interpretAs(MemoryFieldType classType)
 {
     mEntityType = classType;
     mTree->clear();
@@ -80,14 +81,19 @@ void Entity::interpretAs(MemoryFieldType classType)
     mTree->updateTableHeader();
 }
 
-std::deque<MemoryFieldType> Entity::classHierarchy() const
+std::deque<S2Plugin::MemoryFieldType> S2Plugin::Entity::classHierarchy() const
 {
+    auto ech = mConfiguration->entityClassHierarchy();
     std::deque<MemoryFieldType> hierarchy;
     auto t = mEntityType;
     while (t != MemoryFieldType::ClassEntity)
     {
         hierarchy.push_front(t);
-        t = gsEntityClassHierarchy.at(t);
+        if (ech.count(t) == 0)
+        {
+            dprintf("unknown key requested in Entity::classHierarchy() (t=%s)\n", gsMemoryFieldTypeToStringMapping.at(t).c_str());
+        }
+        t = ech.at(t);
     }
     hierarchy.push_front(MemoryFieldType::ClassEntity);
     return hierarchy;

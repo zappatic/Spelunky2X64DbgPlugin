@@ -8,7 +8,7 @@ static size_t gSpelunky2CodeSectionSize = 0;
 static size_t gSpelunky2AfterBundle = 0;
 static size_t gSpelunky2AfterBundleSize = 0;
 
-void displayError(const char* fmt, ...)
+void S2Plugin::displayError(const char* fmt, ...)
 {
     char buffer[1024] = {0};
 
@@ -25,7 +25,7 @@ void displayError(const char* fmt, ...)
     _plugin_logprintf("[Spelunky2] %s\n", buffer);
 }
 
-void findSpelunky2InMemory()
+void S2Plugin::findSpelunky2InMemory()
 {
     if (gSpelunky2CodeSectionStart != 0)
     {
@@ -85,7 +85,7 @@ void findSpelunky2InMemory()
     gSpelunky2AfterBundleSize = gSpelunky2CodeSectionStart + gSpelunky2CodeSectionSize - gSpelunky2AfterBundle;
 }
 
-size_t spelunky2AfterBundle()
+size_t S2Plugin::spelunky2AfterBundle()
 {
     if (gSpelunky2AfterBundle == 0)
     {
@@ -94,7 +94,7 @@ size_t spelunky2AfterBundle()
     return gSpelunky2AfterBundle;
 }
 
-size_t spelunky2AfterBundleSize()
+size_t S2Plugin::spelunky2AfterBundleSize()
 {
     if (gSpelunky2AfterBundle == 0)
     {
@@ -103,7 +103,7 @@ size_t spelunky2AfterBundleSize()
     return gSpelunky2AfterBundleSize;
 }
 
-std::string getEntityName(size_t offset, EntityDB* entityDB)
+std::string S2Plugin::getEntityName(size_t offset, EntityDB* entityDB)
 {
     std::string entityName = "";
     if (offset == 0)
@@ -124,7 +124,7 @@ std::string getEntityName(size_t offset, EntityDB* entityDB)
     return entityName;
 }
 
-uint32_t getEntityTypeID(size_t offset)
+uint32_t S2Plugin::getEntityTypeID(size_t offset)
 {
     if (offset == 0)
     {

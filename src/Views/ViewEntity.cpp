@@ -6,14 +6,14 @@
 #include <QHeaderView>
 #include <QLabel>
 
-ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
 
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
 
-    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mToolbar->entityDB());
+    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mToolbar->entityDB(), mToolbar->configuration());
     mEntity->populateTreeView();
 
     mMainLayout->setMargin(5);
@@ -31,7 +31,7 @@ ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* paren
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
-void ViewEntity::initializeUI()
+void S2Plugin::ViewEntity::initializeUI()
 {
     mTopLayout = new QHBoxLayout(this);
     mMainLayout->addLayout(mTopLayout);
@@ -62,7 +62,7 @@ void ViewEntity::initializeUI()
     mInterpretAsComboBox = new QComboBox(this);
     mInterpretAsComboBox->addItem("");
     mInterpretAsComboBox->addItem("Entity");
-    for (const auto& [classType, parentClassType] : gsEntityClassHierarchy)
+    for (const auto& [classType, parentClassType] : mToolbar->configuration()->entityClassHierarchy())
     {
         mInterpretAsComboBox->addItem(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(classType)));
     }
@@ -77,18 +77,18 @@ void ViewEntity::initializeUI()
     mMainTreeView->updateTableHeader();
 }
 
-void ViewEntity::closeEvent(QCloseEvent* event)
+void S2Plugin::ViewEntity::closeEvent(QCloseEvent* event)
 {
     delete this;
 }
 
-void ViewEntity::refreshEntity()
+void S2Plugin::ViewEntity::refreshEntity()
 {
     mEntity->refreshValues();
     mMainTreeView->updateTableHeader(false);
 }
 
-void ViewEntity::toggleAutoRefresh(int newState)
+void S2Plugin::ViewEntity::toggleAutoRefresh(int newState)
 {
     if (newState == Qt::Unchecked)
     {
@@ -103,7 +103,7 @@ void ViewEntity::toggleAutoRefresh(int newState)
     }
 }
 
-void ViewEntity::autoRefreshIntervalChanged(const QString& text)
+void S2Plugin::ViewEntity::autoRefreshIntervalChanged(const QString& text)
 {
     if (mAutoRefreshCheckBox->checkState() == Qt::Checked)
     {
@@ -111,22 +111,22 @@ void ViewEntity::autoRefreshIntervalChanged(const QString& text)
     }
 }
 
-void ViewEntity::autoRefreshTimerTrigger()
+void S2Plugin::ViewEntity::autoRefreshTimerTrigger()
 {
     refreshEntity();
 }
 
-QSize ViewEntity::sizeHint() const
+QSize S2Plugin::ViewEntity::sizeHint() const
 {
     return QSize(750, 550);
 }
 
-QSize ViewEntity::minimumSizeHint() const
+QSize S2Plugin::ViewEntity::minimumSizeHint() const
 {
     return QSize(150, 150);
 }
 
-void ViewEntity::interpretAsChanged(const QString& text)
+void S2Plugin::ViewEntity::interpretAsChanged(const QString& text)
 {
     if (!text.isEmpty())
     {

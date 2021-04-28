@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <sstream>
 
-TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent) : QTreeView(parent), mToolbar(toolbar)
+S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent) : QTreeView(parent), mToolbar(toolbar)
 {
     mHTMLDelegate = std::make_unique<HTMLDelegate>();
     setItemDelegate(mHTMLDelegate.get());
@@ -16,7 +16,7 @@ TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent
     QObject::connect(this, &QTreeView::clicked, this, &TreeViewMemoryFields::cellClicked);
 }
 
-QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
+QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
     auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem* {
         auto itemFieldName = new QStandardItem();
@@ -91,24 +91,21 @@ QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, co
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
         }
-        default: // default is assumed to be a container, listed in gsEntityClassFields
+        default: // default is assumed to be a container
         {
-            if (gsEntityClassFields.count(field.type) > 0)
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : mToolbar->configuration()->entityClassFields(field.type))
             {
-                auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-                for (const auto& f : gsEntityClassFields.at(field.type))
-                {
-                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-                }
-                returnField = structParent;
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
             }
+            returnField = structParent;
             break;
         }
     }
     return returnField;
 }
 
-void TreeViewMemoryFields::updateTableHeader(bool restoreColumnWidths)
+void S2Plugin::TreeViewMemoryFields::updateTableHeader(bool restoreColumnWidths)
 {
     mModel->setHeaderData(gsColField, Qt::Horizontal, "Field", Qt::DisplayRole);
     mModel->setHeaderData(gsColValue, Qt::Horizontal, "Value", Qt::DisplayRole);
@@ -141,7 +138,7 @@ void TreeViewMemoryFields::updateTableHeader(bool restoreColumnWidths)
     }
 }
 
-QStandardItem* TreeViewMemoryFields::lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent)
+QStandardItem* S2Plugin::TreeViewMemoryFields::lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent)
 {
     if (parent == nullptr)
     {
@@ -158,7 +155,7 @@ QStandardItem* TreeViewMemoryFields::lookupTreeViewItem(const std::string& field
     return nullptr;
 }
 
-void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent)
+void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent)
 {
     size_t memoryOffset = 0;
     if (offsets.count(fieldNameOverride) != 0)
@@ -355,21 +352,18 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
         {
             break;
         }
-        default: // default is assumed to be a container, listed in gsEntityClassFields
+        default: // default is assumed to be a container
         {
-            if (gsEntityClassFields.count(field.type) > 0)
+            for (const auto& f : mToolbar->configuration()->entityClassFields(field.type))
             {
-                for (const auto& f : gsEntityClassFields.at(field.type))
-                {
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-                }
-                break;
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
             }
+            break;
         }
     }
 }
 
-void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
+void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
 {
     auto column = index.column();
     auto clickedItem = mModel->itemFromIndex(index);
@@ -425,7 +419,7 @@ void TreeViewMemoryFields::cellClicked(const QModelIndex& index)
     }
 }
 
-void TreeViewMemoryFields::clear()
+void S2Plugin::TreeViewMemoryFields::clear()
 {
     mSavedColumnWidths[gsColField] = columnWidth(gsColField);
     mSavedColumnWidths[gsColValue] = columnWidth(gsColValue);
@@ -435,7 +429,7 @@ void TreeViewMemoryFields::clear()
     mModel->clear();
 }
 
-void TreeViewMemoryFields::expandItem(QStandardItem* item)
+void S2Plugin::TreeViewMemoryFields::expandItem(QStandardItem* item)
 {
     expand(mModel->indexFromItem(item));
 }
