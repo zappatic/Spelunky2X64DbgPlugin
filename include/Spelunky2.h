@@ -59,13 +59,14 @@ enum class MemoryFieldType
     TexturePointer,
     ConstCharPointerPointer,
     Map,
-    SectionHeaderEntity,
-    SectionHeaderMovable
+    ClassEntity,
+    ClassMovable,
+    ClassMonster
 };
 Q_DECLARE_METATYPE(MemoryFieldType)
 
 // clang-format off
-const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeToStringMapping{
+const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeToStringMapping = {
     {MemoryFieldType::CodePointer, "Code pointer"},
     {MemoryFieldType::DataPointer, "Data pointer"},
     {MemoryFieldType::Byte, "8-bit"},
@@ -92,8 +93,9 @@ const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeT
     {MemoryFieldType::TexturePointer, "Texture pointer"},
     {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
     {MemoryFieldType::Map, "std::map<>"},
-    {MemoryFieldType::SectionHeaderEntity, ""},
-    {MemoryFieldType::SectionHeaderMovable, ""},
+    {MemoryFieldType::ClassEntity, "Entity"},
+    {MemoryFieldType::ClassMovable, "Movable"},
+    {MemoryFieldType::ClassMonster, "Monster"},
 };
 // clang-format on
 
@@ -397,8 +399,31 @@ static const std::vector<MemoryField> gsMovableFields = {
     {"b127", MemoryFieldType::UnsignedByte}
 };
 
+static const std::vector<MemoryField> gsMonsterFields = {
+    {"inside", MemoryFieldType::Map}
+};
+
+// a mapping of what type is the parent class of a specific type
+static const std::unordered_map<MemoryFieldType, MemoryFieldType> gsEntityClassHierarchy = {
+    {MemoryFieldType::ClassMovable, MemoryFieldType::ClassEntity},
+    {MemoryFieldType::ClassMonster, MemoryFieldType::ClassMovable},
+};
+
+// the list of fields belonging to a type
+static const std::unordered_map<MemoryFieldType, std::vector<MemoryField>> gsEntityClassFields = {
+    {MemoryFieldType::ClassEntity, gsEntityFields},
+    {MemoryFieldType::ClassMovable, gsMovableFields},
+    {MemoryFieldType::ClassMonster, gsMonsterFields},
+};
+
+// the default types of a specific entity; specify a regex to match more than one at the same time
+static const std::unordered_map<std::string, MemoryFieldType> gsDefaultEntityClassTypes = {
+    { "CHAR_.*", MemoryFieldType::ClassMonster }
+};
+
 // clang-format on
 
 size_t spelunky2AfterBundle();
 size_t spelunky2AfterBundleSize();
 std::string getEntityName(size_t offset, EntityDB* entityDB);
+uint32_t getEntityTypeID(size_t offset);

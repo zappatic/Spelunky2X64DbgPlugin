@@ -17,7 +17,7 @@ class TreeViewMemoryFields : public QTreeView
     TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent = nullptr);
     QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
     void clear();
-    void updateTableHeader();
+    void updateTableHeader(bool restoreColumnWidths = true);
 
     void expandItem(QStandardItem* item);
     QStandardItem* lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);

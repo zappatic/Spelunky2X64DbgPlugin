@@ -111,13 +111,7 @@ std::string getEntityName(size_t offset, EntityDB* entityDB)
         return entityName;
     }
 
-    uint32_t entityDBPtr = Script::Memory::ReadQword(offset + 8);
-    if (entityDBPtr == 0)
-    {
-        return entityName;
-    }
-
-    uint32_t entityID = Script::Memory::ReadDword(entityDBPtr + 20);
+    auto entityID = getEntityTypeID(offset);
 
     if (entityID > 0 && entityID <= entityDB->entityList()->highestEntityID())
     {
@@ -128,4 +122,18 @@ std::string getEntityName(size_t offset, EntityDB* entityDB)
         entityName = "UNKNOWN/DEAD ENTITY";
     }
     return entityName;
+}
+
+uint32_t getEntityTypeID(size_t offset)
+{
+    if (offset == 0)
+    {
+        return 0;
+    }
+    uint32_t entityDBPtr = Script::Memory::ReadQword(offset + 8);
+    if (entityDBPtr == 0)
+    {
+        return 0;
+    }
+    return Script::Memory::ReadDword(entityDBPtr + 20);
 }

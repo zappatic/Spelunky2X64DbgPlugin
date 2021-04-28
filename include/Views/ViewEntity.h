@@ -5,6 +5,7 @@
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "ViewToolbar.h"
 #include <QCheckBox>
+#include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
 #include <QStandardItemModel>
@@ -28,22 +29,20 @@ class ViewEntity : public QWidget
     void toggleAutoRefresh(int newState);
     void autoRefreshTimerTrigger();
     void autoRefreshIntervalChanged(const QString& text);
+    void interpretAsChanged(const QString& text);
 
   private:
     QVBoxLayout* mMainLayout;
-    QHBoxLayout* mRefreshLayout;
+    QHBoxLayout* mTopLayout;
     TreeViewMemoryFields* mMainTreeView;
     QPushButton* mRefreshButton;
     QCheckBox* mAutoRefreshCheckBox;
     QLineEdit* mAutoRefreshIntervalLineEdit;
     std::unique_ptr<QTimer> mAutoRefreshTimer;
+    QComboBox* mInterpretAsComboBox;
 
     std::unique_ptr<Entity> mEntity;
     ViewToolbar* mToolbar;
-    QStandardItem* mEntitySectionHeaderItem = nullptr;
-    QStandardItem* mMovableSectionHeaderItem = nullptr;
 
-    void initializeTreeView();
-    void initializeRefreshStuff();
-    void populateTreeView();
+    void initializeUI();
 };

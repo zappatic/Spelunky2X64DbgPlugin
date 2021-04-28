@@ -42,7 +42,14 @@ QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, co
         itemFieldMemoryOffset->setEditable(false);
 
         auto itemFieldType = new QStandardItem();
-        itemFieldType->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(field.type)), Qt::DisplayRole);
+        if (gsMemoryFieldTypeToStringMapping.count(field.type) > 0)
+        {
+            itemFieldType->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(field.type)), Qt::DisplayRole);
+        }
+        else
+        {
+            itemFieldType->setData("Unknown field type", Qt::DisplayRole);
+        }
         itemFieldType->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
         itemFieldType->setEditable(false);
 
@@ -61,8 +68,9 @@ QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, co
     {
         case MemoryFieldType::Skip:
             break;
-        case MemoryFieldType::SectionHeaderEntity:
-        case MemoryFieldType::SectionHeaderMovable:
+        case MemoryFieldType::ClassEntity:
+        case MemoryFieldType::ClassMovable:
+        case MemoryFieldType::ClassMonster:
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
         case MemoryFieldType::Byte:
@@ -176,7 +184,7 @@ QStandardItem* TreeViewMemoryFields::addMemoryField(const MemoryField& field, co
     return returnField;
 }
 
-void TreeViewMemoryFields::updateTableHeader()
+void TreeViewMemoryFields::updateTableHeader(bool restoreColumnWidths)
 {
     mModel->setHeaderData(gsColField, Qt::Horizontal, "Field", Qt::DisplayRole);
     mModel->setHeaderData(gsColValue, Qt::Horizontal, "Value", Qt::DisplayRole);
@@ -184,25 +192,28 @@ void TreeViewMemoryFields::updateTableHeader()
     mModel->setHeaderData(gsColType, Qt::Horizontal, "Type", Qt::DisplayRole);
     mModel->setHeaderData(gsColMemoryOffset, Qt::Horizontal, "Memory offset", Qt::DisplayRole);
 
-    if (mSavedColumnWidths[gsColField] != 0)
+    if (restoreColumnWidths)
     {
-        setColumnWidth(gsColField, mSavedColumnWidths[gsColField]);
-    }
-    if (mSavedColumnWidths[gsColValue] != 0)
-    {
-        setColumnWidth(gsColValue, mSavedColumnWidths[gsColValue]);
-    }
-    if (mSavedColumnWidths[gsColValueHex] != 0)
-    {
-        setColumnWidth(gsColValueHex, mSavedColumnWidths[gsColValueHex]);
-    }
-    if (mSavedColumnWidths[gsColMemoryOffset] != 0)
-    {
-        setColumnWidth(gsColMemoryOffset, mSavedColumnWidths[gsColMemoryOffset]);
-    }
-    if (mSavedColumnWidths[gsColType] != 0)
-    {
-        setColumnWidth(gsColType, mSavedColumnWidths[gsColType]);
+        if (mSavedColumnWidths[gsColField] != 0)
+        {
+            setColumnWidth(gsColField, mSavedColumnWidths[gsColField]);
+        }
+        if (mSavedColumnWidths[gsColValue] != 0)
+        {
+            setColumnWidth(gsColValue, mSavedColumnWidths[gsColValue]);
+        }
+        if (mSavedColumnWidths[gsColValueHex] != 0)
+        {
+            setColumnWidth(gsColValueHex, mSavedColumnWidths[gsColValueHex]);
+        }
+        if (mSavedColumnWidths[gsColMemoryOffset] != 0)
+        {
+            setColumnWidth(gsColMemoryOffset, mSavedColumnWidths[gsColMemoryOffset]);
+        }
+        if (mSavedColumnWidths[gsColType] != 0)
+        {
+            setColumnWidth(gsColType, mSavedColumnWidths[gsColType]);
+        }
     }
 }
 
@@ -488,7 +499,7 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             }
             break;
         }
-        case MemoryFieldType::SectionHeaderEntity:
+        case MemoryFieldType::ClassEntity:
         {
             for (const auto& f : gsEntityFields)
             {
@@ -496,9 +507,17 @@ void TreeViewMemoryFields::updateValueForField(const MemoryField& field, const s
             }
             break;
         }
-        case MemoryFieldType::SectionHeaderMovable:
+        case MemoryFieldType::ClassMovable:
         {
             for (const auto& f : gsMovableFields)
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::ClassMonster:
+        {
+            for (const auto& f : gsMonsterFields)
             {
                 updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
             }
