@@ -83,7 +83,6 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::Float:
         case MemoryFieldType::Bool:
-        case MemoryFieldType::Flags32:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
         case MemoryFieldType::EntityPointer:
@@ -91,6 +90,21 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::ConstCharPointerPointer:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
+            break;
+        }
+        case MemoryFieldType::Flags32:
+        {
+            auto flagsParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (uint8_t x = 1; x <= 32; ++x)
+            {
+                MemoryField flagField;
+                flagField.name = "flag_" + std::to_string(x);
+                flagField.type = MemoryFieldType::Flag;
+                auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
+                flagFieldItem->setData(x, gsRoleFlagIndex);
+                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+            }
+            returnField = flagsParent;
             break;
         }
         default: // default is assumed to be a container
@@ -178,7 +192,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
         if (itemField == nullptr || itemValue == nullptr || itemValueHex == nullptr || itemMemoryOffset == nullptr)
         {
-            dprintf("ERROR: tried to updateValueForField('%s', '%s', ...) but did not find items in treeview\n", field.name, fieldNameOverride);
+            dprintf("ERROR: tried to updateValueForField('%s', '%s', ...) but did not find items in treeview\n", field.name.c_str(), fieldNameOverride.c_str());
             return;
         }
 
@@ -348,8 +362,30 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             auto newHexValue = QString::asprintf("0x%08lX", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemField->setData(value, gsRoleRawValue); // so we can access in MemoryFieldType::Flag
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
+
+            for (uint8_t x = 1; x <= 32; ++x)
+            {
+                MemoryField f;
+                f.name = "flag_" + std::to_string(x);
+                f.type = MemoryFieldType::Flag;
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::Flag:
+        {
+            auto flagIndex = itemField->data(gsRoleFlagIndex).toUInt();
+            auto value = itemField->parent()->data(gsRoleRawValue).toUInt();
+            auto mask = (1 << (flagIndex - 1));
+            auto flagSet = ((value & mask) == mask);
+            auto flagFieldName = itemField->data(gsRoleFlagFieldName).toString().toStdString();
+            auto flagTitle = QString::fromStdString(mToolbar->configuration()->flagTitle(flagFieldName, flagIndex));
+            auto caption = QString("<font color='%1'>%2</font>").arg(flagSet ? "green" : "red", flagTitle);
+            itemValue->setData(caption, Qt::DisplayRole);
+            itemMemoryOffset->setData("", Qt::DisplayRole);
             break;
         }
         case MemoryFieldType::EntityDBID:
@@ -366,7 +402,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::EntityUID:
         {
             int32_t value = Script::Memory::ReadDword(memoryOffset);
-            if (value == -1)
+            if (value <= 0)
             {
                 itemValue->setData("Nothing", Qt::DisplayRole);
             }

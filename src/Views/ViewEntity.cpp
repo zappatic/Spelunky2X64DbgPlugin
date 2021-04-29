@@ -62,9 +62,16 @@ void S2Plugin::ViewEntity::initializeUI()
     mInterpretAsComboBox = new QComboBox(this);
     mInterpretAsComboBox->addItem("");
     mInterpretAsComboBox->addItem("Entity");
+    mInterpretAsComboBox->insertSeparator(1);
+    std::vector<std::string> classNames;
     for (const auto& [classType, parentClassType] : mToolbar->configuration()->entityClassHierarchy())
     {
-        mInterpretAsComboBox->addItem(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(classType)));
+        classNames.emplace_back(gsMemoryFieldTypeToStringMapping.at(classType));
+    }
+    std::sort(classNames.begin(), classNames.end());
+    for (const auto& className : classNames)
+    {
+        mInterpretAsComboBox->addItem(QString::fromStdString(className));
     }
     QObject::connect(mInterpretAsComboBox, &QComboBox::currentTextChanged, this, &ViewEntity::interpretAsChanged);
     mTopLayout->addWidget(mInterpretAsComboBox);

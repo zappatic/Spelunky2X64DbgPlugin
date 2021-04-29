@@ -14,6 +14,8 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
 
     switch (field.type)
     {
+        case MemoryFieldType::Flag:
+            break;
         case MemoryFieldType::Skip:
             offset += field.extraInfo;
             break;

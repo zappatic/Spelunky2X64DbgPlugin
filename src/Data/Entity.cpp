@@ -18,11 +18,6 @@ S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* en
     }
 }
 
-const std::unordered_map<std::string, size_t>& S2Plugin::Entity::offsets()
-{
-    return mMemoryOffsets;
-}
-
 void S2Plugin::Entity::refreshOffsets()
 {
     mMemoryOffsets.clear();
@@ -30,7 +25,7 @@ void S2Plugin::Entity::refreshOffsets()
     auto hierarchy = classHierarchy();
     for (auto c : hierarchy)
     {
-        auto headerIdentifier = "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">";
+        auto headerIdentifier = gsMemoryFieldTypeToStringMapping.at(c);
         MemoryField headerField;
         headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
         headerField.type = c;
@@ -52,7 +47,7 @@ void S2Plugin::Entity::refreshValues()
         MemoryField headerField;
         headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
         headerField.type = c;
-        mTree->updateValueForField(headerField, "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">", mMemoryOffsets);
+        mTree->updateValueForField(headerField, gsMemoryFieldTypeToStringMapping.at(c), mMemoryOffsets);
     }
 }
 
@@ -65,7 +60,7 @@ void S2Plugin::Entity::populateTreeView()
         MemoryField headerField;
         headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
         headerField.type = c;
-        auto item = mTree->addMemoryField(headerField, "<" + gsMemoryFieldTypeToStringMapping.at(c) + ">");
+        auto item = mTree->addMemoryField(headerField, gsMemoryFieldTypeToStringMapping.at(c));
         mTree->expandItem(item);
         mTreeViewSectionItems[c] = item;
     }
@@ -102,7 +97,7 @@ std::deque<S2Plugin::MemoryFieldType> S2Plugin::Entity::classHierarchy() const
 size_t S2Plugin::Entity::findEntityByUID(uint32_t uidToSearch, State* state)
 {
     auto searchUID = [state](uint32_t uid, size_t layerOffset) -> size_t {
-        auto entityCount = Script::Memory::ReadDword(layerOffset + 28);
+        auto entityCount = (std::min)(Script::Memory::ReadDword(layerOffset + 28), 10000u);
         auto entities = Script::Memory::ReadQword(layerOffset + 8);
 
         for (auto x = 0; x < entityCount; ++x)

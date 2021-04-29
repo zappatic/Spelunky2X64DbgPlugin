@@ -29,7 +29,7 @@ bool S2Plugin::EntityDB::loadEntityDB()
         std::unordered_map<std::string, size_t> offsets;
         for (const auto& field : mConfiguration->typeFields(MemoryFieldType::ClassEntityDB))
         {
-            offset = setOffsetForField(field, field.name, offset, offsets);
+            offset = setOffsetForField(field, "ClassEntityDB." + field.name, offset, offsets);
         }
         mMemoryOffsets.emplace_back(offsets);
     }

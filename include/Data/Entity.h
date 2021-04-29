@@ -11,7 +11,6 @@
 #include <string>
 #include <unordered_map>
 
-
 namespace S2Plugin
 {
     class Entity : MemoryMappedData
@@ -19,7 +18,6 @@ namespace S2Plugin
       public:
         Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* entityDB, Configuration* config);
 
-        const std::unordered_map<std::string, size_t>& offsets();
         void refreshOffsets();
         void refreshValues();
         void interpretAs(MemoryFieldType classType);

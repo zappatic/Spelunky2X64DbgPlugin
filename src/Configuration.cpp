@@ -110,6 +110,18 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 throw std::runtime_error("Unknown type specified in fields: " + fieldTypeStr);
             }
             memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
+
+            if (memField.type == MemoryFieldType::Flags32 && field.contains("flags"))
+            {
+                auto flagsObject = field["flags"];
+                std::unordered_map<uint8_t, std::string> flagTitles;
+                for (const auto& [flagNumber, flagTitle] : flagsObject.items())
+                {
+                    flagTitles[std::stoi(flagNumber)] = flagTitle.get<std::string>();
+                }
+                mFlagTitles[key + "." + memField.name] = flagTitles;
+            }
+
             vec.emplace_back(memField);
         }
         mTypeFields[gsJSONStringToMemoryFieldTypeMapping.at(key)] = vec;
@@ -130,7 +142,7 @@ const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(co
 {
     if (mTypeFields.count(type) == 0)
     {
-        dprintf("unknown key requested in Configuration::typeFields() (t=%s)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str());
+        dprintf("unknown key requested in Configuration::typeFields() (t=%s id=%d)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str(), type);
     }
     return mTypeFields.at(type);
 }
@@ -138,4 +150,19 @@ const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(co
 S2Plugin::Spelunky2* S2Plugin::Configuration::spelunky2() const noexcept
 {
     return mSpelunky2.get();
+}
+
+std::string S2Plugin::Configuration::flagTitle(const std::string& fieldName, uint8_t flagNumber)
+{
+    if (mFlagTitles.count(fieldName) > 0 && flagNumber > 0 && flagNumber <= 32)
+    {
+        auto flags = mFlagTitles.at(fieldName);
+        auto flagStr = flags.at(flagNumber);
+        if (flagStr.empty())
+        {
+            return "Unknown";
+        }
+        return flagStr;
+    }
+    return "Unknown flag (" + fieldName + ":" + std::to_string(flagNumber) + ")";
 }

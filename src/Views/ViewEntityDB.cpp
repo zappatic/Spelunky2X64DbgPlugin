@@ -34,7 +34,7 @@ void S2Plugin::ViewEntityDB::initializeTreeView()
     mMainTreeView->setEnableChangeHighlighting(false);
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassEntityDB))
     {
-        mMainTreeView->addMemoryField(field, field.name);
+        mMainTreeView->addMemoryField(field, "ClassEntityDB." + field.name);
     }
     mMainLayout->addWidget(mMainTreeView);
 
@@ -90,7 +90,7 @@ void S2Plugin::ViewEntityDB::showIndex(size_t index)
 {
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassEntityDB))
     {
-        mMainTreeView->updateValueForField(field, field.name, mToolbar->entityDB()->offsetsForIndex(index));
+        mMainTreeView->updateValueForField(field, "ClassEntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(index));
     }
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);

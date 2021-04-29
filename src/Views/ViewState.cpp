@@ -32,7 +32,7 @@ void S2Plugin::ViewState::initializeTreeView()
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassState))
     {
-        mMainTreeView->addMemoryField(field, field.name);
+        mMainTreeView->addMemoryField(field, "ClassState." + field.name);
     }
     mMainLayout->addWidget(mMainTreeView);
 
@@ -79,7 +79,7 @@ void S2Plugin::ViewState::refreshState()
     mToolbar->state()->refreshOffsets();
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassState))
     {
-        mMainTreeView->updateValueForField(field, field.name, mToolbar->state()->offsets());
+        mMainTreeView->updateValueForField(field, "ClassState." + field.name, mToolbar->state()->offsets());
     }
 }
 
