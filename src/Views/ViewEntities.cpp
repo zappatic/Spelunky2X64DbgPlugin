@@ -26,6 +26,7 @@ S2Plugin::ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QW
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
+    mFilterLineEdit->setFocus();
 }
 
 void S2Plugin::ViewEntities::initializeTreeView()

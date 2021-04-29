@@ -3,12 +3,14 @@
 #include "Configuration.h"
 #include "Data/EntityDB.h"
 #include "Data/MemoryMappedData.h"
+#include "Data/State.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
 #include <deque>
 #include <memory>
 #include <string>
 #include <unordered_map>
+
 
 namespace S2Plugin
 {
@@ -23,6 +25,8 @@ namespace S2Plugin
         void interpretAs(MemoryFieldType classType);
         std::deque<MemoryFieldType> classHierarchy() const;
         void populateTreeView();
+
+        static size_t findEntityByUID(uint32_t uid, State* state);
 
       private:
         size_t mEntityPtr = 0;

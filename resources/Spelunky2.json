@@ -151,7 +151,7 @@
       { "field": "items", "type": "Vector" },
       { "field": "flags", "type": "Flags32" },
       { "field": "more_flags", "type": "Flags32" },
-      { "field": "uid", "type": "Dword" },
+      { "field": "uid", "type": "EntityUID" },
       { "field": "animation_frame", "type": "UnsignedByte" },
       { "field": "b3d", "type": "UnsignedByte" },
       { "field": "draw_depth", "type": "UnsignedByte" },
@@ -191,14 +191,14 @@
       { "field": "stand_counter", "type": "UnsignedDword" },
       { "field": "fe0", "type": "Float" },
       { "field": "price", "type": "Dword" },
-      { "field": "owner_uid", "type": "Dword" },
-      { "field": "last_owner_uid", "type": "Dword" },
+      { "field": "owner_uid", "type": "EntityUID" },
+      { "field": "last_owner_uid", "type": "EntityUID" },
       { "field": "animation_func", "type": "DataPointer" },
       { "field": "idle_counter", "type": "UnsignedDword" },
-      { "field": "standing_on_uid", "type": "Dword" },
+      { "field": "standing_on_uid", "type": "EntityUID" },
       { "field": "velocityx", "type": "Float" },
       { "field": "velocityy", "type": "Float" },
-      { "field": "holding_uid", "type": "Dword" },
+      { "field": "holding_uid", "type": "EntityUID" },
       { "field": "state", "type": "UnsignedByte" },
       { "field": "last_state", "type": "UnsignedByte" },
       { "field": "move_state", "type": "UnsignedByte" },
@@ -329,7 +329,7 @@
       { "field": "arrow_shot", "type": "Bool" }
     ],
     "ClassContainer": [
-      { "field": "inside", "type": "Dword" },
+      { "field": "inside", "type": "EntityDBID" },
       { "field": "timer", "type": "Dword" }
     ]
   }

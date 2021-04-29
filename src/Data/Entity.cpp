@@ -98,3 +98,37 @@ std::deque<S2Plugin::MemoryFieldType> S2Plugin::Entity::classHierarchy() const
     hierarchy.push_front(MemoryFieldType::ClassEntity);
     return hierarchy;
 }
+
+size_t S2Plugin::Entity::findEntityByUID(uint32_t uidToSearch, State* state)
+{
+    auto searchUID = [state](uint32_t uid, size_t layerOffset) -> size_t {
+        auto entityCount = Script::Memory::ReadDword(layerOffset + 28);
+        auto entities = Script::Memory::ReadQword(layerOffset + 8);
+
+        for (auto x = 0; x < entityCount; ++x)
+        {
+            auto entityPtr = entities + (x * sizeof(size_t));
+            auto entity = Script::Memory::ReadQword(entityPtr);
+            auto entityUid = Script::Memory::ReadDword(entity + 56);
+            if (entityUid == uid)
+            {
+                return entity;
+            }
+        }
+        return 0;
+    };
+    auto layer = Script::Memory::ReadQword(state->offsetForField("layer0"));
+    auto result = searchUID(uidToSearch, layer);
+    if (result != 0)
+    {
+        return result;
+    }
+
+    layer = Script::Memory::ReadQword(state->offsetForField("layer1"));
+    result = searchUID(uidToSearch, layer);
+    if (result != 0)
+    {
+        return result;
+    }
+    return 0;
+}

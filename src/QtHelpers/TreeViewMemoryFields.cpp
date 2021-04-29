@@ -1,4 +1,5 @@
 #include "QtHelpers/TreeViewMemoryFields.h"
+#include "Data/Entity.h"
 #include "Views/ViewEntityDB.h"
 #include "pluginmain.h"
 #include <inttypes.h>
@@ -84,6 +85,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::Bool:
         case MemoryFieldType::Flags32:
         case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::EntityUID:
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
@@ -353,7 +355,34 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::EntityDBID:
         {
             uint32_t value = Script::Memory::ReadDword(memoryOffset);
-            itemValue->setData(QString::asprintf("%lu (%s)", value, mToolbar->entityDB()->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
+            itemValue->setData(QString::asprintf("<font color='blue'><u>%lu (%s)</u></font>", value, mToolbar->entityDB()->entityList()->nameForID(value).c_str()), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+            break;
+        }
+        case MemoryFieldType::EntityUID:
+        {
+            int32_t value = Script::Memory::ReadDword(memoryOffset);
+            if (value == -1)
+            {
+                itemValue->setData("Nothing", Qt::DisplayRole);
+            }
+            else
+            {
+                auto entityOffset = Entity::findEntityByUID(value, mToolbar->state());
+                if (entityOffset != 0)
+                {
+                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(entityOffset, mToolbar->entityDB());
+                    itemValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", value, entityName.c_str()), Qt::DisplayRole);
+                }
+                else
+                {
+                    itemValue->setData("UNKNOWN ENTITY", Qt::DisplayRole);
+                }
+            }
             auto newHexValue = QString::asprintf("0x%08lX", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
@@ -459,6 +488,36 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     if (offset != 0)
                     {
                         mToolbar->showEntity(offset);
+                    }
+                    break;
+                }
+                case MemoryFieldType::EntityUID:
+                {
+                    auto uid = clickedItem->data(gsRoleRawValue).toUInt();
+                    if (uid != 0)
+                    {
+                        auto offset = Entity::findEntityByUID(uid, mToolbar->state());
+                        if (offset != 0)
+                        {
+                            mToolbar->showEntity(offset);
+                        }
+                    }
+                    break;
+                }
+                case MemoryFieldType::EntityDBID:
+                {
+                    auto uid = clickedItem->data(gsRoleRawValue).toUInt();
+                    if (uid != -1)
+                    {
+                        auto offset = Entity::findEntityByUID(uid, mToolbar->state());
+                        if (offset != 0)
+                        {
+                            auto view = mToolbar->showEntityDB();
+                            if (view != nullptr)
+                            {
+                                view->showIndex(uid);
+                            }
+                        }
                     }
                     break;
                 }
