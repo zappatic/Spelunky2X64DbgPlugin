@@ -50,73 +50,77 @@ void S2Plugin::ViewEntities::initializeRefreshAndFilter()
     auto label = new QLabel("Filter:", this);
     filterLayout->addWidget(label, 0, 1);
 
+    mFilterLineEdit = new QLineEdit(this);
+    QObject::connect(mFilterLineEdit, &QLineEdit::textChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mFilterLineEdit, 0, 2, 1, 6);
+
     mCheckboxLayer0 = new QCheckBox("Front layer", this);
     mCheckboxLayer0->setChecked(true);
-    QObject::connect(mCheckboxLayer0, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxLayer0, 0, 2);
+    QObject::connect(mCheckboxLayer0, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxLayer0, 2, 2);
 
     mCheckboxLayer1 = new QCheckBox("Back layer", this);
-    QObject::connect(mCheckboxLayer1, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxLayer1, 0, 3);
+    QObject::connect(mCheckboxLayer1, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxLayer1, 2, 3);
 
     mCheckboxFLOOR = new QCheckBox("FLOOR*", this);
-    QObject::connect(mCheckboxFLOOR, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxFLOOR, 0, 4);
+    QObject::connect(mCheckboxFLOOR, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxFLOOR, 3, 2);
 
     mCheckboxFLOORSTYLED = new QCheckBox("FLOORSTYLED*", this);
-    QObject::connect(mCheckboxFLOORSTYLED, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxFLOORSTYLED, 0, 5);
+    QObject::connect(mCheckboxFLOORSTYLED, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxFLOORSTYLED, 3, 3);
 
     mCheckboxDECORATION = new QCheckBox("DECORATION*", this);
-    QObject::connect(mCheckboxDECORATION, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxDECORATION, 0, 6);
+    QObject::connect(mCheckboxDECORATION, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxDECORATION, 3, 4);
 
     mCheckboxEMBED = new QCheckBox("EMBED*", this);
-    QObject::connect(mCheckboxEMBED, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxEMBED, 0, 7);
+    QObject::connect(mCheckboxEMBED, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxEMBED, 3, 5);
 
     mCheckboxCHAR = new QCheckBox("CHAR*", this);
     mCheckboxCHAR->setChecked(true);
-    QObject::connect(mCheckboxCHAR, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxCHAR, 1, 2);
+    QObject::connect(mCheckboxCHAR, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxCHAR, 3, 6);
 
     mCheckboxMONS = new QCheckBox("MONS*", this);
     mCheckboxMONS->setChecked(true);
-    QObject::connect(mCheckboxMONS, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxMONS, 1, 3);
+    QObject::connect(mCheckboxMONS, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxMONS, 3, 7);
 
     mCheckboxITEM = new QCheckBox("ITEM*", this);
     mCheckboxITEM->setChecked(true);
-    QObject::connect(mCheckboxITEM, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxITEM, 1, 4);
+    QObject::connect(mCheckboxITEM, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxITEM, 3, 8);
 
     mCheckboxACTIVEFLOOR = new QCheckBox("ACTIVEFLOOR*", this);
-    QObject::connect(mCheckboxACTIVEFLOOR, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxACTIVEFLOOR, 1, 5);
+    QObject::connect(mCheckboxACTIVEFLOOR, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxACTIVEFLOOR, 4, 2);
 
     mCheckboxFX = new QCheckBox("FX*", this);
-    QObject::connect(mCheckboxFX, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxFX, 1, 6);
+    QObject::connect(mCheckboxFX, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxFX, 4, 3);
 
     mCheckboxBG = new QCheckBox("BG*", this);
-    QObject::connect(mCheckboxBG, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxBG, 1, 7);
+    QObject::connect(mCheckboxBG, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxBG, 4, 4);
 
     mCheckboxMIDBG = new QCheckBox("MIDBG*", this);
-    QObject::connect(mCheckboxMIDBG, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxMIDBG, 2, 2);
+    QObject::connect(mCheckboxMIDBG, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxMIDBG, 4, 5);
 
     mCheckboxLOGICAL = new QCheckBox("LOGICAL*", this);
-    QObject::connect(mCheckboxLOGICAL, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxLOGICAL, 2, 3);
+    QObject::connect(mCheckboxLOGICAL, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxLOGICAL, 4, 6);
 
     mCheckboxMOUNT = new QCheckBox("MOUNT*", this);
-    QObject::connect(mCheckboxMOUNT, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxMOUNT, 2, 4);
+    QObject::connect(mCheckboxMOUNT, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxMOUNT, 4, 7);
 
     mCheckboxLIQUID = new QCheckBox("LIQUID*", this);
-    QObject::connect(mCheckboxLIQUID, &QCheckBox::stateChanged, this, &ViewEntities::filterCheckboxClicked);
-    filterLayout->addWidget(mCheckboxLIQUID, 2, 5);
+    QObject::connect(mCheckboxLIQUID, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+    filterLayout->addWidget(mCheckboxLIQUID, 4, 8);
 
     auto horLayout = new QHBoxLayout(this);
     horLayout->addLayout(filterLayout);
@@ -201,6 +205,13 @@ void S2Plugin::ViewEntities::refreshEntities()
             {
                 matchesFilter = true;
             }
+            if (matchesFilter && !mFilterLineEdit->text().isEmpty())
+            {
+                if (!entityName.contains(mFilterLineEdit->text(), Qt::CaseInsensitive))
+                {
+                    matchesFilter = false;
+                }
+            }
 
             if (matchesFilter)
             {
@@ -245,9 +256,4 @@ QSize S2Plugin::ViewEntities::sizeHint() const
 QSize S2Plugin::ViewEntities::minimumSizeHint() const
 {
     return QSize(150, 150);
-}
-
-void S2Plugin::ViewEntities::filterCheckboxClicked()
-{
-    refreshEntities();
 }

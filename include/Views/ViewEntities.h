@@ -22,7 +22,6 @@ namespace S2Plugin
 
       private slots:
         void refreshEntities();
-        void filterCheckboxClicked();
 
       private:
         QVBoxLayout* mMainLayout;
@@ -44,6 +43,7 @@ namespace S2Plugin
         QCheckBox* mCheckboxLOGICAL;
         QCheckBox* mCheckboxMOUNT;
         QCheckBox* mCheckboxLIQUID;
+        QLineEdit* mFilterLineEdit;
 
         ViewToolbar* mToolbar;
 

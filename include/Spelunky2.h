@@ -70,14 +70,8 @@ namespace S2Plugin
         ClassMovable,
         ClassMonster,
         ClassPlayer,
-    };
-    Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
-
-    struct MemoryField
-    {
-        std::string name;
-        MemoryFieldType type;
-        uint64_t extraInfo = 0;
+        ClassArrowTrap,
+        ClassContainer,
     };
 
     // clang-format off
@@ -117,6 +111,8 @@ namespace S2Plugin
         {MemoryFieldType::ClassMovable, "Movable"},
         {MemoryFieldType::ClassMonster, "Monster"},
         {MemoryFieldType::ClassPlayer, "Player"},
+        {MemoryFieldType::ClassArrowTrap, "Arrow trap"},
+        {MemoryFieldType::ClassContainer, "Container"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -155,6 +151,8 @@ namespace S2Plugin
         {"ClassMovable", MemoryFieldType::ClassMovable},
         {"ClassMonster", MemoryFieldType::ClassMonster},
         {"ClassPlayer", MemoryFieldType::ClassPlayer},
+        {"ClassArrowTrap", MemoryFieldType::ClassArrowTrap},
+        {"ClassContainer", MemoryFieldType::ClassContainer},
     };
 
     const static std::unordered_set<MemoryFieldType> gsPointerTypes = {
@@ -165,6 +163,14 @@ namespace S2Plugin
         MemoryFieldType::PlayerInventoryPointer,
     };
     // clang-format on
+
+    struct MemoryField
+    {
+        std::string name;
+        MemoryFieldType type;
+        uint64_t extraInfo = 0;
+    };
+    Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
 
     class Spelunky2
     {

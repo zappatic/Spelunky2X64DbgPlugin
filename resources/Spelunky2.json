@@ -3,12 +3,17 @@
   "entity_class_hierarchy": {
     "ClassMovable": "ClassEntity",
     "ClassMonster": "ClassMovable",
-    "ClassPlayer": "ClassMonster"
+    "ClassPlayer": "ClassMonster",
+    "ClassArrowTrap": "ClassEntity",
+    "ClassContainer": "ClassMovable"
   },
   // a mapping of a regular expression for entity names to its type
   "default_entity_types": {
     "CHAR_.*": "ClassPlayer",
-    "MONS_.*": "ClassMonster"
+    "MONS_.*": "ClassMonster",
+    "FLOOR_ARROW_TRAP": "ClassArrowTrap",
+    "FLOOR_POISONED_ARROW_TRAP": "ClassArrowTrap",
+    "ITEM_CRATE": "ClassContainer"
   },
   // a list of all the fields within the types
   "fields": {
@@ -317,6 +322,15 @@
       { "field": "field_10", "type": "UnsignedByte" },
       { "field": "field_11", "type": "UnsignedByte" },
       { "field": "field_12", "type": "UnsignedWord" }
+    ],
+    "ClassArrowTrap": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "arrow_shot", "type": "Bool" }
+    ],
+    "ClassContainer": [
+      { "field": "inside", "type": "Dword" },
+      { "field": "timer", "type": "Dword" }
     ]
   }
 }
