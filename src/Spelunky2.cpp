@@ -1,6 +1,7 @@
 #include "Spelunky2.h"
 #include "Data/EntityDB.h"
 #include "pluginmain.h"
+#include <QIcon>
 #include <QMessageBox>
 
 static size_t gSpelunky2CodeSectionStart = 0;
@@ -23,6 +24,7 @@ void S2Plugin::Spelunky2::displayError(const char* fmt, ...)
 
     QMessageBox msgBox;
     msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
     msgBox.setText(buffer);
     msgBox.setWindowTitle("Spelunky2");
     msgBox.exec();
@@ -120,7 +122,7 @@ size_t S2Plugin::Spelunky2::spelunky2AfterBundleSize()
 //     auto mapOffset = Script::Memory::ReadQword(entitiesPtr) + entitiesOffset;
 
 //     auto mapPtr = reinterpret_cast<std::unordered_map<std::string, uint16_t>*>(mapOffset);
-//     // dprintf("mapPtr size = %d\n", mapPtr->size());
+//     dprintf("mapPtr size = %d\n", mapPtr->size());
 
 //     return offset;
 // }

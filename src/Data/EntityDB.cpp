@@ -15,7 +15,7 @@ bool S2Plugin::EntityDB::loadEntityDB()
         return true;
     }
 
-    mEntityList = std::make_unique<EntityList>();
+    mEntityList = std::make_unique<EntityList>(mConfiguration->spelunky2());
 
     mMemoryOffsets.clear();
     auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "48 B8 02 55 A7 74 52 9D 51 43");

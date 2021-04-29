@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Spelunky2.h"
 #include <QStringList>
 #include <cstdint>
 #include <string>
@@ -10,7 +11,7 @@ namespace S2Plugin
     class EntityList
     {
       public:
-        EntityList();
+        explicit EntityList(Spelunky2* spel2);
 
         uint32_t idForName(const std::string& name);
         std::string nameForID(uint32_t id);
