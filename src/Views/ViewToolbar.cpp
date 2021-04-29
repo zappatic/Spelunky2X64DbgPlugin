@@ -38,17 +38,24 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configurati
 
 S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
 {
-    auto w = new ViewEntityDB(this);
-    mMDIArea->addSubWindow(w);
-    w->setVisible(true);
-    return w;
+    if (mEntityDB->loadEntityDB())
+    {
+        auto w = new ViewEntityDB(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+        return w;
+    }
+    return nullptr;
 }
 
 void S2Plugin::ViewToolbar::showState()
 {
-    auto w = new ViewState(this);
-    mMDIArea->addSubWindow(w);
-    w->setVisible(true);
+    if (mState->loadState())
+    {
+        auto w = new ViewState(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
 }
 
 void S2Plugin::ViewToolbar::showEntity(size_t offset)
@@ -60,9 +67,12 @@ void S2Plugin::ViewToolbar::showEntity(size_t offset)
 
 void S2Plugin::ViewToolbar::showEntities()
 {
-    auto w = new ViewEntities(this);
-    mMDIArea->addSubWindow(w);
-    w->setVisible(true);
+    if (mEntityDB->loadEntityDB())
+    {
+        auto w = new ViewEntities(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
 }
 
 S2Plugin::State* S2Plugin::ViewToolbar::state()

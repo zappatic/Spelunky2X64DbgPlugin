@@ -8,6 +8,8 @@
 
 S2Plugin::Configuration::Configuration()
 {
+    mSpelunky2 = std::make_unique<Spelunky2>();
+
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
     auto path = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2.json");
@@ -131,4 +133,9 @@ const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(co
         dprintf("unknown key requested in Configuration::typeFields() (t=%s)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str());
     }
     return mTypeFields.at(type);
+}
+
+S2Plugin::Spelunky2* S2Plugin::Configuration::spelunky2() const noexcept
+{
+    return mSpelunky2.get();
 }

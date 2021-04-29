@@ -5,8 +5,8 @@
 
 S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* entityDB, S2Plugin::Configuration* config) : MemoryMappedData(config), mEntityPtr(offset), mTree(tree)
 {
-    auto entityID = getEntityTypeID(offset);
-    auto entityName = getEntityName(offset, entityDB);
+    auto entityID = config->spelunky2()->getEntityTypeID(offset);
+    auto entityName = config->spelunky2()->getEntityName(offset, entityDB);
     for (const auto& [regexStr, entityClassType] : mConfiguration->defaultEntityClassTypes())
     {
         auto r = std::regex(regexStr);

@@ -12,7 +12,7 @@ namespace S2Plugin
     {
       public:
         explicit State(Configuration* config);
-        void loadState();
+        bool loadState();
 
         const std::unordered_map<std::string, size_t>& offsets();
         void refreshOffsets();

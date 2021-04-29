@@ -3,17 +3,22 @@
 
 S2Plugin::State::State(Configuration* config) : MemoryMappedData(config) {}
 
-void S2Plugin::State::loadState()
+bool S2Plugin::State::loadState()
 {
-    auto afterBundle = spelunky2AfterBundle();
-    if (afterBundle == 0 || mStatePtr != 0)
+    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
+    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
+    if (afterBundle == 0)
     {
-        return;
+        return false;
+    }
+    if (mStatePtr != 0)
+    {
+        return true;
     }
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, spelunky2AfterBundleSize(), "49 0F 44 C0");
-    instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, spelunky2AfterBundleSize(), "49 0F 44 C0");
-    instructionOffset = Script::Pattern::FindMem(instructionOffset - 0x10, spelunky2AfterBundleSize(), "48 8B");
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "49 0F 44 C0");
+    instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, afterBundleSize, "49 0F 44 C0");
+    instructionOffset = Script::Pattern::FindMem(instructionOffset - 0x10, afterBundleSize, "48 8B");
     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
     auto heapOffsetPtr = instructionOffset + pcOffset + 7;
     auto heapOffset = Script::Memory::ReadDword(heapOffsetPtr);
@@ -35,6 +40,7 @@ void S2Plugin::State::loadState()
     }
 
     refreshOffsets();
+    return true;
 }
 
 const std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()

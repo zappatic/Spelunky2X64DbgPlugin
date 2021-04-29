@@ -14,7 +14,7 @@ namespace S2Plugin
     {
       public:
         explicit EntityDB(Configuration* config);
-        void loadEntityDB();
+        bool loadEntityDB();
         EntityList* entityList() const noexcept;
 
         const std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t entityDBIndex);

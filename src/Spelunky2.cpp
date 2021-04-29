@@ -8,8 +8,12 @@ static size_t gSpelunky2CodeSectionSize = 0;
 static size_t gSpelunky2AfterBundle = 0;
 static size_t gSpelunky2AfterBundleSize = 0;
 
-void S2Plugin::displayError(const char* fmt, ...)
+void S2Plugin::Spelunky2::displayError(const char* fmt, ...)
 {
+    if (mInitErrorShown)
+    {
+        return;
+    }
     char buffer[1024] = {0};
 
     va_list args;
@@ -23,9 +27,10 @@ void S2Plugin::displayError(const char* fmt, ...)
     msgBox.setWindowTitle("Spelunky2");
     msgBox.exec();
     _plugin_logprintf("[Spelunky2] %s\n", buffer);
+    mInitErrorShown = true;
 }
 
-void S2Plugin::findSpelunky2InMemory()
+void S2Plugin::Spelunky2::findSpelunky2InMemory()
 {
     if (gSpelunky2CodeSectionStart != 0)
     {
@@ -76,7 +81,7 @@ void S2Plugin::findSpelunky2InMemory()
     // find the 'after_bundle' location, where the actual code is
     // only search in the last 7 megabytes
     auto sevenMegs = 7 * 1024 * 1024;
-    gSpelunky2AfterBundle = Script::Pattern::FindMem(gSpelunky2CodeSectionStart + gSpelunky2CodeSectionSize - (7 * 1024 * 1024), sevenMegs, "48 81 EC E8 00 00 00");
+    gSpelunky2AfterBundle = Script::Pattern::FindMem(gSpelunky2CodeSectionStart + gSpelunky2CodeSectionSize - sevenMegs, sevenMegs, "48 81 EC E8 00 00 00");
     if (gSpelunky2AfterBundle == 0)
     {
         displayError("Could not locate the 'after_bundle' location");
@@ -85,7 +90,7 @@ void S2Plugin::findSpelunky2InMemory()
     gSpelunky2AfterBundleSize = gSpelunky2CodeSectionStart + gSpelunky2CodeSectionSize - gSpelunky2AfterBundle;
 }
 
-size_t S2Plugin::spelunky2AfterBundle()
+size_t S2Plugin::Spelunky2::spelunky2AfterBundle()
 {
     if (gSpelunky2AfterBundle == 0)
     {
@@ -94,7 +99,7 @@ size_t S2Plugin::spelunky2AfterBundle()
     return gSpelunky2AfterBundle;
 }
 
-size_t S2Plugin::spelunky2AfterBundleSize()
+size_t S2Plugin::Spelunky2::spelunky2AfterBundleSize()
 {
     if (gSpelunky2AfterBundle == 0)
     {
@@ -103,7 +108,24 @@ size_t S2Plugin::spelunky2AfterBundleSize()
     return gSpelunky2AfterBundleSize;
 }
 
-std::string S2Plugin::getEntityName(size_t offset, EntityDB* entityDB)
+// size_t S2Plugin::Spelunky2::findEntityListMapOffset()
+// {
+//     auto offset = Script::Pattern::FindMem(spelunky2AfterBundle(), spelunky2AfterBundleSize(), "29 5C 8F 3D");
+//     offset = Script::Pattern::FindMem(offset, spelunky2AfterBundleSize(), "48 8D 8B");
+//     auto entitiesOffset = Script::Memory::ReadDword(offset + 3);
+
+//     offset = Script::Pattern::FindMem(spelunky2AfterBundle(), spelunky2AfterBundleSize(), "48 B8 02 55 A7 74 52 9D 51 43") - 7;
+//     auto entitiesPtr = Script::Memory::ReadDword(offset + 3) + offset + 7;
+
+//     auto mapOffset = Script::Memory::ReadQword(entitiesPtr) + entitiesOffset;
+
+//     auto mapPtr = reinterpret_cast<std::unordered_map<std::string, uint16_t>*>(mapOffset);
+//     // dprintf("mapPtr size = %d\n", mapPtr->size());
+
+//     return offset;
+// }
+
+std::string S2Plugin::Spelunky2::getEntityName(size_t offset, EntityDB* entityDB)
 {
     std::string entityName = "";
     if (offset == 0)
@@ -124,7 +146,7 @@ std::string S2Plugin::getEntityName(size_t offset, EntityDB* entityDB)
     return entityName;
 }
 
-uint32_t S2Plugin::getEntityTypeID(size_t offset)
+uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset)
 {
     if (offset == 0)
     {

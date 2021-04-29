@@ -1,4 +1,5 @@
 #include "Data/EntityList.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <filesystem>
 #include <fstream>

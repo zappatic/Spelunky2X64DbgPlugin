@@ -364,7 +364,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::EntityPointer:
         {
             size_t value = Script::Memory::ReadQword(memoryOffset);
-            auto entityName = getEntityName(value, mToolbar->entityDB());
+            auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(value, mToolbar->entityDB());
             itemValue->setData(QString::asprintf("<font color='blue'><u>%s</u></font>", entityName.c_str()), Qt::DisplayRole);
             auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
@@ -469,7 +469,10 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     {
                         auto id = Script::Memory::ReadDword(offset + 20);
                         auto view = mToolbar->showEntityDB();
-                        view->showIndex(id);
+                        if (view != nullptr)
+                        {
+                            view->showIndex(id);
+                        }
                     }
                     break;
                 }

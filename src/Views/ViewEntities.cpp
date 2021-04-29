@@ -142,7 +142,7 @@ void S2Plugin::ViewEntities::refreshEntities()
             auto entityPtr = layerEntities + (x * sizeof(size_t));
             auto entity = Script::Memory::ReadQword(entityPtr);
             auto entityUid = Script::Memory::ReadDword(entity + 56);
-            auto entityName = QString::fromStdString(getEntityName(entity, mToolbar->entityDB()));
+            auto entityName = QString::fromStdString(mToolbar->configuration()->spelunky2()->getEntityName(entity, mToolbar->entityDB()));
 
             auto matchesFilter = false;
             if (mCheckboxFLOOR->checkState() == Qt::Checked && entityName.startsWith("FLOOR_"))

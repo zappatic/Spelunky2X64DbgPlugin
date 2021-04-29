@@ -2,6 +2,7 @@
 #include "Configuration.h"
 #include "Data/EntityDB.h"
 #include "Data/State.h"
+#include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QFile>

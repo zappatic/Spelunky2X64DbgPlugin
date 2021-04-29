@@ -12,6 +12,8 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STR
 project(Spelunky2)
 set(CMAKE_CXX_STANDARD 17)
 add_compile_definitions(_ITERATOR_DEBUG_LEVEL=0)
+add_compile_definitions(NOMINMAX)
+add_compile_definitions(WIN32_LEAN_AND_MEAN)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 

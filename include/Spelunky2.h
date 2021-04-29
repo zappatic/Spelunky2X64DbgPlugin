@@ -166,12 +166,20 @@ namespace S2Plugin
     };
     // clang-format on
 
-    size_t spelunky2AfterBundle();
-    size_t spelunky2AfterBundleSize();
-    std::string getEntityName(size_t offset, EntityDB* entityDB);
-    uint32_t getEntityTypeID(size_t offset);
+    class Spelunky2
+    {
+      public:
+        size_t spelunky2AfterBundle();
+        size_t spelunky2AfterBundleSize();
+        std::string getEntityName(size_t offset, EntityDB* entityDB);
+        uint32_t getEntityTypeID(size_t offset);
 
-    void displayError(const char* fmt, ...);
-    void findSpelunky2InMemory();
+        void displayError(const char* fmt, ...);
+        void findSpelunky2InMemory();
+        // size_t findEntityListMapOffset();
+
+      private:
+        bool mInitErrorShown = false;
+    };
 
 } // namespace S2Plugin

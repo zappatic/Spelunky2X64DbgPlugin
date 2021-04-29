@@ -21,9 +21,12 @@ namespace S2Plugin
         const std::unordered_map<std::string, MemoryFieldType>& defaultEntityClassTypes() const noexcept;
         const std::vector<MemoryField>& typeFields(const MemoryFieldType& type) const;
 
+        Spelunky2* spelunky2() const noexcept;
+
       private:
         bool mIsValid = false;
         std::string mErrorString;
+        std::unique_ptr<Spelunky2> mSpelunky2;
 
         std::unordered_map<MemoryFieldType, MemoryFieldType> mEntityClassHierarchy;
         std::unordered_map<std::string, MemoryFieldType> mDefaultEntityClassTypes;
