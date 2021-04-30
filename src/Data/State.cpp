@@ -67,3 +67,37 @@ size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
     }
     return mMemoryOffsets.at(full);
 }
+
+size_t S2Plugin::State::findNextEntity(size_t entityOffset)
+{
+    size_t nextOffset = (std::numeric_limits<size_t>::max)();
+
+    auto loopEntities = [&nextOffset, entityOffset](size_t entities, uint32_t entityCount) {
+        for (auto x = 0; x < (std::min)(10000u, entityCount); ++x)
+        {
+            auto entityPtr = Script::Memory::ReadQword(entities + (x * sizeof(size_t)));
+            if (entityPtr <= entityOffset)
+            {
+                continue;
+            }
+            if (entityPtr < nextOffset)
+            {
+                nextOffset = entityPtr;
+            }
+        }
+    };
+
+    auto layer0Entities = Script::Memory::ReadQword(offsetForField("layer0.first_entity*"));
+    auto layer0EntityCount = Script::Memory::ReadDword(offsetForField("layer0.size"));
+    loopEntities(layer0Entities, layer0EntityCount);
+
+    auto layer1Entities = Script::Memory::ReadQword(offsetForField("layer1.first_entity*"));
+    auto layer1EntityCount = Script::Memory::ReadDword(offsetForField("layer1.size"));
+    loopEntities(layer1Entities, layer1EntityCount);
+
+    if (nextOffset == (std::numeric_limits<size_t>::max)())
+    {
+        return 0;
+    }
+    return nextOffset;
+}

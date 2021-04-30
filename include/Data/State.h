@@ -18,6 +18,8 @@ namespace S2Plugin
         void refreshOffsets();
         size_t offsetForField(const std::string& fieldName) const;
 
+        size_t findNextEntity(size_t entityOffset);
+
       private:
         size_t mStatePtr = 0;
         std::unordered_map<std::string, size_t> mMemoryOffsets; // fieldname -> offset of field value in memory

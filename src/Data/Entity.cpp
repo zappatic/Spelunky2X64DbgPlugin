@@ -3,7 +3,8 @@
 #include "pluginmain.h"
 #include <regex>
 
-S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, EntityDB* entityDB, S2Plugin::Configuration* config) : MemoryMappedData(config), mEntityPtr(offset), mTree(tree)
+S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, EntityDB* entityDB, S2Plugin::Configuration* config)
+    : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView)
 {
     auto entityID = config->spelunky2()->getEntityTypeID(offset);
     auto entityName = config->spelunky2()->getEntityName(offset, entityDB);
@@ -66,6 +67,87 @@ void S2Plugin::Entity::populateTreeView()
     }
 }
 
+void S2Plugin::Entity::populateMemoryView()
+{
+    static const std::vector<QColor> colors = {QColor(255, 214, 222), QColor(232, 206, 227), QColor(199, 186, 225), QColor(187, 211, 236), QColor(236, 228, 197), QColor(193, 219, 204)};
+    mTotalMemorySize = 0;
+    mMemoryView->clearHighlights();
+    auto hierarchy = classHierarchy();
+    uint8_t colorIndex = 0;
+    for (auto c : hierarchy)
+    {
+        auto fields = mConfiguration->typeFields(c);
+        for (const auto& field : fields)
+        {
+            highlightField(field, gsMemoryFieldTypeToStringMapping.at(c) + "." + field.name, colors.at(colorIndex));
+        }
+        colorIndex++;
+        if (colorIndex >= colors.size())
+        {
+            colorIndex = 0;
+        }
+    }
+}
+
+void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fieldNameOverride, const QColor& color)
+{
+    uint8_t fieldSize = 0;
+    switch (field.type)
+    {
+        case MemoryFieldType::Flag:
+            break;
+        case MemoryFieldType::Skip:
+            fieldSize = field.extraInfo;
+            break;
+        case MemoryFieldType::Bool:
+        case MemoryFieldType::Byte:
+        case MemoryFieldType::UnsignedByte:
+            fieldSize = 1;
+            break;
+        case MemoryFieldType::Word:
+        case MemoryFieldType::UnsignedWord:
+            fieldSize = 2;
+            break;
+        case MemoryFieldType::Dword:
+        case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::Float:
+        case MemoryFieldType::Flags32:
+        case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::EntityUID:
+            fieldSize = 4;
+            break;
+        case MemoryFieldType::CodePointer:
+        case MemoryFieldType::DataPointer:
+        case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::Qword:
+        case MemoryFieldType::UnsignedQword:
+        case MemoryFieldType::ConstCharPointerPointer:
+            fieldSize = 8;
+            break;
+        default: // it's either a pointer or an inline struct
+        {
+            if (gsPointerTypes.count(field.type) > 0)
+            {
+                fieldSize = 8;
+            }
+            else
+            {
+                for (const auto& f : mConfiguration->typeFields(field.type))
+                {
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                }
+            }
+            break;
+        }
+    }
+    if (fieldSize > 0)
+    {
+        mMemoryView->addHighlightedField(fieldNameOverride, mMemoryOffsets.at(fieldNameOverride), fieldSize, color);
+    }
+    mTotalMemorySize += fieldSize;
+}
+
 void S2Plugin::Entity::interpretAs(MemoryFieldType classType)
 {
     mEntityType = classType;
@@ -73,6 +155,7 @@ void S2Plugin::Entity::interpretAs(MemoryFieldType classType)
     populateTreeView();
     refreshOffsets();
     refreshValues();
+    populateMemoryView();
     mTree->updateTableHeader();
 }
 
@@ -126,4 +209,14 @@ size_t S2Plugin::Entity::findEntityByUID(uint32_t uidToSearch, State* state)
         return result;
     }
     return 0;
+}
+
+size_t S2Plugin::Entity::totalMemorySize() const noexcept
+{
+    return mTotalMemorySize;
+}
+
+size_t S2Plugin::Entity::memoryOffset() const noexcept
+{
+    return mEntityPtr;
 }

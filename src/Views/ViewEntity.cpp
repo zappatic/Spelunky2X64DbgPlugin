@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 #include <QHeaderView>
 #include <QLabel>
+#include <QScrollArea>
 
 S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
@@ -13,7 +14,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
 
-    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mToolbar->entityDB(), mToolbar->configuration());
+    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mToolbar->entityDB(), mToolbar->configuration());
     mEntity->populateTreeView();
 
     mMainLayout->setMargin(5);
@@ -29,6 +30,9 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
+
+    mEntity->populateMemoryView();
+    updateMemoryViewOffsetAndSize();
 }
 
 void S2Plugin::ViewEntity::initializeUI()
@@ -36,6 +40,21 @@ void S2Plugin::ViewEntity::initializeUI()
     mTopLayout = new QHBoxLayout(this);
     mMainLayout->addLayout(mTopLayout);
 
+    mMainTabWidget = new QTabWidget(this);
+    mMainTabWidget->setDocumentMode(false);
+    mMainLayout->addWidget(mMainTabWidget);
+
+    mTabFields = new QWidget();
+    mTabMemory = new QWidget();
+    mTabFields->setLayout(new QVBoxLayout(mTabFields));
+    mTabFields->layout()->setMargin(0);
+    mTabMemory->setLayout(new QVBoxLayout(mTabMemory));
+    mTabMemory->layout()->setMargin(0);
+
+    mMainTabWidget->addTab(mTabFields, "Fields");
+    mMainTabWidget->addTab(mTabMemory, "Memory");
+
+    // TOP LAYOUT
     mRefreshButton = new QPushButton("Refresh", this);
     mTopLayout->addWidget(mRefreshButton);
     QObject::connect(mRefreshButton, &QPushButton::clicked, this, &ViewEntity::refreshEntity);
@@ -62,7 +81,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mInterpretAsComboBox = new QComboBox(this);
     mInterpretAsComboBox->addItem("");
     mInterpretAsComboBox->addItem("Entity");
-    mInterpretAsComboBox->insertSeparator(1);
+    mInterpretAsComboBox->insertSeparator(2);
     std::vector<std::string> classNames;
     for (const auto& [classType, parentClassType] : mToolbar->configuration()->entityClassHierarchy())
     {
@@ -76,12 +95,20 @@ void S2Plugin::ViewEntity::initializeUI()
     QObject::connect(mInterpretAsComboBox, &QComboBox::currentTextChanged, this, &ViewEntity::interpretAsChanged);
     mTopLayout->addWidget(mInterpretAsComboBox);
 
+    // TAB FIELDS
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    mMainLayout->addWidget(mMainTreeView);
-
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();
+    mTabFields->layout()->addWidget(mMainTreeView);
+
+    // TAB MEMORY
+    auto scroll = new QScrollArea(mTabMemory);
+    mMemoryView = new WidgetMemoryView(scroll);
+    scroll->setStyleSheet("background-color: #fff;");
+    scroll->setWidget(mMemoryView);
+    scroll->setVisible(true);
+    mTabMemory->layout()->addWidget(scroll);
 }
 
 void S2Plugin::ViewEntity::closeEvent(QCloseEvent* event)
@@ -93,6 +120,10 @@ void S2Plugin::ViewEntity::refreshEntity()
 {
     mEntity->refreshValues();
     mMainTreeView->updateTableHeader(false);
+    if (mMainTabWidget->currentWidget() == mTabMemory)
+    {
+        mMemoryView->update();
+    }
 }
 
 void S2Plugin::ViewEntity::toggleAutoRefresh(int newState)
@@ -143,9 +174,27 @@ void S2Plugin::ViewEntity::interpretAsChanged(const QString& text)
             if (textStr == name)
             {
                 mEntity->interpretAs(classType);
+                updateMemoryViewOffsetAndSize();
                 break;
             }
         }
         mInterpretAsComboBox->setCurrentText("");
     }
+}
+
+void S2Plugin::ViewEntity::updateMemoryViewOffsetAndSize()
+{
+    static const size_t defaultExtraBytesShown = 500;
+    auto entityOffset = mEntity->memoryOffset();
+    auto entitySize = mEntity->totalMemorySize();
+    auto nextEntityOffset = mToolbar->state()->findNextEntity(entityOffset);
+    if (nextEntityOffset != 0)
+    {
+        mExtraBytesShown = (std::min)(defaultExtraBytesShown, nextEntityOffset - (entityOffset + entitySize));
+    }
+    else
+    {
+        mExtraBytesShown = defaultExtraBytesShown;
+    }
+    mMemoryView->setOffsetAndSize(entityOffset, entitySize + mExtraBytesShown);
 }

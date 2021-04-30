@@ -64,6 +64,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewState.h
 	include/QtHelpers/HTMLDelegate.h
 	include/QtHelpers/TreeViewMemoryFields.h
+	include/QtHelpers/WidgetMemoryView.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/MemoryMappedData.cpp
@@ -79,6 +80,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewState.cpp
 	src/QtHelpers/HTMLDelegate.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
+	src/QtHelpers/WidgetMemoryView.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )
