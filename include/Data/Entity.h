@@ -28,6 +28,8 @@ namespace S2Plugin
 
         size_t totalMemorySize() const noexcept;
         size_t memoryOffset() const noexcept;
+        uint32_t uid() const noexcept;
+        uint8_t cameraLayer() const noexcept;
 
         static size_t findEntityByUID(uint32_t uid, State* state);
 

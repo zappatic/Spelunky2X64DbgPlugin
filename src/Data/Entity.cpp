@@ -220,3 +220,13 @@ size_t S2Plugin::Entity::memoryOffset() const noexcept
 {
     return mEntityPtr;
 }
+
+uint32_t S2Plugin::Entity::uid() const noexcept
+{
+    return Script::Memory::ReadDword(mEntityPtr + 56);
+}
+
+uint8_t S2Plugin::Entity::cameraLayer() const noexcept
+{
+    return Script::Memory::ReadByte(mMemoryOffsets.at("Entity.camera_layer"));
+}

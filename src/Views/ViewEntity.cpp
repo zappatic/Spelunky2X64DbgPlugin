@@ -33,6 +33,10 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
 
     mEntity->populateMemoryView();
     updateMemoryViewOffsetAndSize();
+
+    mSpelunkyLevel->paintEntityMask(0x100, QColor(160, 160, 160)); // 0x100 = FLOOR
+    mSpelunkyLevel->paintEntityUID(mEntity->uid(), QColor(222, 52, 235));
+    updateLevel();
 }
 
 void S2Plugin::ViewEntity::initializeUI()
@@ -46,13 +50,17 @@ void S2Plugin::ViewEntity::initializeUI()
 
     mTabFields = new QWidget();
     mTabMemory = new QWidget();
+    mTabLevel = new QWidget();
     mTabFields->setLayout(new QVBoxLayout(mTabFields));
     mTabFields->layout()->setMargin(0);
     mTabMemory->setLayout(new QVBoxLayout(mTabMemory));
     mTabMemory->layout()->setMargin(0);
+    mTabLevel->setLayout(new QVBoxLayout(mTabLevel));
+    mTabLevel->layout()->setMargin(0);
 
     mMainTabWidget->addTab(mTabFields, "Fields");
     mMainTabWidget->addTab(mTabMemory, "Memory");
+    mMainTabWidget->addTab(mTabLevel, "Level");
 
     // TOP LAYOUT
     mRefreshButton = new QPushButton("Refresh", this);
@@ -109,6 +117,14 @@ void S2Plugin::ViewEntity::initializeUI()
     scroll->setWidget(mMemoryView);
     scroll->setVisible(true);
     mTabMemory->layout()->addWidget(scroll);
+
+    // TAB LEVEL
+    scroll = new QScrollArea(mTabLevel);
+    mSpelunkyLevel = new WidgetSpelunkyLevel(scroll);
+    scroll->setStyleSheet("background-color: #fff;");
+    scroll->setWidget(mSpelunkyLevel);
+    scroll->setVisible(true);
+    mTabLevel->layout()->addWidget(scroll);
 }
 
 void S2Plugin::ViewEntity::closeEvent(QCloseEvent* event)
@@ -123,6 +139,10 @@ void S2Plugin::ViewEntity::refreshEntity()
     if (mMainTabWidget->currentWidget() == mTabMemory)
     {
         mMemoryView->update();
+    }
+    else if (mMainTabWidget->currentWidget() == mTabLevel)
+    {
+        updateLevel();
     }
 }
 
@@ -197,4 +217,21 @@ void S2Plugin::ViewEntity::updateMemoryViewOffsetAndSize()
         mExtraBytesShown = defaultExtraBytesShown;
     }
     mMemoryView->setOffsetAndSize(entityOffset, entitySize + mExtraBytesShown);
+}
+
+void S2Plugin::ViewEntity::updateLevel()
+{
+    auto layerName = "layer0";
+    if (mEntity->cameraLayer() == 1)
+    {
+        layerName = "layer1";
+    }
+
+    auto layer = Script::Memory::ReadQword(mToolbar->state()->offsetForField(layerName));
+    auto entityCount = (std::min)(Script::Memory::ReadDword(layer + 28), 10000u);
+    auto entities = Script::Memory::ReadQword(layer + 8);
+
+    mSpelunkyLevel->loadEntities(entities, entityCount);
+
+    mSpelunkyLevel->update();
 }

@@ -4,6 +4,7 @@
 #include "Data/EntityDB.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "QtHelpers/WidgetMemoryView.h"
+#include "QtHelpers/WidgetSpelunkyLevel.h"
 #include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QComboBox>
@@ -41,6 +42,7 @@ namespace S2Plugin
         QTabWidget* mMainTabWidget;
         QWidget* mTabFields;
         QWidget* mTabMemory;
+        QWidget* mTabLevel;
 
         QPushButton* mRefreshButton;
         QCheckBox* mAutoRefreshCheckBox;
@@ -53,10 +55,13 @@ namespace S2Plugin
         WidgetMemoryView* mMemoryView;
         uint32_t mExtraBytesShown = 100;
 
+        WidgetSpelunkyLevel* mSpelunkyLevel;
+
         std::unique_ptr<Entity> mEntity;
         ViewToolbar* mToolbar;
 
         void initializeUI();
         void updateMemoryViewOffsetAndSize();
+        void updateLevel();
     };
 } // namespace S2Plugin
