@@ -43,7 +43,7 @@ bool S2Plugin::State::loadState()
     return true;
 }
 
-const std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()
+std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()
 {
     return mMemoryOffsets;
 }

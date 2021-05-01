@@ -92,6 +92,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::Vector:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
@@ -185,7 +186,8 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::lookupTreeViewItem(const std::str
     return nullptr;
 }
 
-void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent)
+void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent,
+                                                         bool disableChangeHighlightingForField)
 {
     size_t memoryOffset = 0;
     if (offsets.count(fieldNameOverride) != 0)
@@ -215,6 +217,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
     }
 
     auto highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
+    if (disableChangeHighlightingForField)
+    {
+        highlightColor = Qt::transparent;
+    }
+
     switch (field.type)
     {
         case MemoryFieldType::CodePointer:
@@ -386,6 +393,31 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 f.name = "flag_" + std::to_string(x);
                 f.type = MemoryFieldType::Flag;
                 updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::Vector:
+        {
+            if (itemField->hasChildren())
+            {
+                itemField->removeRows(0, itemField->rowCount());
+            }
+
+            auto vectorCount = (std::min)(50u, Script::Memory::ReadDword(memoryOffset + 20));
+            auto vectorItemsOffset = Script::Memory::ReadQword(memoryOffset + 8);
+
+            for (auto x = 0; x < vectorCount; ++x)
+            {
+                MemoryField f;
+                f.name = std::to_string(x);
+                f.type = MemoryFieldType::EntityUID;
+                auto subItemOffset = vectorItemsOffset + (x * sizeof(uint32_t));
+                offsets[fieldNameOverride + "." + f.name] = subItemOffset;
+
+                auto subItemValue = addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
+                subItemValue->setData(subItemOffset, gsRoleRawValue);
+
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField, true);
             }
             break;
         }

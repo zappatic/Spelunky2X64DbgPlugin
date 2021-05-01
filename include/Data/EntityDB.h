@@ -17,7 +17,7 @@ namespace S2Plugin
         bool loadEntityDB();
         EntityList* entityList() const noexcept;
 
-        const std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t entityDBIndex);
+        std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t entityDBIndex);
 
       private:
         size_t mEntityDBPtr = 0;

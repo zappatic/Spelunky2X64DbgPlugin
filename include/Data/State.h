@@ -14,7 +14,7 @@ namespace S2Plugin
         explicit State(Configuration* config);
         bool loadState();
 
-        const std::unordered_map<std::string, size_t>& offsets();
+        std::unordered_map<std::string, size_t>& offsets();
         void refreshOffsets();
         size_t offsetForField(const std::string& fieldName) const;
 

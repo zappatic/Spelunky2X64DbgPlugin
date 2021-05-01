@@ -24,7 +24,8 @@ namespace S2Plugin
 
         void expandItem(QStandardItem* item);
         QStandardItem* lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);
-        void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent = nullptr);
+        void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent = nullptr,
+                                 bool disableChangeHighlightingForField = false);
 
       private slots:
         void cellClicked(const QModelIndex& index);

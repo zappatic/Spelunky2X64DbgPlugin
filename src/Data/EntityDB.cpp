@@ -41,7 +41,7 @@ S2Plugin::EntityList* S2Plugin::EntityDB::entityList() const noexcept
     return mEntityList.get();
 }
 
-const std::unordered_map<std::string, size_t>& S2Plugin::EntityDB::offsetsForIndex(uint32_t entityDBIndex)
+std::unordered_map<std::string, size_t>& S2Plugin::EntityDB::offsetsForIndex(uint32_t entityDBIndex)
 {
     return mMemoryOffsets.at(entityDBIndex);
 }
