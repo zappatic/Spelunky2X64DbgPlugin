@@ -21,8 +21,8 @@ namespace S2Plugin
 
         void refreshOffsets();
         void refreshValues();
-        void interpretAs(MemoryFieldType classType);
-        std::deque<MemoryFieldType> classHierarchy() const;
+        void interpretAs(const std::string& classType);
+        std::deque<std::string> classHierarchy() const;
         void populateTreeView();
         void populateMemoryView();
 
@@ -37,9 +37,9 @@ namespace S2Plugin
         size_t mEntityPtr = 0;
         TreeViewMemoryFields* mTree;
         WidgetMemoryView* mMemoryView;
-        MemoryFieldType mEntityType = MemoryFieldType::ClassEntity;
+        std::string mEntityType = "Entity";
         std::unordered_map<std::string, size_t> mMemoryOffsets; // fieldname -> offset of field value in memory
-        std::unordered_map<MemoryFieldType, QStandardItem*> mTreeViewSectionItems;
+        std::unordered_map<std::string, QStandardItem*> mTreeViewSectionItems;
 
         size_t mTotalMemorySize = 0;
         void highlightField(MemoryField field, const std::string& fieldNameOverride, const QColor& color);

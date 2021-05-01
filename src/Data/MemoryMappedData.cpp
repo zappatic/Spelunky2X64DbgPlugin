@@ -58,9 +58,20 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             }
             else
             {
-                for (const auto& f : mConfiguration->typeFields(field.type))
+
+                if (field.type == MemoryFieldType::EntitySubclass)
                 {
-                    offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                    {
+                        offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                    }
+                }
+                else
+                {
+                    for (const auto& f : mConfiguration->typeFields(field.type))
+                    {
+                        offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                    }
                 }
             }
             break;

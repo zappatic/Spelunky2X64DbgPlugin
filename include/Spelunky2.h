@@ -70,25 +70,7 @@ namespace S2Plugin
         ConstCharPointerPointer,
         Map,
         PlayerInventoryPointer,
-        ClassEntity,
-        ClassMovable,
-        ClassMonster,
-        ClassPlayer,
-        ClassArrowTrap,
-        ClassContainer,
-        ClassGun,
-        ClassCrushTrap,
-        ClassMattock,
-        ClassJetpack,
-        ClassBomb,
-        ClassOlmec,
-        ClassOlmecFloater,
-        ClassCape,
-        ClassVladsCape,
-        ClassKapalaPowerup,
-        ClassChasingMonster,
-        ClassGhost,
-        ClassJiangshi,
+        EntitySubclass,
     };
 
     // clang-format off
@@ -126,25 +108,6 @@ namespace S2Plugin
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::Map, "std::map<>"},
         {MemoryFieldType::PlayerInventoryPointer, "Inventory"},
-        {MemoryFieldType::ClassEntity, "Entity"},
-        {MemoryFieldType::ClassMovable, "Movable"},
-        {MemoryFieldType::ClassMonster, "Monster"},
-        {MemoryFieldType::ClassPlayer, "Player"},
-        {MemoryFieldType::ClassArrowTrap, "Arrow trap"},
-        {MemoryFieldType::ClassContainer, "Container"},
-        {MemoryFieldType::ClassGun, "Gun"},
-        {MemoryFieldType::ClassCrushTrap, "CrushTrap"},
-        {MemoryFieldType::ClassMattock, "Mattock"},
-        {MemoryFieldType::ClassJetpack, "Jetpack"},
-        {MemoryFieldType::ClassBomb, "Bomb"},
-        {MemoryFieldType::ClassOlmec, "Olmec"},
-        {MemoryFieldType::ClassOlmecFloater, "OlmecFloater"},
-        {MemoryFieldType::ClassCape, "Cape"},
-        {MemoryFieldType::ClassVladsCape, "VladsCape"},
-        {MemoryFieldType::ClassKapalaPowerup, "KapalaPowerup"},
-        {MemoryFieldType::ClassChasingMonster, "ChasingMonster"},
-        {MemoryFieldType::ClassGhost, "Ghost"},
-        {MemoryFieldType::ClassJiangshi, "Jiangshi"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -180,25 +143,6 @@ namespace S2Plugin
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"Map", MemoryFieldType::Map},
         {"PlayerInventoryPointer", MemoryFieldType::PlayerInventoryPointer},
-        {"Entity", MemoryFieldType::ClassEntity},
-        {"Movable", MemoryFieldType::ClassMovable},
-        {"Monster", MemoryFieldType::ClassMonster},
-        {"Player", MemoryFieldType::ClassPlayer},
-        {"ArrowTrap", MemoryFieldType::ClassArrowTrap},
-        {"Container", MemoryFieldType::ClassContainer},
-        {"Gun", MemoryFieldType::ClassGun},
-        {"CrushTrap", MemoryFieldType::ClassCrushTrap},
-        {"Mattock", MemoryFieldType::ClassMattock},
-        {"Jetpack", MemoryFieldType::ClassJetpack},
-        {"Bomb", MemoryFieldType::ClassBomb},
-        {"Olmec", MemoryFieldType::ClassOlmec},
-        {"OlmecFloater", MemoryFieldType::ClassOlmecFloater},
-        {"Cape", MemoryFieldType::ClassCape},
-        {"VladsCape", MemoryFieldType::ClassVladsCape},
-        {"KapalaPowerup", MemoryFieldType::ClassKapalaPowerup},
-        {"ChasingMonster", MemoryFieldType::ClassChasingMonster},
-        {"Ghost", MemoryFieldType::ClassGhost},
-        {"Jiangshi", MemoryFieldType::ClassJiangshi},
     };
 
     const static std::unordered_set<MemoryFieldType> gsPointerTypes = {
@@ -215,6 +159,7 @@ namespace S2Plugin
         std::string name;
         MemoryFieldType type;
         uint64_t extraInfo = 0;
+        std::string entitySubclassName; // only if applicable
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
 

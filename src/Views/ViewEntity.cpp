@@ -93,7 +93,7 @@ void S2Plugin::ViewEntity::initializeUI()
     std::vector<std::string> classNames;
     for (const auto& [classType, parentClassType] : mToolbar->configuration()->entityClassHierarchy())
     {
-        classNames.emplace_back(gsMemoryFieldTypeToStringMapping.at(classType));
+        classNames.emplace_back(classType);
     }
     std::sort(classNames.begin(), classNames.end());
     for (const auto& className : classNames)
@@ -189,15 +189,8 @@ void S2Plugin::ViewEntity::interpretAsChanged(const QString& text)
     if (!text.isEmpty())
     {
         auto textStr = text.toStdString();
-        for (const auto& [classType, name] : gsMemoryFieldTypeToStringMapping)
-        {
-            if (textStr == name)
-            {
-                mEntity->interpretAs(classType);
-                updateMemoryViewOffsetAndSize();
-                break;
-            }
-        }
+        mEntity->interpretAs(textStr);
+        updateMemoryViewOffsetAndSize();
         mInterpretAsComboBox->setCurrentText("");
     }
 }

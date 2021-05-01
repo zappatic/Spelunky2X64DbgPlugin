@@ -26,13 +26,13 @@ void S2Plugin::Entity::refreshOffsets()
     auto hierarchy = classHierarchy();
     for (auto c : hierarchy)
     {
-        auto headerIdentifier = gsMemoryFieldTypeToStringMapping.at(c);
+        auto headerIdentifier = c;
         MemoryField headerField;
-        headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
-        headerField.type = c;
+        headerField.name = "<b>" + c + "</b>";
+        headerField.type = MemoryFieldType::EntitySubclass;
+        headerField.entitySubclassName = c;
         offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
-
-        for (const auto& field : mConfiguration->typeFields(c))
+        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
         {
             offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
         }
@@ -46,9 +46,10 @@ void S2Plugin::Entity::refreshValues()
     for (auto c : hierarchy)
     {
         MemoryField headerField;
-        headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
-        headerField.type = c;
-        mTree->updateValueForField(headerField, gsMemoryFieldTypeToStringMapping.at(c), mMemoryOffsets);
+        headerField.name = "<b>" + c + "</b>";
+        headerField.type = MemoryFieldType::EntitySubclass;
+        headerField.entitySubclassName = c;
+        mTree->updateValueForField(headerField, c, mMemoryOffsets);
     }
 }
 
@@ -59,9 +60,10 @@ void S2Plugin::Entity::populateTreeView()
     for (auto c : hierarchy)
     {
         MemoryField headerField;
-        headerField.name = "<b>" + gsMemoryFieldTypeToStringMapping.at(c) + "</b>";
-        headerField.type = c;
-        auto item = mTree->addMemoryField(headerField, gsMemoryFieldTypeToStringMapping.at(c));
+        headerField.name = "<b>" + c + "</b>";
+        headerField.type = MemoryFieldType::EntitySubclass;
+        headerField.entitySubclassName = c;
+        auto item = mTree->addMemoryField(headerField, c);
         mTree->expandItem(item);
         mTreeViewSectionItems[c] = item;
     }
@@ -76,10 +78,10 @@ void S2Plugin::Entity::populateMemoryView()
     uint8_t colorIndex = 0;
     for (auto c : hierarchy)
     {
-        auto fields = mConfiguration->typeFields(c);
+        auto fields = mConfiguration->typeFieldsOfEntitySubclass(c);
         for (const auto& field : fields)
         {
-            highlightField(field, gsMemoryFieldTypeToStringMapping.at(c) + "." + field.name, colors.at(colorIndex));
+            highlightField(field, c + "." + field.name, colors.at(colorIndex));
         }
         colorIndex++;
         if (colorIndex >= colors.size())
@@ -133,9 +135,19 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
             }
             else
             {
-                for (const auto& f : mConfiguration->typeFields(field.type))
+                if (field.type == MemoryFieldType::EntitySubclass)
                 {
-                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                    {
+                        highlightField(f, fieldNameOverride + "." + f.name, color);
+                    }
+                }
+                else
+                {
+                    for (const auto& f : mConfiguration->typeFields(field.type))
+                    {
+                        highlightField(f, fieldNameOverride + "." + f.name, color);
+                    }
                 }
             }
             break;
@@ -148,7 +160,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
     mTotalMemorySize += fieldSize;
 }
 
-void S2Plugin::Entity::interpretAs(MemoryFieldType classType)
+void S2Plugin::Entity::interpretAs(const std::string& classType)
 {
     mEntityType = classType;
     mTree->clear();
@@ -159,21 +171,21 @@ void S2Plugin::Entity::interpretAs(MemoryFieldType classType)
     mTree->updateTableHeader();
 }
 
-std::deque<S2Plugin::MemoryFieldType> S2Plugin::Entity::classHierarchy() const
+std::deque<std::string> S2Plugin::Entity::classHierarchy() const
 {
     auto ech = mConfiguration->entityClassHierarchy();
-    std::deque<MemoryFieldType> hierarchy;
+    std::deque<std::string> hierarchy;
     auto t = mEntityType;
-    while (t != MemoryFieldType::ClassEntity)
+    while (t != "Entity")
     {
         hierarchy.push_front(t);
         if (ech.count(t) == 0)
         {
-            dprintf("unknown key requested in Entity::classHierarchy() (t=%s)\n", gsMemoryFieldTypeToStringMapping.at(t).c_str());
+            dprintf("unknown key requested in Entity::classHierarchy() (t=%s)\n", t.c_str());
         }
         t = ech.at(t);
     }
-    hierarchy.push_front(MemoryFieldType::ClassEntity);
+    hierarchy.push_front("Entity");
     return hierarchy;
 }
 

@@ -43,7 +43,11 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         itemFieldMemoryOffset->setEditable(false);
 
         auto itemFieldType = new QStandardItem();
-        if (gsMemoryFieldTypeToStringMapping.count(field.type) > 0)
+        if (field.type == MemoryFieldType::EntitySubclass)
+        {
+            itemFieldType->setData(QString::fromStdString(field.entitySubclassName), Qt::DisplayRole);
+        }
+        else if (gsMemoryFieldTypeToStringMapping.count(field.type) > 0)
         {
             itemFieldType->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(field.type)), Qt::DisplayRole);
         }
@@ -110,9 +114,19 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         default: // default is assumed to be a container
         {
             auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+            if (field.type == MemoryFieldType::EntitySubclass)
             {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                {
+                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                }
+            }
+            else
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                }
             }
             returnField = structParent;
             break;
@@ -478,9 +492,19 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         default: // default is assumed to be a container
         {
-            for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+            if (field.type == MemoryFieldType::EntitySubclass)
             {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
+            }
+            else
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
             }
             break;
         }

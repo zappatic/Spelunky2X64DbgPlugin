@@ -64,34 +64,25 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     auto entityClassHierarchy = j["entity_class_hierarchy"];
     for (const auto& [key, jsonValue] : entityClassHierarchy.items())
     {
-        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0)
-        {
-            throw std::runtime_error("Unknown type specified in entity_class_hierarchy: " + key);
-        }
         auto value = jsonValue.get<std::string>();
-        if (gsJSONStringToMemoryFieldTypeMapping.count(value) == 0)
+        if (key != value)
         {
-            throw std::runtime_error("Unknown type specified in entity_class_hierarchy: " + value);
+            mEntityClassHierarchy[key] = value;
         }
-
-        mEntityClassHierarchy[gsJSONStringToMemoryFieldTypeMapping.at(key)] = gsJSONStringToMemoryFieldTypeMapping.at(value);
     }
 
     auto defaultEntityTypes = j["default_entity_types"];
     for (const auto& [key, jsonValue] : defaultEntityTypes.items())
     {
         auto value = jsonValue.get<std::string>();
-        if (gsJSONStringToMemoryFieldTypeMapping.count(value) == 0)
-        {
-            throw std::runtime_error("Unknown type specified in default_entity_types: " + value);
-        }
-        mDefaultEntityClassTypes[key] = gsJSONStringToMemoryFieldTypeMapping.at(value);
+        mDefaultEntityClassTypes[key] = value;
     }
 
     auto fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
     {
-        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0)
+        auto isEntitySubclass = isKnownEntitySubclass(key);
+        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass)
         {
             throw std::runtime_error("Unknown type specified in fields: " + key);
         }
@@ -104,6 +95,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             {
                 memField.extraInfo = field["offset"].get<uint64_t>();
             }
+
             auto fieldTypeStr = field["type"].get<std::string>();
             if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
             {
@@ -124,16 +116,23 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
 
             vec.emplace_back(memField);
         }
-        mTypeFields[gsJSONStringToMemoryFieldTypeMapping.at(key)] = vec;
+        if (isEntitySubclass)
+        {
+            mTypeFieldsEntitySubclasses[key] = vec;
+        }
+        else
+        {
+            mTypeFields[gsJSONStringToMemoryFieldTypeMapping.at(key)] = vec;
+        }
     }
 }
 
-const std::unordered_map<S2Plugin::MemoryFieldType, S2Plugin::MemoryFieldType>& S2Plugin::Configuration::entityClassHierarchy() const noexcept
+const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::entityClassHierarchy() const noexcept
 {
     return mEntityClassHierarchy;
 }
 
-const std::unordered_map<std::string, S2Plugin::MemoryFieldType>& S2Plugin::Configuration::defaultEntityClassTypes() const noexcept
+const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::defaultEntityClassTypes() const noexcept
 {
     return mDefaultEntityClassTypes;
 }
@@ -145,6 +144,15 @@ const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(co
         dprintf("unknown key requested in Configuration::typeFields() (t=%s id=%d)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str(), type);
     }
     return mTypeFields.at(type);
+}
+
+const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfEntitySubclass(const std::string& type) const
+{
+    if (mTypeFieldsEntitySubclasses.count(type) == 0)
+    {
+        dprintf("unknown key requested in Configuration::typeFieldsOfEntitySubclass() (t=%s)\n", type.c_str());
+    }
+    return mTypeFieldsEntitySubclasses.at(type);
 }
 
 S2Plugin::Spelunky2* S2Plugin::Configuration::spelunky2() const noexcept
@@ -165,4 +173,13 @@ std::string S2Plugin::Configuration::flagTitle(const std::string& fieldName, uin
         return flagStr;
     }
     return "Unknown flag (" + fieldName + ":" + std::to_string(flagNumber) + ")";
+}
+
+bool S2Plugin::Configuration::isKnownEntitySubclass(const std::string& typeName)
+{
+    if (typeName == "Entity")
+    {
+        return true;
+    }
+    return (mEntityClassHierarchy.count(typeName) > 0);
 }
