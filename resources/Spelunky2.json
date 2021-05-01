@@ -688,8 +688,8 @@
       { "field": "field_12", "type": "UnsignedWord" }
     ],
     "ArrowTrap": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown2", "type": "Qword" },
       { "field": "arrow_shot", "type": "Bool" }
     ],
     "Container": [

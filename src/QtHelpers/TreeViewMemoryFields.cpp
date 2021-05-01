@@ -1,5 +1,6 @@
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Data/Entity.h"
+#include "QtHelpers/DialogEditSimpleValue.h"
 #include "Views/ViewEntityDB.h"
 #include "pluginmain.h"
 #include <inttypes.h>
@@ -214,6 +215,8 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
         itemMemoryOffset->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", memoryOffset), Qt::DisplayRole);
         itemMemoryOffset->setData(memoryOffset, gsRoleRawValue);
+        itemValue->setData(memoryOffset, gsRoleMemoryOffset);
+        itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleFieldName);
     }
 
     auto highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
@@ -383,7 +386,8 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             auto newHexValue = QString::asprintf("0x%08lX", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
-            itemField->setData(value, gsRoleRawValue); // so we can access in MemoryFieldType::Flag
+            itemField->setData(value, gsRoleRawValue);            // so we can access in MemoryFieldType::Flag
+            itemField->setData(memoryOffset, gsRoleMemoryOffset); // so we can access in MemoryFieldType::Flag
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
 
@@ -431,6 +435,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             auto flagTitle = QString::fromStdString(mToolbar->configuration()->flagTitle(flagFieldName, flagIndex));
             auto caption = QString("<font color='%1'>%2</font>").arg(flagSet ? "green" : "red", flagTitle);
             itemValue->setData(caption, Qt::DisplayRole);
+            itemValue->setData(flagIndex, gsRoleFlagIndex);
             itemMemoryOffset->setData("", Qt::DisplayRole);
             break;
         }
@@ -624,6 +629,46 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         {
                             view->showIndex(id);
                         }
+                    }
+                    break;
+                }
+                case MemoryFieldType::Bool:
+                {
+                    auto offset = clickedItem->data(gsRoleMemoryOffset).toULongLong();
+                    if (offset != 0)
+                    {
+                        auto currentValue = clickedItem->data(gsRoleRawValue).toBool();
+                        Script::Memory::WriteByte(offset, !currentValue);
+                    }
+                    break;
+                }
+                case MemoryFieldType::Flag:
+                {
+                    auto flagIndex = clickedItem->data(gsRoleFlagIndex).toUInt();
+                    auto offset = clickedItem->parent()->data(gsRoleMemoryOffset).toULongLong();
+                    if (offset != 0)
+                    {
+                        auto currentValue = Script::Memory::ReadDword(offset);
+                        Script::Memory::WriteDword(offset, currentValue ^ (1U << (flagIndex - 1)));
+                    }
+                    break;
+                }
+                case MemoryFieldType::Byte:
+                case MemoryFieldType::UnsignedByte:
+                case MemoryFieldType::Word:
+                case MemoryFieldType::UnsignedWord:
+                case MemoryFieldType::Dword:
+                case MemoryFieldType::UnsignedDword:
+                case MemoryFieldType::Qword:
+                case MemoryFieldType::UnsignedQword:
+                case MemoryFieldType::Float:
+                {
+                    auto offset = clickedItem->data(gsRoleMemoryOffset).toULongLong();
+                    if (offset != 0)
+                    {
+                        auto fieldName = clickedItem->data(gsRoleFieldName).toString();
+                        auto dialog = new DialogEditSimpleValue(fieldName, offset, dataType, this);
+                        dialog->exec();
                     }
                     break;
                 }

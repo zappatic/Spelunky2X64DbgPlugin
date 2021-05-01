@@ -27,6 +27,7 @@ namespace S2Plugin
     static const uint16_t gsRoleUID = Qt::UserRole + 11;
     static const uint16_t gsRoleFlagIndex = Qt::UserRole + 12;
     static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 13;
+    static const uint16_t gsRoleFieldName = Qt::UserRole + 14;
 
     // new types need to be added to
     // - the MemoryFieldType enum

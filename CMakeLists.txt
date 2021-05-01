@@ -66,6 +66,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/TreeViewMemoryFields.h
 	include/QtHelpers/WidgetMemoryView.h
 	include/QtHelpers/WidgetSpelunkyLevel.h
+	include/QtHelpers/DialogEditSimpleValue.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/MemoryMappedData.cpp
@@ -83,6 +84,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/TreeViewMemoryFields.cpp
 	src/QtHelpers/WidgetMemoryView.cpp
 	src/QtHelpers/WidgetSpelunkyLevel.cpp
+	src/QtHelpers/DialogEditSimpleValue.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )
