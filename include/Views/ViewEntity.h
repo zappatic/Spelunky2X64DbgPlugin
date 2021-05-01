@@ -35,6 +35,7 @@ namespace S2Plugin
         void autoRefreshTimerTrigger();
         void autoRefreshIntervalChanged(const QString& text);
         void interpretAsChanged(const QString& text);
+        void label();
 
       private:
         QVBoxLayout* mMainLayout;

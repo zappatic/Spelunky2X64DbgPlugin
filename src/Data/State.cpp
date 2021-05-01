@@ -52,15 +52,15 @@ void S2Plugin::State::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mStatePtr;
-    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::ClassState))
+    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::State))
     {
-        offset = setOffsetForField(field, "ClassState." + field.name, offset, mMemoryOffsets);
+        offset = setOffsetForField(field, "State." + field.name, offset, mMemoryOffsets);
     }
 }
 
 size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
 {
-    auto full = "ClassState." + fieldName;
+    auto full = "State." + fieldName;
     if (mMemoryOffsets.count(full) == 0)
     {
         return 0;

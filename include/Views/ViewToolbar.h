@@ -7,7 +7,6 @@
 #include <QMdiArea>
 #include <QVBoxLayout>
 
-
 namespace S2Plugin
 {
     class ViewEntityDB;
@@ -27,6 +26,7 @@ namespace S2Plugin
         ViewEntityDB* showEntityDB();
         void showState();
         void showEntities();
+        void clearLabels();
 
       private:
         EntityDB* mEntityDB;

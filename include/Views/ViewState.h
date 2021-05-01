@@ -30,6 +30,7 @@ namespace S2Plugin
         void toggleAutoRefresh(int newState);
         void autoRefreshTimerTrigger();
         void autoRefreshIntervalChanged(const QString& text);
+        void label();
 
       private:
         QVBoxLayout* mMainLayout;
@@ -42,7 +43,6 @@ namespace S2Plugin
 
         ViewToolbar* mToolbar;
 
-        void initializeTreeView();
-        void initializeRefreshStuff();
+        void initializeUI();
     };
 } // namespace S2Plugin

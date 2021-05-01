@@ -8,18 +8,9 @@
 
 S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
-    mMainLayout = new QVBoxLayout(this);
-
-    initializeRefreshStuff();
-    initializeTreeView();
+    initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
-
-    mMainLayout->setMargin(5);
-    setLayout(mMainLayout);
-
     setWindowTitle("State");
-    mMainTreeView->setVisible(true);
-
     refreshState();
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
@@ -27,22 +18,9 @@ S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
-void S2Plugin::ViewState::initializeTreeView()
+void S2Plugin::ViewState::initializeUI()
 {
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassState))
-    {
-        mMainTreeView->addMemoryField(field, "ClassState." + field.name);
-    }
-    mMainLayout->addWidget(mMainTreeView);
-
-    mMainTreeView->setColumnWidth(gsColValue, 250);
-    mMainTreeView->setVisible(false);
-    mMainTreeView->updateTableHeader();
-}
-
-void S2Plugin::ViewState::initializeRefreshStuff()
-{
+    mMainLayout = new QVBoxLayout(this);
     mRefreshLayout = new QHBoxLayout(this);
     mMainLayout->addLayout(mRefreshLayout);
 
@@ -67,6 +45,25 @@ void S2Plugin::ViewState::initializeRefreshStuff()
     mRefreshLayout->addWidget(new QLabel("milliseconds", this));
 
     mRefreshLayout->addStretch();
+
+    auto labelButton = new QPushButton("Label", this);
+    QObject::connect(labelButton, &QPushButton::clicked, this, &ViewState::label);
+    mRefreshLayout->addWidget(labelButton);
+
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
+    {
+        mMainTreeView->addMemoryField(field, "State." + field.name);
+    }
+    mMainLayout->addWidget(mMainTreeView);
+
+    mMainTreeView->setColumnWidth(gsColValue, 250);
+    mMainTreeView->setVisible(false);
+    mMainTreeView->updateTableHeader();
+
+    mMainLayout->setMargin(5);
+    setLayout(mMainLayout);
+    mMainTreeView->setVisible(true);
 }
 
 void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
@@ -77,9 +74,9 @@ void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewState::refreshState()
 {
     mToolbar->state()->refreshOffsets();
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassState))
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
     {
-        mMainTreeView->updateValueForField(field, "ClassState." + field.name, mToolbar->state()->offsets());
+        mMainTreeView->updateValueForField(field, "State." + field.name, mToolbar->state()->offsets());
     }
 }
 
@@ -119,4 +116,12 @@ QSize S2Plugin::ViewState::sizeHint() const
 QSize S2Plugin::ViewState::minimumSizeHint() const
 {
     return QSize(150, 150);
+}
+
+void S2Plugin::ViewState::label()
+{
+    for (const auto& [fieldName, offset] : mToolbar->state()->offsets())
+    {
+        DbgSetAutoLabelAt(offset, fieldName.c_str());
+    }
 }

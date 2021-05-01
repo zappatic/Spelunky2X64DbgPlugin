@@ -30,6 +30,7 @@ namespace S2Plugin
         size_t memoryOffset() const noexcept;
         uint32_t uid() const noexcept;
         uint8_t cameraLayer() const noexcept;
+        void label() const;
 
         static size_t findEntityByUID(uint32_t uid, State* state);
 
@@ -38,6 +39,7 @@ namespace S2Plugin
         TreeViewMemoryFields* mTree;
         WidgetMemoryView* mMemoryView;
         std::string mEntityType = "Entity";
+        std::string mEntityName;
         std::unordered_map<std::string, size_t> mMemoryOffsets; // fieldname -> offset of field value in memory
         std::unordered_map<std::string, QStandardItem*> mTreeViewSectionItems;
 

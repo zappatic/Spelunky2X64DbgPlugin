@@ -7,11 +7,11 @@ S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemory
     : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView)
 {
     auto entityID = config->spelunky2()->getEntityTypeID(offset);
-    auto entityName = config->spelunky2()->getEntityName(offset, entityDB);
+    mEntityName = config->spelunky2()->getEntityName(offset, entityDB);
     for (const auto& [regexStr, entityClassType] : mConfiguration->defaultEntityClassTypes())
     {
         auto r = std::regex(regexStr);
-        if (std::regex_match(entityName, r))
+        if (std::regex_match(mEntityName, r))
         {
             mEntityType = entityClassType;
             break;
@@ -241,4 +241,12 @@ uint32_t S2Plugin::Entity::uid() const noexcept
 uint8_t S2Plugin::Entity::cameraLayer() const noexcept
 {
     return Script::Memory::ReadByte(mMemoryOffsets.at("Entity.camera_layer"));
+}
+
+void S2Plugin::Entity::label() const
+{
+    for (const auto& [fieldName, offset] : mMemoryOffsets)
+    {
+        DbgSetAutoLabelAt(offset, (mEntityName + "." + fieldName).c_str());
+    }
 }

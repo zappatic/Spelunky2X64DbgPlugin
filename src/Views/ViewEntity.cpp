@@ -85,6 +85,10 @@ void S2Plugin::ViewEntity::initializeUI()
 
     mTopLayout->addStretch();
 
+    auto labelButton = new QPushButton("Label", this);
+    QObject::connect(labelButton, &QPushButton::clicked, this, &ViewEntity::label);
+    mTopLayout->addWidget(labelButton);
+
     mTopLayout->addWidget(new QLabel("Interpret as:", this));
     mInterpretAsComboBox = new QComboBox(this);
     mInterpretAsComboBox->addItem("");
@@ -227,4 +231,9 @@ void S2Plugin::ViewEntity::updateLevel()
     mSpelunkyLevel->loadEntities(entities, entityCount);
 
     mSpelunkyLevel->update();
+}
+
+void S2Plugin::ViewEntity::label()
+{
+    mEntity->label();
 }

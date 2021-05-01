@@ -33,6 +33,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configurati
     mMainLayout->addWidget(btnEntities);
     QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
 
+    auto btnClearLabels = new QPushButton(this);
+    btnClearLabels->setText("Clear labels");
+    mMainLayout->addWidget(btnClearLabels);
+    QObject::connect(btnClearLabels, &QPushButton::clicked, this, &ViewToolbar::clearLabels);
+
     mMainLayout->addStretch();
 }
 
@@ -73,6 +78,24 @@ void S2Plugin::ViewToolbar::showEntities()
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
     }
+}
+
+void S2Plugin::ViewToolbar::clearLabels()
+{
+    auto list = BridgeList<Script::Label::LabelInfo>();
+    Script::Label::GetList(&list);
+    for (auto x = 0; x < list.Count(); ++x)
+    {
+        auto labelInfo = list[x];
+        if (!labelInfo.manual)
+        {
+            if (!Script::Label::Delete(labelInfo.rva))
+            {
+                dprintf("Can't delete label %s\n", labelInfo.text);
+            }
+        }
+    }
+    list.Cleanup();
 }
 
 S2Plugin::State* S2Plugin::ViewToolbar::state()

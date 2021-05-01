@@ -25,16 +25,17 @@ namespace S2Plugin
 
       private slots:
         void searchFieldReturnPressed();
+        void label();
 
       private:
+        ViewToolbar* mToolbar;
+        size_t mIndex;
+
         QVBoxLayout* mMainLayout;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
         QCompleter* mEntityNameCompleter;
 
-        ViewToolbar* mToolbar;
-
-        void initializeTreeView();
-        void initializeSearchLineEdit();
+        void initializeUI();
     };
 } // namespace S2Plugin

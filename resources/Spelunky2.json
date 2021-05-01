@@ -48,7 +48,7 @@
   },
   // a list of all the fields within the types
   "fields": {
-    "ClassEntityDB": [
+    "EntityDB": [
       { "field": "create_func", "type": "CodePointer" },
       { "field": "destroy_func", "type": "CodePointer" },
       { "field": "field_10", "type": "UnsignedDword" },
@@ -255,7 +255,7 @@
       { "field": "field_1b", "type": "UnsignedByte" },
       { "field": "field_1c", "type": "Dword" }
     ],
-    "ClassState": [
+    "State": [
       { "field": "p00", "type": "DataPointer" },
       { "field": "screen_last", "type": "UnsignedDword" },
       { "field": "screen", "type": "UnsignedDword" },

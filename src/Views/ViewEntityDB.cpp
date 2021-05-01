@@ -5,51 +5,54 @@
 #include <QCloseEvent>
 #include <QHeaderView>
 #include <QLineEdit>
+#include <QPushButton>
 
 S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
+    initializeUI();
+    setWindowIcon(QIcon(":/icons/caveman.png"));
+    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestEntityID()));
+    showIndex(index);
+}
+
+void S2Plugin::ViewEntityDB::initializeUI()
+{
     mMainLayout = new QVBoxLayout(this);
 
-    initializeSearchLineEdit();
-    initializeTreeView();
-    setWindowIcon(QIcon(":/icons/caveman.png"));
+    auto topLayout = new QHBoxLayout();
 
-    mMainLayout->setMargin(5);
-    setLayout(mMainLayout);
-    mSearchLineEdit->setFocus();
-
+    mSearchLineEdit = new QLineEdit();
+    mSearchLineEdit->setPlaceholderText("Search");
+    topLayout->addWidget(mSearchLineEdit);
+    QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewEntityDB::searchFieldReturnPressed);
+    mSearchLineEdit->setVisible(false);
     mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->entityNames(), this);
     mEntityNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
     mSearchLineEdit->setCompleter(mEntityNameCompleter);
 
-    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestEntityID()));
-    mSearchLineEdit->setVisible(true);
-    mMainTreeView->setVisible(true);
-    showIndex(index);
-}
+    auto labelButton = new QPushButton("Label", this);
+    QObject::connect(labelButton, &QPushButton::clicked, this, &ViewEntityDB::label);
+    topLayout->addWidget(labelButton);
 
-void S2Plugin::ViewEntityDB::initializeTreeView()
-{
+    mMainLayout->addLayout(topLayout);
+
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->setEnableChangeHighlighting(false);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassEntityDB))
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
     {
-        mMainTreeView->addMemoryField(field, "ClassEntityDB." + field.name);
+        mMainTreeView->addMemoryField(field, "EntityDB." + field.name);
     }
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();
-}
 
-void S2Plugin::ViewEntityDB::initializeSearchLineEdit()
-{
-    mSearchLineEdit = new QLineEdit();
-    mSearchLineEdit->setPlaceholderText("Search");
-    mMainLayout->addWidget(mSearchLineEdit);
-    QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewEntityDB::searchFieldReturnPressed);
-    mSearchLineEdit->setVisible(false);
+    mMainLayout->setMargin(5);
+    setLayout(mMainLayout);
+    mSearchLineEdit->setVisible(true);
+    mSearchLineEdit->setFocus();
+    mMainTreeView->setVisible(true);
 }
 
 void S2Plugin::ViewEntityDB::closeEvent(QCloseEvent* event)
@@ -88,12 +91,23 @@ void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
 
 void S2Plugin::ViewEntityDB::showIndex(size_t index)
 {
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ClassEntityDB))
+    mIndex = index;
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
     {
-        mMainTreeView->updateValueForField(field, "ClassEntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(index));
+        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(index));
     }
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
+}
+
+void S2Plugin::ViewEntityDB::label()
+{
+    auto entityDB = mToolbar->entityDB();
+    auto entityName = entityDB->entityList()->nameForID(mIndex);
+    for (const auto& [fieldName, offset] : entityDB->offsetsForIndex(mIndex))
+    {
+        DbgSetAutoLabelAt(offset, (entityName + "." + fieldName).c_str());
+    }
 }
