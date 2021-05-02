@@ -43,7 +43,29 @@ void S2Plugin::Entity::refreshValues()
 {
     auto offset = mEntityPtr;
     auto hierarchy = classHierarchy();
-    for (auto c : hierarchy)
+
+    // if there's a pointer in the list of fields of the entity subclass hierarchy then
+    // refresh all the offsets, as the pointer value may have changed, so in order to show
+    // the correct values of the pointer contents, we need to set the new offset
+    bool pointerFieldFound = false;
+    for (const auto& c : hierarchy)
+    {
+        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
+        {
+            if (gsPointerTypes.count(field.type) == 1)
+            {
+                pointerFieldFound = true;
+                break;
+            }
+        }
+    }
+    if (pointerFieldFound)
+    {
+        refreshOffsets();
+    }
+
+    // now update all the values in the treeview
+    for (const auto& c : hierarchy)
     {
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
@@ -108,6 +130,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
             break;
         case MemoryFieldType::Word:
         case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::Flags16:
             fieldSize = 2;
             break;
         case MemoryFieldType::Dword:

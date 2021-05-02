@@ -26,6 +26,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             break;
         case MemoryFieldType::Word:
         case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::Flags16:
             offset += 2;
             break;
         case MemoryFieldType::Dword:

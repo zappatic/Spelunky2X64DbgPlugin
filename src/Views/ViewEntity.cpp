@@ -37,6 +37,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     mSpelunkyLevel->paintEntityMask(0x100, QColor(160, 160, 160)); // 0x100 = FLOOR
     mSpelunkyLevel->paintEntityUID(mEntity->uid(), QColor(222, 52, 235));
     updateLevel();
+    toggleAutoRefresh(Qt::Checked);
 }
 
 void S2Plugin::ViewEntity::initializeUI()
@@ -71,13 +72,14 @@ void S2Plugin::ViewEntity::initializeUI()
     QObject::connect(mAutoRefreshTimer.get(), &QTimer::timeout, this, &ViewEntity::autoRefreshTimerTrigger);
 
     mAutoRefreshCheckBox = new QCheckBox("Auto-refresh every", this);
+    mAutoRefreshCheckBox->setCheckState(Qt::Checked);
     mTopLayout->addWidget(mAutoRefreshCheckBox);
     QObject::connect(mAutoRefreshCheckBox, &QCheckBox::clicked, this, &ViewEntity::toggleAutoRefresh);
 
     mAutoRefreshIntervalLineEdit = new QLineEdit(this);
     mAutoRefreshIntervalLineEdit->setFixedWidth(50);
     mAutoRefreshIntervalLineEdit->setValidator(new QIntValidator(100, 5000, this));
-    mAutoRefreshIntervalLineEdit->setText("500");
+    mAutoRefreshIntervalLineEdit->setText("100");
     mTopLayout->addWidget(mAutoRefreshIntervalLineEdit);
     QObject::connect(mAutoRefreshIntervalLineEdit, &QLineEdit::textChanged, this, &ViewEntity::autoRefreshIntervalChanged);
 

@@ -18,11 +18,14 @@
     "KapalaPowerup": "Movable",
     "Jiangshi": "Monster",
     "Ghost": "Monster",
-    "Monkey": "Monster"
+    "Monkey": "Monster",
+    "GoldMonkey": "Monster",
+    "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
     "FLOOR_ARROW_TRAP": "ArrowTrap",
+    "FLOOR_ALTAR": "Altar",
     "FLOOR_POISONED_ARROW_TRAP": "ArrowTrap",
     "ITEM_CRATE": "Container",
     "ITEM_WEBGUN": "Gun",
@@ -44,6 +47,7 @@
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
     "MONS_GHOST.*": "Ghost",
     "MONS_MONKEY": "Monkey",
+    "MONS_GOLDMONKEY": "GoldMonkey",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -754,8 +758,52 @@
       { "field": "velocity_multiplier", "type": "Float" }
     ],
     "Monkey": [
-      { "field": "hump_target", "type": "DataPointer" },
+      { "field": "hump_info", "type": "HumpInfoPointer" },
       { "field": "jump_timer", "type": "UnsignedByte" }
+    ],
+    "HumpInfoPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float" }
+    ],
+    "GoldMonkey": [
+      { "field": "jump_timer", "type": "UnsignedWord" },
+      { "field": "poop_timer", "type": "UnsignedWord" },
+      { "field": "poop_count", "type": "UnsignedByte" }
+    ],
+    "Altar": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      {
+        "field": "sacrifice_flags",
+        "type": "Flags16",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": "",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": ""
+        }
+      }
     ],
     "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }]
   }

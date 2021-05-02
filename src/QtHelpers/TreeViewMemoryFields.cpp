@@ -108,6 +108,23 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 flagField.type = MemoryFieldType::Flag;
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
+                flagFieldItem->setData(32, gsRoleFlagsSize);
+                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+            }
+            returnField = flagsParent;
+            break;
+        }
+        case MemoryFieldType::Flags16:
+        {
+            auto flagsParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (uint8_t x = 1; x <= 16; ++x)
+            {
+                MemoryField flagField;
+                flagField.name = "flag_" + std::to_string(x);
+                flagField.type = MemoryFieldType::Flag;
+                auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
+                flagFieldItem->setData(x, gsRoleFlagIndex);
+                flagFieldItem->setData(16, gsRoleFlagsSize);
                 flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
             }
             returnField = flagsParent;
@@ -392,6 +409,45 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             for (uint8_t x = 1; x <= 32; ++x)
+            {
+                MemoryField f;
+                f.name = "flag_" + std::to_string(x);
+                f.type = MemoryFieldType::Flag;
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
+            break;
+        }
+        case MemoryFieldType::Flags16:
+        {
+            uint32_t value = Script::Memory::ReadDword(memoryOffset);
+            std::stringstream ss;
+            auto counter = 0;
+            for (auto x = 15; x >= 0; --x)
+            {
+                if (counter % 4 == 0)
+                {
+                    ss << (x + 1) << ": ";
+                }
+                if ((value & (1 << x)) == (1 << x))
+                {
+                    ss << "<font color='green'>Y</font> ";
+                }
+                else
+                {
+                    ss << "<font color='red'>N</font> ";
+                }
+                counter++;
+            }
+            itemValue->setData(QString::fromStdString(ss.str()), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%04lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemField->setData(value, gsRoleRawValue);            // so we can access in MemoryFieldType::Flag
+            itemField->setData(memoryOffset, gsRoleMemoryOffset); // so we can access in MemoryFieldType::Flag
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            for (uint8_t x = 1; x <= 16; ++x)
             {
                 MemoryField f;
                 f.name = "flag_" + std::to_string(x);

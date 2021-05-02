@@ -103,7 +103,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             }
             memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
 
-            if (memField.type == MemoryFieldType::Flags32 && field.contains("flags"))
+            if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16) && field.contains("flags"))
             {
                 auto flagsObject = field["flags"];
                 std::unordered_map<uint8_t, std::string> flagTitles;

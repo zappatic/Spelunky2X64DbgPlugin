@@ -27,7 +27,8 @@ namespace S2Plugin
     static const uint16_t gsRoleUID = Qt::UserRole + 11;
     static const uint16_t gsRoleFlagIndex = Qt::UserRole + 12;
     static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 13;
-    static const uint16_t gsRoleFieldName = Qt::UserRole + 14;
+    static const uint16_t gsRoleFlagsSize = Qt::UserRole + 14;
+    static const uint16_t gsRoleFieldName = Qt::UserRole + 15;
 
     // new types need to be added to
     // - the MemoryFieldType enum
@@ -53,6 +54,7 @@ namespace S2Plugin
         Bool,
         Flag,
         Flags32,
+        Flags16,
         Skip,
         Rect,
         State,
@@ -72,6 +74,7 @@ namespace S2Plugin
         Map,
         PlayerInventoryPointer,
         EntitySubclass,
+        HumpInfoPointer,
     };
 
     // clang-format off
@@ -92,6 +95,7 @@ namespace S2Plugin
         {MemoryFieldType::Bool, "Bool"},
         {MemoryFieldType::Flag, "Flag"},
         {MemoryFieldType::Flags32, "32-bit flags"},
+        {MemoryFieldType::Flags16, "16-bit flags"},
         {MemoryFieldType::Rect, "Rectangle"},
         {MemoryFieldType::State, "State"},
         {MemoryFieldType::EntityDB, "EntityDB"},
@@ -109,6 +113,7 @@ namespace S2Plugin
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::Map, "std::map<>"},
         {MemoryFieldType::PlayerInventoryPointer, "Inventory"},
+        {MemoryFieldType::HumpInfoPointer, "Hump info pointer"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -127,6 +132,7 @@ namespace S2Plugin
         {"Float", MemoryFieldType::Float},
         {"Bool", MemoryFieldType::Bool},
         {"Flags32", MemoryFieldType::Flags32},
+        {"Flags16", MemoryFieldType::Flags16},
         {"Rect", MemoryFieldType::Rect},
         {"State", MemoryFieldType::State},
         {"EntityDB", MemoryFieldType::EntityDB},
@@ -144,6 +150,7 @@ namespace S2Plugin
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"Map", MemoryFieldType::Map},
         {"PlayerInventoryPointer", MemoryFieldType::PlayerInventoryPointer},
+        {"HumpInfoPointer", MemoryFieldType::HumpInfoPointer},
     };
 
     const static std::unordered_set<MemoryFieldType> gsPointerTypes = {
@@ -152,6 +159,7 @@ namespace S2Plugin
         MemoryFieldType::LayerPointer,
         MemoryFieldType::TexturePointer,
         MemoryFieldType::PlayerInventoryPointer,
+        MemoryFieldType::HumpInfoPointer,
     };
     // clang-format on
 
