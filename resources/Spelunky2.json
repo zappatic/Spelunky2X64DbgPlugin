@@ -16,9 +16,9 @@
     "Cape": "Movable",
     "VladsCape": "Cape",
     "KapalaPowerup": "Movable",
-    "ChasingMonster": "Monster",
-    "Jiangshi": "ChasingMonster",
-    "Ghost": "ChasingMonster"
+    "Jiangshi": "Monster",
+    "Ghost": "Monster",
+    "Monkey": "Monster"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -39,10 +39,11 @@
     "ITEM_CAPE": "Cape",
     "ITEM_VLADS_CAPE": "VladsCape",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
-    "MONS_BAT": "ChasingMonster",
+    "MONS_BAT": "Monster",
     "MONS_JIANGSHI": "Jiangshi",
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
     "MONS_GHOST.*": "Ghost",
+    "MONS_MONKEY": "Monkey",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -579,7 +580,11 @@
       { "field": "b126", "type": "UnsignedByte" },
       { "field": "b127", "type": "UnsignedByte" }
     ],
-    "Monster": [{ "field": "inside", "type": "Map" }],
+    "Monster": [
+      { "field": "inside", "type": "Map" },
+      { "field": "chased_target_uid", "type": "EntityUID" },
+      { "field": "target_selection_timer", "type": "UnsignedDword" }
+    ],
     "Player": [
       { "field": "inventory", "type": "PlayerInventoryPointer" },
       { "field": "p140", "type": "DataPointer" },
@@ -743,15 +748,14 @@
     ],
     "VladsCape": [{ "field": "can_double_jump", "type": "Bool" }],
     "KapalaPowerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
-    "ChasingMonster": [
-      { "field": "chased_target_uid", "type": "EntityUID" },
-      { "field": "target_selection_timer", "type": "UnsignedDword" }
-    ],
     "Ghost": [
-      { "field": "split_timer", "type": "UnsignedWord" },
-      { "field": "unknown_counter", "type": "UnsignedByte" },
-      { "field": "padding", "type": "UnsignedByte" },
+      { "field": "split_timer", "type": "Word" },
+      { "field": "unknown_counter", "type": "Word" },
       { "field": "velocity_multiplier", "type": "Float" }
+    ],
+    "Monkey": [
+      { "field": "hump_target", "type": "DataPointer" },
+      { "field": "jump_timer", "type": "UnsignedByte" }
     ],
     "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }]
   }

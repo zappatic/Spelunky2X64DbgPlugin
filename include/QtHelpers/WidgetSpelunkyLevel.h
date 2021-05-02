@@ -31,6 +31,7 @@ namespace S2Plugin
         std::unordered_map<uint32_t, QColor> mEntityMasksToPaint;
         std::unordered_map<uint32_t, QColor> mEntityIDsToPaint;
         std::unordered_map<uint32_t, QColor> mEntityUIDsToPaint;
+        std::pair<float, float> getEntityCoordinates(size_t entityOffset) const;
 
         static constexpr float msLevelMaxHeight = 125.0;
         static constexpr float msLevelMaxWidth = 3. + 3. + (7 * 10);

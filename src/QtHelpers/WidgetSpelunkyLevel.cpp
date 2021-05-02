@@ -22,6 +22,7 @@ void S2Plugin::WidgetSpelunkyLevel::paintEvent(QPaintEvent* event)
         auto entityUID = Script::Memory::ReadDword(entity + 56);
         auto entityType = Script::Memory::ReadDword(entityDB + 20);
         auto entityMask = Script::Memory::ReadDword(entityDB + 24);
+        auto entityOverlay = Script::Memory::ReadQword(entity + 16);
 
         auto foundInIDs = (mEntityIDsToPaint.count(entityType) == 1);
         auto foundInUIDs = (mEntityUIDsToPaint.count(entityUID) == 1);
@@ -41,11 +42,7 @@ void S2Plugin::WidgetSpelunkyLevel::paintEvent(QPaintEvent* event)
 
         if (foundInIDs || foundInUIDs || foundInMasks)
         {
-            auto rawX = Script::Memory::ReadDword(entity + 64);
-            auto rawY = Script::Memory::ReadDword(entity + 68);
-            float entityX = reinterpret_cast<float&>(rawX);
-            float entityY = reinterpret_cast<float&>(rawY);
-
+            auto [entityX, entityY] = getEntityCoordinates(entity);
             if (foundInIDs && !foundInUIDs)
             {
                 colorToUse = mEntityIDsToPaint.at(entityType);
@@ -105,4 +102,21 @@ QSize S2Plugin::WidgetSpelunkyLevel::minimumSizeHint() const
 QSize S2Plugin::WidgetSpelunkyLevel::sizeHint() const
 {
     return minimumSizeHint();
+}
+
+std::pair<float, float> S2Plugin::WidgetSpelunkyLevel::getEntityCoordinates(size_t entityOffset) const
+{
+    auto rawX = Script::Memory::ReadDword(entityOffset + 64);
+    auto rawY = Script::Memory::ReadDword(entityOffset + 68);
+    float entityX = reinterpret_cast<float&>(rawX);
+    float entityY = reinterpret_cast<float&>(rawY);
+
+    auto entityOverlay = Script::Memory::ReadQword(entityOffset + 16);
+    if (entityOverlay != 0)
+    {
+        auto [addX, addY] = getEntityCoordinates(entityOverlay);
+        entityX += addX;
+        entityY += addY;
+    }
+    return std::make_pair(entityX, entityY);
 }

@@ -493,7 +493,8 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             size_t value = Script::Memory::ReadQword(memoryOffset);
             auto id = Script::Memory::ReadDword(value + 20);
-            itemValue->setData(QString::asprintf("<font color='blue'><u>Entity DB id %d</u></font>", id), Qt::DisplayRole);
+            auto entityName = mToolbar->entityDB()->entityList()->nameForID(id);
+            itemValue->setData(QString::asprintf("<font color='blue'><u>EntityDB %d %s</u></font>", id, entityName.c_str()), Qt::DisplayRole);
             auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
