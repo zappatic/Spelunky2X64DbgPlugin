@@ -9,7 +9,11 @@
 S2Plugin::Configuration::Configuration()
 {
     mSpelunky2 = std::make_unique<Spelunky2>();
+    load();
+}
 
+void S2Plugin::Configuration::load()
+{
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
     auto path = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2.json");
@@ -71,6 +75,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         }
     }
 
+    mDefaultEntityClassTypes.clear();
     auto defaultEntityTypes = j["default_entity_types"];
     for (const auto& [key, jsonValue] : defaultEntityTypes.items())
     {
@@ -78,6 +83,8 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         mDefaultEntityClassTypes[key] = value;
     }
 
+    mTypeFieldsEntitySubclasses.clear();
+    mTypeFields.clear();
     auto fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
     {
@@ -95,6 +102,10 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             {
                 memField.extraInfo = field["offset"].get<uint64_t>();
             }
+            if (field.contains("comment"))
+            {
+                memField.comment = field["comment"].get<std::string>();
+            }
 
             auto fieldTypeStr = field["type"].get<std::string>();
             if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
@@ -103,7 +114,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             }
             memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
 
-            if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16) && field.contains("flags"))
+            if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16 || memField.type == MemoryFieldType::Flags8) && field.contains("flags"))
             {
                 auto flagsObject = field["flags"];
                 std::unordered_map<uint8_t, std::string> flagTitles;

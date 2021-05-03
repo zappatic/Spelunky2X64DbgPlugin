@@ -14,6 +14,7 @@ namespace S2Plugin
       public:
         Configuration();
 
+        void load();
         bool isValid() const noexcept;
         std::string lastError() const noexcept;
 

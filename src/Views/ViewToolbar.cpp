@@ -4,6 +4,7 @@
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewState.h"
 #include "pluginmain.h"
+#include <QMdiSubWindow>
 #include <QPushButton>
 
 S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
@@ -33,12 +34,17 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configurati
     mMainLayout->addWidget(btnEntities);
     QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
 
+    mMainLayout->addStretch();
+
     auto btnClearLabels = new QPushButton(this);
     btnClearLabels->setText("Clear labels");
     mMainLayout->addWidget(btnClearLabels);
     QObject::connect(btnClearLabels, &QPushButton::clicked, this, &ViewToolbar::clearLabels);
 
-    mMainLayout->addStretch();
+    auto btnReloadConfig = new QPushButton(this);
+    btnReloadConfig->setText("Reload JSON");
+    mMainLayout->addWidget(btnReloadConfig);
+    QObject::connect(btnReloadConfig, &QPushButton::clicked, this, &ViewToolbar::reloadConfig);
 }
 
 S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
@@ -113,4 +119,22 @@ S2Plugin::EntityDB* S2Plugin::ViewToolbar::entityDB()
 S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
 {
     return mConfiguration;
+}
+
+void S2Plugin::ViewToolbar::reloadConfig()
+{
+    // mMDIArea->closeAllSubWindows();
+    auto windows = mMDIArea->subWindowList();
+    for (const auto& window : windows)
+    {
+        if (qobject_cast<ViewEntities*>(window->widget()) == nullptr)
+        {
+            window->close();
+        }
+    }
+    mConfiguration->load();
+    if (!mConfiguration->isValid())
+    {
+        mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
+    }
 }

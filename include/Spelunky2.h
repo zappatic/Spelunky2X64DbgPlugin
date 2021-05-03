@@ -17,6 +17,7 @@ namespace S2Plugin
     static constexpr uint8_t gsColValueHex = 2;
     static constexpr uint8_t gsColMemoryOffset = 3;
     static constexpr uint8_t gsColType = 4;
+    static constexpr uint8_t gsColComment = 5;
 
     static const uint16_t gsRoleField = Qt::UserRole + gsColField;
     static const uint16_t gsRoleValue = Qt::UserRole + gsColValue;
@@ -55,11 +56,12 @@ namespace S2Plugin
         Flag,
         Flags32,
         Flags16,
+        Flags8,
         Skip,
         Rect,
         State,
         EntityDB,
-        StateIlluminationPointer,
+        IlluminationPointer,
         StateSaturationVignette,
         StateItemsPointer,
         LayerPointer,
@@ -74,7 +76,7 @@ namespace S2Plugin
         Map,
         PlayerInventoryPointer,
         EntitySubclass,
-        HumpInfoPointer,
+        PositionInfoPointer,
     };
 
     // clang-format off
@@ -96,10 +98,11 @@ namespace S2Plugin
         {MemoryFieldType::Flag, "Flag"},
         {MemoryFieldType::Flags32, "32-bit flags"},
         {MemoryFieldType::Flags16, "16-bit flags"},
+        {MemoryFieldType::Flags8, "8-bit flags"},
         {MemoryFieldType::Rect, "Rectangle"},
         {MemoryFieldType::State, "State"},
         {MemoryFieldType::EntityDB, "EntityDB"},
-        {MemoryFieldType::StateIlluminationPointer, "Illumination"},
+        {MemoryFieldType::IlluminationPointer, "Illumination"},
         {MemoryFieldType::StateSaturationVignette, "Saturation/Vignette"},
         {MemoryFieldType::StateItemsPointer, "Items"},
         {MemoryFieldType::LayerPointer, "Layer"},
@@ -113,7 +116,7 @@ namespace S2Plugin
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::Map, "std::map<>"},
         {MemoryFieldType::PlayerInventoryPointer, "Inventory"},
-        {MemoryFieldType::HumpInfoPointer, "Hump info pointer"},
+        {MemoryFieldType::PositionInfoPointer, "Position info pointer"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -133,10 +136,11 @@ namespace S2Plugin
         {"Bool", MemoryFieldType::Bool},
         {"Flags32", MemoryFieldType::Flags32},
         {"Flags16", MemoryFieldType::Flags16},
+        {"Flags8", MemoryFieldType::Flags8},
         {"Rect", MemoryFieldType::Rect},
         {"State", MemoryFieldType::State},
         {"EntityDB", MemoryFieldType::EntityDB},
-        {"StateIlluminationPointer", MemoryFieldType::StateIlluminationPointer},
+        {"IlluminationPointer", MemoryFieldType::IlluminationPointer},
         {"StateSaturationVignette", MemoryFieldType::StateSaturationVignette},
         {"StateItemsPointer", MemoryFieldType::StateItemsPointer},
         {"LayerPointer", MemoryFieldType::LayerPointer},
@@ -150,16 +154,16 @@ namespace S2Plugin
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"Map", MemoryFieldType::Map},
         {"PlayerInventoryPointer", MemoryFieldType::PlayerInventoryPointer},
-        {"HumpInfoPointer", MemoryFieldType::HumpInfoPointer},
+        {"PositionInfoPointer", MemoryFieldType::PositionInfoPointer},
     };
 
     const static std::unordered_set<MemoryFieldType> gsPointerTypes = {
-        MemoryFieldType::StateIlluminationPointer,
+        MemoryFieldType::IlluminationPointer,
         MemoryFieldType::StateItemsPointer,
         MemoryFieldType::LayerPointer,
         MemoryFieldType::TexturePointer,
         MemoryFieldType::PlayerInventoryPointer,
-        MemoryFieldType::HumpInfoPointer,
+        MemoryFieldType::PositionInfoPointer,
     };
     // clang-format on
 
@@ -169,6 +173,7 @@ namespace S2Plugin
         MemoryFieldType type;
         uint64_t extraInfo = 0;
         std::string entitySubclassName; // only if applicable
+        std::string comment;
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
 

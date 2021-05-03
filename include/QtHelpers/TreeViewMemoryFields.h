@@ -34,7 +34,7 @@ namespace S2Plugin
         QStandardItemModel* mModel;
         ViewToolbar* mToolbar;
         std::unique_ptr<HTMLDelegate> mHTMLDelegate;
-        std::array<uint32_t, 5> mSavedColumnWidths = {0};
+        std::array<uint32_t, 6> mSavedColumnWidths = {0};
         bool mEnableChangeHighlighting = true;
     };
 } // namespace S2Plugin

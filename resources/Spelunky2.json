@@ -20,6 +20,35 @@
     "Ghost": "Monster",
     "Monkey": "Monster",
     "GoldMonkey": "Monster",
+    "Mole": "Monster",
+    "Spider": "Monster",
+    "HangSpider": "Monster",
+    "Shopkeeper": "Monster",
+    "Yang": "Shopkeeper",
+    "Pet": "Monster",
+    "Caveman": "Monster",
+    "CavemanShopkeeper": "Monster",
+    "HornedLizard": "Monster",
+    "Mosquito": "Monster",
+    "Mantrap": "Monster",
+    "Skeleton": "Monster",
+    "Scarab": "Monster",
+    "Tun": "Shopkeeper",
+    "Imp": "Monster",
+    "Lavamander": "Monster",
+    "Firebug": "Monster",
+    "FirebugUnchained": "Monster",
+    "Robot": "Monster",
+    "Quillback": "Monster",
+    "Leprechaun": "Monster",
+    "Crocman": "Monster",
+    "Mummy": "Monster",
+    "VanHorsing": "Monster",
+    "WitchDoctor": "Monster",
+    "WitchDoctorSkull": "Monster",
+    "ForestSister": "Monster",
+    "Vampire": "Monster",
+    "Vlad": "Vampire",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -32,22 +61,54 @@
     "ITEM_SHOTGUN": "Gun",
     "ITEM_CLONEGUN": "Gun",
     "ITEM_PLASMACANNON": "Gun",
-    "ACTIVEFLOOR_CRUSH_TRAP.*": "CrushTrap",
     "ITEM_MATTOCK": "Mattock",
     "ITEM_JETPACK": "Jetpack",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
-    "ACTIVEFLOOR_OLMEC": "Olmec",
-    "FX_OLMECPART_FLOATER": "OlmecFloater",
     "ITEM_CAPE": "Cape",
     "ITEM_VLADS_CAPE": "VladsCape",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
+    "ACTIVEFLOOR_CRUSH_TRAP.*": "CrushTrap",
+    "ACTIVEFLOOR_OLMEC": "Olmec",
+    "FX_OLMECPART_FLOATER": "OlmecFloater",
     "MONS_BAT": "Monster",
     "MONS_JIANGSHI": "Jiangshi",
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
     "MONS_GHOST.*": "Ghost",
     "MONS_MONKEY": "Monkey",
     "MONS_GOLDMONKEY": "GoldMonkey",
+    "MONS_MOLE": "Mole",
+    "MONS_SPIDER": "Spider",
+    "MONS_GIANTSPIDER": "Spider",
+    "MONS_HANGSPIDER": "HangSpider",
+    "MONS_SHOPKEEPER": "Shopkeeper",
+    "MONS_YANG": "Yang",
+    "MONS_PET_.*": "Pet",
+    "MONS_CAVEMAN": "Caveman",
+    "MONS_CAVEMAN_SHOPKEEPER": "CavemanShopkeeper",
+    "MONS_TIKIMAN": "Caveman",
+    "MONS_HORNEDLIZARD": "HornedLizard",
+    "MONS_MOSQUITO": "Mosquito",
+    "MONS_MANTRAP": "Mantrap",
+    "MONS_SKELETON": "Skeleton",
+    "MONS_REDSKELETON": "Skeleton",
+    "MONS_SCARAB": "Scarab",
+    "MONS_MERCHANT": "Tun",
+    "MONS_IMP": "Imp",
+    "MONS_LAVAMANDER": "Lavamander",
+    "MONS_FIREBUG": "Firebug",
+    "MONS_FIREBUG_UNCHAINED": "FirebugUnchained",
+    "MONS_ROBOT": "Robot",
+    "MONS_CAVEMAN_BOSS": "Quillback",
+    "MONS_LEPRECHAUN": "Leprechaun",
+    "MONS_CROCMAN": "Crocman",
+    "MONS_MUMMY": "Mummy",
+    "MONS_OLD_HUNTER": "VanHorsing",
+    "MONS_WITCHDOCTOR": "WitchDoctor",
+    "MONS_WITCHDOCTORSKULL": "WitchDoctorSkull",
+    "MONS_SISTER_.*": "ForestSister",
+    "MONS_VAMPIRE": "Vampire",
+    "MONS_VLAD": "Vlad",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -266,7 +327,7 @@
       { "field": "screen", "type": "UnsignedDword" },
       { "field": "screen_next", "type": "UnsignedDword" },
       { "field": "loading", "type": "UnsignedDword" },
-      { "field": "illumination", "type": "StateIlluminationPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" },
       { "field": "i20", "type": "Dword" },
       { "field": "fadeout", "type": "UnsignedDword" },
       { "field": "fadein", "type": "UnsignedDword" },
@@ -667,7 +728,7 @@
       { "field": "blue", "type": "Float" },
       { "field": "vignette_aperture", "type": "Float" }
     ],
-    "StateIlluminationPointer": [
+    "IlluminationPointer": [
       { "field": "saturation_vignette_0", "type": "StateSaturationVignette" },
       { "field": "saturation_vignette_1", "type": "StateSaturationVignette" },
       { "field": "saturation_vignette_2", "type": "StateSaturationVignette" },
@@ -716,6 +777,32 @@
       { "field": "dirx", "type": "Float" },
       { "field": "diry", "type": "Float" }
     ],
+    "Altar": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      {
+        "field": "sacrifice_flags",
+        "type": "Flags16",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": "",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": ""
+        }
+      }
+    ],
     "Mattock": [{ "field": "remaining", "type": "Dword" }],
     "Jetpack": [
       { "field": "unknown1", "type": "Dword" },
@@ -758,10 +845,11 @@
       { "field": "velocity_multiplier", "type": "Float" }
     ],
     "Monkey": [
-      { "field": "hump_info", "type": "HumpInfoPointer" },
-      { "field": "jump_timer", "type": "UnsignedByte" }
+      { "field": "hump_pos", "type": "PositionInfoPointer" },
+      { "field": "jump_timer", "type": "UnsignedByte" },
+      { "field": "on_vine", "type": "Bool" }
     ],
-    "HumpInfoPointer": [
+    "PositionInfoPointer": [
       { "field": "__vftable", "type": "DataPointer" },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
@@ -779,31 +867,437 @@
       { "field": "poop_timer", "type": "UnsignedWord" },
       { "field": "poop_count", "type": "UnsignedByte" }
     ],
-    "Altar": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
+    "Mole": [
+      { "field": "burrowing_pos", "type": "PositionInfoPointer" },
+      { "field": "nonburrowing_pos", "type": "PositionInfoPointer" },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "burrow_dir_x", "type": "Float" },
+      { "field": "burrow_dir_y", "type": "Float" },
+      { "field": "burrowing_in", "type": "EntityUID" },
+      { "field": "counter_burrowing", "type": "UnsignedByte" },
+      { "field": "counter_nonburrowing", "type": "UnsignedByte" },
+      { "field": "countdown_for_appearing", "type": "UnsignedByte" },
+      { "field": "unknown_two_while_burrowed", "type": "UnsignedByte" }
+    ],
+    "Spider": [
+      { "field": "ceiling_pos_x", "type": "Float" },
+      { "field": "ceiling_pos_y", "type": "Float" },
+      { "field": "jump_timer", "type": "UnsignedByte" }
+    ],
+    "HangSpider": [
+      { "field": "dangle_jump_timer", "type": "Word" },
+      { "field": "padding", "type": "UnsignedWord" },
+      { "field": "ceiling_pos_x", "type": "Float" },
+      { "field": "ceiling_pos_y", "type": "Float" }
+    ],
+    "Shopkeeper": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
       {
-        "field": "sacrifice_flags",
-        "type": "Flags16",
-        "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
-          "6": "",
-          "7": "",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": ""
-        }
+        "field": "climb_y_direction",
+        "type": "Float",
+        "comment": "when on a rope or ladder"
+      },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "patrol_timer", "type": "UnsignedByte" },
+      {
+        "field": "lose_interest_timer",
+        "type": "UnsignedWord",
+        "comment": "delay in-between attacks"
+      },
+      {
+        "field": "countdown_timer",
+        "type": "UnsignedByte",
+        "comment": "counts down to 0 when a value is forced"
+      },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      {
+        "field": "is_patrolling",
+        "type": "Bool",
+        "comment": "to set off a shopkeeper, combine this with state.shoppie_aggro_levels > 0"
       }
+    ],
+    "Yang": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "turkeys_in_pen", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      {
+        "field": "first_message_shown",
+        "type": "Bool",
+        "comment": "I'm looking for turkeys, wanna help?"
+      },
+      {
+        "field": "quest_incomplete",
+        "type": "Bool",
+        "comment": "gets set to false when the quest is over (Yang dead or second turkey delivered)"
+      },
+      {
+        "field": "unknown8",
+        "type": "Bool",
+        "comment": "can be set to false when the quest fails (Yang mad/dead), otherwise it forces back to true"
+      },
+      { "field": "padding4", "type": "UnsignedByte" },
+      { "field": "padding5", "type": "UnsignedByte" },
+      { "field": "padding6", "type": "UnsignedByte" }
+    ],
+    "Pet": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "Dword" },
+      {
+        "field": "yell_counter",
+        "type": "Word",
+        "comment": "counts up to 400 (6.6 sec); when 0 the pet yells out"
+      },
+      { "field": "padding1", "type": "UnsignedWord" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      {
+        "field": "active",
+        "type": "Byte",
+        "comment": "-1 = sitting and yelling; 0 = either dead or picked up"
+      }
+    ],
+    "Caveman": [
+      { "field": "chatting_to_uid", "type": "EntityUID" },
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      {
+        "field": "chatting_timer",
+        "type": "Word",
+        "comment": "when greater than 0 it counts down during chatting; when smaller than 0 no chatting will occur until back to 0 ; 0 = ready to chat"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "can_pick_up_timer",
+        "type": "UnsignedByte",
+        "comment": "0 = can pick something up; when holding forced to 179; after tripping and regaining consciousness counts down to 0"
+      },
+      {
+        "field": "unknown_aggro_timer",
+        "type": "Word",
+        "comment": "1 sec timer at the start of getting aggro"
+      },
+      {
+        "field": "aggro_timer",
+        "type": "Word",
+        "comment": "keeps resetting when angry and a player is nearby"
+      }
+    ],
+    "Mosquito": [
+      { "field": "direction_x", "type": "Float" },
+      { "field": "direction_y", "type": "Float" },
+      {
+        "field": "stuck_rel_pos_x",
+        "type": "Float",
+        "comment": "position relative to the block the mosquito is stuck in"
+      },
+      { "field": "stuck_rel_pos_y", "type": "Float" },
+      { "field": "stuck_pos", "type": "PositionInfoPointer" },
+      { "field": "timer", "type": "UnsignedByte" }
+    ],
+    "Mantrap": [
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "padding", "type": "UnsignedWord" },
+      {
+        "field": "eaten_uid",
+        "type": "EntityUID",
+        "comment": "the uid of the entity the mantrap has eaten, in case it can break out, like a shopkeeper"
+      }
+    ],
+    "Skeleton": [
+      {
+        "field": "explosion_timer",
+        "type": "Word",
+        "comment": "-1 never explodes"
+      }
+    ],
+    "Scarab": [
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      {
+        "field": "emitted_light",
+        "type": "IlluminationPointer",
+        "comment": "set color in sat_vign_0, be sure to make the aperture large enough"
+      },
+      {
+        "field": "unknown",
+        "type": "UnsignedByte",
+        "comment": "changes when the scarab is pausing"
+      }
+    ],
+    "Tun": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "arrows_left", "type": "UnsignedByte" },
+      {
+        "field": "reload_timer",
+        "type": "UnsignedByte",
+        "comment": "when 0, a new arrow is loaded into the bow; resets when she finds an arrow on the ground"
+      },
+      {
+        "field": "challenge_fee_paid",
+        "type": "Bool",
+        "comment": "can't reset, you can only pay once"
+      },
+      {
+        "field": "congrats_challenge",
+        "type": "Bool",
+        "comment": "congrats message shown after exiting a challenge"
+      },
+      {
+        "field": "murdered",
+        "type": "Bool",
+        "comment": "when she disappears in a cloud of smoke"
+      },
+      { "field": "shop_entered", "type": "Bool" },
+      { "field": "tiamat_encounter", "type": "Bool" },
+      { "field": "padding", "type": "UnsignedByte" }
+    ],
+    "Imp": [
+      { "field": "carrying", "type": "EntityUID" },
+      { "field": "patrol_y_level", "type": "Float" }
+    ],
+    "Lavamander": [
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      {
+        "field": "shoot_lava_timer",
+        "type": "UnsignedByte",
+        "comment": "when this timer reaches zero, it appears on the surface/shoots lava; triggers on player proximity"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "jump_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "jump pause when cool; runs continuously when hot"
+      },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "lava_detection_timer?", "type": "UnsignedByte" },
+      { "field": "is_hot", "type": "Bool" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
+    ],
+    "Firebug": [
+      { "field": "pos_when_firing", "type": "PositionInfoPointer" },
+      {
+        "field": "fire_timer",
+        "type": "UnsignedWord",
+        "comment": "when it reaches zero, it shoots fire"
+      },
+      { "field": "going_up", "type": "Bool" },
+      { "field": "detached_from_chain", "type": "Bool" }
+    ],
+    "FirebugUnchained": [
+      { "field": "pos", "type": "PositionInfoPointer" },
+      {
+        "field": "max_flight_height",
+        "type": "Float",
+        "comment": "increments when flying up, until it reaches 1.0, then bug flies down"
+      },
+      {
+        "field": "ai_timer",
+        "type": "UnsignedByte",
+        "comment": "when reaches zero, decides whether to walk or fly or pause; doesn't reset when flying"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      {
+        "field": "walking_timer",
+        "type": "UnsignedWord",
+        "comment": "counts down only when walking; can't start flying unless this is at zero"
+      }
+    ],
+    "Robot": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "targeting_timer",
+        "type": "Word",
+        "comment": "When a target is spotted, set to -600 (10 sec), then, when target can't be seen, counts down, but no behavioural change is seen after 10 sec?"
+      },
+      { "field": "pos_when_moving", "type": "PositionInfoPointer" },
+      { "field": "emitted_light_explosion", "type": "IlluminationPointer" }
+    ],
+    "Quillback": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "Word" },
+      { "field": "rolling_pos_info", "type": "PositionInfoPointer" },
+      {
+        "field": "unknown4",
+        "type": "DataPointer",
+        "comment": "points to object that changes while rolling"
+      }
+    ],
+    "HornedLizard": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "blood_squirt_timer", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "pounce_pos", "type": "PositionInfoPointer" },
+      { "field": "unknown4", "type": "DataPointer" }
+    ],
+    "Leprechaun": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "Word" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "hump_timer", "type": "UnsignedByte" },
+      { "field": "target_in_sight_timer", "type": "UnsignedByte" },
+      {
+        "field": "teleport_related?",
+        "type": "UnsignedWord",
+        "comment": "changes when teleporting"
+      },
+      { "field": "timer_after_humping", "type": "UnsignedByte" }
+    ],
+    "Crocman": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      {
+        "field": "unknown_timer",
+        "type": "Word",
+        "comment": "counts for 10 sec, after stun/triggering?"
+      }
+    ],
+    "Mummy": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      }
+    ],
+    "VanHorsing": [
+      { "field": "climb_direction", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "target_spotted_timer", "type": "UnsignedByte" },
+      { "field": "attack_state?", "type": "UnsignedByte" },
+      { "field": "aggro", "type": "Bool" }
+    ],
+    "WitchDoctor": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "attack_timer",
+        "type": "Word",
+        "comment": "10 sec timer starts counting after attack; won't start again until attack cycle is broken"
+      },
+      { "field": "attack_pos", "type": "PositionInfoPointer" },
+      {
+        "field": "skull_regen_timer",
+        "type": "UnsignedWord",
+        "comment": "when zero, regenerates a new floating skull"
+      }
+    ],
+    "WitchDoctorSkull": [
+      { "field": "witch_doctor_uid", "type": "EntityUID" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "rotation_angle", "type": "Float" }
+    ],
+    "ForestSister": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown_timer", "type": "UnsignedByte" },
+      { "field": "target_in_sight_timer", "type": "UnsignedByte" },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "aggro", "type": "Bool" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      }
+    ],
+    "CavemanShopkeeper": [
+      { "field": "unknown1", "type": "Dword" },
+      { "field": "timer1", "type": "UnsignedWord" },
+      { "field": "timer2", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "Byte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "timer3", "type": "UnsignedByte" },
+      { "field": "timer4", "type": "UnsignedByte" },
+      { "field": "tripping", "type": "Bool" },
+      { "field": "timer5", "type": "Word" },
+      { "field": "padding?", "type": "Word" },
+      { "field": "shop_entered", "type": "Bool" }
+    ],
+    "Vampire": [
+      {
+        "field": "jump_trigger_distance_x",
+        "type": "Float",
+        "comment": "the distance from the player it starts jumping"
+      },
+      { "field": "jump_trigger_distance_y", "type": "Float" },
+      { "field": "sleep_pos_x", "type": "Float" },
+      { "field": "sleep_pos_y", "type": "Float" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
+    ],
+    "Vlad": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      {
+        "field": "teleport_timer",
+        "type": "UnsignedByte",
+        "comment": "triggers when Vlad teleports, when timer running he can't teleport and will stun when hit"
+      },
+      { "field": "aggro", "type": "Bool" }
     ],
     "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }]
   }

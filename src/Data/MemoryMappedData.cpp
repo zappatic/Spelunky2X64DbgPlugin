@@ -22,6 +22,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::Bool:
         case MemoryFieldType::Byte:
         case MemoryFieldType::UnsignedByte:
+        case MemoryFieldType::Flags8:
             offset += 1;
             break;
         case MemoryFieldType::Word:
@@ -50,10 +51,14 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         {
             if (gsPointerTypes.count(field.type) > 0)
             {
-                auto pointerOffset = Script::Memory::ReadQword(offset);
+                size_t pointerOffset = Script::Memory::ReadQword(offset);
                 for (const auto& f : mConfiguration->typeFields(field.type))
                 {
-                    pointerOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                    auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                    if (pointerOffset != 0)
+                    {
+                        pointerOffset = newOffset;
+                    }
                 }
                 offset += 8;
             }

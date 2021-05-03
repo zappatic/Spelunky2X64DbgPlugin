@@ -27,6 +27,7 @@ namespace S2Plugin
         void showState();
         void showEntities();
         void clearLabels();
+        void reloadConfig();
 
       private:
         EntityDB* mEntityDB;

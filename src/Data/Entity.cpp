@@ -126,6 +126,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Bool:
         case MemoryFieldType::Byte:
         case MemoryFieldType::UnsignedByte:
+        case MemoryFieldType::Flags8:
             fieldSize = 1;
             break;
         case MemoryFieldType::Word:
