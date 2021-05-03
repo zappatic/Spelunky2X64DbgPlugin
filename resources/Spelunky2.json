@@ -49,6 +49,18 @@
     "ForestSister": "Monster",
     "Vampire": "Monster",
     "Vlad": "Vampire",
+    "Waddler": "Monster",
+    "Octopus": "Monster",
+    "Bodyguard": "Monster",
+    "MadameTusk": "Monster",
+    "Fish": "Monster",
+    "GiantFish": "Monster",
+    "Crabman": "Monster",
+    "Kingu": "Monster",
+    "Anubis": "Monster",
+    "Cobra": "Monster",
+    "CatMummy": "Monster",
+    "Sorceress": "Monster",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -109,6 +121,18 @@
     "MONS_SISTER_.*": "ForestSister",
     "MONS_VAMPIRE": "Vampire",
     "MONS_VLAD": "Vlad",
+    "MONS_STORAGEGUY": "Waddler",
+    "MONS_OCTOPUS": "Octopus",
+    "MONS_BODYGUARD": "Bodyguard",
+    "MONS_MADAMETUSK": "MadameTusk",
+    "MONS_FISH": "Fish",
+    "MONS_GIANTFISH": "GiantFish",
+    "MONS_CRABMAN": "Crabman",
+    "MONS_KINGU": "Kingu",
+    "MONS_ANUBIS": "Anubis",
+    "MONS_COBRA": "Cobra",
+    "MONS_CATMUMMY": "CatMummy",
+    "MONS_SORCERESS": "Sorceress",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -940,11 +964,7 @@
         "type": "Bool",
         "comment": "gets set to false when the quest is over (Yang dead or second turkey delivered)"
       },
-      {
-        "field": "unknown8",
-        "type": "Bool",
-        "comment": "can be set to false when the quest fails (Yang mad/dead), otherwise it forces back to true"
-      },
+      { "field": "tidepool_message_shown", "type": "Bool" },
       { "field": "padding4", "type": "UnsignedByte" },
       { "field": "padding5", "type": "UnsignedByte" },
       { "field": "padding6", "type": "UnsignedByte" }
@@ -1299,6 +1319,180 @@
       },
       { "field": "aggro", "type": "Bool" }
     ],
-    "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }]
+    "Waddler": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      {
+        "field": "lose_interest_timer?",
+        "type": "UnsignedByte",
+        "comment": "delay in-between attacks"
+      },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "UnsignedByte" },
+      { "field": "unknown8", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedQword" },
+      { "field": "unknown11", "type": "UnsignedByte" },
+      { "field": "on_the_ground", "type": "Bool" },
+      { "field": "aggro_timer", "type": "UnsignedWord" }
+    ],
+    "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }],
+    "Octopus": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      }
+    ],
+    "Bodyguard": [
+      {
+        "field": "climb_y_direction",
+        "type": "Float",
+        "comment": "when on a rope or ladder"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "target_detection_timer?", "type": "UnsignedByte" },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "aggro", "type": "Bool" },
+      { "field": "unknown7", "type": "UnsignedByte" },
+      { "field": "unknown8", "type": "UnsignedByte" }
+    ],
+    "MadameTusk": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "target_timer?", "type": "UnsignedByte" },
+      { "field": "padding4", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "UnsignedByte" }
+    ],
+    "Fish": [{ "field": "change_direction_timer", "type": "UnsignedByte" }],
+    "GiantFish": [
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      {
+        "field": "change_direction_timer",
+        "type": "UnsignedWord",
+        "comment": "when bouncing into a wall, it changes direction too"
+      },
+      {
+        "field": "lose_interest_timer",
+        "type": "UnsignedWord",
+        "comment": "delay in-between attacks"
+      },
+      { "field": "unknown_timer", "type": "UnsignedWord" },
+      { "field": "padding1", "type": "UnsignedWord" },
+      { "field": "unknown1", "type": "Float" },
+      { "field": "unknown2", "type": "Float" },
+      { "field": "unknown3", "type": "Float" }
+    ],
+    "Crabman": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing when timer reaches zero"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      {
+        "field": "invincibility_timer?",
+        "type": "UnsignedByte",
+        "comment": "triggers after being attacked"
+      },
+      { "field": "poison_attack_timer", "type": "UnsignedByte" },
+      { "field": "padding4", "type": "UnsignedByte" },
+      { "field": "padding5", "type": "UnsignedByte" },
+      { "field": "attacking_claw", "type": "EntityUID" },
+      { "field": "at_maximum_attack", "type": "Bool" },
+      { "field": "unknown3", "type": "UnsignedByte" }
+    ],
+    "Kingu": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      {
+        "field": "climb_direction_x",
+        "type": "Float",
+        "comment": "distance too?"
+      },
+      { "field": "climb_direction_y", "type": "Float" },
+      { "field": "climb_pause_timer", "type": "UnsignedWord" },
+      { "field": "shell_invincibility_timer", "type": "UnsignedByte" },
+      { "field": "monster_spawn_timer", "type": "UnsignedByte" },
+      {
+        "field": "initial_shell_health",
+        "type": "UnsignedByte",
+        "comment": "excalibur wipes out immediately, bombs take off 11 points; when 0 vulnerable to whip"
+      },
+      { "field": "seen_by_kingu?", "type": "Bool" }
+    ],
+    "Anubis": [
+      { "field": "spawn_x", "type": "Float" },
+      { "field": "spawn_y", "type": "Float" },
+      { "field": "unknown1", "type": "Float" },
+      {
+        "field": "attack_proximity_y",
+        "type": "Float",
+        "comment": "how close you have to be to be attacked; set both to 0 for a pet anubis"
+      },
+      { "field": "attack_proximity_x", "type": "Float" },
+      { "field": "ai_timer?", "type": "UnsignedByte" },
+      { "field": "next_attack_timer", "type": "UnsignedByte" },
+      { "field": "psychic_orbs_counter", "type": "UnsignedByte" },
+      { "field": "awake", "type": "Bool" }
+    ],
+    "Cobra": [
+      {
+        "field": "spit_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between counting to 100 and to 64"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      {
+        "field": "duplicate_move_state",
+        "type": "Dword",
+        "comment": "6 is put in movable.move_state as well as in here while spitting poison"
+      }
+    ],
+    "CatMummy": [
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "attack_timer?", "type": "UnsignedByte" }
+    ],
+    "Sorceress": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "padding1", "type": "UnsignedWord" },
+      { "field": "inbetween_attacka_timer", "type": "UnsignedWord" },
+      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "airtime", "type": "Float", "comment": "why float?" },
+      {
+        "field": "halo_emitted_light",
+        "type": "IlluminationPointer",
+        "comment": "not the shot but the halo, try putting a color at 10"
+      },
+      { "field": "fx_entity", "type": "EntityPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "hover_timer?", "type": "UnsignedByte" }
+    ]
   }
 }
