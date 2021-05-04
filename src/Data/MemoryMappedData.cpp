@@ -49,10 +49,10 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             break;
         default: // it's either a pointer or an inline struct
         {
-            if (gsPointerTypes.count(field.type) > 0)
+            if (field.type == MemoryFieldType::PointerType)
             {
                 size_t pointerOffset = Script::Memory::ReadQword(offset);
-                for (const auto& f : mConfiguration->typeFields(field.type))
+                for (const auto& f : mConfiguration->typeFieldsOfPointer(field.jsonName))
                 {
                     auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
                     if (pointerOffset != 0)
@@ -67,7 +67,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
 
                 if (field.type == MemoryFieldType::EntitySubclass)
                 {
-                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
                     {
                         offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
                     }

@@ -30,7 +30,7 @@ void S2Plugin::Entity::refreshOffsets()
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
-        headerField.entitySubclassName = c;
+        headerField.jsonName = c;
         offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
         for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
         {
@@ -52,7 +52,7 @@ void S2Plugin::Entity::refreshValues()
     {
         for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
         {
-            if (gsPointerTypes.count(field.type) == 1)
+            if (field.type == MemoryFieldType::PointerType)
             {
                 pointerFieldFound = true;
                 break;
@@ -70,7 +70,7 @@ void S2Plugin::Entity::refreshValues()
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
-        headerField.entitySubclassName = c;
+        headerField.jsonName = c;
         mTree->updateValueForField(headerField, c, mMemoryOffsets);
     }
 }
@@ -84,7 +84,7 @@ void S2Plugin::Entity::populateTreeView()
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
-        headerField.entitySubclassName = c;
+        headerField.jsonName = c;
         auto item = mTree->addMemoryField(headerField, c);
         mTree->expandItem(item);
         mTreeViewSectionItems[c] = item;
@@ -153,7 +153,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
             break;
         default: // it's either a pointer or an inline struct
         {
-            if (gsPointerTypes.count(field.type) > 0)
+            if (field.type == MemoryFieldType::PointerType)
             {
                 fieldSize = 8;
             }
@@ -161,7 +161,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
             {
                 if (field.type == MemoryFieldType::EntitySubclass)
                 {
-                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
                     {
                         highlightField(f, fieldNameOverride + "." + f.name, color);
                     }

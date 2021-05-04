@@ -50,7 +50,11 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         auto itemFieldType = new QStandardItem();
         if (field.type == MemoryFieldType::EntitySubclass)
         {
-            itemFieldType->setData(QString::fromStdString(field.entitySubclassName), Qt::DisplayRole);
+            itemFieldType->setData(QString::fromStdString(field.jsonName), Qt::DisplayRole);
+        }
+        else if (field.type == MemoryFieldType::PointerType)
+        {
+            itemFieldType->setData(QString::fromStdString(field.jsonName), Qt::DisplayRole);
         }
         else if (gsMemoryFieldTypeToStringMapping.count(field.type) > 0)
         {
@@ -155,7 +159,14 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
             auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
             if (field.type == MemoryFieldType::EntitySubclass)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                }
+            }
+            else if (field.type == MemoryFieldType::PointerType)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
                 {
                     addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
                 }
@@ -656,7 +667,14 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             if (field.type == MemoryFieldType::EntitySubclass)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.entitySubclassName))
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
+            }
+            else if (field.type == MemoryFieldType::PointerType)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                 }

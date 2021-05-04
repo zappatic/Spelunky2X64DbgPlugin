@@ -3,7 +3,7 @@
   "entity_class_hierarchy": {
     "Movable": "Entity",
     "Monster": "Movable",
-    "Player": "Monster",
+    "Player": "Movable",
     "ArrowTrap": "Entity",
     "Container": "Movable",
     "Gun": "Movable",
@@ -61,6 +61,7 @@
     "Cobra": "Monster",
     "CatMummy": "Monster",
     "Sorceress": "Monster",
+    "MagmaMan": "Monster",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -133,9 +134,22 @@
     "MONS_COBRA": "Cobra",
     "MONS_CATMUMMY": "CatMummy",
     "MONS_SORCERESS": "Sorceress",
+    "MONS_MAGMAMAN": "MagmaMan",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
+  // all the types that are pointers
+  // if you want to add a pointer, add its field definition under "fields" below, and
+  // add it to "pointer_types" so it will be interpreted as a pointer instead of inline data
+  "pointer_types": [
+    "IlluminationPointer",
+    "StateItemsPointer",
+    "LayerPointer",
+    "TexturePointer",
+    "PlayerInventoryPointer",
+    "PositionInfoPointer",
+    "MysteryPointer1"
+  ],
   // a list of all the fields within the types
   "fields": {
     "EntityDB": [
@@ -675,8 +689,9 @@
       { "field": "target_selection_timer", "type": "UnsignedDword" }
     ],
     "Player": [
+      { "field": "inside", "type": "Map" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
-      { "field": "p140", "type": "DataPointer" },
+      { "field": "p140", "type": "MysteryPointer1" },
       { "field": "i148", "type": "Dword" },
       { "field": "i14c", "type": "Dword" },
       { "field": "ai_func", "type": "UnsignedQword" },
@@ -689,6 +704,31 @@
       { "field": "can_use", "type": "UnsignedByte" },
       { "field": "b176", "type": "UnsignedByte" },
       { "field": "b177", "type": "UnsignedByte" }
+    ],
+    "MysteryPointer1": [
+      { "field": "f01", "type": "Float" },
+      { "field": "f02", "type": "Float" },
+      { "field": "f03", "type": "Float" },
+      { "field": "f04", "type": "Float" },
+      { "field": "f05", "type": "Float" },
+      { "field": "f06", "type": "Float" },
+      { "field": "f07", "type": "Float" },
+      { "field": "f08", "type": "Float" },
+      { "field": "f09", "type": "Float" },
+      { "field": "f10", "type": "Float" },
+      { "field": "f11", "type": "Float" },
+      { "field": "f12", "type": "Float" },
+      { "field": "f13", "type": "Float" },
+      { "field": "f14", "type": "Float" },
+      { "field": "f15", "type": "Float" },
+      { "field": "f16", "type": "Float" },
+      { "field": "f17", "type": "Float" },
+      { "field": "f18", "type": "Float" },
+      { "field": "f19", "type": "Float" },
+      { "field": "f20", "type": "Float" },
+      { "field": "f21", "type": "Float" },
+      { "field": "f22", "type": "Float" },
+      { "field": "f23", "type": "Float" }
     ],
     "PlayerInventoryPointer": [
       { "field": "money", "type": "UnsignedDword" },
@@ -746,17 +786,17 @@
       { "field": "player3", "type": "EntityPointer" },
       { "field": "player4", "type": "EntityPointer" }
     ],
-    "StateSaturationVignette": [
+    "SaturationAperture": [
       { "field": "red", "type": "Float" },
       { "field": "green", "type": "Float" },
       { "field": "blue", "type": "Float" },
-      { "field": "vignette_aperture", "type": "Float" }
+      { "field": "aperture", "type": "Float" }
     ],
     "IlluminationPointer": [
-      { "field": "saturation_vignette_0", "type": "StateSaturationVignette" },
-      { "field": "saturation_vignette_1", "type": "StateSaturationVignette" },
-      { "field": "saturation_vignette_2", "type": "StateSaturationVignette" },
-      { "field": "saturation_vignette_3", "type": "StateSaturationVignette" },
+      { "field": "saturation_vignette_0", "type": "SaturationAperture" },
+      { "field": "saturation_vignette_1", "type": "SaturationAperture" },
+      { "field": "saturation_vignette_2", "type": "SaturationAperture" },
+      { "field": "saturation_vignette_3", "type": "SaturationAperture" },
       { "field": "brightness1", "type": "Float" },
       { "field": "brightness2", "type": "Float" },
       { "field": "something_min", "type": "Float" },
@@ -1482,7 +1522,7 @@
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
       { "field": "padding1", "type": "UnsignedWord" },
-      { "field": "inbetween_attacka_timer", "type": "UnsignedWord" },
+      { "field": "inbetween_attack_timer", "type": "UnsignedWord" },
       { "field": "padding2", "type": "UnsignedWord" },
       { "field": "airtime", "type": "Float", "comment": "why float?" },
       {
@@ -1493,6 +1533,22 @@
       { "field": "fx_entity", "type": "EntityPointer" },
       { "field": "pos_info", "type": "PositionInfoPointer" },
       { "field": "hover_timer?", "type": "UnsignedByte" }
+    ],
+    "MagmaMan": [
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "DataPointer" },
+      {
+        "field": "jump_timer",
+        "type": "UnsignedWord",
+        "comment": "when 0 it jumps"
+      },
+      { "field": "padding1", "type": "UnsignedWord" },
+      {
+        "field": "alive_timer",
+        "type": "UnsignedWord",
+        "comment": "when 0, the magmaman disappears"
+      }
     ]
   }
 }

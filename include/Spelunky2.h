@@ -35,9 +35,9 @@ namespace S2Plugin
     // - the MemoryFieldType enum
     // - the string representation of the type in gsMemoryFieldTypeToStringMapping
     // - the json name of the type in gsJSONStringToMemoryFieldTypeMapping
-    // - if it's a pointer, add to gsPointerTypes, so that the offset is only increased by
-    //   sizeof(size_t) instead of the size of the inline equivalent of what it points to
     // - Spelunky2.json
+    // new subclasses of Entity can just be added to the class hierarchy in Spelunky2.json
+    // and have its fields defined there
 
     enum class MemoryFieldType
     {
@@ -61,22 +61,17 @@ namespace S2Plugin
         Rect,
         State,
         EntityDB,
-        IlluminationPointer,
-        StateSaturationVignette,
-        StateItemsPointer,
-        LayerPointer,
         EntityPointer,
         EntityDBPointer,
         EntityDBID,
         EntityUID,
+        SaturationAperture,
         Vector,
         Color,
-        TexturePointer,
         ConstCharPointerPointer,
         Map,
-        PlayerInventoryPointer,
-        EntitySubclass,
-        PositionInfoPointer,
+        EntitySubclass, // a subclass of an entity defined in json
+        PointerType,    // a pointer defined in json
     };
 
     // clang-format off
@@ -102,21 +97,16 @@ namespace S2Plugin
         {MemoryFieldType::Rect, "Rectangle"},
         {MemoryFieldType::State, "State"},
         {MemoryFieldType::EntityDB, "EntityDB"},
-        {MemoryFieldType::IlluminationPointer, "Illumination"},
-        {MemoryFieldType::StateSaturationVignette, "Saturation/Vignette"},
-        {MemoryFieldType::StateItemsPointer, "Items"},
-        {MemoryFieldType::LayerPointer, "Layer"},
+        {MemoryFieldType::SaturationAperture, "Saturation/Aperture"},
         {MemoryFieldType::EntityPointer, "Entity pointer"},
         {MemoryFieldType::EntityDBPointer, "EntityDB pointer"},
         {MemoryFieldType::EntityDBID, "EntityDB ID"},
         {MemoryFieldType::EntityUID, "Entity UID"},
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::Color, "Color"},
-        {MemoryFieldType::TexturePointer, "Texture pointer"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::Map, "std::map<>"},
-        {MemoryFieldType::PlayerInventoryPointer, "Inventory"},
-        {MemoryFieldType::PositionInfoPointer, "Position info pointer"},
+        {MemoryFieldType::PointerType, "Pointer"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -140,30 +130,15 @@ namespace S2Plugin
         {"Rect", MemoryFieldType::Rect},
         {"State", MemoryFieldType::State},
         {"EntityDB", MemoryFieldType::EntityDB},
-        {"IlluminationPointer", MemoryFieldType::IlluminationPointer},
-        {"StateSaturationVignette", MemoryFieldType::StateSaturationVignette},
-        {"StateItemsPointer", MemoryFieldType::StateItemsPointer},
-        {"LayerPointer", MemoryFieldType::LayerPointer},
+        {"SaturationAperture", MemoryFieldType::SaturationAperture},
         {"EntityPointer", MemoryFieldType::EntityPointer},
         {"EntityDBPointer", MemoryFieldType::EntityDBPointer},
         {"EntityDBID", MemoryFieldType::EntityDBID},
         {"EntityUID", MemoryFieldType::EntityUID},
         {"Vector", MemoryFieldType::Vector},
         {"Color", MemoryFieldType::Color},
-        {"TexturePointer", MemoryFieldType::TexturePointer},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"Map", MemoryFieldType::Map},
-        {"PlayerInventoryPointer", MemoryFieldType::PlayerInventoryPointer},
-        {"PositionInfoPointer", MemoryFieldType::PositionInfoPointer},
-    };
-
-    const static std::unordered_set<MemoryFieldType> gsPointerTypes = {
-        MemoryFieldType::IlluminationPointer,
-        MemoryFieldType::StateItemsPointer,
-        MemoryFieldType::LayerPointer,
-        MemoryFieldType::TexturePointer,
-        MemoryFieldType::PlayerInventoryPointer,
-        MemoryFieldType::PositionInfoPointer,
     };
     // clang-format on
 
@@ -172,8 +147,11 @@ namespace S2Plugin
         std::string name;
         MemoryFieldType type;
         uint64_t extraInfo = 0;
-        std::string entitySubclassName; // only if applicable
+        // jsonName only if applicable: if a type is not a MemoryFieldType, but fully defined in the json file
+        // then save its name so we can compare later
+        std::string jsonName;
         std::string comment;
+        bool isPointer = false;
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
 

@@ -83,15 +83,25 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         mDefaultEntityClassTypes[key] = value;
     }
 
+    std::unordered_set<std::string> pointerTypes;
+    auto arr = j["pointer_types"];
+    for (const auto& t : arr)
+    {
+        pointerTypes.insert(t.get<std::string>());
+    }
+
     mTypeFieldsEntitySubclasses.clear();
     mTypeFields.clear();
+    mTypeFieldsPointers.clear();
+
     auto fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
     {
         auto isEntitySubclass = isKnownEntitySubclass(key);
-        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass)
+        auto isPointer = (pointerTypes.count(key) > 0);
+        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass && !isPointer)
         {
-            throw std::runtime_error("Unknown type specified in fields: " + key);
+            throw std::runtime_error("Unknown type specified in fields(1): " + key);
         }
         std::vector<MemoryField> vec;
         for (const auto& field : jsonArray)
@@ -108,11 +118,19 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             }
 
             auto fieldTypeStr = field["type"].get<std::string>();
-            if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
+            if (pointerTypes.count(fieldTypeStr))
             {
-                throw std::runtime_error("Unknown type specified in fields: " + fieldTypeStr);
+                memField.type = MemoryFieldType::PointerType;
+                memField.jsonName = fieldTypeStr;
             }
-            memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
+            else
+            {
+                if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
+                {
+                    throw std::runtime_error("Unknown type specified in fields(2): " + fieldTypeStr);
+                }
+                memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
+            }
 
             if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16 || memField.type == MemoryFieldType::Flags8) && field.contains("flags"))
             {
@@ -127,7 +145,12 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
 
             vec.emplace_back(memField);
         }
-        if (isEntitySubclass)
+
+        if (isPointer)
+        {
+            mTypeFieldsPointers[key] = vec;
+        }
+        else if (isEntitySubclass)
         {
             mTypeFieldsEntitySubclasses[key] = vec;
         }
@@ -146,6 +169,15 @@ const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::ent
 const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::defaultEntityClassTypes() const noexcept
 {
     return mDefaultEntityClassTypes;
+}
+
+const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfPointer(const std::string& type) const
+{
+    if (mTypeFieldsPointers.count(type) == 0)
+    {
+        dprintf("unknown key requested in Configuration::typeFieldsOfPointer() (t=%s)\n", type.c_str());
+    }
+    return mTypeFieldsPointers.at(type);
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(const MemoryFieldType& type) const
