@@ -256,6 +256,10 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
     if (field.type != MemoryFieldType::Skip)
     {
         itemField = lookupTreeViewItem(fieldNameOverride, gsColField, parent);
+        if (itemField->hasChildren() && !isExpanded(mModel->indexFromItem(itemField)))
+        {
+            return;
+        }
         itemValue = lookupTreeViewItem(fieldNameOverride, gsColValue, parent);
         itemValueHex = lookupTreeViewItem(fieldNameOverride, gsColValueHex, parent);
         itemMemoryOffset = lookupTreeViewItem(fieldNameOverride, gsColMemoryOffset, parent);

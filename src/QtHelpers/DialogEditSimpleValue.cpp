@@ -92,7 +92,7 @@ S2Plugin::DialogEditSimpleValue::DialogEditSimpleValue(const QString& fieldName,
         }
         case MemoryFieldType::Float:
         {
-            mLineEditDecValue->setValidator(new QDoubleValidator((std::numeric_limits<float>::min)(), (std::numeric_limits<float>::max)(), 1000, this));
+            mLineEditDecValue->setValidator(new QDoubleValidator((std::numeric_limits<float>::max)() * -1, (std::numeric_limits<float>::max)(), 1000, this));
             uint32_t tmp = Script::Memory::ReadDword(mMemoryOffset);
             float v = reinterpret_cast<float&>(tmp);
             mLineEditDecValue->setText(QString("%1").arg(v));

@@ -73,6 +73,8 @@
     "Alien": "Monster",
     "UFO": "Monster",
     "Lahamu": "Monster",
+    "YetiQueen": "Monster",
+    "YetiKing": "Monster",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -159,6 +161,8 @@
     "MONS_ALIEN": "Alien",
     "MONS_UFO": "UFO",
     "MONS_ALIENQUEEN": "Lahamu",
+    "MONS_YETIQUEEN": "YetiQueen",
+    "MONS_YETIKING": "YetiKing",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -743,9 +747,28 @@
       { "field": "stun_state", "type": "UnsignedWord" },
       { "field": "some_state", "type": "UnsignedDword" },
       { "field": "poison_tick_timer", "type": "Word" },
-      { "field": "unknown_timer", "type": "Word" },
-      { "field": "i11c", "type": "Dword" },
-      { "field": "i120", "type": "Float" },
+      {
+        "field": "dark_shadow_timer",
+        "type": "UnsignedByte",
+        "comment": "entitity is rendered darker, happens when being on fire/explosion"
+      },
+      {
+        "field": "exit_invincibility_timer",
+        "type": "UnsignedByte",
+        "comment": "when exiting a door or a pipe, ..."
+      },
+      {
+        "field": "invincibility_frames_timer",
+        "type": "UnsignedByte",
+        "comment": "blinks the entity"
+      },
+      { "field": "frozen_timer", "type": "UnsignedByte" },
+      { "field": "unknown_damage_counter_a", "type": "UnsignedByte" },
+      { "field": "unknown_damage_counter_b", "type": "UnsignedByte" },
+      { "field": "i120a", "type": "UnsignedByte", "comment": "damage related" },
+      { "field": "i120b", "type": "UnsignedByte" },
+      { "field": "i120c", "type": "UnsignedByte" },
+      { "field": "i120d", "type": "UnsignedByte" },
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "airtime", "type": "UnsignedByte" },
       { "field": "b126", "type": "UnsignedByte" },
@@ -767,7 +790,10 @@
       { "field": "p160", "type": "DataPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
-      { "field": "jump_flags", "type": "UnsignedDword" },
+      { "field": "jump_flags_a", "type": "UnsignedByte" },
+      { "field": "jump_flags_b", "type": "UnsignedByte" },
+      { "field": "jump_flags_c", "type": "UnsignedByte" },
+      { "field": "jump_flags_d", "type": "UnsignedByte" },
       { "field": "some_timer", "type": "UnsignedByte" },
       { "field": "can_use", "type": "UnsignedByte" },
       { "field": "b176", "type": "UnsignedByte" },
@@ -867,11 +893,16 @@
       { "field": "saturation_vignette_3", "type": "SaturationAperture" },
       { "field": "brightness1", "type": "Float" },
       { "field": "brightness2", "type": "Float" },
-      { "field": "something_min", "type": "Float" },
-      { "field": "something_max", "type": "Float" },
-      { "field": "unknown_empty", "type": "UnsignedQword" },
-      { "field": "unknown_float", "type": "Float" },
-      { "field": "unknown_nan", "type": "Float" },
+      { "field": "light_pos_x", "type": "Float" },
+      { "field": "light_pos_y", "type": "Float" },
+      { "field": "offset_x", "type": "Float" },
+      { "field": "offset_y", "type": "Float" },
+      {
+        "field": "vertical_scale",
+        "type": "Float",
+        "comment": "< 1.0 = larger"
+      },
+      { "field": "entity_uid", "type": "EntityUID" },
       { "field": "unknown_timer", "type": "UnsignedDword" },
       { "field": "frontlayer_global_illumination", "type": "UnsignedByte" },
       { "field": "unknown_illumination1", "type": "UnsignedByte" },
@@ -1873,6 +1904,22 @@
       { "field": "unknown38", "type": "UnsignedDword" },
       { "field": "texture", "type": "TexturePointer" },
       { "field": "texture_name", "type": "ConstCharPointerPointer" }
+    ],
+    "YetiQueen": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      }
+    ],
+    "YetiKing": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedDword",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "emitted_light", "type": "IlluminationPointer" }
     ]
   }
 }
