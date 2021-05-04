@@ -62,6 +62,17 @@
     "CatMummy": "Monster",
     "Sorceress": "Monster",
     "MagmaMan": "Monster",
+    "Bee": "Monster",
+    "Ammit": "Monster",
+    "ApepPart": "Monster",
+    "ApepHead": "ApepPart",
+    "AnubisTwo": "Monster",
+    "OsirisHead": "Monster",
+    "OsirisHand": "Monster",
+    "Yeti": "Monster",
+    "Alien": "Monster",
+    "UFO": "Monster",
+    "Lahamu": "Monster",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -130,11 +141,24 @@
     "MONS_GIANTFISH": "GiantFish",
     "MONS_CRABMAN": "Crabman",
     "MONS_KINGU": "Kingu",
+    "MONS_ANUBIS2": "AnubisTwo",
     "MONS_ANUBIS": "Anubis",
     "MONS_COBRA": "Cobra",
     "MONS_CATMUMMY": "CatMummy",
     "MONS_SORCERESS": "Sorceress",
     "MONS_MAGMAMAN": "MagmaMan",
+    "MONS_BEE": "Bee",
+    "MONS_QUEENBEE": "Bee",
+    "MONS_AMMIT": "Ammit",
+    "MONS_APEP_HEAD": "ApepHead",
+    "MONS_APEP_BODY": "ApepPart",
+    "MONS_APEP_TAIL": "ApepPart",
+    "MONS_OSIRIS_HEAD": "OsirisHead",
+    "MONS_OSIRIS_HAND": "OsirisHand",
+    "MONS_YETI": "Yeti",
+    "MONS_ALIEN": "Alien",
+    "MONS_UFO": "UFO",
+    "MONS_ALIENQUEEN": "Lahamu",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -148,7 +172,10 @@
     "TexturePointer",
     "PlayerInventoryPointer",
     "PositionInfoPointer",
-    "MysteryPointer1"
+    "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
+    "MysteryPointer1",
+    "MysteryPointer2",
+    "RenderInfoPointer"
   ],
   // a list of all the fields within the types
   "fields": {
@@ -637,7 +664,7 @@
       { "field": "hitboxy", "type": "Float" },
       { "field": "duckmask", "type": "UnsignedDword" },
       { "field": "angle", "type": "Float" },
-      { "field": "p80", "type": "DataPointer" },
+      { "field": "rendering_info", "type": "RenderInfoPointer" },
       { "field": "texture", "type": "TexturePointer" },
       { "field": "tilew", "type": "Float" },
       { "field": "tileh", "type": "Float" },
@@ -655,9 +682,50 @@
       { "field": "icc", "type": "Dword" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
-      { "field": "buttons", "type": "UnsignedDword" },
+      {
+        "field": "buttons",
+        "type": "Flags32",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "-",
+          "8": "-",
+          "9": "Jump",
+          "10": "Attack",
+          "11": "Bomb",
+          "12": "Rope",
+          "13": "Run",
+          "14": "Use door/buy",
+          "15": "-",
+          "16": "-",
+          "17": "-",
+          "18": "-",
+          "19": "-",
+          "20": "-",
+          "21": "-",
+          "22": "-",
+          "23": "-",
+          "24": "-",
+          "25": "-",
+          "26": "-",
+          "27": "-",
+          "28": "-",
+          "29": "-",
+          "30": "-",
+          "31": "-",
+          "32": "-"
+        }
+      },
       { "field": "stand_counter", "type": "UnsignedDword" },
-      { "field": "fe0", "type": "Float" },
+      {
+        "field": "jump_height_multiplier",
+        "type": "Float",
+        "comment": "entitydb.jump gets multiplied by this value"
+      },
       { "field": "price", "type": "Dword" },
       { "field": "owner_uid", "type": "EntityUID" },
       { "field": "last_owner_uid", "type": "EntityUID" },
@@ -677,7 +745,7 @@
       { "field": "poison_tick_timer", "type": "Word" },
       { "field": "unknown_timer", "type": "Word" },
       { "field": "i11c", "type": "Dword" },
-      { "field": "i120", "type": "Dword" },
+      { "field": "i120", "type": "Float" },
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "airtime", "type": "UnsignedByte" },
       { "field": "b126", "type": "UnsignedByte" },
@@ -876,13 +944,13 @@
       { "field": "fuel", "type": "UnsignedByte" }
     ],
     "Bomb": [
-      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
       { "field": "scale_hor", "type": "Float" },
       { "field": "scale_ver", "type": "Float" },
       { "field": "unknown2", "type": "Bool" }
     ],
     "Olmec": [
-      { "field": "unknown_pointer", "type": "DataPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
       { "field": "target_uid", "type": "EntityUID" },
       { "field": "attack_phase", "type": "UnsignedByte" },
       { "field": "attack_timer", "type": "UnsignedByte" },
@@ -918,13 +986,14 @@
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "UnsignedQword" },
-      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "Float" },
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float" }
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "Float" }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedWord" },
@@ -1037,7 +1106,7 @@
         "type": "Word",
         "comment": "when greater than 0 it counts down during chatting; when smaller than 0 no chatting will occur until back to 0 ; 0 = ready to chat"
       },
-      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "wake_up_timer", "type": "UnsignedByte" },
       {
         "field": "can_pick_up_timer",
         "type": "UnsignedByte",
@@ -1536,8 +1605,8 @@
     ],
     "MagmaMan": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "unknown1", "type": "MysteryPointer2" },
       {
         "field": "jump_timer",
         "type": "UnsignedWord",
@@ -1549,6 +1618,261 @@
         "type": "UnsignedWord",
         "comment": "when 0, the magmaman disappears"
       }
+    ],
+    "MysteryPointer2": [
+      { "field": "data?", "type": "DataPointer" },
+      { "field": "size?", "type": "UnsignedQword" }
+    ],
+    "Bee": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      {
+        "field": "fly_hang_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between hanging/sitting on the wall and flying every time it reaches zero"
+      },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      {
+        "field": "targeting_timer?",
+        "type": "UnsignedByte",
+        "comment": "counts when bee takes off and hasn't spotted a target yet"
+      },
+      {
+        "field": "unknown_rand1",
+        "type": "UnsignedByte",
+        "comment": "looks to be a random number being put in here"
+      },
+      {
+        "field": "unknown_rand2",
+        "type": "UnsignedByte",
+        "comment": "looks to be a random number being put in here"
+      },
+      { "field": "unknown11", "type": "UnsignedByte" },
+      { "field": "unknown12", "type": "UnsignedByte" },
+      {
+        "field": "wobble_x?",
+        "type": "Float",
+        "comment": "maybe the positional offset to make it look like it's buzzing"
+      },
+      { "field": "wobble_y?", "type": "Float" }
+    ],
+    "Ammit": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      }
+    ],
+    "ApepHead": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown_pos1", "type": "PositionInfoPointer" },
+      { "field": "unknown_pos2", "type": "PositionInfoPointer" }
+    ],
+    "ApepPart": [
+      { "field": "y", "type": "Float" },
+      { "field": "x", "type": "Float" }
+    ],
+    "AnubisTwo": [
+      { "field": "spawn_x", "type": "Float" },
+      { "field": "spawn_y", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      {
+        "field": "attack_proximity_y",
+        "type": "Float",
+        "comment": "how close you have to be to be attacked; set both to 0 for a pet anubis"
+      },
+      { "field": "attack_proximity_x", "type": "Float" },
+      { "field": "ai_timer?", "type": "UnsignedByte" },
+      { "field": "next_attack_timer", "type": "UnsignedByte" }
+    ],
+    "OsirisHead": [
+      {
+        "field": "right_hand",
+        "type": "EntityUID",
+        "comment": "right from his perspective"
+      },
+      { "field": "left_hand", "type": "EntityUID" },
+      { "field": "moving_left", "type": "Bool" },
+      { "field": "targeting_timer?", "type": "UnsignedByte" },
+      { "field": "invincibility_timer", "type": "UnsignedByte" }
+    ],
+    "OsirisHand": [
+      { "field": "attack_cooldown_timer", "type": "UnsignedByte" }
+    ],
+    "Yeti": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      }
+    ],
+    "Alien": [
+      {
+        "field": "jump_timer",
+        "type": "UnsignedByte",
+        "comment": "when 0 it jumps"
+      }
+    ],
+    "UFO": [
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      {
+        "field": "patrol_distance",
+        "type": "Word",
+        "comment": "pos = right, neg = left"
+      },
+      { "field": "attack_cooldown_timer", "type": "UnsignedByte" }
+    ],
+    "Lahamu": [
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "eyeball_positioner", "type": "PlayerTrackerPointer" },
+      { "field": "attack_cooldown_timer", "type": "UnsignedWord" },
+      {
+        "field": "unknown_proximity_related",
+        "type": "Bool",
+        "comment": "gets set to true when you get close to Lahamu"
+      }
+    ],
+    "PlayerTrackerPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "unknown1",
+        "type": "DataPointer",
+        "comment": "points to a CodePointer"
+      },
+      { "field": "parent_entity_pointer", "type": "EntityPointer" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "affected_entity_uid", "type": "EntityUID" },
+      {
+        "field": "animation_frame?",
+        "type": "UnsignedByte",
+        "comment": "changes the color of the eyeball on Lahamu"
+      },
+      { "field": "unknown9b", "type": "UnsignedByte" },
+      { "field": "unknown9c", "type": "UnsignedByte" },
+      { "field": "unknown9d", "type": "UnsignedByte" },
+      { "field": "offset_x", "type": "Float" },
+      { "field": "offset_y", "type": "Float" },
+      { "field": "scale_x", "type": "Float" },
+      { "field": "scale_y", "type": "Float" },
+      { "field": "unknown_dupe_offset_x", "type": "Float" },
+      { "field": "unknown_dupe_offset_y", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      {
+        "field": "unknown18",
+        "type": "UnsignedByte",
+        "comment": "related to unknown14,15,16,17"
+      },
+      { "field": "unknown19", "type": "UnsignedByte" },
+      { "field": "unknown20", "type": "UnsignedByte" },
+      { "field": "unknown21", "type": "UnsignedByte" },
+      { "field": "unknown22", "type": "UnsignedDword" },
+      { "field": "unknown23", "type": "RenderInfoPointer" },
+      { "field": "texture", "type": "TexturePointer" },
+      { "field": "texture_offset_x", "type": "Float" },
+      { "field": "texture_offset_y", "type": "Float" }
+    ],
+    "RenderInfoPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "x_dupe_1", "type": "Float" },
+      { "field": "y_dupe_1", "type": "Float" },
+      { "field": "unknown10", "type": "UnsignedDword" },
+      { "field": "x_dupe2", "type": "Float" },
+      { "field": "y_dupe2", "type": "Float" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown14", "type": "UnsignedDword" },
+      { "field": "unknown15_counter", "type": "UnsignedByte" },
+      { "field": "unknown16_counter", "type": "UnsignedByte" },
+      { "field": "unknown17", "type": "Bool" },
+      { "field": "unknown18", "type": "Bool" },
+      { "field": "unknown19", "type": "UnsignedDword" },
+      { "field": "unknown20", "type": "UnsignedDword" },
+      {
+        "field": "bottom_left_x",
+        "type": "Float",
+        "comment": "entity.x - (entity.w/2)"
+      },
+      {
+        "field": "bottom_left_y",
+        "type": "Float",
+        "comment": "entity.y - (entity.h/2)"
+      },
+      { "field": "bottom_left_unknown", "type": "Float" },
+      { "field": "bottom_right_x", "type": "Float" },
+      { "field": "bottom_right_y", "type": "Float" },
+      { "field": "bottom_right_unknown", "type": "Float" },
+      { "field": "top_right_x", "type": "Float" },
+      { "field": "top_right_y", "type": "Float" },
+      { "field": "top_right_unknown", "type": "Float" },
+      { "field": "top_left_x", "type": "Float" },
+      { "field": "top_left_y", "type": "Float" },
+      { "field": "top_left_unknown", "type": "Float" },
+      {
+        "field": "unknown21",
+        "type": "Float",
+        "comment": "unknown21-28 are related to the texture pointer info (see below in entity.p80.texture)"
+      },
+      { "field": "unknown22", "type": "Float" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "Float" },
+      { "field": "unknown25", "type": "Float" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "unknown27", "type": "Float" },
+      { "field": "unknown28", "type": "Float" },
+      { "field": "unknown29", "type": "Float" },
+      { "field": "unknown30", "type": "Float" },
+      { "field": "unknown31", "type": "Float" },
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "Float" },
+      { "field": "unknown34", "type": "Float" },
+      {
+        "field": "unknown35",
+        "type": "UnsignedDword",
+        "comment": "changes when climbing"
+      },
+      {
+        "field": "unknown36",
+        "type": "UnsignedDword",
+        "comment": "changes when climbing"
+      },
+      {
+        "field": "unknown37",
+        "type": "UnsignedDword",
+        "comment": "changes when climbing"
+      },
+      { "field": "animation_frame", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "unknown38", "type": "UnsignedDword" },
+      { "field": "texture", "type": "TexturePointer" },
+      { "field": "texture_name", "type": "ConstCharPointerPointer" }
     ]
   }
 }
