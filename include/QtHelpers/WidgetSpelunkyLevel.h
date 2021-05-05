@@ -34,7 +34,7 @@ namespace S2Plugin
         std::pair<float, float> getEntityCoordinates(size_t entityOffset) const;
 
         static constexpr float msLevelMaxHeight = 125.0;
-        static constexpr float msLevelMaxWidth = 3. + 3. + (7 * 10);
+        static constexpr float msLevelMaxWidth = 3. + 3. + (8 * 10);
         static constexpr uint8_t msMarginVer = 1;
         static constexpr uint8_t msMarginHor = 1;
         static constexpr float msScaleFactor = 5.;

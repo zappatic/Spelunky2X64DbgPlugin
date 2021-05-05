@@ -85,6 +85,13 @@
     "Grub": "Monster",
     "Tadpole": "Monster",
     "GiantFly": "Monster",
+    "Ghist": "Monster",
+    "JumpDog": "Monster",
+    "EggplantMinister": "Monster",
+    "Yama": "Monster",
+    "Hundun": "Monster",
+    "HundunHead": "Monster",
+    "MegaJellyfish": "Monster",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -183,6 +190,15 @@
     "MONS_GRUB": "Grub",
     "MONS_TADPOLE": "Tadpole",
     "MONS_GIANTFLY": "GiantFly",
+    "MONS_GHIST": "Ghist",
+    "MONS_JUMPDOG": "JumpDog",
+    "MONS_EGGPLANT_MINISTER": "EggplantMinister",
+    "MONS_YAMA": "Yama",
+    "MONS_HUNDUN": "Hundun",
+    "MONS_HUNDUN_BIRDHEAD": "HundunHead",
+    "MONS_HUNDUN_SNAKEHEAD": "HundunHead",
+    "MONS_MEGAJELLYFISH": "MegaJellyfish",
+    "MONS_MEGAJELLYFISH_BACKGROUND": "MegaJellyfish",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -1075,10 +1091,11 @@
       { "field": "ceiling_pos_y", "type": "Float" }
     ],
     "Shopkeeper": [
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
+      {
+        "field": "related_entity_uid",
+        "type": "EntityUID",
+        "comment": "for ghist shopkeeper, the UID of the dead caveman"
+      },
       {
         "field": "climb_y_direction",
         "type": "Float",
@@ -1110,7 +1127,7 @@
       { "field": "transparency", "type": "Word" },
       {
         "field": "fadeout",
-        "type": "UnsignedDword",
+        "type": "UnsignedWord",
         "comment": "when 0, ghist fades out/dies"
       }
     ],
@@ -2078,6 +2095,111 @@
       { "field": "unknown7", "type": "Float" },
       { "field": "unknown8", "type": "Float" },
       { "field": "sine_counter", "type": "UnsignedByte" }
+    ],
+    "Ghist": [
+      { "field": "linked_corpse_entity_uid", "type": "EntityUID" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "movement_related_timer_1", "type": "UnsignedByte" },
+      { "field": "movement_related_timer_2", "type": "UnsignedByte" },
+      { "field": "transparency", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "disappear_timer",
+        "type": "UnsignedWord",
+        "comment": "when 0, it disappears for a bit"
+      }
+    ],
+    "JumpDog": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      {
+        "field": "squish_timer",
+        "type": "UnsignedWord",
+        "comment": "squish after jumped on; don't put it too high, the game puts it at 60 frames / 1 sec"
+      }
+    ],
+    "EggplantMinister": [
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "checks flag 0x2F of 64-bit{flags, more_flags}, maybe prevent from squishing when stomped while falling?"
+      },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "squish_timer", "type": "UnsignedWord" }
+    ],
+    "Yama": [
+      {
+        "field": "message_shown",
+        "type": "Bool",
+        "comment": "Every king and queen will someday lose their crown..."
+      }
+    ],
+    "Hundun": [
+      {
+        "field": "applied_hor_velocity?",
+        "type": "Float",
+        "comment": "during flight"
+      },
+      { "field": "applied_ver_velocity?", "type": "Float" },
+      { "field": "birdhead_entity_uid", "type": "EntityUID" },
+      { "field": "snakehead_entity_uid", "type": "EntityUID" },
+      { "field": "y_level", "type": "Float" },
+      {
+        "field": "bounce_timer",
+        "type": "UnsignedWord",
+        "comment": "functionality depends on state, determines when it can bounce again, also how long velocity is applied for bouncing"
+      },
+      { "field": "fireball_timer", "type": "UnsignedByte" },
+      { "field": "birdhead_defeated", "type": "Bool" },
+      { "field": "snakehead_defeated", "type": "Bool" },
+      {
+        "field": "hundun_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Will move to the left",
+          "2": "Birdhead emerged",
+          "3": "Snakehead emerged",
+          "4": "Top level arena reached",
+          "5": "Birdhead shot last (to alternate the heads shooting fireballs)",
+          "6": "Unused",
+          "7": "Unused",
+          "8": "Unused"
+        }
+      }
+    ],
+    "HundunHead": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "egg_crack_effect_uid", "type": "EntityUID" },
+      { "field": "targeted_player_uid", "type": "EntityUID" },
+      { "field": "unknown_timer", "type": "UnsignedByte" }
+    ],
+    "MegaJellyfish": [
+      { "field": "flipper1", "type": "EntityPointer" },
+      { "field": "flipper2", "type": "EntityPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "orb_uid", "type": "EntityUID" },
+      { "field": "tail_bg_uid", "type": "EntityUID" },
+      { "field": "applied_velocity", "type": "Float" },
+      {
+        "field": "wagging_tail_counter",
+        "type": "Float",
+        "comment": "float counter to determine position of wagging tail (0 = right ; pi = right)"
+      },
+      {
+        "field": "flipper_distance",
+        "type": "UnsignedByte",
+        "comment": "only applies to door-blocking one"
+      },
+      { "field": "velocity_application_timer", "type": "UnsignedByte" }
     ]
   }
 }
