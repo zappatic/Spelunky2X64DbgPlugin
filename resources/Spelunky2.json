@@ -24,6 +24,7 @@
     "Spider": "Monster",
     "HangSpider": "Monster",
     "Shopkeeper": "Monster",
+    "GhistShopkeeper": "Shopkeeper",
     "Yang": "Shopkeeper",
     "Pet": "Monster",
     "Caveman": "Monster",
@@ -75,6 +76,15 @@
     "Lahamu": "Monster",
     "YetiQueen": "Monster",
     "YetiKing": "Monster",
+    "Lamassu": "Monster",
+    "Olmite": "Monster",
+    "Tiamat": "Monster",
+    "GiantFrog": "Monster",
+    "Frog": "Monster",
+    "FireFrog": "Frog",
+    "Grub": "Monster",
+    "Tadpole": "Monster",
+    "GiantFly": "Monster",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -108,6 +118,7 @@
     "MONS_GIANTSPIDER": "Spider",
     "MONS_HANGSPIDER": "HangSpider",
     "MONS_SHOPKEEPER": "Shopkeeper",
+    "MONS_GHIST_SHOPKEEPER": "GhistShopkeeper",
     "MONS_YANG": "Yang",
     "MONS_PET_.*": "Pet",
     "MONS_CAVEMAN": "Caveman",
@@ -163,6 +174,15 @@
     "MONS_ALIENQUEEN": "Lahamu",
     "MONS_YETIQUEEN": "YetiQueen",
     "MONS_YETIKING": "YetiKing",
+    "MONS_LAMASSU": "Lamassu",
+    "MONS_OLMITE_.*": "Olmite",
+    "MONS_TIAMAT": "Tiamat",
+    "MONS_GIANTFROG": "GiantFrog",
+    "MONS_FROG": "Frog",
+    "MONS_FIREFROG": "FireFrog",
+    "MONS_GRUB": "Grub",
+    "MONS_TADPOLE": "Tadpole",
+    "MONS_GIANTFLY": "GiantFly",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -177,7 +197,7 @@
     "PlayerInventoryPointer",
     "PositionInfoPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
-    "MysteryPointer1",
+    "MysteryPointer1", // a bunch of floats, no __vftable ptr
     "MysteryPointer2",
     "RenderInfoPointer"
   ],
@@ -1084,6 +1104,16 @@
         "comment": "to set off a shopkeeper, combine this with state.shoppie_aggro_levels > 0"
       }
     ],
+    "GhistShopkeeper": [
+      { "field": "movement_related_timer_1", "type": "UnsignedByte" },
+      { "field": "movement_related_timer_2", "type": "UnsignedByte" },
+      { "field": "transparency", "type": "Word" },
+      {
+        "field": "fadeout",
+        "type": "UnsignedDword",
+        "comment": "when 0, ghist fades out/dies"
+      }
+    ],
     "Yang": [
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "unknown2", "type": "DataPointer" },
@@ -1920,6 +1950,134 @@
       },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "emitted_light", "type": "IlluminationPointer" }
+    ],
+    "Lamassu": [
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "attack_effect_entity", "type": "EntityPointer" },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "mystery_ptr", "type": "MysteryPointer1" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedDword",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      {
+        "field": "flight_timer",
+        "type": "UnsignedDword",
+        "comment": "when 0 it starts flying; only counts down when it's walking"
+      },
+      {
+        "field": "attack_timer",
+        "type": "Dword",
+        "comment": "greater than 0 = charging up; 0 = fire ; less than 0 = cooldown"
+      },
+      { "field": "attack_angle", "type": "Float" },
+      { "field": "unknown_state", "type": "UnsignedByte" }
+    ],
+    "Olmite": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      {
+        "field": "unknown2",
+        "type": "Word",
+        "comment": "10 sec timer starts ticking when pounce attack starts"
+      },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "Dword" },
+      { "field": "unknown5", "type": "Float" },
+      {
+        "field": "attack_cooldown_timer",
+        "type": "UnsignedByte",
+        "comment": "jump attacks can start when 0"
+      },
+      { "field": "unknown_countdown", "type": "UnsignedByte" }
+    ],
+    "Tiamat": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "fx_tiamat_head", "type": "EntityUID" },
+      { "field": "fx_tiamat_arm_right1", "type": "EntityUID" },
+      { "field": "fx_tiamat_arm_right2", "type": "EntityUID" },
+      {
+        "field": "frown_timer",
+        "type": "UnsignedByte",
+        "comment": "makes her frown but doesn't seem to be used in cutscene or during attack"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "damage_timer",
+        "type": "Word",
+        "comment": "phase 1: 1 sec frowning (-60 to 0) ; phase 2: 1 sec yelling/repulsing (-60 to 0) ; phase 3: 5 secs of vulnerability (300 to 0)"
+      },
+      {
+        "field": "attack_timer",
+        "type": "UnsignedDword",
+        "comment": "when 0, she attacks"
+      },
+      { "field": "unknown2", "type": "Float" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "Float" }
+    ],
+    "GiantFrog": [
+      { "field": "door_front_layer", "type": "EntityPointer" },
+      { "field": "door_back_layer", "type": "EntityPointer" },
+      { "field": "platform", "type": "EntityPointer" },
+      { "field": "attack_timer", "type": "UnsignedWord" },
+      {
+        "field": "frogs_ejected_in_cycle",
+        "type": "UnsignedWord",
+        "comment": "ejects two frogs in quick succession, then waits a longer time"
+      }
+    ],
+    "Frog": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "jump_timer",
+        "type": "UnsignedDword",
+        "comment": "when 0 it jumps"
+      }
+    ],
+    "FireFrog": [{ "field": "pos_info", "type": "PositionInfoPointer" }],
+    "Grub": [
+      { "field": "rotation_delta?", "type": "Float" },
+      { "field": "drop", "type": "Bool" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedWord" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      }
+    ],
+    "Tadpole": [
+      {
+        "field": "acceleration_timer",
+        "type": "UnsignedByte",
+        "comment": "when 0, the tadpole gets some horizontal velocity"
+      },
+      { "field": "player_spotted", "type": "Bool" }
+    ],
+    "GiantFly": [
+      { "field": "head_entity", "type": "EntityPointer" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "sine_amplitude", "type": "Float" },
+      { "field": "sine_frequency", "type": "Float" },
+      {
+        "field": "delta_y_angle",
+        "type": "Float",
+        "comment": "determines where in the sine wave we are (0 - 2 pi)"
+      },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "sine_counter", "type": "UnsignedByte" }
     ]
   }
 }
