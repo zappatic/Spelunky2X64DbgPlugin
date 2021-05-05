@@ -256,10 +256,6 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
     if (field.type != MemoryFieldType::Skip)
     {
         itemField = lookupTreeViewItem(fieldNameOverride, gsColField, parent);
-        if (itemField->hasChildren() && !isExpanded(mModel->indexFromItem(itemField)))
-        {
-            return;
-        }
         itemValue = lookupTreeViewItem(fieldNameOverride, gsColValue, parent);
         itemValueHex = lookupTreeViewItem(fieldNameOverride, gsColValueHex, parent);
         itemMemoryOffset = lookupTreeViewItem(fieldNameOverride, gsColMemoryOffset, parent);
@@ -274,6 +270,13 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         itemMemoryOffset->setData(memoryOffset, gsRoleRawValue);
         itemValue->setData(memoryOffset, gsRoleMemoryOffset);
         itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleFieldName);
+    }
+
+    auto modelIndex = mModel->indexFromItem(itemField);
+    auto shouldUpdateChildren = false;
+    if (modelIndex.isValid())
+    {
+        shouldUpdateChildren = (itemField->hasChildren() && isExpanded(modelIndex));
     }
 
     auto highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
@@ -448,12 +451,15 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
 
-            for (uint8_t x = 1; x <= 32; ++x)
+            if (shouldUpdateChildren)
             {
-                MemoryField f;
-                f.name = "flag_" + std::to_string(x);
-                f.type = MemoryFieldType::Flag;
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                for (uint8_t x = 1; x <= 32; ++x)
+                {
+                    MemoryField f;
+                    f.name = "flag_" + std::to_string(x);
+                    f.type = MemoryFieldType::Flag;
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
             }
             break;
         }
@@ -487,12 +493,15 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
 
-            for (uint8_t x = 1; x <= 16; ++x)
+            if (shouldUpdateChildren)
             {
-                MemoryField f;
-                f.name = "flag_" + std::to_string(x);
-                f.type = MemoryFieldType::Flag;
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                for (uint8_t x = 1; x <= 16; ++x)
+                {
+                    MemoryField f;
+                    f.name = "flag_" + std::to_string(x);
+                    f.type = MemoryFieldType::Flag;
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
             }
             break;
         }
@@ -526,37 +535,42 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
 
-            for (uint8_t x = 1; x <= 8; ++x)
+            if (shouldUpdateChildren)
             {
-                MemoryField f;
-                f.name = "flag_" + std::to_string(x);
-                f.type = MemoryFieldType::Flag;
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                for (uint8_t x = 1; x <= 8; ++x)
+                {
+                    MemoryField f;
+                    f.name = "flag_" + std::to_string(x);
+                    f.type = MemoryFieldType::Flag;
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                }
             }
             break;
         }
         case MemoryFieldType::Vector:
         {
-            if (itemField->hasChildren())
+            if (shouldUpdateChildren)
             {
-                itemField->removeRows(0, itemField->rowCount());
-            }
+                if (itemField->hasChildren())
+                {
+                    itemField->removeRows(0, itemField->rowCount());
+                }
 
-            auto vectorCount = (memoryOffset == 0 ? 0 : (std::min)(50u, Script::Memory::ReadDword(memoryOffset + 20)));
-            auto vectorItemsOffset = Script::Memory::ReadQword(memoryOffset + 8);
+                auto vectorCount = (memoryOffset == 0 ? 0 : (std::min)(50u, Script::Memory::ReadDword(memoryOffset + 20)));
+                auto vectorItemsOffset = Script::Memory::ReadQword(memoryOffset + 8);
+                for (auto x = 0; x < vectorCount; ++x)
+                {
+                    MemoryField f;
+                    f.name = std::to_string(x);
+                    f.type = MemoryFieldType::EntityUID;
+                    auto subItemOffset = vectorItemsOffset + (x * sizeof(uint32_t));
+                    offsets[fieldNameOverride + "." + f.name] = subItemOffset;
 
-            for (auto x = 0; x < vectorCount; ++x)
-            {
-                MemoryField f;
-                f.name = std::to_string(x);
-                f.type = MemoryFieldType::EntityUID;
-                auto subItemOffset = vectorItemsOffset + (x * sizeof(uint32_t));
-                offsets[fieldNameOverride + "." + f.name] = subItemOffset;
+                    auto subItemValue = addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
+                    subItemValue->setData(subItemOffset, gsRoleRawValue);
 
-                auto subItemValue = addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
-                subItemValue->setData(subItemOffset, gsRoleRawValue);
-
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField, true);
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField, true);
+                }
             }
             break;
         }
@@ -669,25 +683,28 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         default: // default is assumed to be a container
         {
-            if (field.type == MemoryFieldType::EntitySubclass)
+            if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
+                if (field.type == MemoryFieldType::EntitySubclass)
                 {
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
+                    {
+                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    }
                 }
-            }
-            else if (field.type == MemoryFieldType::PointerType)
-            {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
+                else if (field.type == MemoryFieldType::PointerType)
                 {
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
+                    {
+                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    }
                 }
-            }
-            else
-            {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                else
                 {
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                    {
+                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    }
                 }
             }
             break;
