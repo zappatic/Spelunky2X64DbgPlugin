@@ -92,6 +92,23 @@
     "Hundun": "Monster",
     "HundunHead": "Monster",
     "MegaJellyfish": "Monster",
+    "Scorpion": "Monster",
+    "Hermitcrab": "Monster",
+    "Necromancer": "Monster",
+    "ProtoShopkeeper": "Monster",
+    "ShopkeeperClone": "Monster",
+    "Sparrow": "Monster",
+    "Beg": "Monster",
+    "Critter": "Monster",
+    "CritterButterfly": "Critter",
+    "CritterCrab": "Critter",
+    "CritterLocust": "Critter",
+    "CritterSnail": "Critter",
+    "CritterFish": "Critter",
+    "CritterPenguin": "Critter",
+    "CritterFirefly": "Critter",
+    "CritterDrone": "Critter",
+    "CritterSlime": "Critter",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -199,6 +216,22 @@
     "MONS_HUNDUN_SNAKEHEAD": "HundunHead",
     "MONS_MEGAJELLYFISH": "MegaJellyfish",
     "MONS_MEGAJELLYFISH_BACKGROUND": "MegaJellyfish",
+    "MONS_SCORPION": "Scorpion",
+    "MONS_HERMITCRAB": "Hermitcrab",
+    "MONS_NECROMANCER": "Necromancer",
+    "MONS_PROTOSHOPKEEPER": "ProtoShopkeeper",
+    "MONS_SHOPKEEPERCLONE": "ShopkeeperClone",
+    "MONS_THIEF": "Sparrow",
+    "MONS_HUNDUNS_SERVANT": "Beg",
+    "MONS_CRITTERCRAB": "CritterCrab",
+    "MONS_CRITTERBUTTERFLY": "CritterButterfly",
+    "MONS_CRITTERLOCUST": "CritterLocust",
+    "MONS_CRITTERSNAIL": "CritterSnail",
+    "MONS_CRITTERFISH": "CritterFish",
+    "MONS_CRITTERPENGUIN": "CritterPenguin",
+    "MONS_CRITTERFIREFLY": "CritterFirefly",
+    "MONS_CRITTERDRONE": "CritterDrone",
+    "MONS_CRITTERSLIME": "CritterSlime",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -823,7 +856,7 @@
       { "field": "i14c", "type": "Dword" },
       { "field": "ai_func", "type": "UnsignedQword" },
       { "field": "input_ptr", "type": "DataPointer" },
-      { "field": "p160", "type": "DataPointer" },
+      { "field": "basecamp_button_entity_pointer", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
       { "field": "jump_flags_a", "type": "UnsignedByte" },
@@ -1027,7 +1060,7 @@
       { "field": "phase1_amount_of_bomb_salvos", "type": "UnsignedByte" },
       { "field": "unknown_attack_state", "type": "UnsignedByte" }
     ],
-    "OlmecFloater": [{ "field": "both_floaters_broken", "type": "Bool" }],
+    "OlmecFloater": [{ "field": "both_floaters_intact", "type": "Bool" }],
     "Cape": [
       { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
@@ -1039,9 +1072,29 @@
     "VladsCape": [{ "field": "can_double_jump", "type": "Bool" }],
     "KapalaPowerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
     "Ghost": [
-      { "field": "split_timer", "type": "Word" },
-      { "field": "unknown_counter", "type": "Word" },
-      { "field": "velocity_multiplier", "type": "Float" }
+      {
+        "field": "split_timer",
+        "type": "UnsignedWord",
+        "comment": "for SMALL_HAPPY this is also the sequence timer of its various states"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "velocity_multiplier", "type": "Float" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      {
+        "field": "ghost_behaviour",
+        "type": "UnsignedByte",
+        "comment": "0 = SMALL_ANGRY; 1 = SMALL_SURPRISED; 2 = SMALL_SAD; 3 = SMALL_HAPPY"
+      },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "Bool" },
+      { "field": "unknown8", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedByte" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "linked_ghost", "type": "EntityPointer" },
+      { "field": "sound_info", "type": "PositionInfoPointer" }
     ],
     "Monkey": [
       { "field": "hump_pos", "type": "PositionInfoPointer" },
@@ -1052,10 +1105,25 @@
       { "field": "__vftable", "type": "DataPointer" },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "Float" },
+      {
+        "field": "sound_effect_pointer?",
+        "type": "DataPointer",
+        "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30); soundeffect doesn't seem to change when you pick a similar object around it"
+      },
+      {
+        "field": "fmod_param_id?",
+        "type": "UnsignedQword",
+        "comment": "param to FMOD::Studio::EventInstance::SetParameterByID"
+      },
+      {
+        "field": "sound_x_coord_1?",
+        "type": "Float"
+      },
+      {
+        "field": "sound_x_coord_2",
+        "type": "Float",
+        "comment": "sometimes similar as coord_1, sometimes inverted, sometimes different"
+      },
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
@@ -2200,6 +2268,225 @@
         "comment": "only applies to door-blocking one"
       },
       { "field": "velocity_application_timer", "type": "UnsignedByte" }
+    ],
+    "Scorpion": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedDword",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      {
+        "field": "jump_cooldown_timer",
+        "type": "UnsignedDword",
+        "comment": "only 10 frames"
+      }
+    ],
+    "Hermitcrab": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "carried_entity_uid", "type": "EntityUID" },
+      {
+        "field": "walk_spit_timer",
+        "type": "UnsignedWord",
+        "comment": "depending on movable.state either the countdown how many acid bubbles spat (3) or walking timer"
+      },
+      {
+        "field": "is_active",
+        "type": "Bool",
+        "comment": "whether it is hidden behind the carried block or not"
+      },
+      {
+        "field": "is_inactive",
+        "type": "Bool",
+        "comment": "must be something else, since we already have is_active (or vice versa)"
+      },
+      {
+        "field": "spawn_new_carried_item",
+        "type": "Bool",
+        "comment": "defaults to true, when toggled to false, a new carried item spawns"
+      }
+    ],
+    "Necromancer": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "unknown_timer_1", "type": "Word" },
+      { "field": "pos_info", "type": "PositionInfoPointer" },
+      { "field": "red_skeleton_spawn_x", "type": "Float" },
+      { "field": "red_skeleton_spawn_y", "type": "Float" },
+      { "field": "resurrection_uid", "type": "EntityUID" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "resurrection_timer", "type": "UnsignedByte" }
+    ],
+    "ProtoShopkeeper": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      {
+        "field": "movement_state?",
+        "type": "Flags8",
+        "flags": {
+          "1": "Headpulse/explosion related",
+          "2": "Walking",
+          "3": "Headpulse/explosion related",
+          "4": "Crawling",
+          "5": "",
+          "6": "Headpulse/explosion related",
+          "7": "",
+          "8": ""
+        }
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "blowup_related", "type": "UnsignedByte" },
+      { "field": "animation_timer?", "type": "UnsignedDword" },
+      {
+        "field": "walk_pause_explode_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing; when stunned: crawl timer;  after crawling: head pulse timer (pulse frequency dependend on timer)"
+      },
+      {
+        "field": "walking_speed",
+        "type": "UnsignedByte",
+        "comment": "0 = slow; 4 = fast"
+      },
+      { "field": "padding7", "type": "UnsignedByte" },
+      {
+        "field": "unknown3",
+        "type": "UnsignedDword",
+        "comment": "counts down from 10 to 3 in the headpulse phase"
+      }
+    ],
+    "ShopkeeperClone": [
+      {
+        "field": "climb_y_direction",
+        "type": "Float",
+        "comment": "when on a rope or ladder"
+      },
+      { "field": "unknown_countdown_timer_1", "type": "UnsignedByte" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown_countdown_timer_2", "type": "UnsignedByte" },
+      { "field": "target_spotted_timer", "type": "UnsignedByte" },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      {
+        "field": "spawn_gun",
+        "type": "Bool",
+        "comment": "defaults to true, when toggled to false it will spawn a gun"
+      }
+    ],
+    "Sparrow": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "target_spotted_timer?", "type": "UnsignedByte" },
+      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "aggro", "type": "Bool" }
+    ],
+    "Beg": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedDword",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "disappear_timer", "type": "UnsignedWord" }
+    ],
+    "Critter": [
+      { "field": "unknown1", "type": "Dword" },
+      { "field": "unknown2", "type": "UnsignedDword" }
+    ],
+    "CritterCrab": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "walking_left", "type": "Bool" }
+    ],
+    "CritterButterfly": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "change_direction_timer", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "vertical_flight_direction", "type": "Byte" }
+    ],
+    "CritterLocust": [
+      { "field": "sound_info", "type": "PositionInfoPointer" },
+      {
+        "field": "jump_timer",
+        "type": "UnsignedByte",
+        "comment": "when 0 it jumps"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" }
+    ],
+    "CritterSnail": [
+      { "field": "x_direction", "type": "Float" },
+      { "field": "y_direction", "type": "Float" },
+      { "field": "pos_x", "type": "Float" },
+      { "field": "pos_y", "type": "Float" },
+      { "field": "rotation_center_x", "type": "Float" },
+      { "field": "rotation_center_y", "type": "Float" },
+      { "field": "rotation_angle", "type": "Float" },
+      { "field": "rotation_speed", "type": "Float" }
+    ],
+    "CritterFish": [
+      {
+        "field": "swim_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between swimming and pausing every time it reaches zero"
+      },
+      {
+        "field": "player_in_proximity",
+        "type": "Bool",
+        "comment": "swims away fast when player detected"
+      }
+    ],
+    "CritterPenguin": [
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedByte",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "padding", "type": "UnsignedByte" },
+      { "field": "jump_timer", "type": "UnsignedWord" }
+    ],
+    "CritterFirefly": [
+      { "field": "sine_amplitude", "type": "Float" },
+      { "field": "sine_frequency", "type": "Float" },
+      {
+        "field": "sine_angle",
+        "type": "Float",
+        "comment": "determines where in the sine wave we are (0 - 2 pi)"
+      },
+      { "field": "unknown1", "type": "Float" },
+      { "field": "unknown2", "type": "Float" },
+      { "field": "change_direction_timer", "type": "UnsignedByte" },
+      { "field": "sit_timer", "type": "UnsignedByte" },
+      { "field": "sit_cooldown_timer", "type": "UnsignedByte" }
+    ],
+    "CritterDrone": [
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "sound_info", "type": "PositionInfoPointer" },
+      { "field": "applied_hor_momentum", "type": "Float" },
+      { "field": "applied_ver_momentum", "type": "Float" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "move_timer", "type": "UnsignedByte" }
+    ],
+    "CritterSlime": [
+      { "field": "x_direction", "type": "Float" },
+      { "field": "y_direction", "type": "Float" },
+      { "field": "pos_x", "type": "Float" },
+      { "field": "pos_y", "type": "Float" },
+      { "field": "rotation_center_x", "type": "Float" },
+      { "field": "rotation_center_y", "type": "Float" },
+      { "field": "rotation_angle", "type": "Float" },
+      { "field": "rotation_speed", "type": "Float" },
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      }
     ]
   }
 }

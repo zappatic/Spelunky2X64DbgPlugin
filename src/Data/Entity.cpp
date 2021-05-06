@@ -79,6 +79,7 @@ void S2Plugin::Entity::populateTreeView()
 {
     mTreeViewSectionItems.clear();
     auto hierarchy = classHierarchy();
+    uint8_t counter = 0;
     for (auto c : hierarchy)
     {
         MemoryField headerField;
@@ -86,8 +87,11 @@ void S2Plugin::Entity::populateTreeView()
         headerField.type = MemoryFieldType::EntitySubclass;
         headerField.jsonName = c;
         auto item = mTree->addMemoryField(headerField, c);
-        mTree->expandItem(item);
         mTreeViewSectionItems[c] = item;
+        if (++counter == hierarchy.size())
+        {
+            mTree->expandItem(item);
+        }
     }
 }
 

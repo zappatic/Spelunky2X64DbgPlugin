@@ -26,7 +26,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     mEntity->refreshOffsets();
     mEntity->refreshValues();
     mMainTreeView->updateTableHeader();
-    mMainTreeView->setColumnWidth(gsColField, 125);
+    mMainTreeView->setColumnWidth(gsColField, 175);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
