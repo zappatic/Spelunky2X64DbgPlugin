@@ -27,6 +27,9 @@ namespace S2Plugin
         void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent = nullptr,
                                  bool disableChangeHighlightingForField = false);
 
+      signals:
+        void memoryFieldValueUpdated(const QString& fieldName);
+
       private slots:
         void cellClicked(const QModelIndex& index);
 

@@ -17,6 +17,7 @@ namespace S2Plugin
         std::string nameForID(uint32_t id);
         uint32_t highestEntityID() const noexcept;
         QStringList entityNames() const noexcept;
+        bool isValidID(uint32_t id);
 
       private:
         std::unordered_map<uint32_t, std::string> mEntities;

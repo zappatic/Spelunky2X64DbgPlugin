@@ -3,8 +3,10 @@
 #include "Data/EntityDB.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "ViewToolbar.h"
+#include <QComboBox>
 #include <QCompleter>
 #include <QStandardItemModel>
+#include <QTableWidget>
 #include <QTreeView>
 #include <QVBoxLayout>
 #include <QWidget>
@@ -26,16 +28,29 @@ namespace S2Plugin
       private slots:
         void searchFieldReturnPressed();
         void label();
+        void fieldUpdated(const QString& fieldName);
+        void fieldExpanded(const QModelIndex& index);
+        void comparisonFieldChosen(const QString& fieldName);
 
       private:
         ViewToolbar* mToolbar;
-        size_t mIndex;
 
         QVBoxLayout* mMainLayout;
+        QTabWidget* mMainTabWidget;
+        QWidget* mTabLookup;
+        QWidget* mTabCompare;
+
+        // LOOKUP
+        size_t mLookupIndex;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
         QCompleter* mEntityNameCompleter;
 
+        // COMPARE
+        QComboBox* mCompareFieldComboBox;
+        QTableWidget* mCompareTableWidget;
+
         void initializeUI();
+        void updateFieldValues();
     };
 } // namespace S2Plugin

@@ -154,6 +154,7 @@ namespace S2Plugin
         bool isPointer = false;
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
+    Q_DECLARE_METATYPE(S2Plugin::MemoryField)
 
     class Spelunky2
     {

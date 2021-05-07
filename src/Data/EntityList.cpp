@@ -74,3 +74,8 @@ QStringList S2Plugin::EntityList::entityNames() const noexcept
 {
     return mEntityNames;
 }
+
+bool S2Plugin::EntityList::isValidID(uint32_t id)
+{
+    return (mEntities.count(id) > 0);
+}

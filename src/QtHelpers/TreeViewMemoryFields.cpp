@@ -833,6 +833,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto fieldName = clickedItem->data(gsRoleFieldName).toString();
                         auto dialog = new DialogEditSimpleValue(fieldName, offset, dataType, this);
                         dialog->exec();
+                        emit memoryFieldValueUpdated(fieldName);
                     }
                     break;
                 }
