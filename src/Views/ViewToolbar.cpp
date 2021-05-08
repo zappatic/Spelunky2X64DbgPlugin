@@ -136,6 +136,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
     {
         mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
     }
+    mEntityDB->reset();
 }
 
 void S2Plugin::ViewToolbar::resetSpelunky2Data()
