@@ -53,6 +53,8 @@ void S2Plugin::ViewEntityDB::initializeUI()
         mSearchLineEdit->setVisible(false);
         mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->entityNames(), this);
         mEntityNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+        mEntityNameCompleter->setFilterMode(Qt::MatchContains);
+        QObject::connect(mEntityNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewEntityDB::searchFieldCompleterActivated);
         mSearchLineEdit->setCompleter(mEntityNameCompleter);
 
         auto labelButton = new QPushButton("Label", this);
@@ -176,6 +178,11 @@ void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
             showIndex(entityID);
         }
     }
+}
+
+void S2Plugin::ViewEntityDB::searchFieldCompleterActivated(const QString& text)
+{
+    searchFieldReturnPressed();
 }
 
 void S2Plugin::ViewEntityDB::showIndex(size_t index)

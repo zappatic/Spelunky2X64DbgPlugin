@@ -29,6 +29,7 @@ namespace S2Plugin
 
       private slots:
         void searchFieldReturnPressed();
+        void searchFieldCompleterActivated(const QString& text);
         void label();
         void fieldUpdated(const QString& fieldName);
         void fieldExpanded(const QModelIndex& index);
