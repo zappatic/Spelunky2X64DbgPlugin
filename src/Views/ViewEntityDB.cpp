@@ -1,12 +1,14 @@
 #include "Views/ViewEntityDB.h"
 #include "Data/EntityList.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
+#include "QtHelpers/TreeWidgetItemNumeric.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QTreeWidgetItem>
 
 S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
@@ -88,9 +90,14 @@ void S2Plugin::ViewEntityDB::initializeUI()
         }
         QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewEntityDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
+
+        auto groupCheckbox = new QCheckBox("Group by value", this);
+        QObject::connect(groupCheckbox, &QCheckBox::stateChanged, this, &ViewEntityDB::compareGroupByCheckBoxClicked);
+        topLayout->addWidget(groupCheckbox);
+
         dynamic_cast<QVBoxLayout*>(mTabCompare->layout())->addLayout(topLayout);
 
-        mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->highestEntityID(), 3, this);
+        mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->entityCount(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
                                                                      << "Name"
@@ -101,7 +108,13 @@ void S2Plugin::ViewEntityDB::initializeUI()
         mCompareTableWidget->setColumnWidth(1, 325);
         mCompareTableWidget->setColumnWidth(2, 150);
 
+        mCompareTreeWidget = new QTreeWidget(this);
+        mCompareTreeWidget->setAlternatingRowColors(true);
+        mCompareTreeWidget->headerItem()->setHidden(true);
+        mCompareTreeWidget->setHidden(true);
+
         mTabCompare->layout()->addWidget(mCompareTableWidget);
+        mTabCompare->layout()->addWidget(mCompareTreeWidget);
     }
 
     mSearchLineEdit->setVisible(true);
@@ -184,20 +197,36 @@ void S2Plugin::ViewEntityDB::updateFieldValues()
     }
 }
 
+void S2Plugin::ViewEntityDB::compareGroupByCheckBoxClicked(int state)
+{
+    mCompareTableWidget->setHidden(state == Qt::Checked);
+    mCompareTreeWidget->setHidden(state == Qt::Unchecked);
+}
+
 void S2Plugin::ViewEntityDB::comparisonFieldChosen(const QString& fieldName)
 {
     mCompareTableWidget->clearContents();
-    mCompareTableWidget->setSortingEnabled(false);
+    mCompareTreeWidget->clear();
+
     auto comboIndex = mCompareFieldComboBox->currentIndex();
     if (comboIndex == 0)
     {
         return;
     }
 
+    populateComparisonTableWidget();
+    populateComparisonTreeWidget();
+}
+
+void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
+{
+    mCompareTableWidget->setSortingEnabled(false);
+
     auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
     auto entityDB = mToolbar->entityDB();
     auto entityList = entityDB->entityList();
 
+    size_t row = 0;
     for (auto x = 1; x <= entityDB->entityList()->highestEntityID(); ++x)
     {
         if (!entityList->isValidID(x))
@@ -205,104 +234,133 @@ void S2Plugin::ViewEntityDB::comparisonFieldChosen(const QString& fieldName)
             continue;
         }
 
-        auto row = x - 1;
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
         mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(entityList->nameForID(x))));
 
-        auto offset = entityDB->offsetsForIndex(x).at("EntityDB." + field.name);
-        switch (field.type)
-        {
-            case MemoryFieldType::CodePointer:
-            case MemoryFieldType::DataPointer:
-            {
-                size_t value = Script::Memory::ReadQword(offset);
-                mCompareTableWidget->setItem(row, 2, new QTableWidgetItem(QString::asprintf("0x%016llX", value)));
-                break;
-            }
-            case MemoryFieldType::Byte:
-            {
-                int8_t value = Script::Memory::ReadByte(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%d", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::UnsignedByte:
-            {
-                uint8_t value = Script::Memory::ReadByte(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%u", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::Word:
-            {
-                int16_t value = Script::Memory::ReadWord(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%d", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::UnsignedWord:
-            {
-                uint16_t value = Script::Memory::ReadWord(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%u", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::Dword:
-            {
-                int32_t value = Script::Memory::ReadDword(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%ld", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::UnsignedDword:
-            {
-                uint32_t value = Script::Memory::ReadDword(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%lu", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::Qword:
-            {
-                int64_t value = Script::Memory::ReadQword(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%lld", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::UnsignedQword:
-            {
-                uint64_t value = Script::Memory::ReadQword(offset);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%llu", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::Float:
-            {
-                uint32_t dword = Script::Memory::ReadDword(offset);
-                float value = reinterpret_cast<float&>(dword);
-                auto item = new TableWidgetItemNumeric(QString::asprintf("%f", value));
-                item->setData(Qt::UserRole, value);
-                mCompareTableWidget->setItem(row, 2, item);
-                break;
-            }
-            case MemoryFieldType::Bool:
-            {
-                auto b = Script::Memory::ReadByte(offset);
-                bool value = reinterpret_cast<bool&>(b);
-                mCompareTableWidget->setItem(row, 2, new QTableWidgetItem(value ? "True" : "False"));
-                break;
-            }
-        }
+        auto [caption, value] = valueForField(field, x);
+        auto item = new TableWidgetItemNumeric(caption);
+        item->setData(Qt::UserRole, value);
+        mCompareTableWidget->setItem(row, 2, item);
+
+        row++;
     }
     mCompareTableWidget->setSortingEnabled(true);
     mCompareTableWidget->sortItems(0);
+}
+
+void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
+{
+    mCompareTreeWidget->setSortingEnabled(false);
+
+    auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
+    auto entityDB = mToolbar->entityDB();
+    auto entityList = entityDB->entityList();
+
+    std::unordered_map<std::string, QVariant> rootValues;
+    std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<entity names>
+    for (auto x = 1; x <= entityDB->entityList()->highestEntityID(); ++x)
+    {
+        if (!entityList->isValidID(x))
+        {
+            continue;
+        }
+
+        auto entityName = entityList->nameForID(x);
+        auto [caption, value] = valueForField(field, x);
+        auto captionStr = caption.toStdString();
+        rootValues[captionStr] = value;
+
+        if (groupedValues.count(captionStr) == 0)
+        {
+            groupedValues[captionStr] = {entityName};
+        }
+        else
+        {
+            groupedValues[captionStr].insert(entityName);
+        }
+    }
+
+    for (const auto& [groupString, entityNames] : groupedValues)
+    {
+        auto rootItem = new TreeWidgetItemNumeric(nullptr, QString::fromStdString(groupString));
+        rootItem->setData(0, Qt::UserRole, rootValues.at(groupString));
+        mCompareTreeWidget->insertTopLevelItem(0, rootItem);
+        for (const auto& entityName : entityNames)
+        {
+            auto childItem = new QTreeWidgetItem(rootItem, QStringList(QString::fromStdString(entityName)));
+            mCompareTreeWidget->insertTopLevelItem(0, childItem);
+        }
+    }
+
+    mCompareTreeWidget->setSortingEnabled(true);
+    mCompareTreeWidget->sortItems(0, Qt::AscendingOrder);
+}
+
+std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryField& field, size_t entityDBIndex)
+{
+    auto offset = mToolbar->entityDB()->offsetsForIndex(entityDBIndex).at("EntityDB." + field.name);
+    switch (field.type)
+    {
+        case MemoryFieldType::CodePointer:
+        case MemoryFieldType::DataPointer:
+        {
+            size_t value = Script::Memory::ReadQword(offset);
+            return std::make_pair(QString::asprintf("0x%016llX", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::Byte:
+        {
+            int8_t value = Script::Memory::ReadByte(offset);
+            return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::UnsignedByte:
+        {
+            uint8_t value = Script::Memory::ReadByte(offset);
+            return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::Word:
+        {
+            int16_t value = Script::Memory::ReadWord(offset);
+            return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::UnsignedWord:
+        {
+            uint16_t value = Script::Memory::ReadWord(offset);
+            return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::Dword:
+        {
+            int32_t value = Script::Memory::ReadDword(offset);
+            return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::UnsignedDword:
+        {
+            uint32_t value = Script::Memory::ReadDword(offset);
+            return std::make_pair(QString::asprintf("%lu", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::Qword:
+        {
+            int64_t value = Script::Memory::ReadQword(offset);
+            return std::make_pair(QString::asprintf("%lld", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::UnsignedQword:
+        {
+            uint64_t value = Script::Memory::ReadQword(offset);
+            return std::make_pair(QString::asprintf("%llu", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::Float:
+        {
+            uint32_t dword = Script::Memory::ReadDword(offset);
+            float value = reinterpret_cast<float&>(dword);
+            return std::make_pair(QString::asprintf("%f", value), QVariant::fromValue(value));
+        }
+        case MemoryFieldType::Bool:
+        {
+            auto b = Script::Memory::ReadByte(offset);
+            bool value = reinterpret_cast<bool&>(b);
+            return std::make_pair(value ? "True" : "False", QVariant::fromValue(b));
+        }
+    }
+    return std::make_pair("unknown", 0);
 }

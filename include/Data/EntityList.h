@@ -16,6 +16,7 @@ namespace S2Plugin
         uint32_t idForName(const std::string& name);
         std::string nameForID(uint32_t id);
         uint32_t highestEntityID() const noexcept;
+        size_t entityCount() const noexcept;
         QStringList entityNames() const noexcept;
         bool isValidID(uint32_t id);
 

@@ -3,11 +3,13 @@
 #include "Data/EntityDB.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "ViewToolbar.h"
+#include <QCheckBox>
 #include <QComboBox>
 #include <QCompleter>
 #include <QStandardItemModel>
 #include <QTableWidget>
 #include <QTreeView>
+#include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QWidget>
 
@@ -31,6 +33,7 @@ namespace S2Plugin
         void fieldUpdated(const QString& fieldName);
         void fieldExpanded(const QModelIndex& index);
         void comparisonFieldChosen(const QString& fieldName);
+        void compareGroupByCheckBoxClicked(int state);
 
       private:
         ViewToolbar* mToolbar;
@@ -49,8 +52,12 @@ namespace S2Plugin
         // COMPARE
         QComboBox* mCompareFieldComboBox;
         QTableWidget* mCompareTableWidget;
+        QTreeWidget* mCompareTreeWidget;
 
         void initializeUI();
         void updateFieldValues();
+        void populateComparisonTableWidget();
+        void populateComparisonTreeWidget();
+        std::pair<QString, QVariant> valueForField(const MemoryField& field, size_t entityDBIndex);
     };
 } // namespace S2Plugin

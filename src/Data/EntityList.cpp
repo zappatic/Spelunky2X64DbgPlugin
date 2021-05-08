@@ -79,3 +79,8 @@ bool S2Plugin::EntityList::isValidID(uint32_t id)
 {
     return (mEntities.count(id) > 0);
 }
+
+size_t S2Plugin::EntityList::entityCount() const noexcept
+{
+    return mEntities.size();
+}

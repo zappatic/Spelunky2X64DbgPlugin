@@ -67,6 +67,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/WidgetSpelunkyLevel.h
 	include/QtHelpers/DialogEditSimpleValue.h
 	include/QtHelpers/TableWidgetItemNumeric.h
+	include/QtHelpers/TreeWidgetItemNumeric.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/MemoryMappedData.cpp
@@ -85,6 +86,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/WidgetSpelunkyLevel.cpp
 	src/QtHelpers/DialogEditSimpleValue.cpp
 	src/QtHelpers/TableWidgetItemNumeric.cpp
+	src/QtHelpers/TreeWidgetItemNumeric.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )
