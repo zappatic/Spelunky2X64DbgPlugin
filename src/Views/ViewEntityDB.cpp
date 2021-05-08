@@ -82,11 +82,33 @@ void S2Plugin::ViewEntityDB::initializeUI()
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
         for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
         {
-            if (field.type == MemoryFieldType::Skip || field.type == MemoryFieldType::Rect)
+            switch (field.type)
             {
-                continue;
+                case MemoryFieldType::Skip:
+                case MemoryFieldType::Rect:
+                    continue;
+                case MemoryFieldType::Flags32:
+                case MemoryFieldType::Flags16:
+                case MemoryFieldType::Flags8:
+                {
+                    auto flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
+                    for (uint8_t x = 1; x <= flagCount; ++x)
+                    {
+                        MemoryField flagField;
+                        flagField.name = field.name; // + ".flag_" + std::to_string(x);
+                        flagField.type = MemoryFieldType::Flag;
+                        flagField.extraInfo = x - 1;
+                        flagField.comment = std::to_string(flagCount); // abuse the comment field to transmit the size to fetch
+                        mCompareFieldComboBox->addItem(QString::fromStdString(field.name + ".flag_" + std::to_string(x)), QVariant::fromValue(flagField));
+                    }
+                    break;
+                }
+                default:
+                {
+                    mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
+                    break;
+                }
             }
-            mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
         }
         QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewEntityDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
@@ -334,6 +356,7 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
             int32_t value = Script::Memory::ReadDword(offset);
             return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
         }
+        case MemoryFieldType::EntityDBID:
         case MemoryFieldType::UnsignedDword:
         {
             uint32_t value = Script::Memory::ReadDword(offset);
@@ -360,6 +383,26 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
             auto b = Script::Memory::ReadByte(offset);
             bool value = reinterpret_cast<bool&>(b);
             return std::make_pair(value ? "True" : "False", QVariant::fromValue(b));
+        }
+        case MemoryFieldType::Flag:
+        {
+            uint8_t flagToCheck = field.extraInfo;
+            bool isFlagSet = false;
+            if (field.comment == "32")
+            {
+                isFlagSet = ((Script::Memory::ReadDword(offset) & (1 << flagToCheck)) > 0);
+            }
+            else if (field.comment == "16")
+            {
+                isFlagSet = ((Script::Memory::ReadWord(offset) & (1 << flagToCheck)) > 0);
+            }
+            else if (field.comment == "8")
+            {
+                isFlagSet = ((Script::Memory::ReadByte(offset) & (1 << flagToCheck)) > 0);
+            }
+
+            bool value = reinterpret_cast<bool&>(isFlagSet);
+            return std::make_pair(value ? "True" : "False", QVariant::fromValue(isFlagSet));
         }
     }
     return std::make_pair("unknown", 0);
