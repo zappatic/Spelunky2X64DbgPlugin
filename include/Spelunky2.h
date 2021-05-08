@@ -166,6 +166,7 @@ namespace S2Plugin
 
         void displayError(const char* fmt, ...);
         void findSpelunky2InMemory();
+        void reset();
         // size_t findEntityListMapOffset();
 
       private:

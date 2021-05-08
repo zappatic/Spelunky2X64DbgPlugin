@@ -22,6 +22,8 @@ namespace S2Plugin
         EntityDB* entityDB();
         Configuration* configuration() const noexcept;
 
+        void resetSpelunky2Data();
+
       public slots:
         ViewEntityDB* showEntityDB();
         void showState();

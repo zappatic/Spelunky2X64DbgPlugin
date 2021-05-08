@@ -101,3 +101,9 @@ size_t S2Plugin::State::findNextEntity(size_t entityOffset)
     }
     return nextOffset;
 }
+
+void S2Plugin::State::reset()
+{
+    mStatePtr = 0;
+    mMemoryOffsets.clear();
+}

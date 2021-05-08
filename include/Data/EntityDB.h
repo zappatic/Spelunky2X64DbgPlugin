@@ -19,6 +19,8 @@ namespace S2Plugin
 
         std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t entityDBIndex);
 
+        void reset();
+
       private:
         size_t mEntityDBPtr = 0;
         std::unique_ptr<EntityList> mEntityList;

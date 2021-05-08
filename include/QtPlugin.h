@@ -12,4 +12,5 @@ namespace QtPlugin
     void ShowTab();
     void MenuPrepare(int hMenu);
     void MenuEntry(int hMenu);
+    void Detach();
 } // namespace QtPlugin

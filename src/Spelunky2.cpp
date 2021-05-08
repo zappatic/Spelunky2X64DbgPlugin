@@ -32,6 +32,14 @@ void S2Plugin::Spelunky2::displayError(const char* fmt, ...)
     mInitErrorShown = true;
 }
 
+void S2Plugin::Spelunky2::reset()
+{
+    gSpelunky2CodeSectionStart = 0;
+    gSpelunky2CodeSectionSize = 0;
+    gSpelunky2AfterBundle = 0;
+    gSpelunky2AfterBundleSize = 0;
+}
+
 void S2Plugin::Spelunky2::findSpelunky2InMemory()
 {
     if (gSpelunky2CodeSectionStart != 0)

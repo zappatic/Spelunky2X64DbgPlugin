@@ -90,3 +90,8 @@ void QtPlugin::ShowTab()
 {
     GuiShowQWidgetTab(gsSpelunky2MainWindow);
 }
+
+void QtPlugin::Detach()
+{
+    gsViewToolbar->resetSpelunky2Data();
+}

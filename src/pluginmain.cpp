@@ -35,3 +35,13 @@ PLUG_EXPORT void plugsetup(PLUG_SETUPSTRUCT* setupStruct)
     GuiExecuteOnGuiThread(QtPlugin::Setup);
     QtPlugin::WaitForSetup();
 }
+
+PLUG_EXPORT void CBDETACH(CBTYPE cbType, PLUG_CB_DETACH* info)
+{
+    GuiExecuteOnGuiThread(QtPlugin::Detach);
+}
+
+PLUG_EXPORT void CBEXITPROCESS(CBTYPE cbType, PLUG_CB_EXITPROCESS* info)
+{
+    GuiExecuteOnGuiThread(QtPlugin::Detach);
+}

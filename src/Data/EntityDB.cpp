@@ -45,3 +45,8 @@ std::unordered_map<std::string, size_t>& S2Plugin::EntityDB::offsetsForIndex(uin
 {
     return mMemoryOffsets.at(entityDBIndex);
 }
+
+void S2Plugin::EntityDB::reset()
+{
+    mEntityDBPtr = 0;
+}

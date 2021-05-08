@@ -123,7 +123,6 @@ S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
 
 void S2Plugin::ViewToolbar::reloadConfig()
 {
-    // mMDIArea->closeAllSubWindows();
     auto windows = mMDIArea->subWindowList();
     for (const auto& window : windows)
     {
@@ -137,4 +136,12 @@ void S2Plugin::ViewToolbar::reloadConfig()
     {
         mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
     }
+}
+
+void S2Plugin::ViewToolbar::resetSpelunky2Data()
+{
+    mMDIArea->closeAllSubWindows();
+    mState->reset();
+    mEntityDB->reset();
+    mConfiguration->spelunky2()->reset();
 }
