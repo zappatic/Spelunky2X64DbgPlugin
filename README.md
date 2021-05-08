@@ -73,7 +73,3 @@ If you define a new pointer type, don't forget to add it to the `pointer_types` 
 Once saved, click the "Reload JSON" button at the bottom left, and the updated information will be visualized (the entity windows will close for reload though).
 
 Entity, State and EntityDB windows all have a "Label" button as well. This can help you if you are reading the assembly in the CPU tab. Click the "Clear labels" button to remove them, however due to a bug (?) in x64dbg it won't delete them all. Press Ctrl-Alt-L to see all the labels.
-
-## Known limitations
-
-- Restarting Spelunky 2 will require a restart of x64dbg as well, the plugin doesn't handle re-initialization upon detaching (yet?).
