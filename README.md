@@ -32,9 +32,17 @@ The State and Entity windows have a refresh button, and a way to automatically r
 
 ## Entity DB
 
-The search bar at the top allows you to enter the numerical value of the type to look up, or you can type the name (start with MONS\_ to see all monsters, for example).
+The search bar at the top allows you to enter the numerical value of the type to look up, or you can type the name.
 
 ![EntityDB](/resources/docs_entitydb.png)
+
+Click the 'Compare' tab and choose a field from the dropdown to see a list of all the entities and the value of the chosen field.
+
+![EntityDB](/resources/docs_entitydb_compare.png)
+
+Click the 'Group by value' checkbox to get a list of the unique values of the field, and which entities belong to that group.
+
+![EntityDB](/resources/docs_entitydb_compare_grouped.png)
 
 ## State
 
