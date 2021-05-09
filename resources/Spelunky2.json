@@ -109,6 +109,11 @@
     "CritterFirefly": "Critter",
     "CritterDrone": "Critter",
     "CritterSlime": "Critter",
+    "Mount": "Movable",
+    "Rockdog": "Mount",
+    "Axolotl": "Mount",
+    "Mech": "Mount",
+    "Qilin": "Mount",
     "Altar": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
@@ -232,6 +237,13 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
+    "MOUNT_TURKEY": "Mount",
+    "MOUNT_ROCKDOG": "Rockdog",
+    "MOUNT_AXOLOTL": "Axolotl",
+    "MOUNT_MECH": "Mech",
+    "MOUNT_QILIN": "Qilin",
+    "MOUNT_BASECAMP_CHAIR": "Mount",
+    "MOUNT_BASECAMP_COUCH": "Mount",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -2761,6 +2773,47 @@
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "UnsignedDword" },
       { "field": "unknown9", "type": "UnsignedDword" }
+    ],
+    "Mount": [
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "rider_uid", "type": "EntityUID", "comment": "who rides it" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "sound_pos", "type": "PositionInfoPointer" },
+      {
+        "field": "can_doublejump",
+        "type": "Bool",
+        "comment": "whether the doublejump has already occurred or not"
+      },
+      { "field": "tamed", "type": "Bool" },
+      {
+        "field": "walk_pause_timer",
+        "type": "UnsignedWord",
+        "comment": "alternates between walking and pausing every time it reaches zero"
+      },
+      { "field": "unknown9a", "type": "UnsignedByte" },
+      { "field": "unknown9b", "type": "UnsignedByte" },
+      {
+        "field": "taming_timer",
+        "type": "UnsignedByte",
+        "comment": "when 0 it's tame"
+      },
+      { "field": "unknown9d", "type": "UnsignedByte" }
+    ],
+    "Rockdog": [{ "field": "attack_cooldown", "type": "UnsignedByte" }],
+    "Axolotl": [
+      { "field": "attack_cooldown", "type": "UnsignedByte" },
+      { "field": "unknown1", "type": "Bool" }
+    ],
+    "Mech": [
+      { "field": "sound_pos", "type": "PositionInfoPointer" },
+      { "field": "explosion_sound_pos", "type": "PositionInfoPointer" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "attack_cooldown", "type": "UnsignedByte" }
+    ],
+    "Qilin": [
+      { "field": "flying_sound_pos", "type": "PositionInfoPointer" },
+      { "field": "attack_cooldown", "type": "UnsignedByte" }
     ]
   }
 }
