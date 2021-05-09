@@ -270,7 +270,7 @@ void S2Plugin::ViewParticleDB::populateComparisonTreeWidget()
     std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<entity names>
     for (auto x = 1; x <= particleDB->amountOfParticles(); ++x)
     {
-        auto particleName = mToolbar->particleDB()->nameForIndex(x);
+        auto particleName = mToolbar->particleDB()->nameForIndex(x) + " id:" + std::to_string(x);
         auto [caption, value] = valueForField(field, x);
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;

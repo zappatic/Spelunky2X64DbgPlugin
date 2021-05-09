@@ -247,7 +247,6 @@
     "PositionInfoPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
     "MysteryPointer1", // a bunch of floats, no __vftable ptr
-    "MysteryPointer2",
     "MysteryPointer3", // i6c in state
     "RenderInfoPointer",
     "ParticleInfoPointer"
@@ -1689,11 +1688,7 @@
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "Word" },
       { "field": "rolling_pos_info", "type": "PositionInfoPointer" },
-      {
-        "field": "unknown4",
-        "type": "DataPointer",
-        "comment": "points to object that changes while rolling"
-      }
+      { "field": "particle", "type": "ParticleInfoPointer" }
     ],
     "HornedLizard": [
       { "field": "dungbeetle_being_eaten", "type": "EntityUID" },
@@ -1710,7 +1705,7 @@
       { "field": "blood_squirt_timer", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "pounce_pos", "type": "PositionInfoPointer" },
-      { "field": "unknown4", "type": "DataPointer" }
+      { "field": "particle", "type": "ParticleInfoPointer" }
     ],
     "Leprechaun": [
       { "field": "unknown1", "type": "Dword" },
@@ -2023,7 +2018,7 @@
     "MagmaMan": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "pos_info", "type": "PositionInfoPointer" },
-      { "field": "unknown1", "type": "MysteryPointer2" },
+      { "field": "particle", "type": "ParticleInfoPointer" },
       {
         "field": "jump_timer",
         "type": "UnsignedWord",
@@ -2035,10 +2030,6 @@
         "type": "UnsignedWord",
         "comment": "when 0, the magmaman disappears"
       }
-    ],
-    "MysteryPointer2": [
-      { "field": "data?", "type": "DataPointer" },
-      { "field": "size?", "type": "UnsignedQword" }
     ],
     "Bee": [
       { "field": "unknown1", "type": "UnsignedByte" },
@@ -2310,7 +2301,7 @@
     "Lamassu": [
       { "field": "pos_info", "type": "PositionInfoPointer" },
       { "field": "attack_effect_entity", "type": "EntityPointer" },
-      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "particle", "type": "ParticleInfoPointer" },
       { "field": "mystery_ptr", "type": "MysteryPointer1" },
       {
         "field": "walk_pause_timer",
@@ -2423,7 +2414,7 @@
     "GiantFly": [
       { "field": "head_entity", "type": "EntityPointer" },
       { "field": "pos_info", "type": "PositionInfoPointer" },
-      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "particle", "type": "ParticleInfoPointer" },
       { "field": "sine_amplitude", "type": "Float" },
       { "field": "sine_frequency", "type": "Float" },
       {
