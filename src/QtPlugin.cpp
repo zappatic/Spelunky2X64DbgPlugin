@@ -1,6 +1,7 @@
 #include "QtPlugin.h"
 #include "Configuration.h"
 #include "Data/EntityDB.h"
+#include "Data/ParticleDB.h"
 #include "Data/State.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -15,6 +16,7 @@ static QMdiArea* gsMDIArea;
 static S2Plugin::Configuration* gsConfiguration;
 static S2Plugin::ViewToolbar* gsViewToolbar;
 static S2Plugin::EntityDB* gsEntityDB;
+static S2Plugin::ParticleDB* gsParticleDB;
 static S2Plugin::State* gsState;
 
 static HANDLE hSetupEvent;
@@ -58,9 +60,10 @@ void QtPlugin::Setup()
         gsSpelunky2MainWindow->setWindowTitle("Spelunky 2");
 
         gsEntityDB = new S2Plugin::EntityDB(gsConfiguration);
+        gsParticleDB = new S2Plugin::ParticleDB(gsConfiguration);
         gsState = new S2Plugin::State(gsConfiguration);
 
-        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsState, gsConfiguration, gsMDIArea, parent);
+        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsState, gsConfiguration, gsMDIArea, parent);
         gsSpelunky2MainWindow->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, gsViewToolbar);
 
         GuiAddQWidgetTab(gsSpelunky2MainWindow);

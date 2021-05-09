@@ -249,7 +249,8 @@
     "MysteryPointer1", // a bunch of floats, no __vftable ptr
     "MysteryPointer2",
     "MysteryPointer3", // i6c in state
-    "RenderInfoPointer"
+    "RenderInfoPointer",
+    "ParticleInfoPointer"
   ],
   // a list of all the fields within the types
   "fields": {
@@ -302,7 +303,44 @@
       { "field": "default_b3f", "type": "UnsignedByte" },
       { "field": "field_26", "type": "Word" },
       { "field": "rect_collision", "type": "Rect" },
-      { "field": "field_3C", "type": "Dword" },
+      {
+        "field": "field_3C",
+        "type": "Flags32",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": "",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "",
+          "18": "",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
       { "field": "field_40", "type": "Dword" },
       { "field": "field_44", "type": "Dword" },
       {
@@ -440,7 +478,20 @@
       { "field": "tile_y", "type": "Dword" },
       { "field": "damage", "type": "UnsignedByte" },
       { "field": "life", "type": "UnsignedByte" },
-      { "field": "field_96", "type": "UnsignedByte" },
+      {
+        "field": "field_96",
+        "type": "Flags8",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        }
+      },
       { "field": "field_97", "type": "UnsignedByte" },
       { "field": "field_98", "type": "UnsignedByte" },
       { "field": "field_99", "type": "UnsignedByte" },
@@ -459,6 +510,141 @@
       { "field": "field_1a", "type": "UnsignedByte" },
       { "field": "field_1b", "type": "UnsignedByte" },
       { "field": "field_1c", "type": "Dword" }
+    ],
+    "ParticleInfoPointer": [
+      { "field": "particle_type", "type": "ParticleDBPointer" },
+      { "field": "particle_count", "type": "UnsignedByte" }
+    ],
+    "ParticleDB": [
+      { "field": "id", "type": "UnsignedDword" },
+      { "field": "unknown1", "type": "Dword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "Dword", "comment": "linked to unknown4" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      {
+        "field": "texture_id",
+        "type": "UnsignedDword",
+        "comment": "index within the texture DDS file"
+      },
+      {
+        "field": "trailing_texture_rel_id",
+        "type": "UnsignedDword",
+        "comment": "texture id of trailing particles, relative to texture_id"
+      },
+      { "field": "main_trailing_count?", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "amplitude?", "type": "Float" },
+      {
+        "field": "shrink_growth_factor",
+        "type": "Float",
+        "comment": "negative makes the particles shrink over time, positive grow"
+      },
+      { "field": "rotation_speed", "type": "Float" },
+      { "field": "opacity", "type": "Float" },
+      {
+        "field": "unknown_mask",
+        "type": "Flags32",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": "",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "",
+          "18": "",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
+      { "field": "y_scale_related", "type": "Float" },
+      { "field": "horizontal_scattering", "type": "Float" },
+      { "field": "vertical_scattering", "type": "Float" },
+      { "field": "spin_and_scale_1?", "type": "Float" },
+      { "field": "spin_and_scale_2?", "type": "Float" },
+      { "field": "scale_x", "type": "Float" },
+      { "field": "scale_y", "type": "Float" },
+      { "field": "unknown21", "type": "Float" },
+      { "field": "unknown22", "type": "Float" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "Float" },
+      { "field": "hor_velocity", "type": "Float" },
+      { "field": "ver_velocity", "type": "Float" },
+      { "field": "unknown27", "type": "UnsignedDword" },
+      { "field": "texture", "type": "TexturePointer" },
+      { "field": "unknown29", "type": "CodePointer" },
+      { "field": "unknown30", "type": "CodePointer" },
+      {
+        "field": "flags",
+        "type": "Flags32",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": "not green",
+          "10": "not gray",
+          "11": "",
+          "12": "not white",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "",
+          "18": "",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "Float" },
+      { "field": "unknown34", "type": "UnsignedByte" },
+      { "field": "unknown35", "type": "UnsignedByte" },
+      { "field": "unknown36", "type": "UnsignedByte" },
+      { "field": "unknown37", "type": "UnsignedByte" },
+      { "field": "unknown38", "type": "Bool" },
+      { "field": "unknown39", "type": "UnsignedByte" },
+      { "field": "unknown40", "type": "UnsignedByte" },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedDword" }
     ],
     "State": [
       { "field": "p00", "type": "DataPointer" },
@@ -736,8 +922,8 @@
           "5": "",
           "6": "",
           "7": "",
-          "8": "",
-          "9": "",
+          "8": "Stuck in web",
+          "9": "Stuck in web",
           "10": "",
           "11": "Swimming",
           "12": "",
@@ -1219,7 +1405,7 @@
     "Mole": [
       { "field": "burrowing_pos", "type": "PositionInfoPointer" },
       { "field": "nonburrowing_pos", "type": "PositionInfoPointer" },
-      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "burrowing_particle", "type": "ParticleInfoPointer" },
       { "field": "burrow_dir_x", "type": "Float" },
       { "field": "burrow_dir_y", "type": "Float" },
       { "field": "burrowing_in", "type": "EntityUID" },
@@ -1318,7 +1504,7 @@
       {
         "field": "active",
         "type": "Byte",
-        "comment": "-1 = sitting and yelling; 0 = either dead or picked up"
+        "comment": "-1 = sitting and yelling; 0 = either running, dead or picked up"
       }
     ],
     "Caveman": [
@@ -1510,13 +1696,17 @@
       }
     ],
     "HornedLizard": [
-      { "field": "unknown1", "type": "Dword" },
+      { "field": "dungbeetle_being_eaten", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedByte",
         "comment": "alternates between walking and pausing when timer reaches zero"
       },
-      { "field": "unknown2", "type": "UnsignedByte" },
+      {
+        "field": "attack_cooldown_timer",
+        "type": "UnsignedByte",
+        "comment": "won't attack until timer reaches zero"
+      },
       { "field": "blood_squirt_timer", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "pounce_pos", "type": "PositionInfoPointer" },

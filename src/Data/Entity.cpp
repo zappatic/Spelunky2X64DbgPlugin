@@ -150,6 +150,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::DataPointer:
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:

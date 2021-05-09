@@ -107,6 +107,10 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         for (const auto& field : jsonArray)
         {
             MemoryField memField;
+            if (isPointer)
+            {
+                memField.parentPointerJsonName = key;
+            }
             memField.name = field["field"].get<std::string>();
             if (field.contains("offset"))
             {

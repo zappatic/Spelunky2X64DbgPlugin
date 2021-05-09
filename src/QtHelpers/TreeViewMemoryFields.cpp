@@ -2,6 +2,7 @@
 #include "Data/Entity.h"
 #include "QtHelpers/DialogEditSimpleValue.h"
 #include "Views/ViewEntityDB.h"
+#include "Views/ViewParticleDB.h"
 #include "pluginmain.h"
 #include <inttypes.h>
 #include <sstream>
@@ -100,6 +101,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::EntityUID:
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::Vector:
         {
@@ -117,7 +119,14 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
                 flagFieldItem->setData(32, gsRoleFlagsSize);
-                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+                if (!field.parentPointerJsonName.empty())
+                {
+                    flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
+                }
+                else
+                {
+                    flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+                }
             }
             returnField = flagsParent;
             break;
@@ -651,6 +660,19 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
+        case MemoryFieldType::ParticleDBPointer:
+        {
+            size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
+            auto id = Script::Memory::ReadDword(value);
+            auto particleName = mToolbar->particleDB()->nameForIndex(id);
+            itemValue->setData(QString::asprintf("<font color='blue'><u>ParticleDB %d %s</u></font>", id, particleName.c_str()), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+            break;
+        }
         case MemoryFieldType::ConstCharPointerPointer:
         {
             constexpr uint16_t bufferSize = 1024;
@@ -796,6 +818,20 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     }
                     break;
                 }
+                case MemoryFieldType::ParticleDBPointer:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    if (offset != 0)
+                    {
+                        auto id = Script::Memory::ReadDword(offset);
+                        auto view = mToolbar->showParticleDB();
+                        if (view != nullptr)
+                        {
+                            view->showIndex(id);
+                        }
+                    }
+                    break;
+                }
                 case MemoryFieldType::Bool:
                 {
                     auto offset = clickedItem->data(gsRoleMemoryOffset).toULongLong();
@@ -833,11 +869,11 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto fieldName = clickedItem->data(gsRoleFieldName).toString();
                         auto dialog = new DialogEditSimpleValue(fieldName, offset, dataType, this);
                         dialog->exec();
-                        emit memoryFieldValueUpdated(fieldName);
                     }
                     break;
                 }
             }
+            emit memoryFieldValueUpdated(clickedItem->data(gsRoleFieldName).toString());
         }
     }
 }

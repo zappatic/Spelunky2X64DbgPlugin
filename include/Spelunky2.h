@@ -65,6 +65,9 @@ namespace S2Plugin
         EntityDBPointer,
         EntityDBID,
         EntityUID,
+        ParticleDB,
+        ParticleDBPointer,
+        ParticleInfoPointer,
         SaturationAperture,
         Vector,
         Color,
@@ -102,6 +105,9 @@ namespace S2Plugin
         {MemoryFieldType::EntityDBPointer, "EntityDB pointer"},
         {MemoryFieldType::EntityDBID, "EntityDB ID"},
         {MemoryFieldType::EntityUID, "Entity UID"},
+        {MemoryFieldType::ParticleDB, "ParticleDB"},
+        {MemoryFieldType::ParticleDBPointer, "ParticleDB pointer"},
+        {MemoryFieldType::ParticleInfoPointer, "ParticleInfo pointer"},
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::Color, "Color"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
@@ -135,6 +141,9 @@ namespace S2Plugin
         {"EntityDBPointer", MemoryFieldType::EntityDBPointer},
         {"EntityDBID", MemoryFieldType::EntityDBID},
         {"EntityUID", MemoryFieldType::EntityUID},
+        {"ParticleDB", MemoryFieldType::ParticleDB},
+        {"ParticleDBPointer", MemoryFieldType::ParticleDBPointer},
+        {"ParticleInfoPointer", MemoryFieldType::ParticleInfoPointer},
         {"Vector", MemoryFieldType::Vector},
         {"Color", MemoryFieldType::Color},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
@@ -151,6 +160,7 @@ namespace S2Plugin
         // then save its name so we can compare later
         std::string jsonName;
         std::string comment;
+        std::string parentPointerJsonName;
         bool isPointer = false;
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)

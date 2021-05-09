@@ -2,13 +2,14 @@
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
+#include "Views/ViewParticleDB.h"
 #include "Views/ViewState.h"
 #include "pluginmain.h"
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mState(state), mConfiguration(config), mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -34,6 +35,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, State* state, Configurati
     mMainLayout->addWidget(btnEntities);
     QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
 
+    auto btnParticleDB = new QPushButton(this);
+    btnParticleDB->setText("Particle DB");
+    mMainLayout->addWidget(btnParticleDB);
+    QObject::connect(btnParticleDB, &QPushButton::clicked, this, &ViewToolbar::showParticleDB);
+
     mMainLayout->addStretch();
 
     auto btnClearLabels = new QPushButton(this);
@@ -52,6 +58,18 @@ S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
     if (mEntityDB->loadEntityDB())
     {
         auto w = new ViewEntityDB(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+        return w;
+    }
+    return nullptr;
+}
+
+S2Plugin::ViewParticleDB* S2Plugin::ViewToolbar::showParticleDB()
+{
+    if (mParticleDB->loadParticleDB())
+    {
+        auto w = new ViewParticleDB(this);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
         return w;
@@ -116,6 +134,12 @@ S2Plugin::EntityDB* S2Plugin::ViewToolbar::entityDB()
     return mEntityDB;
 }
 
+S2Plugin::ParticleDB* S2Plugin::ViewToolbar::particleDB()
+{
+    mParticleDB->loadParticleDB();
+    return mParticleDB;
+}
+
 S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
 {
     return mConfiguration;
@@ -137,6 +161,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
         mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
     }
     mEntityDB->reset();
+    mParticleDB->reset();
 }
 
 void S2Plugin::ViewToolbar::resetSpelunky2Data()
@@ -144,5 +169,6 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mMDIArea->closeAllSubWindows();
     mState->reset();
     mEntityDB->reset();
+    mParticleDB->reset();
     mConfiguration->spelunky2()->reset();
 }

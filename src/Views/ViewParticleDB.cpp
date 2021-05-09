@@ -1,4 +1,4 @@
-#include "Views/ViewEntityDB.h"
+#include "Views/ViewParticleDB.h"
 #include "Data/EntityList.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
 #include "QtHelpers/TreeWidgetItemNumeric.h"
@@ -10,15 +10,15 @@
 #include <QPushButton>
 #include <QTreeWidgetItem>
 
-S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewParticleDB::ViewParticleDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
-    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestEntityID()));
+    setWindowTitle(QString("Particle DB (%1 particles)").arg(mToolbar->particleDB()->amountOfParticles()));
     showIndex(index);
 }
 
-void S2Plugin::ViewEntityDB::initializeUI()
+void S2Plugin::ViewParticleDB::initializeUI()
 {
     mMainLayout = new QVBoxLayout(this);
     mMainLayout->setMargin(5);
@@ -46,31 +46,26 @@ void S2Plugin::ViewEntityDB::initializeUI()
     {
         auto topLayout = new QHBoxLayout();
 
-        mSearchLineEdit = new QLineEdit();
-        mSearchLineEdit->setPlaceholderText("Search");
-        topLayout->addWidget(mSearchLineEdit);
-        QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewEntityDB::searchFieldReturnPressed);
-        mSearchLineEdit->setVisible(false);
-        mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->entityNames(), this);
-        mEntityNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-        mEntityNameCompleter->setFilterMode(Qt::MatchContains);
-        QObject::connect(mEntityNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewEntityDB::searchFieldCompleterActivated);
-        mSearchLineEdit->setCompleter(mEntityNameCompleter);
+        mSearchIDLineEdit = new QLineEdit();
+        mSearchIDLineEdit->setPlaceholderText("Search id");
+        topLayout->addWidget(mSearchIDLineEdit);
+        QObject::connect(mSearchIDLineEdit, &QLineEdit::returnPressed, this, &ViewParticleDB::searchFieldReturnPressed);
+        mSearchIDLineEdit->setVisible(false);
 
         auto labelButton = new QPushButton("Label", this);
-        QObject::connect(labelButton, &QPushButton::clicked, this, &ViewEntityDB::label);
+        QObject::connect(labelButton, &QPushButton::clicked, this, &ViewParticleDB::label);
         topLayout->addWidget(labelButton);
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
         mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
+        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
         {
-            mMainTreeView->addMemoryField(field, "EntityDB." + field.name);
+            mMainTreeView->addMemoryField(field, "ParticleDB." + field.name);
         }
-        QObject::connect(mMainTreeView, &TreeViewMemoryFields::memoryFieldValueUpdated, this, &ViewEntityDB::fieldUpdated);
-        QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewEntityDB::fieldExpanded);
+        QObject::connect(mMainTreeView, &TreeViewMemoryFields::memoryFieldValueUpdated, this, &ViewParticleDB::fieldUpdated);
+        QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewParticleDB::fieldExpanded);
         mTabLookup->layout()->addWidget(mMainTreeView);
         mMainTreeView->setColumnWidth(gsColValue, 250);
         mMainTreeView->setVisible(false);
@@ -82,12 +77,11 @@ void S2Plugin::ViewEntityDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
+        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
         {
             switch (field.type)
             {
                 case MemoryFieldType::Skip:
-                case MemoryFieldType::Rect:
                     continue;
                 case MemoryFieldType::Flags32:
                 case MemoryFieldType::Flags16:
@@ -98,7 +92,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
                     for (uint8_t x = 1; x <= flagCount; ++x)
                     {
                         MemoryField flagField;
-                        flagField.name = field.name; // + ".flag_" + std::to_string(x);
+                        flagField.name = field.name;
                         flagField.type = MemoryFieldType::Flag;
                         flagField.extraInfo = x - 1;
                         flagField.comment = std::to_string(flagCount); // abuse the comment field to transmit the size to fetch
@@ -113,16 +107,16 @@ void S2Plugin::ViewEntityDB::initializeUI()
                 }
             }
         }
-        QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewEntityDB::comparisonFieldChosen);
+        QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewParticleDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
 
         auto groupCheckbox = new QCheckBox("Group by value", this);
-        QObject::connect(groupCheckbox, &QCheckBox::stateChanged, this, &ViewEntityDB::compareGroupByCheckBoxClicked);
+        QObject::connect(groupCheckbox, &QCheckBox::stateChanged, this, &ViewParticleDB::compareGroupByCheckBoxClicked);
         topLayout->addWidget(groupCheckbox);
 
         dynamic_cast<QVBoxLayout*>(mTabCompare->layout())->addLayout(topLayout);
 
-        mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->entityCount(), 3, this);
+        mCompareTableWidget = new QTableWidget(mToolbar->particleDB()->amountOfParticles(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
                                                                      << "Name"
@@ -142,98 +136,89 @@ void S2Plugin::ViewEntityDB::initializeUI()
         mTabCompare->layout()->addWidget(mCompareTreeWidget);
     }
 
-    mSearchLineEdit->setVisible(true);
-    mSearchLineEdit->setFocus();
+    mSearchIDLineEdit->setVisible(true);
+    mSearchIDLineEdit->setFocus();
     mMainTreeView->setVisible(true);
-}
-
-void S2Plugin::ViewEntityDB::closeEvent(QCloseEvent* event)
-{
-    delete this;
-}
-
-QSize S2Plugin::ViewEntityDB::sizeHint() const
-{
-    return QSize(750, 1050);
-}
-
-QSize S2Plugin::ViewEntityDB::minimumSizeHint() const
-{
-    return QSize(150, 150);
-}
-
-void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
-{
-    auto text = mSearchLineEdit->text();
-    bool isNumeric = false;
-    auto enteredID = text.toUInt(&isNumeric);
-    if (isNumeric && enteredID <= mToolbar->entityDB()->entityList()->highestEntityID())
-    {
-        showIndex(enteredID);
-    }
-    else
-    {
-        auto entityID = mToolbar->entityDB()->entityList()->idForName(text.toStdString());
-        if (entityID != 0)
-        {
-            showIndex(entityID);
-        }
-    }
-}
-
-void S2Plugin::ViewEntityDB::searchFieldCompleterActivated(const QString& text)
-{
-    searchFieldReturnPressed();
-}
-
-void S2Plugin::ViewEntityDB::showIndex(size_t index)
-{
-    mLookupIndex = index;
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
-    {
-        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(index));
-    }
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
-void S2Plugin::ViewEntityDB::label()
+void S2Plugin::ViewParticleDB::closeEvent(QCloseEvent* event)
 {
-    auto entityDB = mToolbar->entityDB();
-    auto entityName = entityDB->entityList()->nameForID(mLookupIndex);
-    for (const auto& [fieldName, offset] : entityDB->offsetsForIndex(mLookupIndex))
+    delete this;
+}
+
+QSize S2Plugin::ViewParticleDB::sizeHint() const
+{
+    return QSize(750, 1050);
+}
+
+QSize S2Plugin::ViewParticleDB::minimumSizeHint() const
+{
+    return QSize(150, 150);
+}
+
+void S2Plugin::ViewParticleDB::searchFieldReturnPressed()
+{
+    auto text = mSearchIDLineEdit->text();
+    bool isNumeric = false;
+    auto enteredID = text.toUInt(&isNumeric);
+    if (isNumeric && enteredID <= mToolbar->particleDB()->amountOfParticles())
     {
-        DbgSetAutoLabelAt(offset, (entityName + "." + fieldName).c_str());
+        showIndex(enteredID);
     }
 }
 
-void S2Plugin::ViewEntityDB::fieldUpdated(const QString& fieldName)
+void S2Plugin::ViewParticleDB::searchFieldCompleterActivated(const QString& text)
+{
+    searchFieldReturnPressed();
+}
+
+void S2Plugin::ViewParticleDB::showIndex(size_t index)
+{
+    mLookupIndex = index;
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
+    {
+        mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, mToolbar->particleDB()->offsetsForIndex(mLookupIndex));
+    }
+}
+
+void S2Plugin::ViewParticleDB::label()
+{
+    auto particleDB = mToolbar->particleDB();
+    for (const auto& [fieldName, offset] : particleDB->offsetsForIndex(mLookupIndex))
+    {
+        DbgSetAutoLabelAt(offset, (mToolbar->particleDB()->nameForIndex(mLookupIndex) + "." + fieldName).c_str());
+    }
+}
+
+void S2Plugin::ViewParticleDB::fieldUpdated(const QString& fieldName)
 {
     updateFieldValues();
 }
 
-void S2Plugin::ViewEntityDB::fieldExpanded(const QModelIndex& index)
+void S2Plugin::ViewParticleDB::fieldExpanded(const QModelIndex& index)
 {
     updateFieldValues();
 }
 
-void S2Plugin::ViewEntityDB::updateFieldValues()
+void S2Plugin::ViewParticleDB::updateFieldValues()
 {
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
+    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
     {
-        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(mLookupIndex));
+        mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, mToolbar->particleDB()->offsetsForIndex(mLookupIndex));
     }
 }
 
-void S2Plugin::ViewEntityDB::compareGroupByCheckBoxClicked(int state)
+void S2Plugin::ViewParticleDB::compareGroupByCheckBoxClicked(int state)
 {
     mCompareTableWidget->setHidden(state == Qt::Checked);
     mCompareTreeWidget->setHidden(state == Qt::Unchecked);
 }
 
-void S2Plugin::ViewEntityDB::comparisonFieldChosen(const QString& fieldName)
+void S2Plugin::ViewParticleDB::comparisonFieldChosen(const QString& fieldName)
 {
     mCompareTableWidget->clearContents();
     mCompareTreeWidget->clear();
@@ -248,26 +233,20 @@ void S2Plugin::ViewEntityDB::comparisonFieldChosen(const QString& fieldName)
     populateComparisonTreeWidget();
 }
 
-void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
+void S2Plugin::ViewParticleDB::populateComparisonTableWidget()
 {
     mCompareTableWidget->setSortingEnabled(false);
 
     auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
-    auto entityDB = mToolbar->entityDB();
-    auto entityList = entityDB->entityList();
+    auto particleDB = mToolbar->particleDB();
 
     size_t row = 0;
-    for (auto x = 1; x <= entityDB->entityList()->highestEntityID(); ++x)
+    for (auto x = 1; x <= particleDB->amountOfParticles(); ++x)
     {
-        if (!entityList->isValidID(x))
-        {
-            continue;
-        }
-
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(entityList->nameForID(x))));
+        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(mToolbar->particleDB()->nameForIndex(x))));
 
         auto [caption, value] = valueForField(field, x);
         auto item = new TableWidgetItemNumeric(caption);
@@ -280,35 +259,29 @@ void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
     mCompareTableWidget->sortItems(0);
 }
 
-void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
+void S2Plugin::ViewParticleDB::populateComparisonTreeWidget()
 {
     mCompareTreeWidget->setSortingEnabled(false);
 
     auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
-    auto entityDB = mToolbar->entityDB();
-    auto entityList = entityDB->entityList();
+    auto particleDB = mToolbar->particleDB();
 
     std::unordered_map<std::string, QVariant> rootValues;
     std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<entity names>
-    for (auto x = 1; x <= entityDB->entityList()->highestEntityID(); ++x)
+    for (auto x = 1; x <= particleDB->amountOfParticles(); ++x)
     {
-        if (!entityList->isValidID(x))
-        {
-            continue;
-        }
-
-        auto entityName = entityList->nameForID(x);
+        auto particleName = mToolbar->particleDB()->nameForIndex(x);
         auto [caption, value] = valueForField(field, x);
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;
 
         if (groupedValues.count(captionStr) == 0)
         {
-            groupedValues[captionStr] = {entityName};
+            groupedValues[captionStr] = {particleName};
         }
         else
         {
-            groupedValues[captionStr].insert(entityName);
+            groupedValues[captionStr].insert(particleName);
         }
     }
 
@@ -328,9 +301,9 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
     mCompareTreeWidget->sortItems(0, Qt::AscendingOrder);
 }
 
-std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryField& field, size_t entityDBIndex)
+std::pair<QString, QVariant> S2Plugin::ViewParticleDB::valueForField(const MemoryField& field, size_t particleDBIndex)
 {
-    auto offset = mToolbar->entityDB()->offsetsForIndex(entityDBIndex).at("EntityDB." + field.name);
+    auto offset = mToolbar->particleDB()->offsetsForIndex(particleDBIndex).at("ParticleDB." + field.name);
     switch (field.type)
     {
         case MemoryFieldType::CodePointer:
@@ -366,7 +339,6 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
             int32_t value = Script::Memory::ReadDword(offset);
             return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
         }
-        case MemoryFieldType::EntityDBID:
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Flags32:
         {
