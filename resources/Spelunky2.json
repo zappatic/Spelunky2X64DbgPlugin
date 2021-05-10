@@ -1141,7 +1141,7 @@
       { "field": "jump_flags_b", "type": "UnsignedByte" },
       { "field": "jump_flags_c", "type": "UnsignedByte" },
       { "field": "jump_flags_d", "type": "UnsignedByte" },
-      { "field": "some_timer", "type": "UnsignedByte" },
+      { "field": "timer_since_last_jump", "type": "UnsignedByte", "comment": "something different happens before or after 6" },
       { "field": "can_use", "type": "UnsignedByte" },
       { "field": "b176", "type": "UnsignedByte" },
       { "field": "b177", "type": "UnsignedByte" }
@@ -1165,8 +1165,8 @@
       { "field": "f16", "type": "Float" },
       { "field": "f17", "type": "Float" },
       { "field": "f18", "type": "Float" },
-      { "field": "f19", "type": "Float" },
-      { "field": "f20", "type": "Float" },
+      { "field": "entity_x", "type": "Float" },
+      { "field": "entity_y", "type": "Float" },
       { "field": "f21", "type": "Float" },
       { "field": "f22", "type": "Float" },
       { "field": "f23", "type": "Float" }
