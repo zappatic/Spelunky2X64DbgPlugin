@@ -9,6 +9,7 @@
   - Spelunky2.dp64 (the actual plugin)
   - Spelunky2.json (the definition of the fields and classes)
   - Spelunky2Entities.txt (the list of all the entities)
+  - Spelunky2ParticleEmitters.txt (the list of all the particle emitters)
 - Launch x64dbg.exe again, and you should see a tab at the top right of the window called "Spelunky 2"
 
 By default, x64dbg enables a couple of standard/system breakpoints, which means that Spelunky will pause automatically when these breakpoints are hit. To disable these, open the Options > Preferences menu and uncheck "System Breakpoint, "Entry Breakpoint" and "TLS Callbacks".
@@ -23,7 +24,7 @@ If you do hit a breakpoint, the bottom left corner of the x64dbg window will be 
 
 ## Basic usage
 
-The three buttons on the top-left side give you access to the internals of Spelunky 2.
+The four buttons on the top-left side give you access to the internals of Spelunky 2.
 
 The data tables containing all the fields will have a clickable "Value" column, to either change its value, or jump to a represented entity, type, ...
 
@@ -43,6 +44,12 @@ Click the 'Compare' tab and choose a field from the dropdown to see a list of al
 Click the 'Group by value' checkbox to get a list of the unique values of the field, and which entities belong to that group.
 
 ![EntityDB](/resources/docs_entitydb_compare_grouped.png)
+
+## Particle DB
+
+Similar to the Entity DB, but for all the particle emitters in the game.
+
+![ParticleDB](/resources/docs_particledb.png)
 
 ## State
 
@@ -72,4 +79,4 @@ If you define a new pointer type, don't forget to add it to the `pointer_types` 
 
 Once saved, click the "Reload JSON" button at the bottom left, and the updated information will be visualized (the entity windows will close for reload though).
 
-Entity, State and EntityDB windows all have a "Label" button as well. This can help you if you are reading the assembly in the CPU tab. Click the "Clear labels" button to remove them, however due to a bug (?) in x64dbg it won't delete them all. Press Ctrl-Alt-L to see all the labels.
+Entity, State, EntityDB and ParticleDB windows all have a "Label" button as well. This can help you if you are reading the assembly in the CPU tab. Click the "Clear labels" button to remove them, however due to a bug (?) in x64dbg it won't delete them all. Press Ctrl-Alt-L to see all the labels.
