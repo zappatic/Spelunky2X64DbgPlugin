@@ -24,7 +24,7 @@ bool S2Plugin::EntityDB::loadEntityDB()
 
     auto offset = mEntityDBPtr;
 
-    for (auto x = 0; x < mEntityList->highestEntityID() + 1; ++x)
+    for (auto x = 0; x < mEntityList->highestID() + 1; ++x)
     {
         std::unordered_map<std::string, size_t> offsets;
         for (const auto& field : mConfiguration->typeFields(MemoryFieldType::EntityDB))

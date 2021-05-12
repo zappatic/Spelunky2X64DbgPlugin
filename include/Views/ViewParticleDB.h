@@ -47,7 +47,8 @@ namespace S2Plugin
         // LOOKUP
         size_t mLookupIndex;
         TreeViewMemoryFields* mMainTreeView;
-        QLineEdit* mSearchIDLineEdit;
+        QLineEdit* mSearchLineEdit;
+        QCompleter* mParticleNameCompleter;
 
         // COMPARE
         QComboBox* mCompareFieldComboBox;

@@ -664,7 +664,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
             auto id = Script::Memory::ReadDword(value);
-            auto particleName = mToolbar->particleDB()->nameForIndex(id);
+            auto particleName = mToolbar->particleDB()->particleEmittersList()->nameForID(id);
             itemValue->setData(QString::asprintf("<font color='blue'><u>ParticleDB %d %s</u></font>", id, particleName.c_str()), Qt::DisplayRole);
             auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);

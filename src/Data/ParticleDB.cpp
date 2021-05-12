@@ -1,4 +1,5 @@
 #include "Data/ParticleDB.h"
+#include "Data/ParticleEmittersList.h"
 #include "pluginmain.h"
 
 S2Plugin::ParticleDB::ParticleDB(Configuration* config) : MemoryMappedData(config) {}
@@ -16,8 +17,9 @@ bool S2Plugin::ParticleDB::loadParticleDB()
     }
     auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
 
+    mParticleEmittersList = std::make_unique<ParticleEmittersList>(mConfiguration->spelunky2());
+
     mMemoryOffsets.clear();
-    mParticleNames.clear();
 
     // Spelunky 1.20.4d last id = 0xDB 219
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "B8 01 00 00 00 66 89 05");
@@ -39,13 +41,6 @@ bool S2Plugin::ParticleDB::loadParticleDB()
                 offset = setOffsetForField(field, "ParticleDB." + field.name, offset, offsets);
             }
             mMemoryOffsets[particleID] = offsets;
-
-            // store the name
-            auto sheetIndex = Script::Memory::ReadDword(offsets.at("ParticleDB.texture_id"));
-            auto nameOffset = Script::Memory::ReadQword(Script::Memory::ReadQword(offsets.at("ParticleDB.texture.name")));
-            const char buffer[1000] = {0};
-            Script::Memory::Read(nameOffset, (void*)buffer, 1000, nullptr); // it's null terminated in the executable, so doesn't matter that we overshoot
-            mParticleNames[particleID] = std::string(buffer) + "[" + std::to_string(sheetIndex) + "]";
         }
         else
         {
@@ -71,21 +66,7 @@ void S2Plugin::ParticleDB::reset()
     mParticleDBPtr = 0;
 }
 
-size_t S2Plugin::ParticleDB::amountOfParticles() const noexcept
+S2Plugin::ParticleEmittersList* S2Plugin::ParticleDB::particleEmittersList() const noexcept
 {
-    return mMemoryOffsets.size();
-}
-
-std::string S2Plugin::ParticleDB::nameForIndex(uint32_t particleDBIndex)
-{
-    if (mParticleNames.count(particleDBIndex) > 0)
-    {
-        return mParticleNames.at(particleDBIndex);
-    }
-    return "UNKNOWN PARTICLEDB ID";
-}
-
-const std::unordered_map<uint16_t, std::string>& S2Plugin::ParticleDB::particleNames()
-{
-    return mParticleNames;
+    return mParticleEmittersList.get();
 }

@@ -9,9 +9,9 @@
 
 namespace S2Plugin
 {
-    class EntityList : public IDNameList
+    class ParticleEmittersList : public IDNameList
     {
       public:
-        explicit EntityList(Spelunky2* spel2);
+        explicit ParticleEmittersList(Spelunky2* spel2);
     };
 } // namespace S2Plugin

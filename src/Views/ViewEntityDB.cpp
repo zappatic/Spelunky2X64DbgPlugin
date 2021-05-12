@@ -14,7 +14,7 @@ S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget
 {
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
-    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestEntityID()));
+    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestID()));
     showIndex(index);
 }
 
@@ -51,7 +51,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewEntityDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->entityNames(), this);
+        mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->names(), this);
         mEntityNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
         mEntityNameCompleter->setFilterMode(Qt::MatchContains);
         QObject::connect(mEntityNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewEntityDB::searchFieldCompleterActivated);
@@ -122,7 +122,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabCompare->layout())->addLayout(topLayout);
 
-        mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->entityCount(), 3, this);
+        mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->count(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
                                                                      << "Name"
@@ -167,7 +167,7 @@ void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
     auto text = mSearchLineEdit->text();
     bool isNumeric = false;
     auto enteredID = text.toUInt(&isNumeric);
-    if (isNumeric && enteredID <= mToolbar->entityDB()->entityList()->highestEntityID())
+    if (isNumeric && enteredID <= mToolbar->entityDB()->entityList()->highestID())
     {
         showIndex(enteredID);
     }
@@ -257,7 +257,7 @@ void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
     auto entityList = entityDB->entityList();
 
     size_t row = 0;
-    for (auto x = 1; x <= entityDB->entityList()->highestEntityID(); ++x)
+    for (auto x = 1; x <= entityDB->entityList()->highestID(); ++x)
     {
         if (!entityList->isValidID(x))
         {
@@ -290,7 +290,7 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
 
     std::unordered_map<std::string, QVariant> rootValues;
     std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<entity names>
-    for (auto x = 1; x <= entityDB->entityList()->highestEntityID(); ++x)
+    for (auto x = 1; x <= entityDB->entityList()->highestID(); ++x)
     {
         if (!entityList->isValidID(x))
         {

@@ -2,6 +2,7 @@
 
 #include "Configuration.h"
 #include "Data/MemoryMappedData.h"
+#include "Data/ParticleEmittersList.h"
 #include "Spelunky2.h"
 #include <memory>
 #include <string>
@@ -14,17 +15,15 @@ namespace S2Plugin
       public:
         explicit ParticleDB(Configuration* config);
         bool loadParticleDB();
-        size_t amountOfParticles() const noexcept;
+        ParticleEmittersList* particleEmittersList() const noexcept;
 
         std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t particleDBIndex);
-        std::string nameForIndex(uint32_t particleDBIndex);
-        const std::unordered_map<uint16_t, std::string>& particleNames();
 
         void reset();
 
       private:
         size_t mParticleDBPtr = 0;
+        std::unique_ptr<ParticleEmittersList> mParticleEmittersList;
         std::unordered_map<uint16_t, std::unordered_map<std::string, size_t>> mMemoryOffsets; // map of particleDBID -> ( fieldname -> offset ) of field value in memory
-        std::unordered_map<uint16_t, std::string> mParticleNames;
     };
 } // namespace S2Plugin

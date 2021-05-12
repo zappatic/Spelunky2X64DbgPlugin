@@ -1,5 +1,4 @@
 #include "Views/ViewParticleDB.h"
-#include "Data/EntityList.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
 #include "QtHelpers/TreeWidgetItemNumeric.h"
 #include "Spelunky2.h"
@@ -14,7 +13,7 @@ S2Plugin::ViewParticleDB::ViewParticleDB(ViewToolbar* toolbar, size_t index, QWi
 {
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
-    setWindowTitle(QString("Particle DB (%1 particles)").arg(mToolbar->particleDB()->amountOfParticles()));
+    setWindowTitle(QString("Particle DB (%1 particles)").arg(mToolbar->particleDB()->particleEmittersList()->count()));
     showIndex(index);
 }
 
@@ -46,11 +45,16 @@ void S2Plugin::ViewParticleDB::initializeUI()
     {
         auto topLayout = new QHBoxLayout();
 
-        mSearchIDLineEdit = new QLineEdit();
-        mSearchIDLineEdit->setPlaceholderText("Search id");
-        topLayout->addWidget(mSearchIDLineEdit);
-        QObject::connect(mSearchIDLineEdit, &QLineEdit::returnPressed, this, &ViewParticleDB::searchFieldReturnPressed);
-        mSearchIDLineEdit->setVisible(false);
+        mSearchLineEdit = new QLineEdit();
+        mSearchLineEdit->setPlaceholderText("Search id");
+        topLayout->addWidget(mSearchLineEdit);
+        QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewParticleDB::searchFieldReturnPressed);
+        mSearchLineEdit->setVisible(false);
+        mParticleNameCompleter = new QCompleter(mToolbar->particleDB()->particleEmittersList()->names(), this);
+        mParticleNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+        mParticleNameCompleter->setFilterMode(Qt::MatchContains);
+        QObject::connect(mParticleNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewParticleDB::searchFieldCompleterActivated);
+        mSearchLineEdit->setCompleter(mParticleNameCompleter);
 
         auto labelButton = new QPushButton("Label", this);
         QObject::connect(labelButton, &QPushButton::clicked, this, &ViewParticleDB::label);
@@ -116,7 +120,7 @@ void S2Plugin::ViewParticleDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabCompare->layout())->addLayout(topLayout);
 
-        mCompareTableWidget = new QTableWidget(mToolbar->particleDB()->amountOfParticles(), 3, this);
+        mCompareTableWidget = new QTableWidget(mToolbar->particleDB()->particleEmittersList()->count(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
                                                                      << "Name"
@@ -136,8 +140,8 @@ void S2Plugin::ViewParticleDB::initializeUI()
         mTabCompare->layout()->addWidget(mCompareTreeWidget);
     }
 
-    mSearchIDLineEdit->setVisible(true);
-    mSearchIDLineEdit->setFocus();
+    mSearchLineEdit->setVisible(true);
+    mSearchLineEdit->setFocus();
     mMainTreeView->setVisible(true);
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
@@ -162,12 +166,20 @@ QSize S2Plugin::ViewParticleDB::minimumSizeHint() const
 
 void S2Plugin::ViewParticleDB::searchFieldReturnPressed()
 {
-    auto text = mSearchIDLineEdit->text();
+    auto text = mSearchLineEdit->text();
     bool isNumeric = false;
     auto enteredID = text.toUInt(&isNumeric);
-    if (isNumeric && enteredID <= mToolbar->particleDB()->amountOfParticles())
+    if (isNumeric && enteredID <= mToolbar->particleDB()->particleEmittersList()->highestID())
     {
         showIndex(enteredID);
+    }
+    else
+    {
+        auto entityID = mToolbar->particleDB()->particleEmittersList()->idForName(text.toStdString());
+        if (entityID != 0)
+        {
+            showIndex(entityID);
+        }
     }
 }
 
@@ -190,7 +202,7 @@ void S2Plugin::ViewParticleDB::label()
     auto particleDB = mToolbar->particleDB();
     for (const auto& [fieldName, offset] : particleDB->offsetsForIndex(mLookupIndex))
     {
-        DbgSetAutoLabelAt(offset, (mToolbar->particleDB()->nameForIndex(mLookupIndex) + "." + fieldName).c_str());
+        DbgSetAutoLabelAt(offset, (mToolbar->particleDB()->particleEmittersList()->nameForID(mLookupIndex) + "." + fieldName).c_str());
     }
 }
 
@@ -241,12 +253,12 @@ void S2Plugin::ViewParticleDB::populateComparisonTableWidget()
     auto particleDB = mToolbar->particleDB();
 
     size_t row = 0;
-    for (auto x = 1; x <= particleDB->amountOfParticles(); ++x)
+    for (auto x = 1; x <= particleDB->particleEmittersList()->count(); ++x)
     {
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(mToolbar->particleDB()->nameForIndex(x))));
+        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(mToolbar->particleDB()->particleEmittersList()->nameForID(x))));
 
         auto [caption, value] = valueForField(field, x);
         auto item = new TableWidgetItemNumeric(caption);
@@ -267,10 +279,10 @@ void S2Plugin::ViewParticleDB::populateComparisonTreeWidget()
     auto particleDB = mToolbar->particleDB();
 
     std::unordered_map<std::string, QVariant> rootValues;
-    std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<entity names>
-    for (auto x = 1; x <= particleDB->amountOfParticles(); ++x)
+    std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<particle names>
+    for (auto x = 1; x <= particleDB->particleEmittersList()->count(); ++x)
     {
-        auto particleName = mToolbar->particleDB()->nameForIndex(x) + " id:" + std::to_string(x);
+        auto particleName = mToolbar->particleDB()->particleEmittersList()->nameForID(x);
         auto [caption, value] = valueForField(field, x);
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;

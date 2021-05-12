@@ -54,9 +54,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/MemoryMappedData.h
 	include/Data/EntityDB.h
 	include/Data/Entity.h
-	include/Data/EntityList.h
 	include/Data/State.h
 	include/Data/ParticleDB.h
+	include/Data/IDNameList.h
+	include/Data/EntityList.h
+	include/Data/ParticleEmittersList.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
@@ -75,9 +77,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/MemoryMappedData.cpp
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
-	src/Data/EntityList.cpp
 	src/Data/State.cpp
 	src/Data/ParticleDB.cpp
+	src/Data/IDNameList.cpp
+	src/Data/EntityList.cpp
+	src/Data/ParticleEmittersList.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
@@ -121,5 +125,10 @@ add_custom_command(	TARGET deploy-auxfiles
 add_custom_command(	TARGET deploy-auxfiles
 					PRE_BUILD
 					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2Entities.txt" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2ParticleEmitters.txt to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2ParticleEmitters.txt" ${X64DBG_PLUGINS_ROOT})
 
 add_dependencies(${PROJECT_NAME} deploy-auxfiles)

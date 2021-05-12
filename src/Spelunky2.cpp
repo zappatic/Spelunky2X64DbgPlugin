@@ -145,7 +145,7 @@ std::string S2Plugin::Spelunky2::getEntityName(size_t offset, EntityDB* entityDB
 
     auto entityID = getEntityTypeID(offset);
 
-    if (entityID > 0 && entityID <= entityDB->entityList()->highestEntityID())
+    if (entityID > 0 && entityID <= entityDB->entityList()->highestID())
     {
         entityName = entityDB->entityList()->nameForID(entityID);
     }

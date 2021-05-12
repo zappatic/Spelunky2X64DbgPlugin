@@ -533,7 +533,7 @@
       { "field": "unknown3", "type": "Dword", "comment": "linked to unknown4" },
       { "field": "unknown4", "type": "UnsignedDword" },
       {
-        "field": "texture_id",
+        "field": "sheet_id",
         "type": "UnsignedDword",
         "comment": "index within the texture DDS file"
       },
@@ -591,8 +591,8 @@
         }
       },
       { "field": "y_scale_related", "type": "Float" },
-      { "field": "horizontal_scattering", "type": "Float" },
-      { "field": "vertical_scattering", "type": "Float" },
+      { "field": "hor_scattering", "type": "Float" },
+      { "field": "ver_scattering", "type": "Float" },
       { "field": "spin_and_scale_1?", "type": "Float" },
       { "field": "spin_and_scale_2?", "type": "Float" },
       { "field": "scale_x", "type": "Float" },
