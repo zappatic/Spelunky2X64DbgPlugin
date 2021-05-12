@@ -538,9 +538,8 @@
         "comment": "index within the texture DDS file"
       },
       {
-        "field": "trailing_texture_rel_id",
-        "type": "UnsignedDword",
-        "comment": "texture id of trailing particles, relative to texture_id"
+        "field": "animation_sequence_length",
+        "type": "UnsignedDword"
       },
       { "field": "main_trailing_count?", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "UnsignedDword" },
@@ -695,7 +694,7 @@
           "5": "Shop spawned",
           "6": "",
           "7": "Seeded mode",
-          "8": "",
+          "8": "Daily challenge mode",
           "9": "",
           "10": "Waddler aggroed",
           "11": "",
@@ -1141,7 +1140,11 @@
       { "field": "jump_flags_b", "type": "UnsignedByte" },
       { "field": "jump_flags_c", "type": "UnsignedByte" },
       { "field": "jump_flags_d", "type": "UnsignedByte" },
-      { "field": "timer_since_last_jump", "type": "UnsignedByte", "comment": "something different happens before or after 6" },
+      {
+        "field": "timer_since_last_jump",
+        "type": "UnsignedByte",
+        "comment": "something different happens before or after 6"
+      },
       { "field": "can_use", "type": "UnsignedByte" },
       { "field": "b176", "type": "UnsignedByte" },
       { "field": "b177", "type": "UnsignedByte" }
