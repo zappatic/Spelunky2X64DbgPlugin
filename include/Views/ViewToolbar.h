@@ -2,6 +2,7 @@
 
 #include "Configuration.h"
 #include "Data/EntityDB.h"
+#include "Data/LevelGen.h"
 #include "Data/ParticleDB.h"
 #include "Data/State.h"
 #include <QDockWidget>
@@ -17,10 +18,11 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
+        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
         void showEntity(size_t offset);
 
         State* state();
+        LevelGen* levelGen();
         EntityDB* entityDB();
         ParticleDB* particleDB();
         Configuration* configuration() const noexcept;
@@ -31,6 +33,7 @@ namespace S2Plugin
         ViewEntityDB* showEntityDB();
         ViewParticleDB* showParticleDB();
         void showState();
+        void showLevelGen();
         void showEntities();
         void clearLabels();
         void reloadConfig();
@@ -39,6 +42,7 @@ namespace S2Plugin
         EntityDB* mEntityDB;
         ParticleDB* mParticleDB;
         State* mState;
+        LevelGen* mLevelGen;
         Configuration* mConfiguration;
 
         QMdiArea* mMDIArea;

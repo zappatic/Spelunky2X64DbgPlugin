@@ -163,6 +163,15 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
             returnField = flagsParent;
             break;
         }
+        case MemoryFieldType::UndeterminedThemeInfoPointer:
+        {
+            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
+            {
+                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+            }
+            break;
+        }
         default: // default is assumed to be a container
         {
             auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
@@ -697,6 +706,24 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
+            break;
+        }
+        case MemoryFieldType::UndeterminedThemeInfoPointer:
+        {
+            if (memoryOffset == 0)
+            {
+                itemValue->setData("NO THEME", Qt::DisplayRole);
+            }
+            else
+            {
+                size_t themeInfoPointer = Script::Memory::ReadQword(memoryOffset);
+                itemValue->setData(QString::fromStdString(mToolbar->levelGen()->themeNameOfOffset(themeInfoPointer)), Qt::DisplayRole);
+            }
+
+            for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
+            {
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+            }
             break;
         }
         case MemoryFieldType::Skip:

@@ -2,14 +2,15 @@
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
+#include "Views/ViewLevelGen.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewState.h"
 #include "pluginmain.h"
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mConfiguration(config), mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mLevelGen(levelGen), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -29,6 +30,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, S
     btnState->setText("State");
     mMainLayout->addWidget(btnState);
     QObject::connect(btnState, &QPushButton::clicked, this, &ViewToolbar::showState);
+
+    auto btnLevelGen = new QPushButton(this);
+    btnLevelGen->setText("LevelGen");
+    mMainLayout->addWidget(btnLevelGen);
+    QObject::connect(btnLevelGen, &QPushButton::clicked, this, &ViewToolbar::showLevelGen);
 
     auto btnEntities = new QPushButton(this);
     btnEntities->setText("Entities");
@@ -87,6 +93,16 @@ void S2Plugin::ViewToolbar::showState()
     }
 }
 
+void S2Plugin::ViewToolbar::showLevelGen()
+{
+    if (mState->loadState() && mLevelGen->loadLevelGen())
+    {
+        auto w = new ViewLevelGen(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
+}
+
 void S2Plugin::ViewToolbar::showEntity(size_t offset)
 {
     auto w = new ViewEntity(offset, this);
@@ -128,6 +144,13 @@ S2Plugin::State* S2Plugin::ViewToolbar::state()
     return mState;
 }
 
+S2Plugin::LevelGen* S2Plugin::ViewToolbar::levelGen()
+{
+    mState->loadState();
+    mLevelGen->loadLevelGen();
+    return mLevelGen;
+}
+
 S2Plugin::EntityDB* S2Plugin::ViewToolbar::entityDB()
 {
     mEntityDB->loadEntityDB();
@@ -160,6 +183,8 @@ void S2Plugin::ViewToolbar::reloadConfig()
     {
         mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
     }
+    mState->reset();
+    mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();
 }
@@ -168,6 +193,7 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
 {
     mMDIArea->closeAllSubWindows();
     mState->reset();
+    mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();
     mConfiguration->spelunky2()->reset();

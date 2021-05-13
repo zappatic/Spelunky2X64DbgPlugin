@@ -48,6 +48,20 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::ConstCharPointerPointer:
             offset += 8;
             break;
+        case MemoryFieldType::UndeterminedThemeInfoPointer:
+        {
+            size_t pointerOffset = Script::Memory::ReadQword(offset);
+            for (const auto& f : mConfiguration->typeFieldsOfPointer("ThemeInfoPointer"))
+            {
+                auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                if (pointerOffset != 0)
+                {
+                    pointerOffset = newOffset;
+                }
+            }
+            offset += 8;
+            break;
+        }
         default: // it's either a pointer or an inline struct
         {
             if (field.type == MemoryFieldType::PointerType)

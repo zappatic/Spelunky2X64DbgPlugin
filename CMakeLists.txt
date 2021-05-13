@@ -55,6 +55,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/EntityDB.h
 	include/Data/Entity.h
 	include/Data/State.h
+	include/Data/LevelGen.h
 	include/Data/ParticleDB.h
 	include/Data/IDNameList.h
 	include/Data/EntityList.h
@@ -65,6 +66,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewEntity.h
 	include/Views/ViewEntities.h
 	include/Views/ViewState.h
+	include/Views/ViewLevelGen.h
 	include/QtHelpers/HTMLDelegate.h
 	include/QtHelpers/TreeViewMemoryFields.h
 	include/QtHelpers/WidgetMemoryView.h
@@ -78,6 +80,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
+	src/Data/LevelGen.cpp
 	src/Data/ParticleDB.cpp
 	src/Data/IDNameList.cpp
 	src/Data/EntityList.cpp
@@ -88,6 +91,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewEntity.cpp
 	src/Views/ViewEntities.cpp
 	src/Views/ViewState.cpp
+	src/Views/ViewLevelGen.cpp
 	src/QtHelpers/HTMLDelegate.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
 	src/QtHelpers/WidgetMemoryView.cpp

@@ -259,9 +259,10 @@
     "PositionInfoPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
     "MysteryPointer1", // a bunch of floats, no __vftable ptr
-    "MysteryPointer3", // i6c in state
+    "ThemeInfoPointer",
     "RenderInfoPointer",
-    "ParticleInfoPointer"
+    "ParticleInfoPointer",
+    "DoorCoordsPointer"
   ],
   // a list of all the fields within the types
   "fields": {
@@ -752,11 +753,7 @@
       { "field": "world_next", "type": "UnsignedByte" },
       { "field": "level", "type": "UnsignedByte" },
       { "field": "level_next", "type": "UnsignedByte" },
-      {
-        "field": "i6c",
-        "type": "MysteryPointer3",
-        "comment": "theme related, points to an object that changes the theme if you change the pointer to a similar one around it"
-      },
+      { "field": "theme_info", "type": "UndeterminedThemeInfoPointer" },
       { "field": "theme", "type": "UnsignedByte" },
       { "field": "theme_next", "type": "UnsignedByte" },
       { "field": "win_state", "type": "UnsignedByte" },
@@ -877,6 +874,73 @@
       { "field": "-", "type": "Skip", "offset": 8 },
       { "field": "layer0", "type": "LayerPointer" },
       { "field": "layer1", "type": "LayerPointer" }
+    ],
+    "LevelGen": [
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "theme_dwelling", "type": "ThemeInfoPointer" },
+      { "field": "theme_jungle", "type": "ThemeInfoPointer" },
+      { "field": "theme_volcana", "type": "ThemeInfoPointer" },
+      { "field": "theme_olmec", "type": "ThemeInfoPointer" },
+      { "field": "theme_tidepool", "type": "ThemeInfoPointer" },
+      { "field": "theme_temple", "type": "ThemeInfoPointer" },
+      { "field": "theme_icecaves", "type": "ThemeInfoPointer" },
+      { "field": "theme_neobabylon", "type": "ThemeInfoPointer" },
+      { "field": "theme_sunkencity", "type": "ThemeInfoPointer" },
+      { "field": "theme_cosmicocean", "type": "ThemeInfoPointer" },
+      { "field": "theme_city_of_gold", "type": "ThemeInfoPointer" },
+      { "field": "theme_duat", "type": "ThemeInfoPointer" },
+      { "field": "theme_abzu", "type": "ThemeInfoPointer" },
+      { "field": "theme_tiamat", "type": "ThemeInfoPointer" },
+      { "field": "theme_eggplantworld", "type": "ThemeInfoPointer" },
+      { "field": "theme_hundun", "type": "ThemeInfoPointer" },
+      { "field": "theme_basecamp", "type": "ThemeInfoPointer" },
+      { "field": "theme_arena", "type": "ThemeInfoPointer" },
+      { "field": "unknown21", "type": "UnsignedQword" },
+      { "field": "unknown22", "type": "DataPointer" },
+      { "field": "unknown23", "type": "DataPointer" },
+      { "field": "rooms_frontlayer", "type": "DataPointer" },
+      { "field": "rooms_backlayer", "type": "DataPointer" },
+      { "field": "rooms_unknown26", "type": "DataPointer" },
+      { "field": "rooms_unknown27", "type": "DataPointer" },
+      { "field": "rooms_unknown28", "type": "DataPointer" },
+      { "field": "rooms_unknown29", "type": "DataPointer" },
+      { "field": "rooms_unknown30", "type": "DataPointer" },
+      { "field": "rooms_unknown31", "type": "DataPointer" },
+      { "field": "rooms_unknown32", "type": "DataPointer" },
+      { "field": "rooms_unknown33", "type": "DataPointer" },
+      { "field": "rooms_unknown34", "type": "DataPointer" },
+      { "field": "unknown35", "type": "UnsignedDword" },
+      { "field": "unknown36", "type": "UnsignedDword" },
+      { "field": "spawn_x", "type": "Float" },
+      { "field": "spawn_y", "type": "Float" },
+      { "field": "exit_doors_locations", "type": "DoorCoordsPointer" },
+      { "field": "unknown37", "type": "DataPointer" },
+      { "field": "unknown38", "type": "DataPointer" },
+      { "field": "unknown39", "type": "Word" },
+      { "field": "unknown40", "type": "Byte" },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "unknown43", "type": "UnsignedByte" },
+      { "field": "unknown44", "type": "UnsignedByte" },
+      { "field": "unknown45", "type": "UnsignedByte" },
+      { "field": "unknown46", "type": "UnsignedByte" },
+      { "field": "unknown47", "type": "UnsignedByte" },
+      { "field": "unknown48", "type": "UnsignedByte" },
+      { "field": "unknown49", "type": "UnsignedDword" },
+      { "field": "unknown50", "type": "UnsignedDword" },
+      { "field": "unknown51", "type": "UnsignedDword" }
+    ],
+    "DoorCoordsPointer": [
+      { "field": "door1_x", "type": "Float" },
+      { "field": "door1_y", "type": "Float" },
+      {
+        "field": "door2_x",
+        "type": "Float",
+        "comment": "door2 only valid when there are two in the level, like Volcana drill, Olmec, ..."
+      },
+      { "field": "door2_y", "type": "Float" }
     ],
     "Entity": [
       { "field": "__vftable", "type": "DataPointer" },
@@ -2765,17 +2829,14 @@
         "comment": "alternates between walking and pausing every time it reaches zero"
       }
     ],
-    "MysteryPointer3": [
+    "ThemeInfoPointer": [
       { "field": "__vftable", "type": "DataPointer" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown2", "type": "Bool" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" }
+      {
+        "field": "unknown1",
+        "type": "Bool",
+        "comment": "gets set to false for the jungle and temple theme in the cosmic ocean"
+      },
+      { "field": "unknown2", "type": "Bool" }
     ],
     "Mount": [
       { "field": "unknown1", "type": "DataPointer" },

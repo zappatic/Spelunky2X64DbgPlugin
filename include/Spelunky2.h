@@ -60,6 +60,7 @@ namespace S2Plugin
         Skip,
         Rect,
         State,
+        LevelGen,
         EntityDB,
         EntityPointer,
         EntityDBPointer,
@@ -73,8 +74,9 @@ namespace S2Plugin
         Color,
         ConstCharPointerPointer,
         Map,
-        EntitySubclass, // a subclass of an entity defined in json
-        PointerType,    // a pointer defined in json
+        EntitySubclass,               // a subclass of an entity defined in json
+        PointerType,                  // a pointer defined in json
+        UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
     };
 
     // clang-format off
@@ -99,6 +101,7 @@ namespace S2Plugin
         {MemoryFieldType::Flags8, "8-bit flags"},
         {MemoryFieldType::Rect, "Rectangle"},
         {MemoryFieldType::State, "State"},
+        {MemoryFieldType::LevelGen, "LevelGen"},
         {MemoryFieldType::EntityDB, "EntityDB"},
         {MemoryFieldType::SaturationAperture, "Saturation/Aperture"},
         {MemoryFieldType::EntityPointer, "Entity pointer"},
@@ -113,6 +116,7 @@ namespace S2Plugin
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::Map, "std::map<>"},
         {MemoryFieldType::PointerType, "Pointer"},
+        {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -135,6 +139,7 @@ namespace S2Plugin
         {"Flags8", MemoryFieldType::Flags8},
         {"Rect", MemoryFieldType::Rect},
         {"State", MemoryFieldType::State},
+        {"LevelGen", MemoryFieldType::LevelGen},
         {"EntityDB", MemoryFieldType::EntityDB},
         {"SaturationAperture", MemoryFieldType::SaturationAperture},
         {"EntityPointer", MemoryFieldType::EntityPointer},
@@ -148,6 +153,7 @@ namespace S2Plugin
         {"Color", MemoryFieldType::Color},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"Map", MemoryFieldType::Map},
+        {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
     };
     // clang-format on
 
