@@ -5,6 +5,7 @@
 #include <QCloseEvent>
 #include <QHeaderView>
 #include <QLabel>
+#include <QScrollArea>
 
 S2Plugin::ViewLevelGen::ViewLevelGen(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
@@ -24,6 +25,11 @@ void S2Plugin::ViewLevelGen::initializeUI()
     mRefreshLayout = new QHBoxLayout(this);
     mMainLayout->addLayout(mRefreshLayout);
 
+    mMainTabWidget = new QTabWidget(this);
+    mMainTabWidget->setDocumentMode(false);
+    mMainLayout->addWidget(mMainTabWidget);
+
+    // TOP REFRESH LAYOUT
     mRefreshButton = new QPushButton("Refresh", this);
     mRefreshLayout->addWidget(mRefreshButton);
     QObject::connect(mRefreshButton, &QPushButton::clicked, this, &ViewLevelGen::refreshLevelGen);
@@ -38,7 +44,7 @@ void S2Plugin::ViewLevelGen::initializeUI()
     mAutoRefreshIntervalLineEdit = new QLineEdit(this);
     mAutoRefreshIntervalLineEdit->setFixedWidth(50);
     mAutoRefreshIntervalLineEdit->setValidator(new QIntValidator(100, 5000, this));
-    mAutoRefreshIntervalLineEdit->setText("500");
+    mAutoRefreshIntervalLineEdit->setText("2000");
     mRefreshLayout->addWidget(mAutoRefreshIntervalLineEdit);
     QObject::connect(mAutoRefreshIntervalLineEdit, &QLineEdit::textChanged, this, &ViewLevelGen::autoRefreshIntervalChanged);
 
@@ -50,16 +56,56 @@ void S2Plugin::ViewLevelGen::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewLevelGen::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
-    {
-        mMainTreeView->addMemoryField(field, "LevelGen." + field.name);
-    }
-    mMainLayout->addWidget(mMainTreeView);
+    // TABS
+    mTabData = new QWidget();
+    mTabRooms = new QWidget();
+    mTabData->setLayout(new QVBoxLayout(mTabData));
+    mTabData->layout()->setMargin(0);
+    mTabData->setObjectName("datawidget");
+    mTabRooms->setLayout(new QVBoxLayout(mTabRooms));
+    mTabRooms->layout()->setMargin(0);
 
-    mMainTreeView->setColumnWidth(gsColValue, 250);
-    mMainTreeView->setVisible(false);
-    mMainTreeView->updateTableHeader();
+    mMainTabWidget->addTab(mTabData, "Data");
+    mMainTabWidget->addTab(mTabRooms, "Rooms");
+
+    // TAB DATA
+    {
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
+        {
+            mMainTreeView->addMemoryField(field, "LevelGen." + field.name);
+        }
+        mTabData->layout()->addWidget(mMainTreeView);
+
+        mMainTreeView->setColumnWidth(gsColValue, 250);
+        mMainTreeView->setVisible(false);
+        mMainTreeView->updateTableHeader();
+        QObject::connect(mMainTreeView, &TreeViewMemoryFields::levelGenRoomsPointerClicked, this, &ViewLevelGen::levelGenRoomsPointerClicked);
+    }
+
+    // TAB ROOMS
+    {
+        auto scroll = new QScrollArea(this);
+        scroll->setWidgetResizable(true);
+        auto containerWidget = new QWidget(this);
+        scroll->setWidget(containerWidget);
+        auto containerLayout = new QVBoxLayout(containerWidget);
+
+        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
+        {
+            if (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenHalfRoomsPointer)
+            {
+                auto roomWidget = new WidgetSpelunkyRooms(field.name, mToolbar, this);
+                if (field.type == MemoryFieldType::LevelGenHalfRoomsPointer)
+                {
+                    roomWidget->setHalfHeight();
+                }
+                mRoomsWidgets[field.name] = roomWidget;
+                containerLayout->addWidget(roomWidget);
+            }
+        }
+        dynamic_cast<QVBoxLayout*>(mTabRooms->layout())->addWidget(scroll);
+    }
 
     mMainLayout->setMargin(5);
     setLayout(mMainLayout);
@@ -77,6 +123,15 @@ void S2Plugin::ViewLevelGen::refreshLevelGen()
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
     {
         mMainTreeView->updateValueForField(field, "LevelGen." + field.name, mToolbar->levelGen()->offsets());
+        if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenHalfRoomsPointer))
+        {
+            auto pointerOffset = mToolbar->levelGen()->offsetForField(field.name);
+            if (pointerOffset != 0)
+            {
+                size_t offset = Script::Memory::ReadQword(pointerOffset);
+                mRoomsWidgets.at(field.name)->setOffset(offset);
+            }
+        }
     }
 }
 
@@ -124,4 +179,9 @@ void S2Plugin::ViewLevelGen::label()
     {
         DbgSetAutoLabelAt(offset, fieldName.c_str());
     }
+}
+
+void S2Plugin::ViewLevelGen::levelGenRoomsPointerClicked(const QString& fieldName)
+{
+    mMainTabWidget->setCurrentWidget(mTabRooms);
 }

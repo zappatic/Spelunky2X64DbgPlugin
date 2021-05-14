@@ -29,6 +29,7 @@ namespace S2Plugin
 
       signals:
         void memoryFieldValueUpdated(const QString& fieldName);
+        void levelGenRoomsPointerClicked(const QString& fieldName);
 
       private slots:
         void cellClicked(const QModelIndex& index);

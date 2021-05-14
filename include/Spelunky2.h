@@ -77,6 +77,8 @@ namespace S2Plugin
         EntitySubclass,               // a subclass of an entity defined in json
         PointerType,                  // a pointer defined in json
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
+        LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
+        LevelGenHalfRoomsPointer,     // used to make the level gen rooms title clickable
     };
 
     // clang-format off
@@ -117,6 +119,8 @@ namespace S2Plugin
         {MemoryFieldType::Map, "std::map<>"},
         {MemoryFieldType::PointerType, "Pointer"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
+        {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer"},
+        {MemoryFieldType::LevelGenHalfRoomsPointer, "LevelGenHalfRoomsPointer"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -154,6 +158,8 @@ namespace S2Plugin
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"Map", MemoryFieldType::Map},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
+        {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
+        {"LevelGenHalfRoomsPointer", MemoryFieldType::LevelGenHalfRoomsPointer},
     };
     // clang-format on
 

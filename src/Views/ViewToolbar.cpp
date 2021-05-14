@@ -26,6 +26,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, S
     mMainLayout->addWidget(btnEntityDB);
     QObject::connect(btnEntityDB, &QPushButton::clicked, this, &ViewToolbar::showEntityDB);
 
+    auto btnParticleDB = new QPushButton(this);
+    btnParticleDB->setText("Particle DB");
+    mMainLayout->addWidget(btnParticleDB);
+    QObject::connect(btnParticleDB, &QPushButton::clicked, this, &ViewToolbar::showParticleDB);
+
     auto btnState = new QPushButton(this);
     btnState->setText("State");
     mMainLayout->addWidget(btnState);
@@ -40,11 +45,6 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, S
     btnEntities->setText("Entities");
     mMainLayout->addWidget(btnEntities);
     QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
-
-    auto btnParticleDB = new QPushButton(this);
-    btnParticleDB->setText("Particle DB");
-    mMainLayout->addWidget(btnParticleDB);
-    QObject::connect(btnParticleDB, &QPushButton::clicked, this, &ViewToolbar::showParticleDB);
 
     mMainLayout->addStretch();
 

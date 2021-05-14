@@ -40,9 +40,11 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             break;
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
-        case MemoryFieldType::EntityDBPointer:   // not shown inline in the treeview, so just skip sizeof(size_t)
-        case MemoryFieldType::EntityPointer:     // not shown inline in the treeview, so just skip sizeof(size_t)
-        case MemoryFieldType::ParticleDBPointer: // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::EntityDBPointer:          // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::EntityPointer:            // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::ParticleDBPointer:        // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::LevelGenRoomsPointer:     // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::LevelGenHalfRoomsPointer: // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:

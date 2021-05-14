@@ -1,0 +1,39 @@
+#pragma once
+
+#include "QtHelpers/WidgetMemoryView.h"
+#include "Views/ViewToolbar.h"
+#include <QWidget>
+#include <unordered_map>
+
+
+namespace S2Plugin
+{
+    class WidgetSpelunkyRooms : public QWidget
+    {
+        Q_OBJECT
+
+      public:
+        WidgetSpelunkyRooms(const std::string& fieldName, ViewToolbar* toolbar, QWidget* parent = nullptr);
+
+        QSize minimumSizeHint() const override;
+        QSize sizeHint() const override;
+
+        void setOffset(size_t offset);
+        void setHalfHeight();
+
+      protected:
+        void paintEvent(QPaintEvent* event) override;
+        void mouseMoveEvent(QMouseEvent* event) override;
+
+      private:
+        QString mFieldName;
+        ViewToolbar* mToolbar;
+        bool mIsHalfHeight = false;
+        size_t mOffset;
+        QFont mFont;
+        QSize mTextAdvance;
+        uint8_t mSpaceAdvance;
+        std::vector<ToolTipRect> mToolTipRects;
+    };
+
+} // namespace S2Plugin

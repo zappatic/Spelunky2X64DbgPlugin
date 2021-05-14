@@ -71,6 +71,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/TreeViewMemoryFields.h
 	include/QtHelpers/WidgetMemoryView.h
 	include/QtHelpers/WidgetSpelunkyLevel.h
+	include/QtHelpers/WidgetSpelunkyRooms.h
 	include/QtHelpers/DialogEditSimpleValue.h
 	include/QtHelpers/TableWidgetItemNumeric.h
 	include/QtHelpers/TreeWidgetItemNumeric.h
@@ -96,6 +97,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/TreeViewMemoryFields.cpp
 	src/QtHelpers/WidgetMemoryView.cpp
 	src/QtHelpers/WidgetSpelunkyLevel.cpp
+	src/QtHelpers/WidgetSpelunkyRooms.cpp
 	src/QtHelpers/DialogEditSimpleValue.cpp
 	src/QtHelpers/TableWidgetItemNumeric.cpp
 	src/QtHelpers/TreeWidgetItemNumeric.cpp
@@ -134,5 +136,10 @@ add_custom_command(	TARGET deploy-auxfiles
 add_custom_command(	TARGET deploy-auxfiles
 					PRE_BUILD
 					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2ParticleEmitters.txt" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2RoomCodes.json to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2RoomCodes.json" ${X64DBG_PLUGINS_ROOT})
 
 add_dependencies(${PROJECT_NAME} deploy-auxfiles)

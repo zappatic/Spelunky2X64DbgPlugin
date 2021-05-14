@@ -1,8 +1,18 @@
 #include "Data/LevelGen.h"
 #include "Data/State.h"
 #include "pluginmain.h"
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <fstream>
+#include <sstream>
 
-S2Plugin::LevelGen::LevelGen(Configuration* config, State* state) : MemoryMappedData(config), mState(state) {}
+static const QColor gsDefaultColor = QColor(Qt::lightGray);
+
+S2Plugin::LevelGen::LevelGen(Configuration* config, State* state) : MemoryMappedData(config), mState(state)
+{
+    processJSON();
+}
 
 bool S2Plugin::LevelGen::loadLevelGen()
 {
@@ -54,6 +64,7 @@ void S2Plugin::LevelGen::reset()
 {
     mLevelGenPtr = 0;
     mMemoryOffsets.clear();
+    processJSON();
 }
 
 std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset)
@@ -131,4 +142,84 @@ std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset)
         return "ARENA";
     }
     return "UNKNOWN THEME";
+}
+
+void S2Plugin::LevelGen::processJSON()
+{
+    mRoomCodes.clear();
+
+    std::unordered_map<std::string, QColor> colors;
+
+    auto getColor = [&colors](const std::string& colorName) -> const QColor& {
+        if (colors.count(colorName) > 0)
+        {
+            return colors.at(colorName);
+        }
+        return gsDefaultColor;
+    };
+
+    char buffer[MAX_PATH] = {0};
+    GetModuleFileNameA(nullptr, buffer, MAX_PATH);
+    auto pathQStr = QFileInfo(QString(buffer)).dir().filePath(QString::fromStdString("plugins/Spelunky2RoomCodes.json"));
+    if (!QFile(pathQStr).exists())
+    {
+        mConfiguration->spelunky2()->displayError("Spelunky2RoomCodes.json not found");
+        return;
+    }
+
+    try
+    {
+        std::ifstream fp(pathQStr.toStdString());
+        std::string jsonString((std::istreambuf_iterator<char>(fp)), std::istreambuf_iterator<char>());
+        auto j = ordered_json::parse(jsonString, nullptr, true, true);
+
+        if (j.contains("colors"))
+        {
+            for (const auto& [colorName, colorDetails] : j["colors"].items())
+            {
+                QColor c;
+                c.setRed(colorDetails["r"].get<uint8_t>());
+                c.setGreen(colorDetails["g"].get<uint8_t>());
+                c.setBlue(colorDetails["b"].get<uint8_t>());
+                c.setAlpha(colorDetails["a"].get<uint8_t>());
+                colors[colorName] = c;
+            }
+        }
+        if (j.contains("roomcodes"))
+        {
+            for (const auto& [roomCodeStr, roomDetails] : j["roomcodes"].items())
+            {
+                RoomCode rc;
+                rc.id = std::stoi(roomCodeStr, 0, 16);
+                rc.name = roomDetails.contains("name") ? roomDetails["name"].get<std::string>() : "Unnamed room code";
+                rc.color = roomDetails.contains("color") ? getColor(roomDetails["color"].get<std::string>()) : gsDefaultColor;
+                mRoomCodes[rc.id] = rc;
+            }
+        }
+    }
+    catch (const ordered_json::exception& e)
+    {
+        mConfiguration->spelunky2()->displayError(("Exception while parsing Spelunky2RoomCodes.json: " + std::string(e.what())).c_str());
+    }
+    catch (const std::exception& e)
+    {
+        mConfiguration->spelunky2()->displayError(("Exception while parsing Spelunky2RoomCodes.json: " + std::string(e.what())).c_str());
+    }
+    catch (...)
+    {
+        mConfiguration->spelunky2()->displayError("Unknown exception while parsing Spelunky2RoomCodes.json");
+    }
+}
+
+S2Plugin::RoomCode S2Plugin::LevelGen::roomCodeForID(uint16_t code) const
+{
+    if (mRoomCodes.count(code) > 0)
+    {
+        return mRoomCodes.at(code);
+    }
+    RoomCode rc;
+    rc.id = code;
+    rc.name = "Unknown room code";
+    rc.color = gsDefaultColor;
+    return rc;
 }

@@ -1,0 +1,131 @@
+#include "QtHelpers/WidgetSpelunkyRooms.h"
+#include "pluginmain.h"
+#include <QEvent>
+#include <QFontMetrics>
+#include <QHelpEvent>
+#include <QPainter>
+#include <QToolTip>
+#include <array>
+
+static const uint32_t gsMarginHor = 10;
+static const uint32_t gsMarginVer = 5;
+static constexpr size_t gsBufferSize = 8 * 16 * 2;    // 8x16 rooms * 2 bytes per room
+static constexpr size_t gsHalfBufferSize = 8 * 8 * 2; // 8x8 rooms * 2 bytes per room
+
+S2Plugin::WidgetSpelunkyRooms::WidgetSpelunkyRooms(const std::string& fieldName, ViewToolbar* toolbar, QWidget* parent)
+    : QWidget(parent), mFieldName(QString::fromStdString(fieldName)), mToolbar(toolbar)
+{
+    mFont = QFont("Courier", 11);
+    mTextAdvance = QFontMetrics(mFont).size(Qt::TextSingleLine, "00");
+    mSpaceAdvance = QFontMetrics(mFont).size(Qt::TextSingleLine, " ").width();
+    setMouseTracking(true);
+    setSizePolicy(QSizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed));
+}
+
+void S2Plugin::WidgetSpelunkyRooms::paintEvent(QPaintEvent* event)
+{
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
+    painter.setFont(mFont);
+
+    auto rect = QRectF(QPointF(0, 0), sizeHint());
+    rect.adjust(0, 0, -0.5, -0.5);
+    painter.setBrush(Qt::white);
+    painter.setPen(QPen(Qt::darkGray, 1));
+    painter.drawRect(rect);
+
+    mToolTipRects.clear();
+    painter.setBrush(Qt::black);
+    uint32_t x = gsMarginHor;
+    uint32_t y = gsMarginVer + mTextAdvance.height();
+
+    painter.drawText(x, y, mFieldName);
+    y += mTextAdvance.height() + gsMarginVer;
+    if (mOffset != 0)
+    {
+        auto bufferSize = mIsHalfHeight ? gsHalfBufferSize : gsBufferSize;
+        auto buffer = std::array<uint8_t, gsBufferSize>();
+        Script::Memory::Read(mOffset, buffer.data(), bufferSize, nullptr);
+
+        uint32_t index = 0;
+        for (auto counter = 0; counter < bufferSize; ++counter)
+        {
+            // auto both0 = buffer.at(counter) == 0 && buffer.at(counter + 1) == 0;
+            auto roomCode = mToolbar->levelGen()->roomCodeForID(buffer.at(counter));
+
+            if (/*!both0 &&*/ counter % 2 == 0)
+            {
+                painter.setPen(Qt::transparent);
+                auto rect = QRect(x, y - mTextAdvance.height() + 5, 2 * mTextAdvance.width() + mSpaceAdvance, mTextAdvance.height() - 2);
+                painter.setBrush(roomCode.color);
+                painter.drawRoundedRect(rect, 4.0, 4.0);
+                mToolTipRects.emplace_back(ToolTipRect{rect, roomCode.name});
+            }
+
+            if (roomCode.id == 0 || roomCode.id == 9)
+            {
+                painter.setPen(QPen(Qt::lightGray, 1));
+            }
+            else
+            {
+                painter.setPen(QPen(Qt::black, 1));
+            }
+
+            auto str = QString("%1").arg(buffer.at(counter), 2, 16, QChar('0'));
+            painter.drawText(x, y, str);
+            x += mTextAdvance.width() + mSpaceAdvance;
+
+            counter++;
+
+            str = QString("%1").arg(buffer.at(counter), 2, 16, QChar('0'));
+            painter.drawText(x, y, str);
+            x += mTextAdvance.width() + mSpaceAdvance;
+
+            if ((counter + 1) % 16 == 0)
+            {
+                y += mTextAdvance.height();
+                x = gsMarginHor;
+            }
+        }
+    }
+}
+
+QSize S2Plugin::WidgetSpelunkyRooms::sizeHint() const
+{
+    return minimumSizeHint();
+}
+
+QSize S2Plugin::WidgetSpelunkyRooms::minimumSizeHint() const
+{
+    auto bufferSize = mIsHalfHeight ? gsHalfBufferSize : gsBufferSize;
+
+    auto totalWidth = ((mTextAdvance.width() + mSpaceAdvance) * 16) + (gsMarginHor * 2) - mSpaceAdvance;
+    auto totalHeight =
+        gsMarginVer + mTextAdvance.height() + (mTextAdvance.height() * static_cast<uint32_t>(std::ceil(static_cast<double>(bufferSize) / 16.))) + (gsMarginVer * 2) + mTextAdvance.height();
+    return QSize(totalWidth, totalHeight);
+}
+
+void S2Plugin::WidgetSpelunkyRooms::setOffset(size_t offset)
+{
+    mOffset = offset;
+    update();
+    updateGeometry();
+    adjustSize();
+}
+
+void S2Plugin::WidgetSpelunkyRooms::mouseMoveEvent(QMouseEvent* event)
+{
+    for (const auto& ttr : mToolTipRects)
+    {
+        auto pos = event->pos();
+        if (ttr.rect.contains(pos))
+        {
+            QToolTip::showText(mapToGlobal(pos), QString::fromStdString(ttr.tooltip));
+        }
+    }
+}
+
+void S2Plugin::WidgetSpelunkyRooms::setHalfHeight()
+{
+    mIsHalfHeight = true;
+}
