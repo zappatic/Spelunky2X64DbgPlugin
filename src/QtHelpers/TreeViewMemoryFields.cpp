@@ -105,6 +105,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::LevelGenRoomsPointer:
         case MemoryFieldType::LevelGenHalfRoomsPointer:
+        case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::Vector:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
@@ -732,6 +733,26 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::LevelGenHalfRoomsPointer:
         {
             itemValue->setData("<font color='blue'><u>Show rooms</u></font>", Qt::DisplayRole);
+            break;
+        }
+        case MemoryFieldType::ThemeInfoName:
+        {
+            if (memoryOffset == 0)
+            {
+                itemValue->setData("n/a", Qt::DisplayRole);
+            }
+            else
+            {
+                size_t themeInfoPointer = Script::Memory::ReadQword(memoryOffset);
+                if (themeInfoPointer == 0)
+                {
+                    itemValue->setData("n/a", Qt::DisplayRole);
+                }
+                else
+                {
+                    itemValue->setData(QString::fromStdString(mToolbar->levelGen()->themeNameOfOffset(themeInfoPointer)), Qt::DisplayRole);
+                }
+            }
             break;
         }
         case MemoryFieldType::Skip:

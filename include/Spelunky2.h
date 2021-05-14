@@ -79,6 +79,7 @@ namespace S2Plugin
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
         LevelGenHalfRoomsPointer,     // used to make the level gen rooms title clickable
+        ThemeInfoName,
     };
 
     // clang-format off
@@ -121,6 +122,7 @@ namespace S2Plugin
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer"},
         {MemoryFieldType::LevelGenHalfRoomsPointer, "LevelGenHalfRoomsPointer"},
+        {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -160,6 +162,7 @@ namespace S2Plugin
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
         {"LevelGenHalfRoomsPointer", MemoryFieldType::LevelGenHalfRoomsPointer},
+        {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
     };
     // clang-format on
 

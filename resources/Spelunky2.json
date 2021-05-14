@@ -2836,7 +2836,17 @@
         "type": "Bool",
         "comment": "gets set to false for the jungle and temple theme in the cosmic ocean"
       },
-      { "field": "unknown2", "type": "Bool" }
+      { "field": "unknown2", "type": "Bool" },
+      { "field": "padding1?", "type": "UnsignedByte" },
+      { "field": "padding2?", "type": "UnsignedByte" },
+      { "field": "padding3?", "type": "UnsignedDword" },
+      {
+        "field": "sub_theme",
+        "type": "ThemeInfoName",
+        "comment": "for cosmic ocean"
+      },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "Mount": [
       { "field": "unknown1", "type": "DataPointer" },
