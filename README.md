@@ -10,6 +10,7 @@
   - Spelunky2.json (the definition of the fields and classes)
   - Spelunky2Entities.txt (the list of all the entities)
   - Spelunky2ParticleEmitters.txt (the list of all the particle emitters)
+  - Spelunky2RoomCodes.json (the list of the room codes for level generation)
 - Launch x64dbg.exe again, and you should see a tab at the top right of the window called "Spelunky 2"
 
 By default, x64dbg enables a couple of standard/system breakpoints, which means that Spelunky will pause automatically when these breakpoints are hit. To disable these, open the Options > Preferences menu and uncheck "System Breakpoint, "Entry Breakpoint" and "TLS Callbacks".
@@ -24,7 +25,7 @@ If you do hit a breakpoint, the bottom left corner of the x64dbg window will be 
 
 ## Basic usage
 
-The four buttons on the top-left side give you access to the internals of Spelunky 2.
+The buttons on the top-left side give you access to the internals of Spelunky 2.
 
 The data tables containing all the fields will have a clickable "Value" column, to either change its value, or jump to a represented entity, type, ...
 
@@ -54,6 +55,14 @@ Similar to the Entity DB, but for all the particle emitters in the game.
 ## State
 
 ![State](/resources/docs_state.png)
+
+## Level generation
+
+![LevelGen](/resources/docs_levelgen.png)
+
+The 'Rooms' tab shows how the different rooms are laid out in the level during level generation. Hover over the room code to see a description.
+
+![LevelGen](/resources/docs_levelgen_rooms.png)
 
 ## Entities
 
