@@ -78,7 +78,7 @@ namespace S2Plugin
         PointerType,                  // a pointer defined in json
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
-        LevelGenHalfRoomsPointer,     // used to make the level gen rooms title clickable
+        LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
         ThemeInfoName,
     };
 
@@ -121,7 +121,7 @@ namespace S2Plugin
         {MemoryFieldType::PointerType, "Pointer"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer"},
-        {MemoryFieldType::LevelGenHalfRoomsPointer, "LevelGenHalfRoomsPointer"},
+        {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer"},
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
   };
 
@@ -161,7 +161,7 @@ namespace S2Plugin
         {"Map", MemoryFieldType::Map},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
-        {"LevelGenHalfRoomsPointer", MemoryFieldType::LevelGenHalfRoomsPointer},
+        {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
     };
     // clang-format on

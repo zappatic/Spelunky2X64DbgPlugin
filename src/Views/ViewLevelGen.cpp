@@ -93,12 +93,12 @@ void S2Plugin::ViewLevelGen::initializeUI()
 
         for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
         {
-            if (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenHalfRoomsPointer)
+            if (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer)
             {
                 auto roomWidget = new WidgetSpelunkyRooms(field.name, mToolbar, this);
-                if (field.type == MemoryFieldType::LevelGenHalfRoomsPointer)
+                if (field.type == MemoryFieldType::LevelGenRoomsMetaPointer)
                 {
-                    roomWidget->setHalfHeight();
+                    roomWidget->setIsMetaData();
                 }
                 mRoomsWidgets[field.name] = roomWidget;
                 containerLayout->addWidget(roomWidget);
@@ -123,7 +123,7 @@ void S2Plugin::ViewLevelGen::refreshLevelGen()
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
     {
         mMainTreeView->updateValueForField(field, "LevelGen." + field.name, mToolbar->levelGen()->offsets());
-        if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenHalfRoomsPointer))
+        if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer))
         {
             auto pointerOffset = mToolbar->levelGen()->offsetForField(field.name);
             if (pointerOffset != 0)

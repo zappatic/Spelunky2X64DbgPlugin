@@ -5,7 +5,6 @@
 #include <QWidget>
 #include <unordered_map>
 
-
 namespace S2Plugin
 {
     class WidgetSpelunkyRooms : public QWidget
@@ -19,7 +18,7 @@ namespace S2Plugin
         QSize sizeHint() const override;
 
         void setOffset(size_t offset);
-        void setHalfHeight();
+        void setIsMetaData();
 
       protected:
         void paintEvent(QPaintEvent* event) override;
@@ -28,7 +27,7 @@ namespace S2Plugin
       private:
         QString mFieldName;
         ViewToolbar* mToolbar;
-        bool mIsHalfHeight = false;
+        bool mIsMetaData = false;
         size_t mOffset;
         QFont mFont;
         QSize mTextAdvance;

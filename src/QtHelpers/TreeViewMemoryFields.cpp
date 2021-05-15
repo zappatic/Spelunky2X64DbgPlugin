@@ -104,7 +104,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::LevelGenRoomsPointer:
-        case MemoryFieldType::LevelGenHalfRoomsPointer:
+        case MemoryFieldType::LevelGenRoomsMetaPointer:
         case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::Vector:
         {
@@ -730,7 +730,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             break;
         }
         case MemoryFieldType::LevelGenRoomsPointer:
-        case MemoryFieldType::LevelGenHalfRoomsPointer:
+        case MemoryFieldType::LevelGenRoomsMetaPointer:
         {
             itemValue->setData("<font color='blue'><u>Show rooms</u></font>", Qt::DisplayRole);
             break;
@@ -929,7 +929,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     break;
                 }
                 case MemoryFieldType::LevelGenRoomsPointer:
-                case MemoryFieldType::LevelGenHalfRoomsPointer:
+                case MemoryFieldType::LevelGenRoomsMetaPointer:
                 {
                     emit levelGenRoomsPointerClicked(clickedItem->data(gsRoleFieldName).toString());
                     break;
