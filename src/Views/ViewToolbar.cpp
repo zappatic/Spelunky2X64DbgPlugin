@@ -109,14 +109,16 @@ void S2Plugin::ViewToolbar::showLevelGen()
     }
 }
 
-void S2Plugin::ViewToolbar::showVirtualTableLookup()
+S2Plugin::ViewVirtualTable* S2Plugin::ViewToolbar::showVirtualTableLookup()
 {
     if (mVirtualTableLookup->loadTable())
     {
         auto w = new ViewVirtualTable(this);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
+        return w;
     }
+    return nullptr;
 }
 
 void S2Plugin::ViewToolbar::showEntity(size_t offset)
@@ -218,5 +220,6 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();
+    mVirtualTableLookup->reset();
     mConfiguration->spelunky2()->reset();
 }

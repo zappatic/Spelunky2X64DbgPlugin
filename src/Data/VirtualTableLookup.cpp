@@ -73,6 +73,19 @@ const S2Plugin::VirtualTableEntry& S2Plugin::VirtualTableLookup::entryForOffset(
     return mOffsetToTableEntries.at(tableOffset);
 }
 
+std::unordered_set<uint32_t> S2Plugin::VirtualTableLookup::tableOffsetForFunctionAddress(size_t functionAddress)
+{
+    std::unordered_set<uint32_t> offsets;
+    for (const auto& [tableOffset, tableEntry] : mOffsetToTableEntries)
+    {
+        if (tableEntry.value == functionAddress)
+        {
+            offsets.insert(tableOffset);
+        }
+    }
+    return offsets;
+}
+
 size_t S2Plugin::VirtualTableLookup::count() const noexcept
 {
     return gsAmountOfPointers;
@@ -87,4 +100,21 @@ void S2Plugin::VirtualTableLookup::setSymbolNameForOffsetAddress(size_t offsetAd
 {
     auto tableOffset = (offsetAddress - mTableStartAddress) / sizeof(size_t);
     mOffsetToTableEntries.at(tableOffset).addSymbol(name);
+}
+
+S2Plugin::VirtualTableEntry S2Plugin::VirtualTableLookup::findPrecedingEntryWithSymbols(size_t tableOffset)
+{
+    size_t counter = tableOffset;
+    while (counter > 0)
+    {
+        auto entry = mOffsetToTableEntries.at(counter);
+        if (!entry.isAutoSymbol && entry.isValidAddress && entry.symbols.size() > 0)
+        {
+            return entry;
+        }
+        counter--;
+    }
+
+    VirtualTableEntry dummy;
+    return dummy;
 }

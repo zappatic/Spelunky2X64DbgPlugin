@@ -14,6 +14,7 @@ namespace S2Plugin
 {
     class ViewEntityDB;
     class ViewParticleDB;
+    class ViewVirtualTable;
 
     class ViewToolbar : public QDockWidget
     {
@@ -37,7 +38,7 @@ namespace S2Plugin
         void showState();
         void showLevelGen();
         void showEntities();
-        void showVirtualTableLookup();
+        ViewVirtualTable* showVirtualTableLookup();
         void clearLabels();
         void reloadConfig();
 

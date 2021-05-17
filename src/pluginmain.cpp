@@ -45,3 +45,13 @@ PLUG_EXPORT void CBEXITPROCESS(CBTYPE cbType, PLUG_CB_EXITPROCESS* info)
 {
     GuiExecuteOnGuiThread(QtPlugin::Detach);
 }
+
+PLUG_EXPORT void CBMENUPREPARE(CBTYPE, PLUG_CB_MENUPREPARE* info)
+{
+    QtPlugin::MenuPrepare(info->hMenu);
+}
+
+PLUG_EXPORT void CBMENUENTRY(CBTYPE, PLUG_CB_MENUENTRY* info)
+{
+    QtPlugin::MenuEntry(info->hEntry);
+}

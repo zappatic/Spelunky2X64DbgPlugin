@@ -23,6 +23,8 @@ namespace S2Plugin
         bool loadTable();
 
         const VirtualTableEntry& entryForOffset(size_t tableOffset);
+        std::unordered_set<uint32_t> tableOffsetForFunctionAddress(size_t functionAddress);
+        VirtualTableEntry findPrecedingEntryWithSymbols(size_t tableOffset);
         size_t tableAddressForEntry(const VirtualTableEntry& entry);
 
         void setSymbolNameForOffsetAddress(size_t offsetAddress, const std::string& name);
