@@ -5,12 +5,13 @@
 #include "Views/ViewLevelGen.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewState.h"
+#include "Views/ViewVirtualTable.h"
 #include "pluginmain.h"
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mLevelGen(levelGen), mConfiguration(config), mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mLevelGen(levelGen), mVirtualTableLookup(vtl), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -45,6 +46,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, S
     btnEntities->setText("Entities");
     mMainLayout->addWidget(btnEntities);
     QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
+
+    auto btnVirtualTable = new QPushButton(this);
+    btnVirtualTable->setText("Virtual Table");
+    mMainLayout->addWidget(btnVirtualTable);
+    QObject::connect(btnVirtualTable, &QPushButton::clicked, this, &ViewToolbar::showVirtualTableLookup);
 
     mMainLayout->addStretch();
 
@@ -98,6 +104,16 @@ void S2Plugin::ViewToolbar::showLevelGen()
     if (mState->loadState() && mLevelGen->loadLevelGen())
     {
         auto w = new ViewLevelGen(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
+}
+
+void S2Plugin::ViewToolbar::showVirtualTableLookup()
+{
+    if (mVirtualTableLookup->loadTable())
+    {
+        auto w = new ViewVirtualTable(this);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
     }
@@ -161,6 +177,12 @@ S2Plugin::ParticleDB* S2Plugin::ViewToolbar::particleDB()
 {
     mParticleDB->loadParticleDB();
     return mParticleDB;
+}
+
+S2Plugin::VirtualTableLookup* S2Plugin::ViewToolbar::virtualTableLookup()
+{
+    mVirtualTableLookup->loadTable();
+    return mVirtualTableLookup;
 }
 
 S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
