@@ -119,6 +119,7 @@ void S2Plugin::ViewVirtualTable::initializeUI()
                                                                      << "Relative offset");
         mLookupResultsTable->setColumnWidth(0, 75);
         mLookupResultsTable->setColumnWidth(1, 325);
+        mLookupResultsTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addWidget(mLookupResultsTable);
     }
@@ -252,22 +253,27 @@ void S2Plugin::ViewVirtualTable::lookupAddress(size_t address)
                 }
             }
         }
-    }
 
-    if (items.size() == 0)
-    {
-        mLookupResultsTable->setRowCount(1);
-        mLookupResultsTable->setItem(0, 1, new QTableWidgetItem("No preceding functions found with a name"));
-    }
-    else
-    {
-        mLookupResultsTable->setRowCount(items.size());
-        auto counter = 0;
-        for (const auto& item : items)
+        if (items.size() == 0)
         {
-            mLookupResultsTable->setItem(counter, 0, item.at(0));
-            mLookupResultsTable->setItem(counter, 1, item.at(1));
-            mLookupResultsTable->setItem(counter++, 2, item.at(2));
+            mLookupResultsTable->setRowCount(tableOffsets.size());
+            auto counter = 0;
+            for (const auto& tableOffset : tableOffsets)
+            {
+                mLookupResultsTable->setItem(counter, 1, new QTableWidgetItem("No preceding functions found with a name"));
+                mLookupResultsTable->setItem(counter++, 2, new TableWidgetItemNumeric(QString::fromStdString("+" + std::to_string(tableOffset))));
+            }
+        }
+        else
+        {
+            mLookupResultsTable->setRowCount(items.size());
+            auto counter = 0;
+            for (const auto& item : items)
+            {
+                mLookupResultsTable->setItem(counter, 0, item.at(0));
+                mLookupResultsTable->setItem(counter, 1, item.at(1));
+                mLookupResultsTable->setItem(counter++, 2, item.at(2));
+            }
         }
     }
     mLookupResultsTable->setSortingEnabled(true);

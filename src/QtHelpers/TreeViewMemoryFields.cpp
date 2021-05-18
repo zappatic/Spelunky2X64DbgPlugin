@@ -101,6 +101,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::EntityUID:
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::LevelGenPointer:
         case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::LevelGenRoomsPointer:
@@ -672,6 +673,18 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
             break;
         }
+        case MemoryFieldType::LevelGenPointer:
+        {
+            size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
+            auto id = Script::Memory::ReadDword(value + 20);
+            itemValue->setData("<font color='blue'><u>Show level gen</u></font>", Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+            break;
+        }
         case MemoryFieldType::ParticleDBPointer:
         {
             size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
@@ -871,6 +884,15 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         {
                             view->showIndex(id);
                         }
+                    }
+                    break;
+                }
+                case MemoryFieldType::LevelGenPointer:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    if (offset != 0)
+                    {
+                        mToolbar->showLevelGen();
                     }
                     break;
                 }

@@ -80,6 +80,7 @@ namespace S2Plugin
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
         LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
         ThemeInfoName,
+        LevelGenPointer,
     };
 
     // clang-format off
@@ -123,6 +124,7 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer"},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer"},
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
+        {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
   };
 
     // the type strings as they occur in Spelunky2.json
@@ -163,6 +165,7 @@ namespace S2Plugin
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
         {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
+        {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
     };
     // clang-format on
 

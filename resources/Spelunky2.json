@@ -871,12 +871,12 @@
       },
       { "field": "-", "type": "Skip", "offset": 2204 }, // 0x12b0 - 0xa14
       { "field": "items", "type": "StateItemsPointer" },
-      { "field": "-", "type": "Skip", "offset": 8 },
+      { "field": "level_gen", "type": "LevelGenPointer" },
       { "field": "layer0", "type": "LayerPointer" },
       { "field": "layer1", "type": "LayerPointer" }
     ],
     "LevelGen": [
-      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "level_gen_system", "type": "DataPointer" },
       { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "theme_dwelling", "type": "ThemeInfoPointer" },
       { "field": "theme_jungle", "type": "ThemeInfoPointer" },
