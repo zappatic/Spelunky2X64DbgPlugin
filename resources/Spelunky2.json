@@ -678,9 +678,48 @@
       },
       { "field": "ingame", "type": "Bool" },
       { "field": "playing", "type": "Bool" },
-      { "field": "pause", "type": "Bool" },
-      { "field": "b33", "type": "Bool" },
-      { "field": "i34a", "type": "Bool" },
+      {
+        "field": "pause",
+        "type": "Flags8",
+        "flags": {
+          "1": "Pause menu shown",
+          "2": "Level transition pause",
+          "3": "Cut-scene being shown",
+          "4": "",
+          "5": "",
+          "6": "Ankh pause",
+          "7": "",
+          "8": ""
+        }
+      },
+      {
+        "field": "pause_related1",
+        "type": "Flags8",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "Ankh activates",
+          "7": "",
+          "8": ""
+        }
+      },
+      {
+        "field": "pause_related2",
+        "type": "Flags8",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "Ankh breaking",
+          "7": "",
+          "8": ""
+        }
+      },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
@@ -738,7 +777,7 @@
       { "field": "kali_status", "type": "Byte" },
       { "field": "kali_altars_destroyed", "type": "Byte" },
       { "field": "b4f", "type": "UnsignedByte" },
-      { "field": "i50a", "type": "UnsignedByte" },
+      { "field": "i50a", "type": "Byte" },
       { "field": "padding7", "type": "UnsignedByte" },
       { "field": "padding8", "type": "UnsignedByte" },
       { "field": "padding9", "type": "UnsignedByte" },
@@ -810,21 +849,9 @@
           "32": ""
         }
       },
-      {
-        "field": "i9f0",
-        "type": "Dword",
-        "comment": "triggers on fall damage"
-      },
-      {
-        "field": "i9f4a",
-        "type": "UnsignedByte",
-        "comment": "triggers on fall damage"
-      },
-      {
-        "field": "i9f4b",
-        "type": "UnsignedByte",
-        "comment": "triggers on fall damage"
-      },
+      { "field": "first_damage_cause", "type": "EntityDBID" },
+      { "field": "first_damage_world", "type": "Byte" },
+      { "field": "first_damage_level", "type": "Byte" },
       { "field": "i9f4c", "type": "UnsignedByte" },
       { "field": "i9f4d", "type": "UnsignedByte" },
       { "field": "time_last_level", "type": "UnsignedDword" },

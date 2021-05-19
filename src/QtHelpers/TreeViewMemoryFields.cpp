@@ -21,7 +21,8 @@ S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidg
 
 QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
-    auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem* {
+    auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem*
+    {
         auto itemFieldName = new QStandardItem();
         itemFieldName->setData(QString::fromStdString(field.name), Qt::DisplayRole);
         itemFieldName->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
@@ -487,7 +488,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::Flags16:
         {
-            uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
+            uint16_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadWord(memoryOffset));
             std::stringstream ss;
             auto counter = 0;
             for (auto x = 15; x >= 0; --x)
@@ -529,7 +530,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::Flags8:
         {
-            uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
+            uint8_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
             std::stringstream ss;
             auto counter = 0;
             for (auto x = 7; x >= 0; --x)
