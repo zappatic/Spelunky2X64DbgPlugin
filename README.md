@@ -89,3 +89,15 @@ If you define a new pointer type, don't forget to add it to the `pointer_types` 
 Once saved, click the "Reload JSON" button at the bottom left, and the updated information will be visualized (the entity windows will close for reload though).
 
 Entity, State, EntityDB and ParticleDB windows all have a "Label" button as well. This can help you if you are reading the assembly in the CPU tab. Click the "Clear labels" button to remove them, however due to a bug (?) in x64dbg it won't delete them all. Press Ctrl-Alt-L to see all the labels.
+
+## Virtual table
+
+![Virtual table](/resources/docs_virtual_table.png)
+
+To look up an entity in the virtual table, make sure you are in a level containing the entity in question, and press the 'Detect entities' button. Uncheck the imported symbols and non-address entries to clear up the list. If you leave 'Show symbol-less entries' unchecked, you will jump to the entity when you type the symbol name in the search box. If you check it, just the filtered list will be shown.
+
+The table offset is the offset from the first entry in the table, D3Dcompile.
+
+![Virtual table lookup](/resources/docs_virtual_table_lookup.png)
+
+To look up the offset of a specific function relative to the base _vftable of an entry, right click somewhere in the function (in the CPU tab) and choose Spelunky2 > Lookup in virtual table. A list will be shown with all preceding named symbols, and the relative offset this function has.
