@@ -139,7 +139,8 @@ void S2Plugin::ViewEntities::refreshEntities()
     mMainTreeView->clear();
     std::unordered_map<std::string, size_t> offsets;
 
-    auto insertEntities = [&](size_t layerEntities, uint32_t count) -> size_t {
+    auto insertEntities = [&](size_t layerEntities, uint32_t count) -> size_t
+    {
         size_t maximum = (std::min)(count, 10000u);
         size_t counter = 0;
         for (auto x = 0; x < maximum; ++x)

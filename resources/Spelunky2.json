@@ -114,7 +114,8 @@
     "Axolotl": "Mount",
     "Mech": "Mount",
     "Qilin": "Mount",
-    "Altar": "Entity"
+    "Altar": "Entity",
+    "Ushabti": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -244,6 +245,7 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
+    "ITEM_USHABTI": "Ushabti",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -761,7 +763,14 @@
           "32": ""
         }
       },
-      { "field": "i3c", "type": "Dword" },
+      {
+        "field": "correct_ushabti",
+        "type": "UnsignedByte",
+        "comment": "correct_ushabti = anim_frame - (2 * floor(anim_frame/12))"
+      },
+      { "field": "i3cb", "type": "UnsignedByte" },
+      { "field": "i3cc", "type": "UnsignedByte" },
+      { "field": "i3cd", "type": "UnsignedByte" },
       { "field": "speedrun_character", "type": "EntityDBID" },
       {
         "field": "speedrun_activation_trigger",
@@ -2918,6 +2927,7 @@
     "Qilin": [
       { "field": "flying_sound_pos", "type": "PositionInfoPointer" },
       { "field": "attack_cooldown", "type": "UnsignedByte" }
-    ]
+    ],
+    "Ushabti": [{ "field": "wiggle_timer", "type": "UnsignedWord" }]
   }
 }

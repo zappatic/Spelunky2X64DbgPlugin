@@ -162,7 +162,7 @@ uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset)
     {
         return 0;
     }
-    uint32_t entityDBPtr = Script::Memory::ReadQword(offset + 8);
+    size_t entityDBPtr = Script::Memory::ReadQword(offset + 8);
     if (entityDBPtr == 0)
     {
         return 0;
