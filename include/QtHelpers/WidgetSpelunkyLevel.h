@@ -20,6 +20,7 @@ namespace S2Plugin
         void paintEntityMask(uint32_t entityMask, const QColor& color);
         void paintEntityUID(uint32_t entityUID, const QColor& color);
         void clearPaintedEntities();
+        void clearPaintedEntityUID(uint32_t entityUID);
 
       protected:
         void paintEvent(QPaintEvent* event) override;

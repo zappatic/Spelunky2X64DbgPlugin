@@ -5,7 +5,6 @@
 #include <QCloseEvent>
 #include <QHeaderView>
 #include <QLabel>
-#include <QScrollArea>
 
 S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
@@ -14,7 +13,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
 
-    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mToolbar->entityDB(), mToolbar->configuration());
+    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mMemoryComparisonView, mToolbar->entityDB(), mToolbar->configuration());
     mEntity->populateTreeView();
 
     mMainLayout->setMargin(5);
@@ -54,7 +53,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mTabLevel = new QWidget();
     mTabFields->setLayout(new QVBoxLayout(mTabFields));
     mTabFields->layout()->setMargin(0);
-    mTabMemory->setLayout(new QVBoxLayout(mTabMemory));
+    mTabMemory->setLayout(new QHBoxLayout(mTabMemory));
     mTabMemory->layout()->setMargin(0);
     mTabLevel->setLayout(new QVBoxLayout(mTabLevel));
     mTabLevel->layout()->setMargin(0);
@@ -130,6 +129,14 @@ void S2Plugin::ViewEntity::initializeUI()
     scroll->setVisible(true);
     mTabMemory->layout()->addWidget(scroll);
 
+    mMemoryComparisonScrollArea = new QScrollArea(mTabMemory);
+    mMemoryComparisonView = new WidgetMemoryView(mMemoryComparisonScrollArea);
+    mMemoryComparisonScrollArea->setStyleSheet("background-color: #fff;");
+    mMemoryComparisonScrollArea->setWidget(mMemoryComparisonView);
+    mMemoryComparisonScrollArea->setVisible(true);
+    mTabMemory->layout()->addWidget(mMemoryComparisonScrollArea);
+    mMemoryComparisonScrollArea->setVisible(false);
+
     // TAB LEVEL
     scroll = new QScrollArea(mTabLevel);
     mSpelunkyLevel = new WidgetSpelunkyLevel(scroll);
@@ -151,6 +158,8 @@ void S2Plugin::ViewEntity::refreshEntity()
     if (mMainTabWidget->currentWidget() == mTabMemory)
     {
         mMemoryView->update();
+        mMemoryComparisonView->update();
+        mEntity->updateComparedMemoryViewHighlights();
     }
     else if (mMainTabWidget->currentWidget() == mTabLevel)
     {
@@ -222,14 +231,30 @@ void S2Plugin::ViewEntity::updateMemoryViewOffsetAndSize()
         mExtraBytesShown = defaultExtraBytesShown;
     }
     mMemoryView->setOffsetAndSize(entityOffset, entitySize + mExtraBytesShown);
+
+    auto comparedEntityOffset = mEntity->comparedEntityMemoryOffset();
+    mMemoryComparisonView->setOffsetAndSize(comparedEntityOffset, entitySize + mExtraBytesShown);
 }
 
 void S2Plugin::ViewEntity::updateLevel()
 {
     auto layerName = "layer0";
-    if (mEntity->cameraLayer() == 1)
+    auto entityCameraLayer = mEntity->cameraLayer();
+    if (entityCameraLayer == 1)
     {
         layerName = "layer1";
+    }
+
+    if (mEntity->comparedEntityMemoryOffset() != 0)
+    {
+        if (entityCameraLayer == mEntity->comparisonCameraLayer())
+        {
+            mSpelunkyLevel->paintEntityUID(mEntity->comparisonUid(), QColor(232, 134, 30));
+        }
+        else
+        {
+            mSpelunkyLevel->paintEntityUID(mEntity->comparisonUid(), Qt::transparent);
+        }
     }
 
     auto layer = Script::Memory::ReadQword(mToolbar->state()->offsetForField(layerName));
@@ -248,7 +273,14 @@ void S2Plugin::ViewEntity::label()
 
 void S2Plugin::ViewEntity::entityOffsetDropped(size_t entityOffset)
 {
+    if (mEntity->comparedEntityMemoryOffset() != 0)
+    {
+        mSpelunkyLevel->clearPaintedEntityUID(mEntity->comparisonUid());
+    }
+
     mEntity->compareToEntity(entityOffset);
     mMainTreeView->setColumnHidden(gsColComparisonValue, false);
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, false);
+    mMemoryComparisonScrollArea->setVisible(true);
+    updateMemoryViewOffsetAndSize();
 }

@@ -3,8 +3,8 @@
 #include "pluginmain.h"
 #include <regex>
 
-S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, EntityDB* entityDB, S2Plugin::Configuration* config)
-    : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView)
+S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB, S2Plugin::Configuration* config)
+    : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView), mComparisonMemoryView(comparisonMemoryView)
 {
     auto entityID = config->spelunky2()->getEntityTypeID(offset);
     mEntityName = config->spelunky2()->getEntityName(offset, entityDB);
@@ -207,6 +207,83 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
     mTotalMemorySize += fieldSize;
 }
 
+void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::string& fieldNameOverride)
+{
+    uint8_t fieldSize = 0;
+    bool isDifferent = false;
+    switch (field.type)
+    {
+        case MemoryFieldType::Flag:
+        case MemoryFieldType::Skip:
+            break;
+        case MemoryFieldType::Bool:
+        case MemoryFieldType::Byte:
+        case MemoryFieldType::UnsignedByte:
+        case MemoryFieldType::Flags8:
+            isDifferent = Script::Memory::ReadByte(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadByte(mMemoryOffsets.at("comparison." + fieldNameOverride));
+            fieldSize = 1;
+            break;
+        case MemoryFieldType::Word:
+        case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::Flags16:
+            isDifferent = Script::Memory::ReadWord(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadWord(mMemoryOffsets.at("comparison." + fieldNameOverride));
+            fieldSize = 2;
+            break;
+        case MemoryFieldType::Dword:
+        case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::Float:
+        case MemoryFieldType::Flags32:
+        case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::EntityUID:
+            isDifferent = Script::Memory::ReadDword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadDword(mMemoryOffsets.at("comparison." + fieldNameOverride));
+            fieldSize = 4;
+            break;
+        case MemoryFieldType::CodePointer:
+        case MemoryFieldType::DataPointer:
+        case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::LevelGenPointer:
+        case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::ParticleDBPointer:
+        case MemoryFieldType::Qword:
+        case MemoryFieldType::UnsignedQword:
+        case MemoryFieldType::ConstCharPointerPointer:
+            isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
+            fieldSize = 8;
+            break;
+        default: // it's either a pointer or an inline struct
+        {
+            if (field.type == MemoryFieldType::PointerType)
+            {
+                isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
+                fieldSize = 8;
+            }
+            else
+            {
+                if (field.type == MemoryFieldType::EntitySubclass)
+                {
+                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
+                    {
+                        highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                    }
+                }
+                else
+                {
+                    for (const auto& f : mConfiguration->typeFields(field.type))
+                    {
+                        highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                    }
+                }
+            }
+            break;
+        }
+    }
+    if (fieldSize > 0 && isDifferent)
+    {
+        static const auto color = QColor(255, 221, 184);
+        mComparisonMemoryView->addHighlightedField(fieldNameOverride, mMemoryOffsets.at("comparison." + fieldNameOverride), fieldSize, color);
+    }
+}
+
 void S2Plugin::Entity::interpretAs(const std::string& classType)
 {
     mEntityType = classType;
@@ -286,9 +363,19 @@ uint32_t S2Plugin::Entity::uid() const noexcept
     return Script::Memory::ReadDword(mEntityPtr + 56);
 }
 
+uint32_t S2Plugin::Entity::comparisonUid() const noexcept
+{
+    return Script::Memory::ReadDword(mComparisonEntityPtr + 56);
+}
+
 uint8_t S2Plugin::Entity::cameraLayer() const noexcept
 {
     return Script::Memory::ReadByte(mMemoryOffsets.at("Entity.camera_layer"));
+}
+
+uint8_t S2Plugin::Entity::comparisonCameraLayer() const noexcept
+{
+    return Script::Memory::ReadByte(mMemoryOffsets.at("comparison.Entity.camera_layer"));
 }
 
 void S2Plugin::Entity::label() const
@@ -302,4 +389,26 @@ void S2Plugin::Entity::label() const
 void S2Plugin::Entity::compareToEntity(size_t comparisonOffset)
 {
     mComparisonEntityPtr = comparisonOffset;
+}
+
+size_t S2Plugin::Entity::comparedEntityMemoryOffset() const noexcept
+{
+    return mComparisonEntityPtr;
+}
+
+void S2Plugin::Entity::updateComparedMemoryViewHighlights()
+{
+    mComparisonMemoryView->clearHighlights();
+    if (mComparisonEntityPtr != 0)
+    {
+        auto hierarchy = classHierarchy();
+        for (auto c : hierarchy)
+        {
+            auto fields = mConfiguration->typeFieldsOfEntitySubclass(c);
+            for (const auto& field : fields)
+            {
+                highlightComparisonField(field, c + "." + field.name);
+            }
+        }
+    }
 }

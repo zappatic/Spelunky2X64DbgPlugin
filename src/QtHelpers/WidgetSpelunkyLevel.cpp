@@ -92,6 +92,11 @@ void S2Plugin::WidgetSpelunkyLevel::clearPaintedEntities()
     update();
 }
 
+void S2Plugin::WidgetSpelunkyLevel::clearPaintedEntityUID(uint32_t entityUID)
+{
+    mEntityUIDsToPaint.erase(entityUID);
+}
+
 QSize S2Plugin::WidgetSpelunkyLevel::minimumSizeHint() const
 {
     auto width = msScaleFactor * ((msMarginHor * 2) + msLevelMaxWidth);

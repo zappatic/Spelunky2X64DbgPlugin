@@ -10,11 +10,13 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QScrollArea>
 #include <QStandardItemModel>
 #include <QTabWidget>
 #include <QTimer>
 #include <QTreeView>
 #include <QVBoxLayout>
+
 
 namespace S2Plugin
 {
@@ -55,6 +57,8 @@ namespace S2Plugin
         TreeViewMemoryFields* mMainTreeView;
 
         WidgetMemoryView* mMemoryView;
+        WidgetMemoryView* mMemoryComparisonView;
+        QScrollArea* mMemoryComparisonScrollArea;
         uint32_t mExtraBytesShown = 100;
 
         WidgetSpelunkyLevel* mSpelunkyLevel;
