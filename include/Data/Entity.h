@@ -31,11 +31,13 @@ namespace S2Plugin
         uint32_t uid() const noexcept;
         uint8_t cameraLayer() const noexcept;
         void label() const;
+        void compareToEntity(size_t comparisonOffset);
 
         static size_t findEntityByUID(uint32_t uid, State* state);
 
       private:
         size_t mEntityPtr = 0;
+        size_t mComparisonEntityPtr = 0;
         TreeViewMemoryFields* mTree;
         WidgetMemoryView* mMemoryView;
         std::string mEntityType = "Entity";

@@ -73,8 +73,9 @@ void S2Plugin::ViewEntityDB::initializeUI()
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewEntityDB::fieldExpanded);
         mTabLookup->layout()->addWidget(mMainTreeView);
         mMainTreeView->setColumnWidth(gsColValue, 250);
-        mMainTreeView->setVisible(false);
         mMainTreeView->updateTableHeader();
+        mMainTreeView->setColumnHidden(gsColComparisonValue, true);
+        mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
     }
 
     // COMPARE

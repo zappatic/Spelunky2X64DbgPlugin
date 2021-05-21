@@ -114,6 +114,12 @@ void S2Plugin::ViewEntity::initializeUI()
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();
+    mMainTreeView->setDragDropMode(QAbstractItemView::DragDropMode::DropOnly);
+    mMainTreeView->setDragEnabled(false);
+    mMainTreeView->setAcceptDrops(true);
+    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
+    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
+    QObject::connect(mMainTreeView, &TreeViewMemoryFields::entityOffsetDropped, this, &ViewEntity::entityOffsetDropped);
     mTabFields->layout()->addWidget(mMainTreeView);
 
     // TAB MEMORY
@@ -238,4 +244,11 @@ void S2Plugin::ViewEntity::updateLevel()
 void S2Plugin::ViewEntity::label()
 {
     mEntity->label();
+}
+
+void S2Plugin::ViewEntity::entityOffsetDropped(size_t entityOffset)
+{
+    mEntity->compareToEntity(entityOffset);
+    mMainTreeView->setColumnHidden(gsColComparisonValue, false);
+    mMainTreeView->setColumnHidden(gsColComparisonValueHex, false);
 }

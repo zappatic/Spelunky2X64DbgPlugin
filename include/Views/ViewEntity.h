@@ -36,6 +36,7 @@ namespace S2Plugin
         void autoRefreshIntervalChanged(const QString& text);
         void interpretAsChanged(const QString& text);
         void label();
+        void entityOffsetDropped(size_t entityOffset);
 
       private:
         QVBoxLayout* mMainLayout;

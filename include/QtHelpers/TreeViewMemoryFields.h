@@ -4,6 +4,8 @@
 #include "QtHelpers/HTMLDelegate.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QStandardItem>
 #include <QTreeView>
 #include <array>
@@ -27,9 +29,16 @@ namespace S2Plugin
         void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, std::unordered_map<std::string, size_t>& offsets, QStandardItem* parent = nullptr,
                                  bool disableChangeHighlightingForField = false);
 
+      protected:
+        void dragEnterEvent(QDragEnterEvent* event) override;
+        void dragMoveEvent(QDragMoveEvent* event) override;
+        void dropEvent(QDropEvent* event) override;
+        void startDrag(Qt::DropActions supportedActions) override;
+
       signals:
         void memoryFieldValueUpdated(const QString& fieldName);
         void levelGenRoomsPointerClicked(const QString& fieldName);
+        void entityOffsetDropped(size_t offset);
 
       private slots:
         void cellClicked(const QModelIndex& index);

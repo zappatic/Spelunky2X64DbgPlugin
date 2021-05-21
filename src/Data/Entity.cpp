@@ -23,6 +23,7 @@ void S2Plugin::Entity::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mEntityPtr;
+    auto comparisonOffset = mComparisonEntityPtr;
     auto hierarchy = classHierarchy();
     for (auto c : hierarchy)
     {
@@ -35,6 +36,20 @@ void S2Plugin::Entity::refreshOffsets()
         for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
         {
             offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
+        }
+
+        if (mComparisonEntityPtr != 0)
+        {
+            MemoryField comparisonHeaderField;
+            comparisonHeaderField.name = "<b>Comparison" + c + "</b>";
+            comparisonHeaderField.type = MemoryFieldType::EntitySubclass;
+            comparisonHeaderField.jsonName = "comparison." + c;
+
+            comparisonOffset = setOffsetForField(comparisonHeaderField, "comparison." + headerIdentifier, comparisonOffset, mMemoryOffsets, false);
+            for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
+            {
+                comparisonOffset = setOffsetForField(field, "comparison." + headerIdentifier + "." + field.name, comparisonOffset, mMemoryOffsets);
+            }
         }
     }
 }
@@ -93,6 +108,8 @@ void S2Plugin::Entity::populateTreeView()
             mTree->expandItem(item);
         }
     }
+    mTree->setColumnHidden(gsColComparisonValue, true);
+    mTree->setColumnHidden(gsColComparisonValueHex, true);
 }
 
 void S2Plugin::Entity::populateMemoryView()
@@ -221,7 +238,8 @@ std::deque<std::string> S2Plugin::Entity::classHierarchy() const
 
 size_t S2Plugin::Entity::findEntityByUID(uint32_t uidToSearch, State* state)
 {
-    auto searchUID = [state](uint32_t uid, size_t layerOffset) -> size_t {
+    auto searchUID = [state](uint32_t uid, size_t layerOffset) -> size_t
+    {
         auto entityCount = (std::min)(Script::Memory::ReadDword(layerOffset + 28), 10000u);
         auto entities = Script::Memory::ReadQword(layerOffset + 8);
 
@@ -279,4 +297,9 @@ void S2Plugin::Entity::label() const
     {
         DbgSetAutoLabelAt(offset, (mEntityName + "." + fieldName).c_str());
     }
+}
+
+void S2Plugin::Entity::compareToEntity(size_t comparisonOffset)
+{
+    mComparisonEntityPtr = comparisonOffset;
 }

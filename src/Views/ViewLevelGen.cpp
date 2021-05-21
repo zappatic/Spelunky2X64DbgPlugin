@@ -78,8 +78,9 @@ void S2Plugin::ViewLevelGen::initializeUI()
         mTabData->layout()->addWidget(mMainTreeView);
 
         mMainTreeView->setColumnWidth(gsColValue, 250);
-        mMainTreeView->setVisible(false);
         mMainTreeView->updateTableHeader();
+        mMainTreeView->setColumnHidden(gsColComparisonValue, true);
+        mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::levelGenRoomsPointerClicked, this, &ViewLevelGen::levelGenRoomsPointerClicked);
     }
 

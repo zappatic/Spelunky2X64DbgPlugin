@@ -55,10 +55,11 @@ void S2Plugin::ViewState::initializeUI()
     {
         mMainTreeView->addMemoryField(field, "State." + field.name);
     }
+    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
+    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
-    mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();
 
     mMainLayout->setMargin(5);

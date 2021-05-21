@@ -15,21 +15,26 @@ namespace S2Plugin
     static constexpr uint8_t gsColField = 0;
     static constexpr uint8_t gsColValue = 1;
     static constexpr uint8_t gsColValueHex = 2;
-    static constexpr uint8_t gsColMemoryOffset = 3;
-    static constexpr uint8_t gsColType = 4;
-    static constexpr uint8_t gsColComment = 5;
+    static constexpr uint8_t gsColComparisonValue = 3;
+    static constexpr uint8_t gsColComparisonValueHex = 4;
+    static constexpr uint8_t gsColMemoryOffset = 5;
+    static constexpr uint8_t gsColType = 6;
+    static constexpr uint8_t gsColComment = 7;
 
     static const uint16_t gsRoleField = Qt::UserRole + gsColField;
     static const uint16_t gsRoleValue = Qt::UserRole + gsColValue;
     static const uint16_t gsRoleValueHex = Qt::UserRole + gsColValueHex;
+    static const uint16_t gsRoleComparisonValue = Qt::UserRole + gsColComparisonValue;
+    static const uint16_t gsRoleComparisonValueHex = Qt::UserRole + gsColComparisonValueHex;
     static const uint16_t gsRoleType = Qt::UserRole + gsColMemoryOffset;
     static const uint16_t gsRoleMemoryOffset = Qt::UserRole + gsColType;
     static const uint16_t gsRoleRawValue = Qt::UserRole + 10;
-    static const uint16_t gsRoleUID = Qt::UserRole + 11;
-    static const uint16_t gsRoleFlagIndex = Qt::UserRole + 12;
-    static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 13;
-    static const uint16_t gsRoleFlagsSize = Qt::UserRole + 14;
-    static const uint16_t gsRoleFieldName = Qt::UserRole + 15;
+    static const uint16_t gsRoleRawComparisonValue = Qt::UserRole + 11;
+    static const uint16_t gsRoleUID = Qt::UserRole + 12;
+    static const uint16_t gsRoleFlagIndex = Qt::UserRole + 13;
+    static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 14;
+    static const uint16_t gsRoleFlagsSize = Qt::UserRole + 15;
+    static const uint16_t gsRoleFieldName = Qt::UserRole + 16;
 
     // new types need to be added to
     // - the MemoryFieldType enum

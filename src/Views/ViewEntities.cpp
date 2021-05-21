@@ -33,11 +33,13 @@ void S2Plugin::ViewEntities::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->setEnableChangeHighlighting(false);
+    mMainTreeView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
+    mMainTreeView->setDragEnabled(true);
+    mMainTreeView->setAcceptDrops(false);
 
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
-    mMainTreeView->setVisible(false);
 }
 
 void S2Plugin::ViewEntities::initializeRefreshAndFilter()
@@ -248,6 +250,8 @@ void S2Plugin::ViewEntities::refreshEntities()
     setWindowTitle(QString("%1 Entities").arg(totalEntities));
 
     mMainTreeView->updateTableHeader();
+    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
+    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
 }
 
 QSize S2Plugin::ViewEntities::sizeHint() const
