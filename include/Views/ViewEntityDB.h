@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Data/EntityDB.h"
+#include "QtHelpers/HTMLDelegate.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "ViewToolbar.h"
 #include <QCheckBox>
@@ -35,9 +36,12 @@ namespace S2Plugin
         void fieldExpanded(const QModelIndex& index);
         void comparisonFieldChosen(const QString& fieldName);
         void compareGroupByCheckBoxClicked(int state);
+        void comparisonCellClicked(int row, int column);
+        void groupedComparisonItemClicked(QTreeWidgetItem* item, int column);
 
       private:
         ViewToolbar* mToolbar;
+        std::unique_ptr<HTMLDelegate> mHTMLDelegate;
 
         QVBoxLayout* mMainLayout;
         QTabWidget* mMainTabWidget;

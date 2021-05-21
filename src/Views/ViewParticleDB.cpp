@@ -127,15 +127,22 @@ void S2Plugin::ViewParticleDB::initializeUI()
                                                                      << "Name"
                                                                      << "Value");
         mCompareTableWidget->verticalHeader()->setVisible(false);
+        mCompareTableWidget->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        mCompareTableWidget->verticalHeader()->setDefaultSectionSize(20);
         mCompareTableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
         mCompareTableWidget->setColumnWidth(0, 40);
         mCompareTableWidget->setColumnWidth(1, 325);
         mCompareTableWidget->setColumnWidth(2, 150);
+        mHTMLDelegate = std::make_unique<HTMLDelegate>();
+        mCompareTableWidget->setItemDelegate(mHTMLDelegate.get());
+        QObject::connect(mCompareTableWidget, &QTableWidget::cellClicked, this, &ViewParticleDB::comparisonCellClicked);
 
         mCompareTreeWidget = new QTreeWidget(this);
         mCompareTreeWidget->setAlternatingRowColors(true);
         mCompareTreeWidget->headerItem()->setHidden(true);
         mCompareTreeWidget->setHidden(true);
+        mCompareTreeWidget->setItemDelegate(mHTMLDelegate.get());
+        QObject::connect(mCompareTreeWidget, &QTreeWidget::itemClicked, this, &ViewParticleDB::groupedComparisonItemClicked);
 
         mTabCompare->layout()->addWidget(mCompareTableWidget);
         mTabCompare->layout()->addWidget(mCompareTreeWidget);
@@ -191,6 +198,7 @@ void S2Plugin::ViewParticleDB::searchFieldCompleterActivated(const QString& text
 
 void S2Plugin::ViewParticleDB::showIndex(size_t index)
 {
+    mMainTabWidget->setCurrentWidget(mTabLookup);
     mLookupIndex = index;
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
     {
@@ -259,7 +267,8 @@ void S2Plugin::ViewParticleDB::populateComparisonTableWidget()
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString::fromStdString(mToolbar->particleDB()->particleEmittersList()->nameForID(x))));
+        auto name = QString::fromStdString(mToolbar->particleDB()->particleEmittersList()->nameForID(x));
+        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(name)));
 
         auto [caption, value] = valueForField(field, x);
         auto item = new TableWidgetItemNumeric(caption);
@@ -280,32 +289,34 @@ void S2Plugin::ViewParticleDB::populateComparisonTreeWidget()
     auto particleDB = mToolbar->particleDB();
 
     std::unordered_map<std::string, QVariant> rootValues;
-    std::unordered_map<std::string, std::unordered_set<std::string>> groupedValues; // valueString -> set<particle names>
-    for (auto x = 1; x <= particleDB->particleEmittersList()->count(); ++x)
+    std::unordered_map<std::string, std::unordered_set<uint32_t>> groupedValues; // valueString -> set<particle id's>
+    for (uint32_t x = 1; x <= particleDB->particleEmittersList()->count(); ++x)
     {
-        auto particleName = mToolbar->particleDB()->particleEmittersList()->nameForID(x);
         auto [caption, value] = valueForField(field, x);
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;
 
         if (groupedValues.count(captionStr) == 0)
         {
-            groupedValues[captionStr] = {particleName};
+            groupedValues[captionStr] = {x};
         }
         else
         {
-            groupedValues[captionStr].insert(particleName);
+            groupedValues[captionStr].insert(x);
         }
     }
 
-    for (const auto& [groupString, entityNames] : groupedValues)
+    for (const auto& [groupString, particleIds] : groupedValues)
     {
         auto rootItem = new TreeWidgetItemNumeric(nullptr, QString::fromStdString(groupString));
         rootItem->setData(0, Qt::UserRole, rootValues.at(groupString));
         mCompareTreeWidget->insertTopLevelItem(0, rootItem);
-        for (const auto& entityName : entityNames)
+        for (const auto& particleId : particleIds)
         {
-            auto childItem = new QTreeWidgetItem(rootItem, QStringList(QString::fromStdString(entityName)));
+            auto particleName = mToolbar->particleDB()->particleEmittersList()->nameForID(particleId);
+            auto caption = QString("<font color='blue'><u>%1</u></font>").arg(QString::fromStdString(particleName));
+            auto childItem = new QTreeWidgetItem(rootItem, QStringList(caption));
+            childItem->setData(0, Qt::UserRole, particleId);
             mCompareTreeWidget->insertTopLevelItem(0, childItem);
         }
     }
@@ -402,4 +413,18 @@ std::pair<QString, QVariant> S2Plugin::ViewParticleDB::valueForField(const Memor
         }
     }
     return std::make_pair("unknown", 0);
+}
+
+void S2Plugin::ViewParticleDB::comparisonCellClicked(int row, int column)
+{
+    auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
+    showIndex(clickedID);
+}
+
+void S2Plugin::ViewParticleDB::groupedComparisonItemClicked(QTreeWidgetItem* item, int column)
+{
+    if (item->childCount() == 0)
+    {
+        showIndex(item->data(0, Qt::UserRole).toUInt());
+    }
 }
