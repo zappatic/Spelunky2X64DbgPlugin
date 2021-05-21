@@ -110,6 +110,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::Float:
         case MemoryFieldType::Bool:
+        case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
         case MemoryFieldType::EntityPointer:
@@ -835,6 +836,25 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
+        case MemoryFieldType::ParticleDBID:
+        {
+            uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
+            itemValue->setData(QString::asprintf("<font color='blue'><u>%lu (%s)</u></font>", value, mToolbar->particleDB()->particleEmittersList()->nameForID(value).c_str()), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            uint32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
+            itemComparisonValue->setData(
+                QString::asprintf("<font color='blue'><u>%lu (%s)</u></font>", comparisonValue, mToolbar->particleDB()->particleEmittersList()->nameForID(comparisonValue).c_str()), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("0x%08lX", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            break;
+        }
         case MemoryFieldType::EntityUID:
         {
             int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
@@ -1148,17 +1168,26 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 }
                 case MemoryFieldType::EntityDBID:
                 {
-                    auto uid = clickedItem->data(gsRoleRawValue).toUInt();
-                    if (uid != -1)
+                    auto id = clickedItem->data(gsRoleRawValue).toUInt();
+                    if (id != -1)
                     {
-                        auto offset = Entity::findEntityByUID(uid, mToolbar->state());
-                        if (offset != 0)
+                        auto view = mToolbar->showEntityDB();
+                        if (view != nullptr)
                         {
-                            auto view = mToolbar->showEntityDB();
-                            if (view != nullptr)
-                            {
-                                view->showIndex(uid);
-                            }
+                            view->showIndex(id);
+                        }
+                    }
+                    break;
+                }
+                case MemoryFieldType::ParticleDBID:
+                {
+                    auto id = clickedItem->data(gsRoleRawValue).toUInt();
+                    if (id != -1)
+                    {
+                        auto view = mToolbar->showParticleDB();
+                        if (view != nullptr)
+                        {
+                            view->showIndex(id);
                         }
                     }
                     break;

@@ -377,6 +377,7 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
             int32_t value = Script::Memory::ReadDword(offset);
             return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
         }
+        case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Flags32:

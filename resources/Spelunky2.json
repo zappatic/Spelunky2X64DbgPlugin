@@ -530,7 +530,7 @@
       { "field": "particle_count", "type": "UnsignedByte" }
     ],
     "ParticleDB": [
-      { "field": "id", "type": "UnsignedDword" },
+      { "field": "id", "type": "ParticleDBID" },
       { "field": "unknown1", "type": "Dword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "Dword", "comment": "linked to unknown4" },
