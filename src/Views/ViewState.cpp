@@ -16,6 +16,7 @@ S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColType, 100);
+    toggleAutoRefresh(Qt::Checked);
 }
 
 void S2Plugin::ViewState::initializeUI()
@@ -32,13 +33,14 @@ void S2Plugin::ViewState::initializeUI()
     QObject::connect(mAutoRefreshTimer.get(), &QTimer::timeout, this, &ViewState::autoRefreshTimerTrigger);
 
     mAutoRefreshCheckBox = new QCheckBox("Auto-refresh every", this);
+    mAutoRefreshCheckBox->setCheckState(Qt::Checked);
     mRefreshLayout->addWidget(mAutoRefreshCheckBox);
     QObject::connect(mAutoRefreshCheckBox, &QCheckBox::clicked, this, &ViewState::toggleAutoRefresh);
 
     mAutoRefreshIntervalLineEdit = new QLineEdit(this);
     mAutoRefreshIntervalLineEdit->setFixedWidth(50);
     mAutoRefreshIntervalLineEdit->setValidator(new QIntValidator(100, 5000, this));
-    mAutoRefreshIntervalLineEdit->setText("500");
+    mAutoRefreshIntervalLineEdit->setText("100");
     mRefreshLayout->addWidget(mAutoRefreshIntervalLineEdit);
     QObject::connect(mAutoRefreshIntervalLineEdit, &QLineEdit::textChanged, this, &ViewState::autoRefreshIntervalChanged);
 

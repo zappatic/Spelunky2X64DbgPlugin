@@ -87,6 +87,8 @@ namespace S2Plugin
         LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
         ThemeInfoName,
         LevelGenPointer,
+        UTF16Char,
+        NodeSet,
     };
 
     // clang-format off
@@ -132,7 +134,9 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer"},
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
-  };
+        {MemoryFieldType::UTF16Char, "UTF16Char"},
+        {MemoryFieldType::NodeSet, "NodeSet"},
+ };
 
     // the type strings as they occur in Spelunky2.json
     const static std::unordered_map<std::string, MemoryFieldType> gsJSONStringToMemoryFieldTypeMapping = {
@@ -174,7 +178,9 @@ namespace S2Plugin
         {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
-    };
+        {"UTF16Char", MemoryFieldType::UTF16Char},
+        {"NodeSet", MemoryFieldType::NodeSet},
+   };
     // clang-format on
 
     struct MemoryField

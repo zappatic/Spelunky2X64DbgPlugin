@@ -122,6 +122,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::LevelGenRoomsMetaPointer:
         case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::Vector:
+        case MemoryFieldType::UTF16Char:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
@@ -160,7 +161,14 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
                 flagFieldItem->setData(16, gsRoleFlagsSize);
-                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+                if (!field.parentPointerJsonName.empty())
+                {
+                    flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
+                }
+                else
+                {
+                    flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+                }
             }
             returnField = flagsParent;
             break;
@@ -176,7 +184,14 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
                 flagFieldItem->setData(8, gsRoleFlagsSize);
-                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+                if (!field.parentPointerJsonName.empty())
+                {
+                    flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
+                }
+                else
+                {
+                    flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
+                }
             }
             returnField = flagsParent;
             break;
@@ -817,6 +832,26 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(flagSet != comparisonFlagSet ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
+        case MemoryFieldType::UTF16Char:
+        {
+            uint16_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadWord(memoryOffset));
+            auto valueByteArray = QByteArray((const char*)(&value), 2);
+            itemValue->setData(QString("'<b>%1</b>' (%2)").arg(QString(valueByteArray)).arg(value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%04X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            uint16_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadWord(comparisonMemoryOffset));
+            auto comparisonValueByteArray = QByteArray((const char*)(&comparisonValue), 2);
+            itemComparisonValue->setData(QString("<b>%1</b>' (%2)").arg(QString(comparisonValueByteArray)).arg(comparisonValue), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("0x%04X", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            break;
+        }
         case MemoryFieldType::EntityDBID:
         {
             uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
@@ -1259,6 +1294,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::Qword:
                 case MemoryFieldType::UnsignedQword:
                 case MemoryFieldType::Float:
+                case MemoryFieldType::UTF16Char:
                 {
                     auto offset = clickedItem->data(gsRoleMemoryOffset).toULongLong();
                     if (offset != 0)

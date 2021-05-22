@@ -55,6 +55,7 @@ S2Plugin::DialogEditSimpleValue::DialogEditSimpleValue(const QString& fieldName,
             mLineEditDecValue->setText(QString("%1").arg(v));
             break;
         }
+        case MemoryFieldType::UTF16Char:
         case MemoryFieldType::UnsignedWord:
         {
             mLineEditDecValue->setValidator(new QIntValidator((std::numeric_limits<uint16_t>::min)(), (std::numeric_limits<uint16_t>::max)(), this));
@@ -164,6 +165,7 @@ void S2Plugin::DialogEditSimpleValue::changeBtnClicked()
             break;
         }
         case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::UTF16Char:
         {
             uint16_t v = mLineEditDecValue->text().toUShort();
             Script::Memory::WriteWord(mMemoryOffset, v);
@@ -228,6 +230,7 @@ void S2Plugin::DialogEditSimpleValue::decValueChanged(const QString& text)
             break;
         }
         case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::UTF16Char:
         {
             uint16_t v = mLineEditDecValue->text().toUShort();
             ss << "0x" << std::hex << std::setw(4) << std::setfill('0') << v;

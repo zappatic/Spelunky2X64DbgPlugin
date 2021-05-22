@@ -246,6 +246,7 @@
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
     "ITEM_USHABTI": "Ushabti",
+    "ITEM_SCRAP": "Movable",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -264,7 +265,16 @@
     "ThemeInfoPointer",
     "RenderInfoPointer",
     "ParticleInfoPointer",
-    "DoorCoordsPointer"
+    "DoorCoordsPointer",
+    "MysteryPointer2",
+    "MysteryPointer3", // state.unknown7_screen
+    "TransitionScreenPointer",
+    "VictoryWalkScreenPointer",
+    "CreditsScreenPointer",
+    "ScrollingCreditsProgressionPointer",
+    "FinalScoreScreenPointer",
+    "CosmicOceanWinScreenPointer",
+    "DearJournalScreenPointer"
   ],
   // a list of all the fields within the types
   "fields": {
@@ -905,11 +915,302 @@
           "32": ""
         }
       },
-      { "field": "-", "type": "Skip", "offset": 2204 }, // 0x12b0 - 0xa14
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "Dword" },
+      { "field": "toast", "type": "DataPointer" },
+      { "field": "speechbubble", "type": "DataPointer" },
+      { "field": "speechbubble_timer", "type": "UnsignedDword" },
+      { "field": "toast_timer", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "Dword" },
+      { "field": "-", "type": "Skip", "offset": 1980 },
+      {
+        "field": "unknown7_screen",
+        "type": "MysteryPointer3",
+        "comment": "similar to the other screens, can't find when this runs"
+      },
+      { "field": "unknown8_during_basecamp", "type": "MysteryPointer2" },
+      { "field": "unknown9_during_level", "type": "MysteryPointer2" },
+      { "field": "level_transition_screen", "type": "TransitionScreenPointer" },
+      { "field": "unknown11", "type": "MysteryPointer2" },
+      { "field": "unknown12", "type": "UnsignedQword" },
+      { "field": "victory_walk_screen", "type": "VictoryWalkScreenPointer" },
+      {
+        "field": "credits_screen",
+        "type": "CreditsScreenPointer",
+        "comment": "where you can fly the spaceship"
+      },
+      { "field": "final_score_screen", "type": "FinalScoreScreenPointer" },
+      {
+        "field": "cosmic_ocean_win_screen",
+        "type": "CosmicOceanWinScreenPointer"
+      },
+      { "field": "dear_journal_screen", "type": "DearJournalScreenPointer" },
+      { "field": "unknown13", "type": "UnsignedQword" },
+      { "field": "-", "type": "Skip", "offset": 80 },
       { "field": "items", "type": "StateItemsPointer" },
       { "field": "level_gen", "type": "LevelGenPointer" },
       { "field": "layer0", "type": "LayerPointer" },
       { "field": "layer1", "type": "LayerPointer" }
+    ],
+    "MysteryPointer2": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      {
+        "field": "buttons",
+        "type": "Flags8",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "-",
+          "8": "-"
+        }
+      },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedWord" },
+      { "field": "unknown7", "type": "UnsignedWord" }
+    ],
+    "MysteryPointer3": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "NodeSet" }
+    ],
+    "TransitionScreenPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "Float" },
+      {
+        "field": "woodpanel_slide_in_timer",
+        "type": "Float",
+        "comment": "from 1.3 (invisible) to 0 (in its place)"
+      },
+      {
+        "field": "scroll_slide_in_horizontal_timer",
+        "type": "Float",
+        "comment": "from 1 (invisible) to 0 (in its place)"
+      },
+      {
+        "field": "scroll_slide_in_vertical_timer",
+        "type": "Float",
+        "comment": "from about 1.30 (invisible) to 0 (in its place)"
+      },
+      {
+        "field": "level_completed_timer",
+        "type": "Float",
+        "comment": "top left thing on the chains that slides in, showing e.g. 1-2 COMPLETED! from 0.5 to 0"
+      },
+      {
+        "field": "mama_tunnel_scroll_timer",
+        "type": "Float",
+        "comment": "counts down to 1.0 while showing the bottom part of the scroll"
+      },
+      {
+        "field": "scroll_unfurl_timer",
+        "type": "Float",
+        "comment": "0 = curled up, 1 = uncurled, 2 = farther uncurled to reveal tunnel mama"
+      },
+      { "field": "woodpanel1", "type": "NodeSet" },
+      { "field": "woodpanel2", "type": "NodeSet" },
+      { "field": "woodpanel3", "type": "NodeSet" },
+      { "field": "woodpanel_cutout1", "type": "NodeSet" },
+      { "field": "woodpanel_cutout2", "type": "NodeSet" },
+      { "field": "woodpanel_cutout3", "type": "NodeSet" },
+      { "field": "woodplank", "type": "NodeSet" },
+      { "field": "woodpanel_bottomcutout1", "type": "NodeSet" },
+      { "field": "woodpanel_bottomcutout2", "type": "NodeSet" },
+      { "field": "woodpanel_bottomcutout3", "type": "NodeSet" },
+      { "field": "all_forced", "type": "NodeSet" },
+      { "field": "scroll_top_bottom", "type": "NodeSet" },
+      { "field": "killcount_rounded_rect", "type": "NodeSet" },
+      { "field": "level_completed_panel", "type": "NodeSet" },
+      { "field": "unknown2", "type": "NodeSet" },
+      { "field": "unknown3", "type": "NodeSet" },
+      { "field": "unknown4", "type": "NodeSet" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "mama_tunnel_fade_actualvalue", "type": "Float" },
+      {
+        "field": "mama_tunnel_fade_targetvalue",
+        "type": "Float",
+        "comment": "0 = hidden; 1 = fully shown"
+      },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown14", "type": "UnsignedWord" },
+      { "field": "unknown15", "type": "UnsignedWord" }
+    ],
+    "DearJournalScreenPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "CosmicOceanWinScreenPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      {
+        "field": "sequence_state",
+        "type": "UnsignedWord",
+        "comment": "0 = spinning; 1 = stars appear ; 2 = text starts fading in ; 3 = text finished fading ; 4 = text fades out ; 5 = text is gone, credits rolling ;  6 - 7 - 8 = final score shown"
+      },
+      { "field": "animation_timer", "type": "UnsignedWord" },
+      { "field": "constellation_text_fadein_out_timer", "type": "Float" },
+      { "field": "constellation_char_1", "type": "UTF16Char" },
+      { "field": "constellation_char_2", "type": "UTF16Char" },
+      { "field": "constellation_char_3", "type": "UTF16Char" },
+      { "field": "constellation_char_4", "type": "UTF16Char" },
+      { "field": "constellation_char_5", "type": "UTF16Char" },
+      { "field": "constellation_char_6", "type": "UTF16Char" },
+      { "field": "constellation_char_7", "type": "UTF16Char" },
+      { "field": "constellation_char_8", "type": "UTF16Char" },
+      { "field": "constellation_char_9", "type": "UTF16Char" },
+      { "field": "constellation_char_10", "type": "UTF16Char" },
+      { "field": "constellation_char_11", "type": "UTF16Char" },
+      { "field": "constellation_char_12", "type": "UTF16Char" },
+      { "field": "constellation_char_13", "type": "UTF16Char" },
+      { "field": "constellation_char_14", "type": "UTF16Char" },
+      { "field": "constellation_char_15", "type": "UTF16Char" },
+      { "field": "constellation_char_16", "type": "UTF16Char" },
+      { "field": "constellation_char_17", "type": "UTF16Char" },
+      { "field": "constellation_char_18", "type": "UTF16Char" },
+      { "field": "constellation_char_19", "type": "UTF16Char" },
+      { "field": "constellation_char_20", "type": "UTF16Char" },
+      { "field": "constellation_char_21", "type": "UTF16Char" },
+      { "field": "constellation_char_22", "type": "UTF16Char" },
+      { "field": "constellation_char_23", "type": "UTF16Char" },
+      { "field": "constellation_char_24", "type": "UTF16Char" },
+      { "field": "constellation_char_25", "type": "UTF16Char" },
+      { "field": "constellation_char_26", "type": "UTF16Char" },
+      { "field": "constellation_char_27", "type": "UTF16Char" },
+      { "field": "constellation_char_28", "type": "UTF16Char" },
+      { "field": "constellation_char_29", "type": "UTF16Char" },
+      { "field": "constellation_char_30", "type": "UTF16Char" },
+      { "field": "constellation_char_31", "type": "UTF16Char" },
+      { "field": "constellation_char_32", "type": "UTF16Char" },
+      {
+        "field": "credits_progression",
+        "type": "ScrollingCreditsProgressionPointer",
+        "comment": "points to float timer that indicates how far in the scrolling credits we are"
+      },
+      { "field": "unknown37", "type": "DataPointer" },
+      {
+        "field": "bg_music_info?",
+        "type": "DataPointer",
+        "comment": "points to object that has pointer related to BGM/BGM_credits"
+      },
+      { "field": "unknown30", "type": "UnsignedQword" },
+      { "field": "unknown31", "type": "UnsignedDword" },
+      { "field": "unknown32", "type": "UnsignedDword" }
+    ],
+    "VictoryWalkScreenPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" },
+      {
+        "field": "sequence_timer",
+        "type": "UnsignedWord",
+        "comment": "counts descent until door opens, closes, ..."
+      },
+      { "field": "frame_timer", "type": "UnsignedWord" },
+      { "field": "animation_state", "type": "UnsignedDword" },
+      { "field": "rescuing_ship_entity", "type": "EntityPointer" },
+      { "field": "unknown8", "type": "UnsignedQword" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "unknown10", "type": "UnsignedDword" }
+    ],
+    "CreditsScreenPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      {
+        "field": "credits_progression",
+        "type": "ScrollingCreditsProgressionPointer",
+        "comment": "points to float timer that indicates how far in the scrolling credits we are"
+      },
+      {
+        "field": "bg_music_info?",
+        "type": "DataPointer",
+        "comment": "points to object that has pointer related to BGM/BGM_credits"
+      },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "ScrollingCreditsProgressionPointer": [
+      { "field": "timer", "type": "Float" }
+    ],
+    "FinalScoreScreenPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "woodpanel1", "type": "NodeSet" },
+      { "field": "woodpanel2", "type": "NodeSet" },
+      { "field": "woodpanel3", "type": "NodeSet" },
+      { "field": "woodpanel_cutout", "type": "NodeSet" },
+      { "field": "dollarsign", "type": "NodeSet" },
+      { "field": "hourglass", "type": "NodeSet" },
+      {
+        "field": "animation_timer",
+        "type": "UnsignedDword",
+        "comment": "wait time to show the wood panel, score and timer text, ..."
+      },
+      { "field": "woodpanel_slidedown_timer", "type": "Float" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "UnsignedDword" }
+    ],
+    "NodeSet": [
+      {
+        "field": "forced_x",
+        "type": "Float",
+        "comment": "forced value"
+      },
+      { "field": "forced_y", "type": "Float", "comment": "forced value" },
+      {
+        "field": "node1_x",
+        "type": "Float",
+        "comment": "these are either path nodes, or transformation matrices"
+      },
+      { "field": "node1_y", "type": "Float" },
+      { "field": "node2_x", "type": "Float" },
+      { "field": "node2_y", "type": "Float" },
+      { "field": "node3_x", "type": "Float" },
+      { "field": "node3_y", "type": "Float" },
+      { "field": "node4_x", "type": "Float" },
+      { "field": "node4_y", "type": "Float" },
+      { "field": "node5_x", "type": "Float" },
+      { "field": "node5_y", "type": "Float" },
+      { "field": "node6_x", "type": "Float" },
+      { "field": "node6_y", "type": "Float" },
+      { "field": "node7_x", "type": "Float" },
+      { "field": "node7_y", "type": "Float" },
+      { "field": "node8_x", "type": "Float" },
+      { "field": "node8_y", "type": "Float" }
     ],
     "LevelGen": [
       { "field": "level_gen_system", "type": "DataPointer" },

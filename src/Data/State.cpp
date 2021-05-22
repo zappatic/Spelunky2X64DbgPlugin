@@ -72,7 +72,8 @@ size_t S2Plugin::State::findNextEntity(size_t entityOffset)
 {
     size_t nextOffset = (std::numeric_limits<size_t>::max)();
 
-    auto loopEntities = [&nextOffset, entityOffset](size_t entities, uint32_t entityCount) {
+    auto loopEntities = [&nextOffset, entityOffset](size_t entities, uint32_t entityCount)
+    {
         for (auto x = 0; x < (std::min)(10000u, entityCount); ++x)
         {
             auto entityPtr = Script::Memory::ReadQword(entities + (x * sizeof(size_t)));
