@@ -80,6 +80,15 @@ Hover over the field to see the name on the tooltip.
 
 ![Entity Level](/resources/docs_entity_level.png)
 
+You can compare two entities by first opening an entity window, and then dragging another entity from the 'Entities' window on top of the original entity window. Two more columns will appear in the fields table. The fields with an orange background differ from the original entity.
+
+![Entity Fields Comparison](/resources/docs_entity_compare_fields.png)
+
+The memory viewer (as well as the level viewer) also show the other entity for comparison.
+
+![Entity Memory Comparison](/resources/docs_entity_compare_memory.png)
+
+
 ## Advanced usage
 
 The Spelunky2.json file contains all the field definitions of the known classes. Just add another entry, and specify the correct field types, which you can deduce from looking at the entity memory tab. Don't forget to add the new entity name to the `entity_class_hierarchy` list so the correct inheritance can be determined, and to `default_entity_types` so that when you click on the entity, it will immediately cast it to the correct type. You can use a regex to match multiple entity names at once.

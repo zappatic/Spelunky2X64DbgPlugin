@@ -79,14 +79,14 @@ S2Plugin::DialogEditSimpleValue::DialogEditSimpleValue(const QString& fieldName,
         }
         case MemoryFieldType::Qword:
         {
-            mLineEditDecValue->setValidator(new QIntValidator((std::numeric_limits<int64_t>::min)(), (std::numeric_limits<int64_t>::max)(), this));
+            // mLineEditDecValue->setValidator(new QIntValidator((std::numeric_limits<int64_t>::min)(), (std::numeric_limits<int64_t>::max)(), this));
             int64_t v = Script::Memory::ReadQword(mMemoryOffset);
             mLineEditDecValue->setText(QString("%1").arg(v));
             break;
         }
         case MemoryFieldType::UnsignedQword:
         {
-            mLineEditDecValue->setValidator(new QIntValidator((std::numeric_limits<uint64_t>::min)(), (std::numeric_limits<uint64_t>::max)(), this));
+            // mLineEditDecValue->setValidator(new QIntValidator((std::numeric_limits<uint64_t>::min)(), (std::numeric_limits<uint64_t>::max)(), this));
             uint64_t v = Script::Memory::ReadQword(mMemoryOffset);
             mLineEditDecValue->setText(QString("%1").arg(v));
             break;
