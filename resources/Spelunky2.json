@@ -3239,7 +3239,7 @@
       { "field": "set_timer", "type": "UnsignedWord" },
       { "field": "timer", "type": "UnsignedWord" },
       { "field": "start_counter", "type": "UnsignedByte" },
-      { "field": "on/off", "type": "Bool" }
+      { "field": "on_off", "type": "Bool" }
     ]
   }
 }
