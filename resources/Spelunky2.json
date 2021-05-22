@@ -3232,7 +3232,7 @@
       { "field": "attack_cooldown", "type": "UnsignedByte" }
     ],
     "Ushabti": [{ "field": "wiggle_timer", "type": "UnsignedWord" }],
-    	"Generator": [
+    "Generator": [
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "spawned_uid", "type": "EntityUID" },
