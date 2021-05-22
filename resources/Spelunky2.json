@@ -115,7 +115,8 @@
     "Mech": "Mount",
     "Qilin": "Mount",
     "Altar": "Entity",
-    "Ushabti": "Movable"
+    "Ushabti": "Movable",
+    "Generator": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -247,6 +248,7 @@
     "MOUNT_BASECAMP_COUCH": "Mount",
     "ITEM_USHABTI": "Ushabti",
     "ITEM_SCRAP": "Movable",
+    "FLOOR_.*_GENERATOR": "Generator",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
   },
@@ -3229,6 +3231,15 @@
       { "field": "flying_sound_pos", "type": "PositionInfoPointer" },
       { "field": "attack_cooldown", "type": "UnsignedByte" }
     ],
-    "Ushabti": [{ "field": "wiggle_timer", "type": "UnsignedWord" }]
+    "Ushabti": [{ "field": "wiggle_timer", "type": "UnsignedWord" }],
+    	"Generator": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "spawned_uid", "type": "EntityUID" },
+      { "field": "set_timer", "type": "UnsignedWord" },
+      { "field": "timer", "type": "UnsignedWord" },
+      { "field": "start_counter", "type": "UnsignedByte" },
+      { "field": "on/off", "type": "Bool" }
+    ]
   }
 }
