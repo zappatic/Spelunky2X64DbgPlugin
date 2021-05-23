@@ -84,10 +84,15 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     }
 
     std::unordered_set<std::string> pointerTypes;
-    auto arr = j["pointer_types"];
-    for (const auto& t : arr)
+    for (const auto& t : j["pointer_types"])
     {
         pointerTypes.insert(t.get<std::string>());
+    }
+
+    std::unordered_set<std::string> inlineStructTypes;
+    for (const auto& t : j["inline_struct_types"])
+    {
+        inlineStructTypes.insert(t.get<std::string>());
     }
 
     mTypeFieldsEntitySubclasses.clear();
@@ -99,6 +104,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     {
         auto isEntitySubclass = isKnownEntitySubclass(key);
         auto isPointer = (pointerTypes.count(key) > 0);
+        auto isInlineStruct = (inlineStructTypes.count(key) > 0);
         if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass && !isPointer)
         {
             throw std::runtime_error("Unknown type specified in fields(1): " + key);
@@ -110,6 +116,10 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             if (isPointer)
             {
                 memField.parentPointerJsonName = key;
+            }
+            if (isInlineStruct)
+            {
+                memField.parentStructJsonName = key;
             }
             memField.name = field["field"].get<std::string>();
             if (field.contains("offset"))

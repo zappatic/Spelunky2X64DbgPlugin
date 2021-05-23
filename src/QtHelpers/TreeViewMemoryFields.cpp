@@ -142,6 +142,10 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 {
                     flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
                 }
+                else if (!field.parentStructJsonName.empty())
+                {
+                    flagFieldItem->setData(QString::fromStdString(field.parentStructJsonName + "." + field.name), gsRoleFlagFieldName);
+                }
                 else
                 {
                     flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
@@ -165,6 +169,10 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 {
                     flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
                 }
+                else if (!field.parentStructJsonName.empty())
+                {
+                    flagFieldItem->setData(QString::fromStdString(field.parentStructJsonName + "." + field.name), gsRoleFlagFieldName);
+                }
                 else
                 {
                     flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
@@ -187,6 +195,10 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 if (!field.parentPointerJsonName.empty())
                 {
                     flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
+                }
+                else if (!field.parentStructJsonName.empty())
+                {
+                    flagFieldItem->setData(QString::fromStdString(field.parentStructJsonName + "." + field.name), gsRoleFlagFieldName);
                 }
                 else
                 {

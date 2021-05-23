@@ -89,6 +89,7 @@ namespace S2Plugin
         LevelGenPointer,
         UTF16Char,
         NodeSet,
+        PlayerSlot,
     };
 
     // clang-format off
@@ -136,6 +137,7 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
         {MemoryFieldType::NodeSet, "NodeSet"},
+        {MemoryFieldType::PlayerSlot, "PlayerSlot"},
  };
 
     // the type strings as they occur in Spelunky2.json
@@ -180,7 +182,8 @@ namespace S2Plugin
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
         {"NodeSet", MemoryFieldType::NodeSet},
-   };
+        {"PlayerSlot", MemoryFieldType::PlayerSlot},
+    };
     // clang-format on
 
     struct MemoryField
@@ -193,7 +196,9 @@ namespace S2Plugin
         std::string jsonName;
         std::string comment;
         std::string parentPointerJsonName;
+        std::string parentStructJsonName;
         bool isPointer = false;
+        bool isInlineStruct = false;
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(S2Plugin::MemoryField)

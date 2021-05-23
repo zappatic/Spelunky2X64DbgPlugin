@@ -280,8 +280,11 @@
     "ArenaLineupScreenPointer",
     "UnknownScreenPointer", // state.unknown14_screen and state.unknown16_screen
     "ArenaGameplayScreenPointer",
-    "ArenaScorePillarsScreenPointer"
+    "ArenaScorePillarsScreenPointer",
+    "PlayerSlots",
+    "InputMappingPointer"
   ],
+  "inline_struct_types": ["PlayerSlot"],
   // a list of all the fields within the types
   "fields": {
     "EntityDB": [
@@ -968,11 +971,10 @@
       },
       { "field": "unknown17", "type": "UnsignedQword" },
       { "field": "unknown18", "type": "UnsignedQword" },
-      { "field": "unknown19", "type": "UnsignedWord" },
-      { "field": "unknown20", "type": "UnsignedWord" },
+      { "field": "unknown19", "type": "UnsignedDword" },
       { "field": "unknown21", "type": "UnsignedWord" },
       { "field": "unknown22", "type": "UnsignedWord" },
-      { "field": "unknown23", "type": "DataPointer" },
+      { "field": "multiplayer", "type": "PlayerSlots" },
       { "field": "items", "type": "StateItemsPointer" },
       { "field": "level_gen", "type": "LevelGenPointer" },
       { "field": "layer0", "type": "LayerPointer" },
@@ -1002,6 +1004,82 @@
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedWord" },
       { "field": "unknown7", "type": "UnsignedWord" }
+    ],
+    "PlayerSlots": [
+      { "field": "player_slot_1", "type": "PlayerSlot" },
+      { "field": "player_slot_2", "type": "PlayerSlot" },
+      { "field": "player_slot_3", "type": "PlayerSlot" },
+      { "field": "player_slot_4", "type": "PlayerSlot" }
+    ],
+    "PlayerSlot": [
+      {
+        "field": "buttons_gameplay",
+        "type": "Flags16",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "-",
+          "8": "-",
+          "9": "Left",
+          "10": "Right",
+          "11": "Up",
+          "12": "Down",
+          "13": "-",
+          "14": "-",
+          "15": "-",
+          "16": "-"
+        },
+        "comment": "does not work in pause menu"
+      },
+      {
+        "field": "buttons",
+        "type": "Flags16",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "-",
+          "8": "-",
+          "9": "Left",
+          "10": "Right",
+          "11": "Up",
+          "12": "Down",
+          "13": "-",
+          "14": "-",
+          "15": "-",
+          "16": "-"
+        },
+        "comment": "works everywhere, including in pause menu"
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "input_mapping_keyboard", "type": "InputMappingPointer" },
+      { "field": "input_mapping_controller", "type": "InputMappingPointer" },
+      { "field": "player_id", "type": "UnsignedByte" },
+      { "field": "is_participating", "type": "Bool" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "InputMappingPointer": [
+      { "field": "use_door_buy", "type": "UnsignedByte" },
+      { "field": "attack", "type": "UnsignedByte" },
+      { "field": "bomb", "type": "UnsignedByte" },
+      { "field": "rope", "type": "UnsignedByte" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "pause_menu", "type": "UnsignedByte" },
+      { "field": "journal", "type": "UnsignedByte" },
+      { "field": "left", "type": "UnsignedByte" },
+      { "field": "right", "type": "UnsignedByte" },
+      { "field": "up", "type": "UnsignedByte" },
+      { "field": "down", "type": "UnsignedByte" }
     ],
     "ArenaLineupScreenPointer": [
       { "field": "__vftable", "type": "DataPointer" },
