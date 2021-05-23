@@ -90,9 +90,8 @@ namespace S2Plugin
         UTF16Char,
         NodeSet,
         PlayerSlot,
+        PlayerSlotSettings,
     };
-
-    // clang-format off
 
     // for display purposes
     const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeToStringMapping = {
@@ -138,7 +137,8 @@ namespace S2Plugin
         {MemoryFieldType::UTF16Char, "UTF16Char"},
         {MemoryFieldType::NodeSet, "NodeSet"},
         {MemoryFieldType::PlayerSlot, "PlayerSlot"},
- };
+        {MemoryFieldType::PlayerSlotSettings, "PlayerSlotSettings"},
+    };
 
     // the type strings as they occur in Spelunky2.json
     const static std::unordered_map<std::string, MemoryFieldType> gsJSONStringToMemoryFieldTypeMapping = {
@@ -183,8 +183,8 @@ namespace S2Plugin
         {"UTF16Char", MemoryFieldType::UTF16Char},
         {"NodeSet", MemoryFieldType::NodeSet},
         {"PlayerSlot", MemoryFieldType::PlayerSlot},
+        {"PlayerSlotSettings", MemoryFieldType::PlayerSlotSettings},
     };
-    // clang-format on
 
     struct MemoryField
     {

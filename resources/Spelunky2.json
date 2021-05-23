@@ -284,7 +284,7 @@
     "PlayerSlots",
     "InputMappingPointer"
   ],
-  "inline_struct_types": ["PlayerSlot"],
+  "inline_struct_types": ["PlayerSlot", "PlayerSlotSettings"],
   // a list of all the fields within the types
   "fields": {
     "EntityDB": [
@@ -1009,7 +1009,11 @@
       { "field": "player_slot_1", "type": "PlayerSlot" },
       { "field": "player_slot_2", "type": "PlayerSlot" },
       { "field": "player_slot_3", "type": "PlayerSlot" },
-      { "field": "player_slot_4", "type": "PlayerSlot" }
+      { "field": "player_slot_4", "type": "PlayerSlot" },
+      { "field": "player_slot_1_settings", "type": "PlayerSlotSettings" },
+      { "field": "player_slot_2_settings", "type": "PlayerSlotSettings" },
+      { "field": "player_slot_3_settings", "type": "PlayerSlotSettings" },
+      { "field": "player_slot_4_settings", "type": "PlayerSlotSettings" }
     ],
     "PlayerSlot": [
       {
@@ -1022,8 +1026,8 @@
           "4": "Rope",
           "5": "Run",
           "6": "Use door/buy",
-          "7": "-",
-          "8": "-",
+          "7": "Pause?",
+          "8": "Journal",
           "9": "Left",
           "10": "Right",
           "11": "Up",
@@ -1045,8 +1049,8 @@
           "4": "Rope",
           "5": "Run",
           "6": "Use door/buy",
-          "7": "-",
-          "8": "-",
+          "7": "Pause?",
+          "8": "Journal",
           "9": "Left",
           "10": "Right",
           "11": "Up",
@@ -1067,19 +1071,24 @@
       { "field": "unknown5", "type": "UnsignedByte" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
+    "PlayerSlotSettings": [
+      { "field": "controller_vibration", "type": "Bool" },
+      { "field": "auto_run_enabled", "type": "Bool" },
+      { "field": "controller_right_stick", "type": "Bool" }
+    ],
     "InputMappingPointer": [
-      { "field": "use_door_buy", "type": "UnsignedByte" },
-      { "field": "attack", "type": "UnsignedByte" },
-      { "field": "bomb", "type": "UnsignedByte" },
-      { "field": "rope", "type": "UnsignedByte" },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "pause_menu", "type": "UnsignedByte" },
-      { "field": "journal", "type": "UnsignedByte" },
-      { "field": "left", "type": "UnsignedByte" },
-      { "field": "right", "type": "UnsignedByte" },
-      { "field": "up", "type": "UnsignedByte" },
-      { "field": "down", "type": "UnsignedByte" }
+      { "field": "jump", "type": "Byte" },
+      { "field": "attack", "type": "Byte" },
+      { "field": "bomb", "type": "Byte" },
+      { "field": "rope", "type": "Byte" },
+      { "field": "walk_run", "type": "Byte" },
+      { "field": "use_door_buy", "type": "Byte" },
+      { "field": "pause_menu", "type": "Byte" },
+      { "field": "journal", "type": "Byte" },
+      { "field": "left", "type": "Byte" },
+      { "field": "right", "type": "Byte" },
+      { "field": "up", "type": "Byte" },
+      { "field": "down", "type": "Byte" }
     ],
     "ArenaLineupScreenPointer": [
       { "field": "__vftable", "type": "DataPointer" },
