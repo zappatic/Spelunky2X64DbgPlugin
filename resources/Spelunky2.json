@@ -3558,7 +3558,7 @@
         "comment": "works only for star challenge"
       },
       {
-        "field": "on/off",
+        "field": "on_off",
         "type": "Bool",
         "comment": "works only for star challenge"
       }
@@ -3691,11 +3691,11 @@
           "1": "Start",
           "2": "Down",
           "3": "Up",
-          "4": "Eye open/pause",
-          "5": "Eye open/pause",
-          "6": "Eye open/pause",
-          "7": "Eye open/pause",
-          "8": "Eye open/pause"
+          "4": "pause",
+          "5": "pause",
+          "6": "pause",
+          "7": "pause",
+          "8": "pause"
         },
         "comment": "anything higher then 3 has the same effect, also there is sound for the eye opening"
       },
@@ -3759,7 +3759,7 @@
       {
         "field": "timer",
         "type": "UnsignedByte",
-        "comment": "for the start and for the retract"
+        "comment": "for the start and retract"
       },
       {
         "field": "speed_direction?",
