@@ -214,45 +214,47 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         }
         case MemoryFieldType::UndeterminedThemeInfoPointer:
         {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
+            returnField = createAndInsertItem(field, fieldNameOverride, parent);
             for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
             {
-                addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
             break;
         }
-        default: // default is assumed to be a container
+        case MemoryFieldType::EntitySubclass:
         {
-            auto structParent = createAndInsertItem(field, fieldNameOverride, parent);
-            if (field.type == MemoryFieldType::EntitySubclass)
+            returnField = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
-                {
-                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-                }
+                addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
-            else if (field.type == MemoryFieldType::PointerType)
+            break;
+        }
+        case MemoryFieldType::PointerType:
+        {
+            returnField = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
-                {
-                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-                }
+                addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
-            else if (field.type == MemoryFieldType::InlineStructType)
+            break;
+        }
+        case MemoryFieldType::InlineStructType:
+        {
+            returnField = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
-                {
-                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-                }
+                addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
-            else
+            break;
+        }
+        default:
+        {
+            returnField = createAndInsertItem(field, fieldNameOverride, parent);
+            for (const auto& f : mToolbar->configuration()->typeFields(field.type))
             {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
-                {
-                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
-                }
+                addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
-            returnField = structParent;
             break;
         }
     }
@@ -809,28 +811,25 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::Vector:
         {
-            if (shouldUpdateChildren)
+            if (itemField->hasChildren())
             {
-                if (itemField->hasChildren())
-                {
-                    itemField->removeRows(0, itemField->rowCount());
-                }
+                itemField->removeRows(0, itemField->rowCount());
+            }
 
-                auto vectorCount = (memoryOffset == 0 ? 0 : (std::min)(50u, Script::Memory::ReadDword(memoryOffset + 20)));
-                auto vectorItemsOffset = Script::Memory::ReadQword(memoryOffset + 8);
-                for (auto x = 0; x < vectorCount; ++x)
-                {
-                    MemoryField f;
-                    f.name = std::to_string(x);
-                    f.type = MemoryFieldType::EntityUID;
-                    auto subItemOffset = vectorItemsOffset + (x * sizeof(uint32_t));
-                    offsets[fieldNameOverride + "." + f.name] = subItemOffset;
+            auto vectorCount = (memoryOffset == 0 ? 0 : (std::min)(50u, Script::Memory::ReadDword(memoryOffset + 20)));
+            auto vectorItemsOffset = Script::Memory::ReadQword(memoryOffset + 8);
+            for (auto x = 0; x < vectorCount; ++x)
+            {
+                MemoryField f;
+                f.name = std::to_string(x);
+                f.type = MemoryFieldType::EntityUID;
+                auto subItemOffset = vectorItemsOffset + (x * sizeof(uint32_t));
+                offsets[fieldNameOverride + "." + f.name] = subItemOffset;
 
-                    auto subItemValue = addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
-                    subItemValue->setData(subItemOffset, gsRoleRawValue);
+                auto subItemValue = addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
+                subItemValue->setData(subItemOffset, gsRoleRawValue);
 
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField, true);
-                }
+                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField, true);
             }
             break;
         }
@@ -1140,37 +1139,46 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             break;
         }
-        default: // default is assumed to be a container
+        case MemoryFieldType::EntitySubclass:
         {
             if (shouldUpdateChildren)
             {
-                if (field.type == MemoryFieldType::EntitySubclass)
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
                 {
-                    for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
-                    {
-                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-                    }
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                 }
-                else if (field.type == MemoryFieldType::PointerType)
+            }
+            break;
+        }
+        case MemoryFieldType::PointerType:
+        {
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
                 {
-                    for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
-                    {
-                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-                    }
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                 }
-                else if (field.type == MemoryFieldType::InlineStructType)
+            }
+            break;
+        }
+        case MemoryFieldType::InlineStructType:
+        {
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
                 {
-                    for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
-                    {
-                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-                    }
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                 }
-                else
+            }
+            break;
+        }
+        default:
+        {
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
                 {
-                    for (const auto& f : mToolbar->configuration()->typeFields(field.type))
-                    {
-                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
-                    }
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                 }
             }
             break;
