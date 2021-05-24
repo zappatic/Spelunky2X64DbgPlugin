@@ -98,6 +98,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     mTypeFieldsEntitySubclasses.clear();
     mTypeFields.clear();
     mTypeFieldsPointers.clear();
+    mTypeFieldsInlineStructs.clear();
 
     auto fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
@@ -105,7 +106,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         auto isEntitySubclass = isKnownEntitySubclass(key);
         auto isPointer = (pointerTypes.count(key) > 0);
         auto isInlineStruct = (inlineStructTypes.count(key) > 0);
-        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass && !isPointer)
+        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass && !isPointer && !isInlineStruct)
         {
             throw std::runtime_error("Unknown type specified in fields(1): " + key);
         }
@@ -137,6 +138,11 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = MemoryFieldType::PointerType;
                 memField.jsonName = fieldTypeStr;
             }
+            else if (inlineStructTypes.count(fieldTypeStr))
+            {
+                memField.type = MemoryFieldType::InlineStructType;
+                memField.jsonName = fieldTypeStr;
+            }
             else
             {
                 if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
@@ -163,6 +169,10 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         if (isPointer)
         {
             mTypeFieldsPointers[key] = vec;
+        }
+        else if (isInlineStruct)
+        {
+            mTypeFieldsInlineStructs[key] = vec;
         }
         else if (isEntitySubclass)
         {
@@ -192,6 +202,15 @@ const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfP
         dprintf("unknown key requested in Configuration::typeFieldsOfPointer() (t=%s)\n", type.c_str());
     }
     return mTypeFieldsPointers.at(type);
+}
+
+const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfInlineStruct(const std::string& type) const
+{
+    if (mTypeFieldsInlineStructs.count(type) == 0)
+    {
+        dprintf("unknown key requested in Configuration::typeFieldsOfInlineStruct() (t=%s)\n", type.c_str());
+    }
+    return mTypeFieldsInlineStructs.at(type);
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(const MemoryFieldType& type) const

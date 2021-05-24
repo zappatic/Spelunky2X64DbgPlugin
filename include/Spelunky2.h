@@ -63,7 +63,6 @@ namespace S2Plugin
         Flags16,
         Flags8,
         Skip,
-        Rect,
         State,
         LevelGen,
         EntityDB,
@@ -75,22 +74,17 @@ namespace S2Plugin
         ParticleDBID,
         ParticleDBPointer,
         ParticleInfoPointer,
-        SaturationAperture,
         Vector,
-        Color,
         ConstCharPointerPointer,
-        Map,
         EntitySubclass,               // a subclass of an entity defined in json
         PointerType,                  // a pointer defined in json
+        InlineStructType,             // an inline struct defined in json
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
         LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
         ThemeInfoName,
         LevelGenPointer,
         UTF16Char,
-        NodeSet,
-        PlayerSlot,
-        PlayerSlotSettings,
     };
 
     // for display purposes
@@ -111,11 +105,9 @@ namespace S2Plugin
         {MemoryFieldType::Flags32, "32-bit flags"},
         {MemoryFieldType::Flags16, "16-bit flags"},
         {MemoryFieldType::Flags8, "8-bit flags"},
-        {MemoryFieldType::Rect, "Rectangle"},
         {MemoryFieldType::State, "State"},
         {MemoryFieldType::LevelGen, "LevelGen"},
         {MemoryFieldType::EntityDB, "EntityDB"},
-        {MemoryFieldType::SaturationAperture, "Saturation/Aperture"},
         {MemoryFieldType::EntityPointer, "Entity pointer"},
         {MemoryFieldType::EntityDBPointer, "EntityDB pointer"},
         {MemoryFieldType::EntityDBID, "EntityDB ID"},
@@ -125,19 +117,15 @@ namespace S2Plugin
         {MemoryFieldType::ParticleDBPointer, "ParticleDB pointer"},
         {MemoryFieldType::ParticleInfoPointer, "ParticleInfo pointer"},
         {MemoryFieldType::Vector, "Vector"},
-        {MemoryFieldType::Color, "Color"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
-        {MemoryFieldType::Map, "std::map<>"},
         {MemoryFieldType::PointerType, "Pointer"},
+        {MemoryFieldType::InlineStructType, "Inline struct"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer"},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer"},
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
-        {MemoryFieldType::NodeSet, "NodeSet"},
-        {MemoryFieldType::PlayerSlot, "PlayerSlot"},
-        {MemoryFieldType::PlayerSlotSettings, "PlayerSlotSettings"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -158,11 +146,9 @@ namespace S2Plugin
         {"Flags32", MemoryFieldType::Flags32},
         {"Flags16", MemoryFieldType::Flags16},
         {"Flags8", MemoryFieldType::Flags8},
-        {"Rect", MemoryFieldType::Rect},
         {"State", MemoryFieldType::State},
         {"LevelGen", MemoryFieldType::LevelGen},
         {"EntityDB", MemoryFieldType::EntityDB},
-        {"SaturationAperture", MemoryFieldType::SaturationAperture},
         {"EntityPointer", MemoryFieldType::EntityPointer},
         {"EntityDBPointer", MemoryFieldType::EntityDBPointer},
         {"EntityDBID", MemoryFieldType::EntityDBID},
@@ -172,18 +158,13 @@ namespace S2Plugin
         {"ParticleDBPointer", MemoryFieldType::ParticleDBPointer},
         {"ParticleInfoPointer", MemoryFieldType::ParticleInfoPointer},
         {"Vector", MemoryFieldType::Vector},
-        {"Color", MemoryFieldType::Color},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
-        {"Map", MemoryFieldType::Map},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
         {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
-        {"NodeSet", MemoryFieldType::NodeSet},
-        {"PlayerSlot", MemoryFieldType::PlayerSlot},
-        {"PlayerSlotSettings", MemoryFieldType::PlayerSlotSettings},
     };
 
     struct MemoryField

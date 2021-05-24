@@ -176,27 +176,31 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::ConstCharPointerPointer:
             fieldSize = 8;
             break;
-        default: // it's either a pointer or an inline struct
+        default:
         {
             if (field.type == MemoryFieldType::PointerType)
             {
                 fieldSize = 8;
             }
+            else if (field.type == MemoryFieldType::InlineStructType)
+            {
+                for (const auto& f : mConfiguration->typeFieldsOfInlineStruct(field.jsonName))
+                {
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                }
+            }
+            else if (field.type == MemoryFieldType::EntitySubclass)
+            {
+                for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                }
+            }
             else
             {
-                if (field.type == MemoryFieldType::EntitySubclass)
+                for (const auto& f : mConfiguration->typeFields(field.type))
                 {
-                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
-                    {
-                        highlightField(f, fieldNameOverride + "." + f.name, color);
-                    }
-                }
-                else
-                {
-                    for (const auto& f : mConfiguration->typeFields(field.type))
-                    {
-                        highlightField(f, fieldNameOverride + "." + f.name, color);
-                    }
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
                 }
             }
             break;
@@ -254,28 +258,32 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
             isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 8;
             break;
-        default: // it's either a pointer or an inline struct
+        default:
         {
             if (field.type == MemoryFieldType::PointerType)
             {
                 isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
                 fieldSize = 8;
             }
+            else if (field.type == MemoryFieldType::InlineStructType)
+            {
+                for (const auto& f : mConfiguration->typeFieldsOfInlineStruct(field.jsonName))
+                {
+                    highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                }
+            }
+            else if (field.type == MemoryFieldType::EntitySubclass)
+            {
+                for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                }
+            }
             else
             {
-                if (field.type == MemoryFieldType::EntitySubclass)
+                for (const auto& f : mConfiguration->typeFields(field.type))
                 {
-                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
-                    {
-                        highlightComparisonField(f, fieldNameOverride + "." + f.name);
-                    }
-                }
-                else
-                {
-                    for (const auto& f : mConfiguration->typeFields(field.type))
-                    {
-                        highlightComparisonField(f, fieldNameOverride + "." + f.name);
-                    }
+                    highlightComparisonField(f, fieldNameOverride + "." + f.name);
                 }
             }
             break;

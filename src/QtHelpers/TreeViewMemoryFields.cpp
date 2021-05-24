@@ -69,6 +69,10 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         {
             itemFieldType->setData(QString::fromStdString(field.jsonName), Qt::DisplayRole);
         }
+        else if (field.type == MemoryFieldType::InlineStructType)
+        {
+            itemFieldType->setData(QString::fromStdString(field.jsonName), Qt::DisplayRole);
+        }
         else if (gsMemoryFieldTypeToStringMapping.count(field.type) > 0)
         {
             itemFieldType->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(field.type)), Qt::DisplayRole);
@@ -230,6 +234,13 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
             else if (field.type == MemoryFieldType::PointerType)
             {
                 for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
+                {
+                    addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
+                }
+            }
+            else if (field.type == MemoryFieldType::InlineStructType)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
                 {
                     addMemoryField(f, fieldNameOverride + "." + f.name, structParent);
                 }
@@ -1143,6 +1154,13 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 else if (field.type == MemoryFieldType::PointerType)
                 {
                     for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
+                    {
+                        updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
+                    }
+                }
+                else if (field.type == MemoryFieldType::InlineStructType)
+                {
+                    for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
                     {
                         updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                     }

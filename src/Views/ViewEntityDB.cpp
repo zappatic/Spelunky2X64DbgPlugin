@@ -88,7 +88,8 @@ void S2Plugin::ViewEntityDB::initializeUI()
             switch (field.type)
             {
                 case MemoryFieldType::Skip:
-                case MemoryFieldType::Rect:
+                case MemoryFieldType::PointerType:
+                case MemoryFieldType::InlineStructType: // todo, maybe
                     continue;
                 case MemoryFieldType::Flags32:
                 case MemoryFieldType::Flags16:

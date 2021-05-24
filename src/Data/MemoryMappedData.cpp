@@ -68,7 +68,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
             offset += 8;
             break;
         }
-        default: // it's either a pointer or an inline struct
+        default:
         {
             if (field.type == MemoryFieldType::PointerType)
             {
@@ -83,22 +83,25 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
                 }
                 offset += 8;
             }
+            else if (field.type == MemoryFieldType::InlineStructType)
+            {
+                for (const auto& f : mConfiguration->typeFieldsOfInlineStruct(field.jsonName))
+                {
+                    offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                }
+            }
+            else if (field.type == MemoryFieldType::EntitySubclass)
+            {
+                for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+                }
+            }
             else
             {
-
-                if (field.type == MemoryFieldType::EntitySubclass)
+                for (const auto& f : mConfiguration->typeFields(field.type))
                 {
-                    for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
-                    {
-                        offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
-                    }
-                }
-                else
-                {
-                    for (const auto& f : mConfiguration->typeFields(field.type))
-                    {
-                        offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
-                    }
+                    offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
                 }
             }
             break;

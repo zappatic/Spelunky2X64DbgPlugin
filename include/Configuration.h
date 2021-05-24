@@ -23,6 +23,7 @@ namespace S2Plugin
         const std::vector<MemoryField>& typeFields(const MemoryFieldType& type) const;
         const std::vector<MemoryField>& typeFieldsOfEntitySubclass(const std::string& type) const;
         const std::vector<MemoryField>& typeFieldsOfPointer(const std::string& type) const;
+        const std::vector<MemoryField>& typeFieldsOfInlineStruct(const std::string& type) const;
         std::string flagTitle(const std::string& fieldName, uint8_t flagNumber);
 
         Spelunky2* spelunky2() const noexcept;
@@ -37,6 +38,7 @@ namespace S2Plugin
         std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFields;
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsEntitySubclasses;
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsPointers;
+        std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsInlineStructs;
         std::unordered_map<std::string, std::unordered_map<uint8_t, std::string>> mFlagTitles; // fieldname => (flagnr 1-based => title)
 
         void processJSON(const ordered_json& j);
