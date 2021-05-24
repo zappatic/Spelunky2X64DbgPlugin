@@ -3566,8 +3566,12 @@
     "HorizontalFF": [
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "unknown2", "type": "UnsignedQword" },
-      { "field": "pointer1", "type": "EntityPointer" },
-      { "field": "pointer2", "type": "EntityPointer" },
+      {
+        "field": "first_item_beam",
+        "type": "EntityPointer",
+        "comment": "if killed, the whole beam goes out"
+      },
+      { "field": "fx_pointer", "type": "EntityPointer" },
       { "field": "pointer3", "type": "PositionInfoPointer" },
       { "field": "laser_bounce?", "type": "Float" },
       {
