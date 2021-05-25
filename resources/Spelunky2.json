@@ -118,7 +118,9 @@
     "Ushabti": "Movable",
     "Generator": "Entity",
     "ForceField": "Entity",
-    "HorizontalFF": "Entity"
+    "HorizontalFF": "Entity",
+    "StickyTrap": "Entity",
+    "SpikeballTrap": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -131,6 +133,8 @@
     "FLOOR_HORIZONTAL_FORCEFIELD": "HorizontalFF",
     "FLOOR_CHALLENGE_ENTRANCE": "ForceField",
     "FLOOR_CHALLENGE_WAITROOM": "ForceField",
+    "FLOOR_SPIKEBALL_CEILING": "SpikeballTrap",
+    "FLOOR_STICKYTRAP_CEILING": "StickyTrap",
     "ITEM_CRATE": "Container",
     "ITEM_WEBGUN": "Gun",
     "ITEM_SHOTGUN": "Gun",
@@ -3554,7 +3558,7 @@
         "comment": "works only for star challenge"
       },
       {
-        "field": "on/off",
+        "field": "on_off",
         "type": "Bool",
         "comment": "works only for star challenge"
       }
@@ -3600,8 +3604,8 @@
       { "field": "unknown21", "type": "Dword" },
       { "field": "unknown22", "type": "Bool" },
       { "field": "unknown23", "type": "Bool" },
-      { "field": "unknown24", "type": "Bool" },
-      { "field": "unknown25", "type": "Bool" },
+      { "field": "unknown24", "type": "UnsignedByte" },
+      { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "Dword" },
       { "field": "unknown27", "type": "Dword" },
       { "field": "unknown28", "type": "Word" },
@@ -3659,8 +3663,130 @@
       { "field": "unknown20", "type": "Dword" },
       { "field": "unknown21", "type": "Bool" },
       { "field": "unknown22", "type": "Bool" },
-      { "field": "unknown23", "type": "Bool" },
-      { "field": "unknown24", "type": "Bool" },
+      { "field": "unknown23", "type": "UnsignedByte" },
+      { "field": "unknown24", "type": "UnsignedByte" },
+      { "field": "unknown25", "type": "Dword" },
+      { "field": "unknown26", "type": "Dword" },
+      { "field": "unknown27", "type": "Word" },
+      { "field": "unknown28", "type": "Word" },
+      { "field": "unknown29", "type": "Dword" }
+    ],
+    "StickyTrap": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "sound_particle", "type": "PositionInfoPointer" },
+      { "field": "unknown_pointer1", "type": "DataPointer" },
+      {
+        "field": "unknown_pointer2",
+        "type": "DataPointer",
+        "comment": "it's changing when he hit-stun you, but it's not EntityPointer"
+      },
+      { "field": "unknown_pointer3", "type": "DataPointer" },
+      { "field": "attached_piece", "type": "EntityUID" },
+      { "field": "ball", "type": "EntityUID" },
+      {
+        "field": "state",
+        "type": "Flags8",
+        "flags": {
+          "1": "Start",
+          "2": "Down",
+          "3": "Up",
+          "4": "pause",
+          "5": "pause",
+          "6": "pause",
+          "7": "pause",
+          "8": "pause"
+        },
+        "comment": "anything higher then 3 has the same effect, also there is sound for the eye opening"
+      },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "for the start and for the retract"
+      },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "UnsignedWord" },
+      { "field": "unknown8", "type": "UnsignedWord" },
+      { "field": "unknown9", "type": "UnsignedWord" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown12", "type": "UnsignedQword" },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown14", "type": "UnsignedDword" },
+      { "field": "unknown15", "type": "UnsignedWord" },
+      { "field": "unknown16", "type": "UnsignedWord" },
+      { "field": "unknown17", "type": "Dword" },
+      { "field": "unknown18", "type": "Dword" },
+      { "field": "unknown19", "type": "Dword" },
+      { "field": "unknown20", "type": "Dword" },
+      { "field": "unknown21", "type": "Bool" },
+      { "field": "unknown22", "type": "Bool" },
+      { "field": "unknown23", "type": "UnsignedByte" },
+      { "field": "unknown24", "type": "UnsignedByte" },
+      { "field": "unknown25", "type": "Dword" },
+      { "field": "unknown26", "type": "Dword" },
+      { "field": "unknown27", "type": "Word" },
+      { "field": "unknown28", "type": "Word" },
+      { "field": "unknown29", "type": "Dword" }
+    ],
+    "SpikeballTrap": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "sound_particle", "type": "PositionInfoPointer" },
+      { "field": "unknown_pointer1", "type": "DataPointer" },
+      {
+        "field": "unknown_pointer2",
+        "type": "DataPointer",
+        "comment": "it's changing when he hit-stun you, but it's not EntityPointer"
+      },
+      {
+        "field": "state",
+        "type": "Flags8",
+        "flags": {
+          "1": "Start",
+          "2": "Down",
+          "3": "pause",
+          "4": "pause",
+          "5": "pause",
+          "6": "pause",
+          "7": "pause",
+          "8": "pause"
+        },
+        "comment": "start just makes it moves, up/dwon is determinated by the state of Down, seting Down makes it go down immediately, seting start starts the timer, if it's zero it is set to 255"
+      },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "for the start and retract"
+      },
+      {
+        "field": "speed_direction?",
+        "type": "UnsignedByte",
+        "comment": "i have no clue what this is, goes 255 when detecting something, but when it hits the unbreakable tile it 255 for ever, changing it can teleport it up/down/change speed etc."
+      },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "UnsignedWord" },
+      { "field": "unknown8", "type": "UnsignedWord" },
+      { "field": "unknown9", "type": "UnsignedWord" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown12", "type": "UnsignedQword" },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown14", "type": "UnsignedDword" },
+      { "field": "unknown15", "type": "UnsignedWord" },
+      { "field": "unknown16", "type": "UnsignedWord" },
+      { "field": "unknown17", "type": "Dword" },
+      { "field": "unknown18", "type": "Dword" },
+      { "field": "unknown19", "type": "Dword" },
+      { "field": "unknown20", "type": "Dword" },
+      { "field": "unknown21", "type": "Bool" },
+      { "field": "unknown22", "type": "Bool" },
+      { "field": "unknown23", "type": "UnsignedByte" },
+      { "field": "unknown24", "type": "UnsignedByte" },
       { "field": "unknown25", "type": "Dword" },
       { "field": "unknown26", "type": "Dword" },
       { "field": "unknown27", "type": "Word" },
