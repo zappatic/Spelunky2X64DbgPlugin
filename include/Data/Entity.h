@@ -22,6 +22,7 @@ namespace S2Plugin
         void refreshOffsets();
         void refreshValues();
         void interpretAs(const std::string& classType);
+        std::string entityType() const noexcept;
         std::deque<std::string> classHierarchy() const;
         void populateTreeView();
         void populateMemoryView();

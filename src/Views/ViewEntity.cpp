@@ -1,8 +1,10 @@
 #include "Views/ViewEntity.h"
+#include "Data/CPPGenerator.h"
 #include "Data/EntityList.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
+#include <QFont>
 #include <QHeaderView>
 #include <QLabel>
 
@@ -46,21 +48,26 @@ void S2Plugin::ViewEntity::initializeUI()
 
     mMainTabWidget = new QTabWidget(this);
     mMainTabWidget->setDocumentMode(false);
+    QObject::connect(mMainTabWidget, &QTabWidget::currentChanged, this, &ViewEntity::tabChanged);
     mMainLayout->addWidget(mMainTabWidget);
 
     mTabFields = new QWidget();
     mTabMemory = new QWidget();
     mTabLevel = new QWidget();
+    mTabCPP = new QWidget();
     mTabFields->setLayout(new QVBoxLayout(mTabFields));
     mTabFields->layout()->setMargin(0);
     mTabMemory->setLayout(new QHBoxLayout(mTabMemory));
     mTabMemory->layout()->setMargin(0);
     mTabLevel->setLayout(new QVBoxLayout(mTabLevel));
     mTabLevel->layout()->setMargin(0);
+    mTabCPP->setLayout(new QVBoxLayout(mTabCPP));
+    mTabCPP->layout()->setMargin(0);
 
     mMainTabWidget->addTab(mTabFields, "Fields");
     mMainTabWidget->addTab(mTabMemory, "Memory");
     mMainTabWidget->addTab(mTabLevel, "Level");
+    mMainTabWidget->addTab(mTabCPP, "C++");
 
     // TOP LAYOUT
     mRefreshButton = new QPushButton("Refresh", this);
@@ -144,6 +151,25 @@ void S2Plugin::ViewEntity::initializeUI()
     scroll->setWidget(mSpelunkyLevel);
     scroll->setVisible(true);
     mTabLevel->layout()->addWidget(scroll);
+
+    // TAB CPP
+    mCPPTextEdit = new QTextEdit(this);
+    mCPPTextEdit->setReadOnly(true);
+    auto font = QFont("Courier", 10);
+    font.setFixedPitch(true);
+    font.setStyleHint(QFont::Monospace);
+    auto fontMetrics = QFontMetrics(font);
+    mCPPTextEdit->setFont(font);
+    mCPPTextEdit->setTabStopWidth(4 * fontMetrics.width(' '));
+    mCPPTextEdit->setLineWrapMode(QTextEdit::LineWrapMode::NoWrap);
+    auto palette = mCPPTextEdit->palette();
+    palette.setColor(QPalette::Base, QColor("#1E1E1E"));
+    palette.setColor(QPalette::Text, QColor("#D4D4D4"));
+    mCPPTextEdit->setPalette(palette);
+    mCPPTextEdit->document()->setDocumentMargin(10);
+    mCPPSyntaxHighlighter = new CPPSyntaxHighlighter(mCPPTextEdit->document());
+
+    mTabCPP->layout()->addWidget(mCPPTextEdit);
 }
 
 void S2Plugin::ViewEntity::closeEvent(QCloseEvent* event)
@@ -283,4 +309,16 @@ void S2Plugin::ViewEntity::entityOffsetDropped(size_t entityOffset)
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, false);
     mMemoryComparisonScrollArea->setVisible(true);
     updateMemoryViewOffsetAndSize();
+}
+
+void S2Plugin::ViewEntity::tabChanged(int index)
+{
+    if (mMainTabWidget->currentWidget() == mTabCPP)
+    {
+        mCPPSyntaxHighlighter->clearRules();
+        CPPGenerator g(mToolbar->configuration());
+        g.generate(mEntity->entityType(), mCPPSyntaxHighlighter);
+        mCPPSyntaxHighlighter->finalCustomRuleAdded();
+        mCPPTextEdit->setText(QString::fromStdString(g.result()));
+    }
 }

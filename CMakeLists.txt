@@ -62,6 +62,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/ParticleEmittersList.h
 	include/Data/VirtualTableLookup.h
 	include/Data/StringsTable.h
+	include/Data/CPPGenerator.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
@@ -81,6 +82,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/TreeWidgetItemNumeric.h
 	include/QtHelpers/ItemModelVirtualTable.h
 	include/QtHelpers/ItemModelStringsTable.h
+	include/QtHelpers/CPPSyntaxHighlighter.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/MemoryMappedData.cpp
@@ -94,6 +96,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/ParticleEmittersList.cpp
 	src/Data/VirtualTableLookup.cpp
 	src/Data/StringsTable.cpp
+	src/Data/CPPGenerator.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
@@ -113,6 +116,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/TreeWidgetItemNumeric.cpp
 	src/QtHelpers/ItemModelVirtualTable.cpp
 	src/QtHelpers/ItemModelStringsTable.cpp
+	src/QtHelpers/CPPSyntaxHighlighter.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )

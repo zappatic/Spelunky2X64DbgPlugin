@@ -425,3 +425,8 @@ void S2Plugin::Entity::updateComparedMemoryViewHighlights()
         }
     }
 }
+
+std::string S2Plugin::Entity::entityType() const noexcept
+{
+    return mEntityType;
+}

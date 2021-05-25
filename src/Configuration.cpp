@@ -231,6 +231,21 @@ const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfE
     return mTypeFieldsEntitySubclasses.at(type);
 }
 
+bool S2Plugin::Configuration::isEntitySubclass(const std::string& type) const
+{
+    return (mTypeFieldsEntitySubclasses.count(type) > 0);
+}
+
+bool S2Plugin::Configuration::isPointer(const std::string& type) const
+{
+    return (mTypeFieldsPointers.count(type) > 0);
+}
+
+bool S2Plugin::Configuration::isInlineStruct(const std::string& type) const
+{
+    return (mTypeFieldsInlineStructs.count(type) > 0);
+}
+
 S2Plugin::Spelunky2* S2Plugin::Configuration::spelunky2() const noexcept
 {
     return mSpelunky2.get();

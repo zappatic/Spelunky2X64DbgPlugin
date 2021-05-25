@@ -130,6 +130,39 @@ namespace S2Plugin
         {MemoryFieldType::StringsTableID, "StringsTableID"},
     };
 
+    // for C++ header generation
+    const static std::unordered_map<MemoryFieldType, std::string> gsMemoryFieldTypeToCPPTypeMapping = {
+        {MemoryFieldType::CodePointer, "size_t"},
+        {MemoryFieldType::DataPointer, "size_t"},
+        {MemoryFieldType::Byte, "int8_t"},
+        {MemoryFieldType::UnsignedByte, "uint8_t"},
+        {MemoryFieldType::Word, "int16_t"},
+        {MemoryFieldType::UnsignedWord, "uint16_t"},
+        {MemoryFieldType::Dword, "int32_t"},
+        {MemoryFieldType::UnsignedDword, "uint32_t"},
+        {MemoryFieldType::Qword, "int64_t"},
+        {MemoryFieldType::UnsignedQword, "uint64_t"},
+        {MemoryFieldType::Float, "float"},
+        {MemoryFieldType::Bool, "bool"},
+        {MemoryFieldType::Flags32, "uint32_t"},
+        {MemoryFieldType::Flags16, "uint16_t"},
+        {MemoryFieldType::Flags8, "uint8_t"},
+        {MemoryFieldType::EntityPointer, "Entity*"},
+        {MemoryFieldType::EntityDBPointer, "EntityDB*"},
+        {MemoryFieldType::EntityDBID, "uint32_t"},
+        {MemoryFieldType::EntityUID, "int32_t"},
+        {MemoryFieldType::ParticleDBID, "uint32_t"},
+        {MemoryFieldType::ParticleDBPointer, "ParticleDB*"},
+        {MemoryFieldType::Vector, "Vector"},
+        {MemoryFieldType::ConstCharPointerPointer, "const char**"},
+        {MemoryFieldType::UndeterminedThemeInfoPointer, "ThemeInfo*"},
+        {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRooms*"},
+        {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMeta*"},
+        {MemoryFieldType::LevelGenPointer, "LevelGen*"},
+        {MemoryFieldType::UTF16Char, "uint16_t"},
+        {MemoryFieldType::StringsTableID, "uint32_t"},
+    };
+
     // the type strings as they occur in Spelunky2.json
     const static std::unordered_map<std::string, MemoryFieldType> gsJSONStringToMemoryFieldTypeMapping = {
         {"Skip", MemoryFieldType::Skip},
