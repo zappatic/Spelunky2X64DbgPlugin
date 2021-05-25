@@ -61,6 +61,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/EntityList.h
 	include/Data/ParticleEmittersList.h
 	include/Data/VirtualTableLookup.h
+	include/Data/StringsTable.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
@@ -69,6 +70,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewState.h
 	include/Views/ViewLevelGen.h
 	include/Views/ViewVirtualTable.h
+	include/Views/ViewStringsTable.h
 	include/QtHelpers/HTMLDelegate.h
 	include/QtHelpers/TreeViewMemoryFields.h
 	include/QtHelpers/WidgetMemoryView.h
@@ -78,6 +80,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/TableWidgetItemNumeric.h
 	include/QtHelpers/TreeWidgetItemNumeric.h
 	include/QtHelpers/ItemModelVirtualTable.h
+	include/QtHelpers/ItemModelStringsTable.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/MemoryMappedData.cpp
@@ -90,6 +93,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityList.cpp
 	src/Data/ParticleEmittersList.cpp
 	src/Data/VirtualTableLookup.cpp
+	src/Data/StringsTable.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
@@ -98,6 +102,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewState.cpp
 	src/Views/ViewLevelGen.cpp
 	src/Views/ViewVirtualTable.cpp
+	src/Views/ViewStringsTable.cpp
 	src/QtHelpers/HTMLDelegate.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
 	src/QtHelpers/WidgetMemoryView.cpp
@@ -107,6 +112,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/TableWidgetItemNumeric.cpp
 	src/QtHelpers/TreeWidgetItemNumeric.cpp
 	src/QtHelpers/ItemModelVirtualTable.cpp
+	src/QtHelpers/ItemModelStringsTable.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )

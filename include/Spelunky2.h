@@ -85,6 +85,7 @@ namespace S2Plugin
         ThemeInfoName,
         LevelGenPointer,
         UTF16Char,
+        StringsTableID,
     };
 
     // for display purposes
@@ -126,6 +127,7 @@ namespace S2Plugin
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
+        {MemoryFieldType::StringsTableID, "StringsTableID"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -165,6 +167,7 @@ namespace S2Plugin
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
+        {"StringsTableID", MemoryFieldType::StringsTableID},
     };
 
     struct MemoryField

@@ -38,6 +38,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityUID:
+        case MemoryFieldType::StringsTableID:
             offset += 4;
             break;
         case MemoryFieldType::CodePointer:

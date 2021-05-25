@@ -123,6 +123,7 @@ void S2Plugin::ViewParticleDB::initializeUI()
 
         mCompareTableWidget = new QTableWidget(mToolbar->particleDB()->particleEmittersList()->count(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
+        mCompareTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
                                                                      << "Name"
                                                                      << "Value");
@@ -417,8 +418,11 @@ std::pair<QString, QVariant> S2Plugin::ViewParticleDB::valueForField(const Memor
 
 void S2Plugin::ViewParticleDB::comparisonCellClicked(int row, int column)
 {
-    auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
-    showIndex(clickedID);
+    if (column == 1)
+    {
+        auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
+        showIndex(clickedID);
+    }
 }
 
 void S2Plugin::ViewParticleDB::groupedComparisonItemClicked(QTreeWidgetItem* item, int column)

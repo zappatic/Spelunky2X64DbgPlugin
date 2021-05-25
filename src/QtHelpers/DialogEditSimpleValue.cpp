@@ -71,6 +71,7 @@ S2Plugin::DialogEditSimpleValue::DialogEditSimpleValue(const QString& fieldName,
             break;
         }
         case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::StringsTableID:
         {
             // mLineEditDecValue->setValidator(new QIntValidator((std::numeric_limits<uint32_t>::min)(), (std::numeric_limits<uint32_t>::max)(), this));
             uint32_t v = Script::Memory::ReadDword(mMemoryOffset);
@@ -178,6 +179,7 @@ void S2Plugin::DialogEditSimpleValue::changeBtnClicked()
             break;
         }
         case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::StringsTableID:
         {
             uint32_t v = mLineEditDecValue->text().toULong();
             Script::Memory::WriteDword(mMemoryOffset, v);
@@ -243,6 +245,7 @@ void S2Plugin::DialogEditSimpleValue::decValueChanged(const QString& text)
             break;
         }
         case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::StringsTableID:
         {
             uint32_t v = mLineEditDecValue->text().toULong();
             ss << "0x" << std::hex << std::setw(8) << std::setfill('0') << v;

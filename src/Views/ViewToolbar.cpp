@@ -5,13 +5,17 @@
 #include "Views/ViewLevelGen.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewState.h"
+#include "Views/ViewStringsTable.h"
 #include "Views/ViewVirtualTable.h"
 #include "pluginmain.h"
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mLevelGen(levelGen), mVirtualTableLookup(vtl), mConfiguration(config), mMDIArea(mdiArea)
+
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl, Configuration* config, QMdiArea* mdiArea,
+                                   QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mConfiguration(config),
+      mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -31,6 +35,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, S
     btnParticleDB->setText("Particle DB");
     mMainLayout->addWidget(btnParticleDB);
     QObject::connect(btnParticleDB, &QPushButton::clicked, this, &ViewToolbar::showParticleDB);
+
+    auto btnStringsTable = new QPushButton(this);
+    btnStringsTable->setText("Strings Table");
+    mMainLayout->addWidget(btnStringsTable);
+    QObject::connect(btnStringsTable, &QPushButton::clicked, this, &ViewToolbar::showStringsTable);
 
     auto btnState = new QPushButton(this);
     btnState->setText("State");
@@ -121,6 +130,16 @@ S2Plugin::ViewVirtualTable* S2Plugin::ViewToolbar::showVirtualTableLookup()
     return nullptr;
 }
 
+void S2Plugin::ViewToolbar::showStringsTable()
+{
+    if (mStringsTable->loadStringsTable())
+    {
+        auto w = new ViewStringsTable(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
+}
+
 void S2Plugin::ViewToolbar::showEntity(size_t offset)
 {
     auto w = new ViewEntity(offset, this);
@@ -187,6 +206,12 @@ S2Plugin::VirtualTableLookup* S2Plugin::ViewToolbar::virtualTableLookup()
     return mVirtualTableLookup;
 }
 
+S2Plugin::StringsTable* S2Plugin::ViewToolbar::stringsTable()
+{
+    mStringsTable->loadStringsTable();
+    return mStringsTable;
+}
+
 S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
 {
     return mConfiguration;
@@ -221,5 +246,6 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mEntityDB->reset();
     mParticleDB->reset();
     mVirtualTableLookup->reset();
+    mStringsTable->reset();
     mConfiguration->spelunky2()->reset();
 }

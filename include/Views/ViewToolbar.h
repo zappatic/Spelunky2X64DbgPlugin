@@ -5,6 +5,7 @@
 #include "Data/LevelGen.h"
 #include "Data/ParticleDB.h"
 #include "Data/State.h"
+#include "Data/StringsTable.h"
 #include "Data/VirtualTableLookup.h"
 #include <QDockWidget>
 #include <QMdiArea>
@@ -20,7 +21,8 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
+        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl, Configuration* config, QMdiArea* mdiArea,
+                    QWidget* parent = nullptr);
         void showEntity(size_t offset);
 
         State* state();
@@ -28,6 +30,7 @@ namespace S2Plugin
         EntityDB* entityDB();
         ParticleDB* particleDB();
         VirtualTableLookup* virtualTableLookup();
+        StringsTable* stringsTable();
         Configuration* configuration() const noexcept;
 
         void resetSpelunky2Data();
@@ -39,6 +42,7 @@ namespace S2Plugin
         void showLevelGen();
         void showEntities();
         ViewVirtualTable* showVirtualTableLookup();
+        void showStringsTable();
         void clearLabels();
         void reloadConfig();
 
@@ -48,6 +52,7 @@ namespace S2Plugin
         State* mState;
         LevelGen* mLevelGen;
         VirtualTableLookup* mVirtualTableLookup;
+        StringsTable* mStringsTable;
         Configuration* mConfiguration;
 
         QMdiArea* mMDIArea;

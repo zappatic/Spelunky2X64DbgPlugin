@@ -163,6 +163,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
+        case MemoryFieldType::StringsTableID:
             fieldSize = 4;
             break;
         case MemoryFieldType::CodePointer:
@@ -243,6 +244,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
+        case MemoryFieldType::StringsTableID:
             isDifferent = Script::Memory::ReadDword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadDword(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 4;
             break;

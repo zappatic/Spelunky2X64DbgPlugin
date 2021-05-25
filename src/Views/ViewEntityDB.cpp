@@ -126,6 +126,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
         mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->count(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
+        mCompareTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
                                                                      << "Name"
                                                                      << "Value");
@@ -380,6 +381,7 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
         }
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::StringsTableID:
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Flags32:
         {
@@ -434,8 +436,11 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
 
 void S2Plugin::ViewEntityDB::comparisonCellClicked(int row, int column)
 {
-    auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
-    showIndex(clickedID);
+    if (column == 1)
+    {
+        auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
+        showIndex(clickedID);
+    }
 }
 
 void S2Plugin::ViewEntityDB::groupedComparisonItemClicked(QTreeWidgetItem* item, int column)

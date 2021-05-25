@@ -114,6 +114,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::Float:
         case MemoryFieldType::Bool:
+        case MemoryFieldType::StringsTableID:
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
@@ -893,6 +894,24 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
+        case MemoryFieldType::StringsTableID:
+        {
+            uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
+            itemValue->setData(QString("%1: %2").arg(value).arg(mToolbar->stringsTable()->nameForID(value)), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            uint32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
+            itemComparisonValue->setData(QString("%1: %2").arg(comparisonValue).arg(mToolbar->stringsTable()->nameForID(comparisonValue)), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("0x%08lX", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            break;
+        }
         case MemoryFieldType::ParticleDBID:
         {
             uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
@@ -1333,6 +1352,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::UnsignedQword:
                 case MemoryFieldType::Float:
                 case MemoryFieldType::UTF16Char:
+                case MemoryFieldType::StringsTableID:
                 {
                     auto offset = clickedItem->data(gsRoleMemoryOffset).toULongLong();
                     if (offset != 0)

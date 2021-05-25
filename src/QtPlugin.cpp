@@ -4,6 +4,7 @@
 #include "Data/LevelGen.h"
 #include "Data/ParticleDB.h"
 #include "Data/State.h"
+#include "Data/StringsTable.h"
 #include "Data/VirtualTableLookup.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -23,6 +24,7 @@ static S2Plugin::ParticleDB* gsParticleDB;
 static S2Plugin::State* gsState;
 static S2Plugin::LevelGen* gsLevelGen;
 static S2Plugin::VirtualTableLookup* gsVirtualTableLookup;
+static S2Plugin::StringsTable* gsStringsTable;
 
 static HANDLE hSetupEvent;
 static HANDLE hStopEvent;
@@ -74,8 +76,9 @@ void QtPlugin::Setup()
         gsState = new S2Plugin::State(gsConfiguration);
         gsLevelGen = new S2Plugin::LevelGen(gsConfiguration, gsState);
         gsVirtualTableLookup = new S2Plugin::VirtualTableLookup(gsConfiguration);
+        gsStringsTable = new S2Plugin::StringsTable(gsConfiguration);
 
-        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsState, gsLevelGen, gsVirtualTableLookup, gsConfiguration, gsMDIArea, parent);
+        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsConfiguration, gsMDIArea, parent);
         gsSpelunky2MainWindow->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, gsViewToolbar);
 
         GuiAddQWidgetTab(gsSpelunky2MainWindow);
