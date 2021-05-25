@@ -3732,7 +3732,7 @@
         "type": "EntityPointer",
         "comment": "if killed, the whole beam goes out"
       },
-      { "field": "unknown_pointer", "type": "DataPointer" },
+      { "field": "fx_pointer", "type": "EntityPointer" },
       {
         "field": "sound_particle",
         "type": "PositionInfoPointer",
@@ -3740,7 +3740,11 @@
       },
       { "field": "illumination", "type": "IlluminationPointer" },
       { "field": "bounce_force?", "type": "Float", "comment": "max 1.0 ?" },
-      { "field": "on_off", "type": "Bool" },
+      {
+        "field": "on_off",
+        "type": "Bool",
+        "comment": "starts the sound + first_item_beam but not fx_pointer for some reason"
+      },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedWord" },
       {
