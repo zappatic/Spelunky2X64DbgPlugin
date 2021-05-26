@@ -115,7 +115,7 @@ Entity, State, EntityDB and ParticleDB windows all have a "Label" button as well
 
 ![Virtual table](/resources/docs_virtual_table.png)
 
-To look up an entity in the virtual table, make sure you are in a level containing the entity in question, and press the 'Detect entities' button. Uncheck the imported symbols and non-address entries to clear up the list. If you leave 'Show symbol-less entries' unchecked, you will jump to the entity when you type the symbol name in the search box. If you check it, just the filtered list will be shown.
+To look up an entity in the virtual table, make sure you are in a level containing the entity in question, and press the 'Detect entities' button. Uncheck the imported symbols and non-address entries to clear up the list. If you leave 'Show symbol-less entries' checked, you will jump to the entity when you type the symbol name in the search box. If you uncheck it, just the filtered list will be shown.
 
 The table offset is the offset from the first entry in the table, D3Dcompile.
 
