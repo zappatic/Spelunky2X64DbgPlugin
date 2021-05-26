@@ -15,7 +15,16 @@ void S2Plugin::HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     options.text = "";
     options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
 
-    painter->translate(options.rect.left(), options.rect.top() - 2);
+    if (mCenterVertically)
+    {
+        doc.setTextWidth(options.rect.width());
+        auto centerVOffset = (options.rect.height() - doc.size().height()) / 2.0;
+        painter->translate(options.rect.left(), options.rect.top() + centerVOffset);
+    }
+    else
+    {
+        painter->translate(options.rect.left(), options.rect.top() - 2);
+    }
     QRect clip(0, 0, options.rect.width(), options.rect.height());
     doc.drawContents(painter, clip);
 
@@ -32,4 +41,9 @@ QSize S2Plugin::HTMLDelegate::sizeHint(const QStyleOptionViewItem& option, const
     doc.setTextWidth(options.rect.width());
     doc.setDocumentMargin(2);
     return QSize(doc.idealWidth(), doc.size().height());
+}
+
+void S2Plugin::HTMLDelegate::setCenterVertically(bool b)
+{
+    mCenterVertically = b;
 }

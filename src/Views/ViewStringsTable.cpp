@@ -35,7 +35,8 @@ void S2Plugin::ViewStringsTable::initializeUI()
     mMainTableView->horizontalHeader()->setStretchLastSection(true);
     mMainTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     mHTMLDelegate = std::make_unique<HTMLDelegate>();
-    mMainTableView->setItemDelegate(mHTMLDelegate.get());
+    mHTMLDelegate->setCenterVertically(true);
+    mMainTableView->setItemDelegateForColumn(gsColStringMemoryOffset, mHTMLDelegate.get());
     QObject::connect(mMainTableView, &QTableView::clicked, this, &ViewStringsTable::cellClicked);
     mMainLayout->addWidget(mMainTableView);
 
@@ -45,6 +46,7 @@ void S2Plugin::ViewStringsTable::initializeUI()
     mMainTableView->setModel(mModelProxy);
     mMainTableView->setColumnWidth(gsColStringID, 40);
     mMainTableView->setColumnWidth(gsColStringMemoryOffset, 125);
+    mMainTableView->setWordWrap(true);
 }
 
 QSize S2Plugin::ViewStringsTable::sizeHint() const
