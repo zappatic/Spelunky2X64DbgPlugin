@@ -264,6 +264,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         {
             isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 8;
+            break;
         }
         case MemoryFieldType::InlineStructType:
         {

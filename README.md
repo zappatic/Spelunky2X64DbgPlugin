@@ -80,6 +80,11 @@ Hover over the field to see the name on the tooltip.
 
 ![Entity Level](/resources/docs_entity_level.png)
 
+The C++ tab gives you a copy-pasteable C++ header for use in e.g. Overlunky.
+
+![Entity c++ header](/resources/docs_entity_cpp.png)
+
+
 You can compare two entities by first opening an entity window, and then dragging another entity from the 'Entities' window on top of the original entity window. Two more columns will appear in the fields table. The fields with an orange background differ from the original entity.
 
 ![Entity Fields Comparison](/resources/docs_entity_compare_fields.png)
@@ -87,6 +92,13 @@ You can compare two entities by first opening an entity window, and then draggin
 The memory viewer (as well as the level viewer) also show the other entity for comparison.
 
 ![Entity Memory Comparison](/resources/docs_entity_compare_memory.png)
+
+## Strings table
+
+Shows a list of all the strings defined in the game.
+
+![Strings table](/resources/docs_stringstable.png)
+
 
 
 ## Advanced usage
