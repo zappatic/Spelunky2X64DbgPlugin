@@ -120,7 +120,8 @@
     "ForceField": "Entity",
     "HorizontalFF": "Entity",
     "StickyTrap": "Entity",
-    "SpikeballTrap": "Entity"
+    "SpikeballTrap": "Entity",
+    "SlidingWallCeiling": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -135,6 +136,7 @@
     "FLOOR_CHALLENGE_WAITROOM": "ForceField",
     "FLOOR_SPIKEBALL_CEILING": "SpikeballTrap",
     "FLOOR_STICKYTRAP_CEILING": "StickyTrap",
+    "FLOOR_SLIDINGWALL_CEILING": "SlidingWallCeiling",
     "ITEM_CRATE": "Container",
     "ITEM_WEBGUN": "Gun",
     "ITEM_SHOTGUN": "Gun",
@@ -3908,6 +3910,30 @@
       { "field": "unknown27", "type": "Word" },
       { "field": "unknown28", "type": "Word" },
       { "field": "unknown29", "type": "Dword" }
+    ],
+    "SlidingWallCeiling": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "attached_piece", "type": "EntityPointer" },
+      { "field": "active_floor_part", "type": "EntityUID" },
+      {
+        "field": "state",
+        "type": "Flags8",
+        "flags": {
+          "1": "Top",
+          "2": "pause",
+          "3": "wrong_pause",
+          "4": "wrong_pause",
+          "5": "wrong_pause",
+          "6": "wrong_pause",
+          "7": "wrong_pause",
+          "8": "wrong_pause"
+        },
+        "comment": "i labeled some as wrong_pause cause they are probably not used, they pause the movement but not the sound"
+      },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" }
     ]
   }
 }
