@@ -131,6 +131,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::Vector:
         case MemoryFieldType::UTF16Char:
+        case MemoryFieldType::State8:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
@@ -767,7 +768,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 counter++;
             }
             itemValue->setData(QString::fromStdString(ss.str()), Qt::DisplayRole);
-            auto newHexValue = QString::asprintf("0x%02lX", value);
+            auto newHexValue = QString::asprintf("0x%02X", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemField->setData(value, gsRoleRawValue);            // so we can access in MemoryFieldType::Flag
@@ -795,7 +796,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 counter++;
             }
             itemComparisonValue->setData(QString::fromStdString(ss2.str()), Qt::DisplayRole);
-            auto hexComparisonValue = QString::asprintf("0x%02lX", comparisonValue);
+            auto hexComparisonValue = QString::asprintf("0x%02X", comparisonValue);
             itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
             itemField->setData(comparisonValue, gsRoleRawComparisonValue);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -811,6 +812,38 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, itemField);
                 }
             }
+            break;
+        }
+        case MemoryFieldType::State8:
+        {
+            std::string stateFieldName = "";
+            if (!field.parentPointerJsonName.empty())
+            {
+                stateFieldName = field.parentPointerJsonName + "." + field.name;
+            }
+            else if (!field.parentStructJsonName.empty())
+            {
+                stateFieldName = field.parentStructJsonName + "." + field.name;
+            }
+            else
+            {
+                stateFieldName = fieldNameOverride;
+            }
+
+            int8_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, value));
+            itemValue->setData(stateTitle, Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%02X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            int8_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadByte(comparisonMemoryOffset));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, comparisonValue));
+            itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
         case MemoryFieldType::Vector:

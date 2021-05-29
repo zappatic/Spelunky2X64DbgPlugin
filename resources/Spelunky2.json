@@ -295,7 +295,9 @@
     "ArenaGameplayScreenPointer",
     "ArenaScorePillarsScreenPointer",
     "PlayerInputs",
-    "InputMappingPointer"
+    "InputMappingPointer",
+    "QuestsInfoPointer",
+    "MysteryPointer3"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -1103,7 +1105,7 @@
       },
       { "field": "unknown17", "type": "UnsignedQword" },
       { "field": "unknown18", "type": "UnsignedQword" },
-      { "field": "unknown19", "type": "UnsignedDword" },
+      { "field": "next_entity_uid", "type": "UnsignedDword" },
       { "field": "unknown20", "type": "UnsignedWord" },
       { "field": "unknown21", "type": "UnsignedWord" },
       { "field": "player_inputs", "type": "PlayerInputs" },
@@ -1112,12 +1114,115 @@
       { "field": "layer0", "type": "LayerPointer" },
       { "field": "layer1", "type": "LayerPointer" },
       { "field": "unknown22", "type": "DataPointer" },
-      { "field": "unknown23", "type": "DataPointer" },
+      { "field": "quests", "type": "QuestsInfoPointer" },
       { "field": "unknown24", "type": "DataPointer" },
       { "field": "unknown25", "type": "DataPointer" },
       { "field": "particle_emitters_info", "type": "DataPointer" },
       { "field": "unknown26", "type": "DataPointer" },
       { "field": "unknown27", "type": "DataPointer" }
+    ],
+    "QuestsInfoPointer": [
+      { "field": "unknown1", "type": "MysteryPointer3" },
+      { "field": "unknown2", "type": "MysteryPointer3" },
+      { "field": "unknown3", "type": "MysteryPointer3" },
+      { "field": "unknown4", "type": "MysteryPointer3" },
+      { "field": "unknown5", "type": "MysteryPointer3" },
+      { "field": "unknown6", "type": "MysteryPointer3" },
+      {
+        "field": "yang_state",
+        "type": "State8",
+        "states": {
+          "-1": "Angered Yang",
+          "0": "Quest not started",
+          "2": "Turkey pen spawned",
+          "3": "Both turkeys delivered",
+          "4": "Turkey shop spawned",
+          "5": "One turkey bought in turkey shop",
+          "6": "Two turkeys bought in turkey shop",
+          "7": "Three turkeys bought in turkey shop"
+        }
+      },
+      {
+        "field": "jungle_sisters_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Parsley rescued",
+          "2": "Parsnip rescued",
+          "3": "Parmesan rescued",
+          "4": "Warning one way door",
+          "5": "Great party, huh? Ooba",
+          "6": "I wish I brought a jacket",
+          "7": "",
+          "8": ""
+        },
+        "comment": "-1 = angry"
+      },
+      {
+        "field": "van_horsing_state",
+        "type": "State8",
+        "states": {
+          "0": "Quest not started",
+          "1": "Jailcell spawned",
+          "2": "First encounter (diamond thrown)",
+          "3": "Vlad's castle spot spawned",
+          "4": "Horsing shot Vlad",
+          "5": "Temple hideout spawned",
+          "6": "Second encounter (alien compass thrown)",
+          "7": "Tusk cellar (At least she removed my curse)"
+        }
+      },
+      {
+        "field": "sparrow_state",
+        "type": "State8",
+        "states": {
+          "0": "Quest not started",
+          "1": "Thief status",
+          "2": "Finished level with thief status",
+          "3": "First hideout spawned (rope throw)",
+          "4": "First encounter (ropes thrown)",
+          "5": "Tusk idol stolen",
+          "6": "Second hideout spawned (Neo Babylon)",
+          "7": "Second encounter (meet me at Tusk's basement)",
+          "8": "Meeting at Tusk's basement (get past lasers)"
+        }
+      },
+      {
+        "field": "madame_tusk_state",
+        "type": "State8",
+        "states": {
+          "-2": "Angered Tusk",
+          "-1": "Dead Tusk",
+          "0": "Quest not started",
+          "1": "Dice house spawned",
+          "2": "High roller status",
+          "3": "Palace welcome message"
+        }
+      },
+      {
+        "field": "beg_state",
+        "type": "State8",
+        "states": {
+          "0": "Quest not started",
+          "1": "Altar destroyed",
+          "2": "Spawned with bomb bag",
+          "3": "Bomb bag thrown",
+          "4": "Spawned with true crown",
+          "5": "True crown thrown"
+        }
+      },
+      { "field": "unknown13", "type": "UnsignedByte" },
+      { "field": "unknown14", "type": "UnsignedByte" },
+      { "field": "unknown15", "type": "UnsignedDword" },
+      { "field": "unknown16", "type": "UnsignedDword" }
+    ],
+    "MysteryPointer3": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "id", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "MysteryPointer2": [
       { "field": "__vftable", "type": "DataPointer" },

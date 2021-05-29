@@ -163,6 +163,17 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 mFlagTitles[key + "." + memField.name] = flagTitles;
             }
 
+            if ((memField.type == MemoryFieldType::State8) && field.contains("states"))
+            {
+                auto statesObject = field["states"];
+                std::unordered_map<uint8_t, std::string> stateTitles;
+                for (const auto& [state, stateTitle] : statesObject.items())
+                {
+                    stateTitles[std::stoi(state)] = stateTitle.get<std::string>();
+                }
+                mStateTitles[key + "." + memField.name] = stateTitles;
+            }
+
             vec.emplace_back(memField);
         }
 
@@ -264,6 +275,23 @@ std::string S2Plugin::Configuration::flagTitle(const std::string& fieldName, uin
         return flagStr;
     }
     return "Unknown flag (" + fieldName + ":" + std::to_string(flagNumber) + ")";
+}
+
+std::string S2Plugin::Configuration::stateTitle(const std::string& fieldName, int64_t state)
+{
+    if (mStateTitles.count(fieldName) > 0)
+    {
+        auto states = mStateTitles.at(fieldName);
+        if (states.count(state) > 0)
+        {
+            auto stateStr = states.at(state);
+            if (!stateStr.empty())
+            {
+                return stateStr;
+            }
+        }
+    }
+    return "UNKNOWN STATE";
 }
 
 bool S2Plugin::Configuration::isKnownEntitySubclass(const std::string& typeName)

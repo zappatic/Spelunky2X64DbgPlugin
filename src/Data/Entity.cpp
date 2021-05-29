@@ -148,6 +148,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Byte:
         case MemoryFieldType::UnsignedByte:
         case MemoryFieldType::Flags8:
+        case MemoryFieldType::State8:
             fieldSize = 1;
             break;
         case MemoryFieldType::Word:
@@ -229,6 +230,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::Byte:
         case MemoryFieldType::UnsignedByte:
         case MemoryFieldType::Flags8:
+        case MemoryFieldType::State8:
             isDifferent = Script::Memory::ReadByte(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadByte(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 1;
             break;

@@ -344,6 +344,7 @@ std::pair<QString, QVariant> S2Plugin::ViewParticleDB::valueForField(const Memor
         }
         case MemoryFieldType::UnsignedByte:
         case MemoryFieldType::Flags8:
+        case MemoryFieldType::State8:
         {
             uint8_t value = Script::Memory::ReadByte(offset);
             return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));

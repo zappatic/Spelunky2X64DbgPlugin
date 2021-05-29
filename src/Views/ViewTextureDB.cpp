@@ -346,6 +346,7 @@ std::pair<QString, QVariant> S2Plugin::ViewTextureDB::valueForField(const Memory
         }
         case MemoryFieldType::UnsignedByte:
         case MemoryFieldType::Flags8:
+        case MemoryFieldType::State8:
         {
             uint8_t value = Script::Memory::ReadByte(offset);
             return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
