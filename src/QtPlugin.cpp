@@ -5,6 +5,7 @@
 #include "Data/ParticleDB.h"
 #include "Data/State.h"
 #include "Data/StringsTable.h"
+#include "Data/TextureDB.h"
 #include "Data/VirtualTableLookup.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -15,12 +16,14 @@
 #include <QMdiArea>
 #include <QWidget>
 
+
 static QMainWindow* gsSpelunky2MainWindow;
 static QMdiArea* gsMDIArea;
 static S2Plugin::Configuration* gsConfiguration;
 static S2Plugin::ViewToolbar* gsViewToolbar;
 static S2Plugin::EntityDB* gsEntityDB;
 static S2Plugin::ParticleDB* gsParticleDB;
+static S2Plugin::TextureDB* gsTextureDB;
 static S2Plugin::State* gsState;
 static S2Plugin::LevelGen* gsLevelGen;
 static S2Plugin::VirtualTableLookup* gsVirtualTableLookup;
@@ -73,12 +76,13 @@ void QtPlugin::Setup()
 
         gsEntityDB = new S2Plugin::EntityDB(gsConfiguration);
         gsParticleDB = new S2Plugin::ParticleDB(gsConfiguration);
+        gsTextureDB = new S2Plugin::TextureDB(gsConfiguration);
         gsState = new S2Plugin::State(gsConfiguration);
         gsLevelGen = new S2Plugin::LevelGen(gsConfiguration, gsState);
         gsVirtualTableLookup = new S2Plugin::VirtualTableLookup(gsConfiguration);
         gsStringsTable = new S2Plugin::StringsTable(gsConfiguration);
 
-        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsConfiguration, gsMDIArea, parent);
+        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsConfiguration, gsMDIArea, parent);
         gsSpelunky2MainWindow->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, gsViewToolbar);
 
         GuiAddQWidgetTab(gsSpelunky2MainWindow);

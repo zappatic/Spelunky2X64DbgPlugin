@@ -38,12 +38,14 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityUID:
+        case MemoryFieldType::TextureDBID:
         case MemoryFieldType::StringsTableID:
             offset += 4;
             break;
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
         case MemoryFieldType::EntityDBPointer:          // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::TextureDBPointer:         // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::EntityPointer:            // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::ParticleDBPointer:        // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::LevelGenPointer:          // not shown inline in the treeview, so just skip sizeof(size_t)

@@ -57,6 +57,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/State.h
 	include/Data/LevelGen.h
 	include/Data/ParticleDB.h
+	include/Data/TextureDB.h
 	include/Data/IDNameList.h
 	include/Data/EntityList.h
 	include/Data/ParticleEmittersList.h
@@ -66,6 +67,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
+	include/Views/ViewTextureDB.h
 	include/Views/ViewEntity.h
 	include/Views/ViewEntities.h
 	include/Views/ViewState.h
@@ -91,6 +93,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/State.cpp
 	src/Data/LevelGen.cpp
 	src/Data/ParticleDB.cpp
+	src/Data/TextureDB.cpp
 	src/Data/IDNameList.cpp
 	src/Data/EntityList.cpp
 	src/Data/ParticleEmittersList.cpp
@@ -100,6 +103,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
+	src/Views/ViewTextureDB.cpp
 	src/Views/ViewEntity.cpp
 	src/Views/ViewEntities.cpp
 	src/Views/ViewState.cpp

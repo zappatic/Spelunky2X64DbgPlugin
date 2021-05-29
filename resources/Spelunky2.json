@@ -271,7 +271,6 @@
     "IlluminationPointer",
     "StateItemsPointer",
     "LayerPointer",
-    "TexturePointer",
     "PlayerInventoryPointer",
     "PositionInfoPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
@@ -293,7 +292,7 @@
     "UnknownScreenPointer", // state.unknown14_screen and state.unknown16_screen
     "ArenaGameplayScreenPointer",
     "ArenaScorePillarsScreenPointer",
-    "PlayerSlots",
+    "PlayerInputs",
     "InputMappingPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
@@ -636,7 +635,7 @@
       { "field": "glow_green", "type": "Float" },
       { "field": "glow_blue", "type": "Float" },
       { "field": "glow_alpha", "type": "Float" },
-      { "field": "texture", "type": "Dword" },
+      { "field": "texture", "type": "TextureDBID" },
       { "field": "technique", "type": "Dword" },
       { "field": "tile_x", "type": "Dword" },
       { "field": "tile_y", "type": "Dword" },
@@ -756,7 +755,7 @@
       { "field": "hor_velocity", "type": "Float" },
       { "field": "ver_velocity", "type": "Float" },
       { "field": "unknown27", "type": "UnsignedDword" },
-      { "field": "texture", "type": "TexturePointer" },
+      { "field": "texture", "type": "TextureDBPointer" },
       { "field": "unknown29", "type": "CodePointer" },
       { "field": "unknown30", "type": "CodePointer" },
       {
@@ -1103,13 +1102,20 @@
       { "field": "unknown17", "type": "UnsignedQword" },
       { "field": "unknown18", "type": "UnsignedQword" },
       { "field": "unknown19", "type": "UnsignedDword" },
+      { "field": "unknown20", "type": "UnsignedWord" },
       { "field": "unknown21", "type": "UnsignedWord" },
-      { "field": "unknown22", "type": "UnsignedWord" },
-      { "field": "multiplayer", "type": "PlayerSlots" },
+      { "field": "player_inputs", "type": "PlayerInputs" },
       { "field": "items", "type": "StateItemsPointer" },
       { "field": "level_gen", "type": "LevelGenPointer" },
       { "field": "layer0", "type": "LayerPointer" },
-      { "field": "layer1", "type": "LayerPointer" }
+      { "field": "layer1", "type": "LayerPointer" },
+      { "field": "unknown22", "type": "DataPointer" },
+      { "field": "unknown23", "type": "DataPointer" },
+      { "field": "unknown24", "type": "DataPointer" },
+      { "field": "unknown25", "type": "DataPointer" },
+      { "field": "particle_emitters_info", "type": "DataPointer" },
+      { "field": "unknown26", "type": "DataPointer" },
+      { "field": "unknown27", "type": "DataPointer" }
     ],
     "MysteryPointer2": [
       { "field": "__vftable", "type": "DataPointer" },
@@ -1136,7 +1142,7 @@
       { "field": "unknown6", "type": "UnsignedWord" },
       { "field": "unknown7", "type": "UnsignedWord" }
     ],
-    "PlayerSlots": [
+    "PlayerInputs": [
       { "field": "player_slot_1", "type": "PlayerSlot" },
       { "field": "player_slot_2", "type": "PlayerSlot" },
       { "field": "player_slot_3", "type": "PlayerSlot" },
@@ -1843,7 +1849,7 @@
       },
       { "field": "angle", "type": "Float" },
       { "field": "rendering_info", "type": "RenderInfoPointer" },
-      { "field": "texture", "type": "TexturePointer" },
+      { "field": "texture", "type": "TextureDBPointer" },
       { "field": "tilew", "type": "Float" },
       { "field": "tileh", "type": "Float" },
       { "field": "camera_layer", "type": "UnsignedByte" },
@@ -1964,7 +1970,7 @@
       { "field": "i148", "type": "Dword" },
       { "field": "i14c", "type": "Dword" },
       { "field": "ai_func", "type": "DataPointer" },
-      { "field": "input_ptr", "type": "PlayerSlots" },
+      { "field": "input_ptr", "type": "PlayerInputs" },
       { "field": "basecamp_button_entity_pointer", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
@@ -2020,7 +2026,7 @@
       { "field": "items", "type": "DataPointer" },
       { "field": "size", "type": "UnsignedQword" }
     ],
-    "TexturePointer": [
+    "TextureDB": [
       { "field": "id", "type": "UnsignedQword" },
       { "field": "name", "type": "ConstCharPointerPointer" },
       { "field": "width", "type": "UnsignedDword" },
@@ -3038,7 +3044,7 @@
       { "field": "unknown21", "type": "UnsignedByte" },
       { "field": "unknown22", "type": "UnsignedDword" },
       { "field": "unknown23", "type": "RenderInfoPointer" },
-      { "field": "texture", "type": "TexturePointer" },
+      { "field": "texture", "type": "TextureDBPointer" },
       { "field": "texture_offset_x", "type": "Float" },
       { "field": "texture_offset_y", "type": "Float" }
     ],
@@ -3126,7 +3132,7 @@
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
       { "field": "unknown38", "type": "UnsignedDword" },
-      { "field": "texture", "type": "TexturePointer" },
+      { "field": "texture", "type": "TextureDBPointer" },
       { "field": "texture_name", "type": "ConstCharPointerPointer" }
     ],
     "YetiQueen": [

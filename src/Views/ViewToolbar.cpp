@@ -6,16 +6,16 @@
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewState.h"
 #include "Views/ViewStringsTable.h"
+#include "Views/ViewTextureDB.h"
 #include "Views/ViewVirtualTable.h"
 #include "pluginmain.h"
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl, Configuration* config, QMdiArea* mdiArea,
-                                   QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mState(state), mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mConfiguration(config),
-      mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl,
+                                   Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mState(state), mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl),
+      mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -30,6 +30,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, S
     btnEntityDB->setText("Entity DB");
     mMainLayout->addWidget(btnEntityDB);
     QObject::connect(btnEntityDB, &QPushButton::clicked, this, &ViewToolbar::showEntityDB);
+
+    auto btnTextureDB = new QPushButton(this);
+    btnTextureDB->setText("Texture DB");
+    mMainLayout->addWidget(btnTextureDB);
+    QObject::connect(btnTextureDB, &QPushButton::clicked, this, &ViewToolbar::showTextureDB);
 
     auto btnParticleDB = new QPushButton(this);
     btnParticleDB->setText("Particle DB");
@@ -91,6 +96,18 @@ S2Plugin::ViewParticleDB* S2Plugin::ViewToolbar::showParticleDB()
     if (mParticleDB->loadParticleDB())
     {
         auto w = new ViewParticleDB(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+        return w;
+    }
+    return nullptr;
+}
+
+S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
+{
+    if (mTextureDB->loadTextureDB())
+    {
+        auto w = new ViewTextureDB(this);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
         return w;
@@ -200,6 +217,12 @@ S2Plugin::ParticleDB* S2Plugin::ViewToolbar::particleDB()
     return mParticleDB;
 }
 
+S2Plugin::TextureDB* S2Plugin::ViewToolbar::textureDB()
+{
+    mTextureDB->loadTextureDB();
+    return mTextureDB;
+}
+
 S2Plugin::VirtualTableLookup* S2Plugin::ViewToolbar::virtualTableLookup()
 {
     mVirtualTableLookup->loadTable();
@@ -236,6 +259,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
     mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();
+    mTextureDB->reset();
 }
 
 void S2Plugin::ViewToolbar::resetSpelunky2Data()
@@ -245,6 +269,7 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();
+    mTextureDB->reset();
     mVirtualTableLookup->reset();
     mStringsTable->reset();
     mConfiguration->spelunky2()->reset();
