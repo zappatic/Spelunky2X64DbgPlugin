@@ -9,7 +9,6 @@
     "Gun": "Movable",
     "CrushTrap": "Movable",
     "Mattock": "Movable",
-    "Jetpack": "Movable",
     "Bomb": "Movable",
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
@@ -121,7 +120,10 @@
     "HorizontalFF": "Entity",
     "StickyTrap": "Entity",
     "SpikeballTrap": "Entity",
-    "SlidingWallCeiling": "Entity"
+    "SlidingWallCeiling": "Entity",
+    "BackPack": "Movable",
+    "Jetpack": "BackPack",
+    "Hoverpack": "BackPack",
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -143,7 +145,9 @@
     "ITEM_CLONEGUN": "Gun",
     "ITEM_PLASMACANNON": "Gun",
     "ITEM_MATTOCK": "Mattock",
+    "ITEM_HOVERPACK": "Hoverpack",
     "ITEM_JETPACK": "Jetpack",
+    "ITEM_POWERPACK": "BackPack",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
     "ITEM_CAPE": "Cape",
@@ -2157,12 +2161,34 @@
       }
     ],
     "Mattock": [{ "field": "remaining", "type": "Dword" }],
+    "BackPack": [
+      { "field": "explosion_trigger", "type": "Bool" },
+      {
+        "field": "explosion_timer",
+        "type": "UnsignedByte",
+        "comment": "counts from 0 to 30"
+      },
+      { "field": "unknown1", "type": "UnsignedWord" },
+      { "field": "unknown2", "type": "UnsignedDword" }
+    ],
     "Jetpack": [
-      { "field": "unknown1", "type": "Dword" },
-      { "field": "unknown2", "type": "Dword" },
-      { "field": "unknown3", "type": "Dword" },
-      { "field": "unknown4", "type": "Dword" },
-      { "field": "fuel", "type": "UnsignedByte" }
+      {
+        "field": "flame_on",
+        "type": "Bool",
+        "comment": "Can be used as is_on"
+      },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      {
+        "field": "fly_time?",
+        "type": "UnsignedDword",
+        "comment": "it's per level, not even per jatpack lol, it also adds at when it explodes"
+      },
+      "Hoverpack": [
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      { "field": "unknown4?", "type": "UnsignedDword" },
+      { "field": "is_on", "type": "Bool" }
     ],
     "Bomb": [
       { "field": "pos_info", "type": "PositionInfoPointer" },
