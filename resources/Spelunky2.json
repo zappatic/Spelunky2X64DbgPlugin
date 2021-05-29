@@ -123,7 +123,7 @@
     "SlidingWallCeiling": "Entity",
     "BackPack": "Movable",
     "Jetpack": "BackPack",
-    "Hoverpack": "BackPack",
+    "Hoverpack": "BackPack"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -2177,17 +2177,19 @@
         "type": "Bool",
         "comment": "Can be used as is_on"
       },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedWord" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedWord" },
       {
         "field": "fly_time?",
         "type": "UnsignedDword",
         "comment": "it's per level, not even per jatpack lol, it also adds at when it explodes"
       },
-      "Hoverpack": [
-      { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "UnsignedWord" },
-      { "field": "unknown4?", "type": "UnsignedDword" },
+      { "field": "fuel", "type": "UnsignedByte" }
+    ],
+    "Hoverpack": [
+      { "field": "unknown1", "type": "UnsignedWord" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "is_on", "type": "Bool" }
     ],
     "Bomb": [
