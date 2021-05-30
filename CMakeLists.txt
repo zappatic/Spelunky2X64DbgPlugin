@@ -80,10 +80,12 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/WidgetSpelunkyLevel.h
 	include/QtHelpers/WidgetSpelunkyRooms.h
 	include/QtHelpers/DialogEditSimpleValue.h
+	include/QtHelpers/DialogEditState.h
 	include/QtHelpers/TableWidgetItemNumeric.h
 	include/QtHelpers/TreeWidgetItemNumeric.h
 	include/QtHelpers/ItemModelVirtualTable.h
 	include/QtHelpers/ItemModelStringsTable.h
+	include/QtHelpers/ItemModelStates.h
 	include/QtHelpers/CPPSyntaxHighlighter.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
@@ -116,10 +118,12 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/WidgetSpelunkyLevel.cpp
 	src/QtHelpers/WidgetSpelunkyRooms.cpp
 	src/QtHelpers/DialogEditSimpleValue.cpp
+	src/QtHelpers/DialogEditState.cpp
 	src/QtHelpers/TableWidgetItemNumeric.cpp
 	src/QtHelpers/TreeWidgetItemNumeric.cpp
 	src/QtHelpers/ItemModelVirtualTable.cpp
 	src/QtHelpers/ItemModelStringsTable.cpp
+	src/QtHelpers/ItemModelStates.cpp
 	src/QtHelpers/CPPSyntaxHighlighter.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc

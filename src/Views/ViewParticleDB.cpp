@@ -338,18 +338,19 @@ std::pair<QString, QVariant> S2Plugin::ViewParticleDB::valueForField(const Memor
             return std::make_pair(QString::asprintf("0x%016llX", value), QVariant::fromValue(value));
         }
         case MemoryFieldType::Byte:
+        case MemoryFieldType::State8:
         {
             int8_t value = Script::Memory::ReadByte(offset);
             return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
         }
         case MemoryFieldType::UnsignedByte:
         case MemoryFieldType::Flags8:
-        case MemoryFieldType::State8:
         {
             uint8_t value = Script::Memory::ReadByte(offset);
             return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
         }
         case MemoryFieldType::Word:
+        case MemoryFieldType::State16:
         {
             int16_t value = Script::Memory::ReadWord(offset);
             return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
@@ -361,6 +362,7 @@ std::pair<QString, QVariant> S2Plugin::ViewParticleDB::valueForField(const Memor
             return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
         }
         case MemoryFieldType::Dword:
+        case MemoryFieldType::State32:
         {
             int32_t value = Script::Memory::ReadDword(offset);
             return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));

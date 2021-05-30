@@ -163,13 +163,26 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 mFlagTitles[key + "." + memField.name] = flagTitles;
             }
 
-            if ((memField.type == MemoryFieldType::State8) && field.contains("states"))
+            if ((memField.type == MemoryFieldType::State8 || memField.type == MemoryFieldType::State16 || memField.type == MemoryFieldType::State32) &&
+                (field.contains("states") || field.contains("ref")))
             {
-                auto statesObject = field["states"];
-                std::unordered_map<uint8_t, std::string> stateTitles;
+                nlohmann::json statesObject;
+                if (field.contains("states"))
+                {
+                    statesObject = field["states"];
+                }
+                else
+                {
+                    auto ref = field["ref"].get<std::string>();
+                    if (j["refs"].contains(ref))
+                    {
+                        statesObject = j["refs"][ref];
+                    }
+                }
+                std::unordered_map<int64_t, std::string> stateTitles;
                 for (const auto& [state, stateTitle] : statesObject.items())
                 {
-                    stateTitles[std::stoi(state)] = stateTitle.get<std::string>();
+                    stateTitles[std::stoll(state)] = stateTitle.get<std::string>();
                 }
                 mStateTitles[key + "." + memField.name] = stateTitles;
             }
@@ -292,6 +305,11 @@ std::string S2Plugin::Configuration::stateTitle(const std::string& fieldName, in
         }
     }
     return "UNKNOWN STATE";
+}
+
+const std::unordered_map<int64_t, std::string>& S2Plugin::Configuration::stateTitlesOfField(const std::string& fieldName)
+{
+    return mStateTitles.at(fieldName);
 }
 
 bool S2Plugin::Configuration::isKnownEntitySubclass(const std::string& typeName)

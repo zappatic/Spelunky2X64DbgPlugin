@@ -35,6 +35,7 @@ namespace S2Plugin
     static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 14;
     static const uint16_t gsRoleFlagsSize = Qt::UserRole + 15;
     static const uint16_t gsRoleFieldName = Qt::UserRole + 16;
+    static const uint16_t gsRoleBaseFieldName = Qt::UserRole + 17;
 
     // new types need to be added to
     // - the MemoryFieldType enum
@@ -62,7 +63,9 @@ namespace S2Plugin
         Flags32,
         Flags16,
         Flags8,
-        State8, // this is signed, can be negative!
+        State8,  // this is signed, can be negative!
+        State16, // this is signed, can be negative!
+        State32, // this is signed, can be negative!
         Skip,
         State,
         LevelGen,
@@ -111,6 +114,8 @@ namespace S2Plugin
         {MemoryFieldType::Flags16, "16-bit flags"},
         {MemoryFieldType::Flags8, "8-bit flags"},
         {MemoryFieldType::State8, "8-bit state"},
+        {MemoryFieldType::State16, "16-bit state"},
+        {MemoryFieldType::State32, "32-bit state"},
         {MemoryFieldType::State, "State"},
         {MemoryFieldType::LevelGen, "LevelGen"},
         {MemoryFieldType::EntityDB, "EntityDB"},
@@ -156,6 +161,8 @@ namespace S2Plugin
         {MemoryFieldType::Flags16, "uint16_t"},
         {MemoryFieldType::Flags8, "uint8_t"},
         {MemoryFieldType::State8, "int8_t"},
+        {MemoryFieldType::State16, "int16_t"},
+        {MemoryFieldType::State32, "int32_t"},
         {MemoryFieldType::EntityPointer, "Entity*"},
         {MemoryFieldType::EntityDBPointer, "EntityDB*"},
         {MemoryFieldType::EntityDBID, "uint32_t"},
@@ -193,6 +200,8 @@ namespace S2Plugin
         {"Flags16", MemoryFieldType::Flags16},
         {"Flags8", MemoryFieldType::Flags8},
         {"State8", MemoryFieldType::State8},
+        {"State16", MemoryFieldType::State16},
+        {"State32", MemoryFieldType::State32},
         {"State", MemoryFieldType::State},
         {"LevelGen", MemoryFieldType::LevelGen},
         {"EntityDB", MemoryFieldType::EntityDB},

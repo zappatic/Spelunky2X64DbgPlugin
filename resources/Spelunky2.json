@@ -311,6 +311,37 @@
     "PlayerSlot",
     "PlayerSlotSettings"
   ],
+  "refs": {
+    "screen_states": {
+      "-1": "Game startup",
+      "0": "Logo",
+      "1": "Intro",
+      "2": "Prologue",
+      "3": "Title",
+      "4": "Menu",
+      "5": "Options",
+      "7": "Leaderboard",
+      "8": "Seed input",
+      "9": "Character select",
+      "10": "Team select",
+      "11": "Camp",
+      "12": "Level",
+      "13": "Transition",
+      "14": "Death",
+      "15": "Spaceship",
+      "16": "Win",
+      "17": "Credits",
+      "18": "Scores",
+      "19": "Constellation",
+      "20": "Recap",
+      "21": "Arena menu",
+      "25": "Arena intro",
+      "26": "Arena score",
+      "27": "Online loading",
+      "28": "Online lobby"
+    }
+  },
+
   // a list of all the fields within the types
   "fields": {
     "EntityDB": [
@@ -802,7 +833,11 @@
       },
       { "field": "unknown32", "type": "Float" },
       { "field": "unknown33", "type": "Float" },
-      { "field": "unknown34", "type": "UnsignedByte" },
+      {
+        "field": "permanent",
+        "type": "Bool",
+        "comment": "whether you have to constantly refresh the emitter or whether it stays on permanently"
+      },
       { "field": "unknown35", "type": "UnsignedByte" },
       { "field": "unknown36", "type": "UnsignedByte" },
       { "field": "unknown37", "type": "UnsignedByte" },
@@ -814,10 +849,19 @@
     ],
     "State": [
       { "field": "p00", "type": "DataPointer" },
-      { "field": "screen_last", "type": "UnsignedDword" },
-      { "field": "screen", "type": "UnsignedDword" },
-      { "field": "screen_next", "type": "UnsignedDword" },
-      { "field": "loading", "type": "UnsignedDword" },
+      { "field": "screen_last", "type": "State32", "ref": "screen_states" },
+      { "field": "screen", "type": "State32", "ref": "screen_states" },
+      { "field": "screen_next", "type": "State32", "ref": "screen_states" },
+      {
+        "field": "loading",
+        "type": "State32",
+        "states": {
+          "0": "Not loading",
+          "1": "START",
+          "2": "LOADING",
+          "3": "END"
+        }
+      },
       { "field": "illumination", "type": "IlluminationPointer" },
       {
         "field": "fadevalue",

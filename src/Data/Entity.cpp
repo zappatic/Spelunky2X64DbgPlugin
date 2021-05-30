@@ -154,6 +154,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Word:
         case MemoryFieldType::UnsignedWord:
         case MemoryFieldType::Flags16:
+        case MemoryFieldType::State16:
         case MemoryFieldType::UTF16Char:
             fieldSize = 2;
             break;
@@ -161,6 +162,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Float:
         case MemoryFieldType::Flags32:
+        case MemoryFieldType::State32:
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
@@ -237,6 +239,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::Word:
         case MemoryFieldType::UnsignedWord:
         case MemoryFieldType::Flags16:
+        case MemoryFieldType::State16:
         case MemoryFieldType::UTF16Char:
             isDifferent = Script::Memory::ReadWord(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadWord(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 2;
@@ -245,6 +248,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Float:
         case MemoryFieldType::Flags32:
+        case MemoryFieldType::State32:
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
