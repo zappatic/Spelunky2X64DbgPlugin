@@ -2184,7 +2184,7 @@
         "type": "UnsignedDword",
         "comment": "it's per level, not even per jatpack lol, it also adds at when it explodes"
       },
-      { "field": "fuel", "type": "UnsignedByte" }
+      { "field": "fuel", "type": "UnsignedWord" }
     ],
     "Hoverpack": [
       { "field": "unknown1", "type": "UnsignedWord" },
