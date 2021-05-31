@@ -4098,7 +4098,7 @@
         "type": "UnsignedDword",
         "comment": "counts from 60 to 0"
       },
-      { "field": "moving_up", "type": "UnsignedByte" }
+      { "field": "moving_up", "type": "Bool" }
     ],
     "Boulder": [
       { "field": "unknown1", "type": "DataPointer" },
