@@ -52,6 +52,12 @@ Similar to the Entity DB, but for all the particle emitters in the game.
 
 ![ParticleDB](/resources/docs_particledb.png)
 
+## Texture DB
+
+Shows a list of all the textures in the game.
+
+![TextureDB](/resources/docs_texturedb.png)
+
 ## State
 
 ![State](/resources/docs_state.png)
@@ -98,7 +104,6 @@ The memory viewer (as well as the level viewer) also show the other entity for c
 Shows a list of all the strings defined in the game.
 
 ![Strings table](/resources/docs_stringstable.png)
-
 
 
 ## Advanced usage
