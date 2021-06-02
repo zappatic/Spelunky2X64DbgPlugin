@@ -123,7 +123,11 @@
     "SlidingWallCeiling": "Entity",
     "BackPack": "Movable",
     "Jetpack": "BackPack",
-    "Hoverpack": "BackPack"
+    "Hoverpack": "BackPack",
+    "Elevator": "Movable",
+    "Boulder": "Movable",
+    "Drill": "Movable",
+    "UdjatSocket": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -153,6 +157,10 @@
     "ITEM_CAPE": "Cape",
     "ITEM_VLADS_CAPE": "VladsCape",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
+    "ITEM_UDJAT_SOCKET": "UdjatSocket",
+    "ACTIVEFLOOR_ELEVATOR": "Elevator",
+    "ACTIVEFLOOR_BOULDER": "Boulder",
+    "ACTIVEFLOOR_DRILL": "Drill",
     "ACTIVEFLOOR_CRUSH_TRAP.*": "CrushTrap",
     "ACTIVEFLOOR_OLMEC": "Olmec",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
@@ -265,7 +273,8 @@
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
     "ITEM_USHABTI": "Ushabti",
-    "ITEM_SCRAP": "Movable",
+    "ITEM_.*": "Movable",
+    "ACTIVEFLOOR_.*": "Movable",
     "FLOOR_.*_GENERATOR": "Generator",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
@@ -4081,6 +4090,34 @@
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" }
-    ]
+    ],
+    "Elevator": [
+      { "field": "unknown1", "type": "IlluminationPointer" },
+      {
+        "field": "timer",
+        "type": "UnsignedDword",
+        "comment": "counts from 60 to 0"
+      },
+      { "field": "moving_up", "type": "Bool" }
+    ],
+    "Boulder": [
+      { "field": "unknown1", "type": "DataPointer" },
+      {
+        "field": "is_rolling",
+        "type": "UnsignedByte",
+        "comment": "is set to 1 when the boulder first hits the ground"
+      }
+    ],
+    "Drill": [
+      { "field": "sound1", "type": "PositionInfoPointer" },
+      { "field": "sound2", "type": "PositionInfoPointer" },
+      { "field": "top_chain_piece", "type": "EntityPointer" },
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "it's forced to 0, for whatever reason"
+      }
+    ],
+    "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }]
   }
 }
