@@ -310,7 +310,31 @@
     "PlayerInputs",
     "InputMappingPointer",
     "QuestsInfoPointer",
-    "MysteryPointer3"
+    "MysteryPointer3",
+    "MysteryPointer4",
+    "LogicPointer",
+    "DiceShopPointer",
+    "OlmecCutscenePointer",
+    "TiamatCutscenePointer",
+    "CosmicOceanPointer",
+    "LevelInfoPointer",
+    "TunPreChallengePointer",
+    "MoonChallengePointer",
+    "StarChallengePointer",
+    "StarChallengeTorchesPointer",
+    "SunChallengePointer",
+    "OuroborosPointer",
+    "BasecampSpeedrunPointer",
+    "VolcanaRelatedPointer",
+    "ApepTriggerPointer",
+    "DuatBossesTriggerPointer",
+    "TiamatInfoPointer",
+    "TuskPleasurePalacePointer",
+    "DiscoveryPointer",
+    "BlackMarketDoorPointer",
+    "Arena1Pointer",
+    "Arena2Pointer",
+    "Arena3Pointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -731,12 +755,12 @@
       {
         "field": "spawn_count_min",
         "type": "Dword",
-        "comment": "minimum amount of particles to spawn in an interation, actual value is random between this value and spawn_count (-1 = no lower bound, uses spawn_count)"
+        "comment": "minimum amount of particles to spawn in an iteration, actual value is random between this value and spawn_count (-1 = no lower bound, uses spawn_count)"
       },
       {
         "field": "spawn_count",
         "type": "UnsignedDword",
-        "comment": "total amount of particles to spawn for 1 iteration (check with PETTING_PET or MOUNT_TAMED)"
+        "comment": "total amount of particles to spawn for 1 iteration (check with PETTING_PET or MOUNT_TAMED, amount of hearts shown)"
       },
       {
         "field": "lifespan_min",
@@ -755,7 +779,8 @@
       },
       {
         "field": "animation_sequence_length",
-        "type": "UnsignedDword"
+        "type": "UnsignedDword",
+        "comment": "amount of sequential sprites in the animation sequence"
       },
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "UnsignedDword" },
@@ -1134,13 +1159,362 @@
       { "field": "level_gen", "type": "LevelGenPointer" },
       { "field": "layer0", "type": "LayerPointer" },
       { "field": "layer1", "type": "LayerPointer" },
-      { "field": "unknown22", "type": "DataPointer" },
+      { "field": "logic", "type": "LogicPointer" },
       { "field": "quests", "type": "QuestsInfoPointer" },
       { "field": "unknown24", "type": "DataPointer" },
       { "field": "unknown25", "type": "DataPointer" },
       { "field": "particle_emitters_info", "type": "DataPointer" },
       { "field": "unknown26", "type": "DataPointer" },
-      { "field": "unknown27", "type": "DataPointer" }
+      { "field": "unknown27", "type": "MysteryPointer4" }
+    ],
+    "MysteryPointer4": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "Vector" },
+      { "field": "unknown5", "type": "Vector" },
+      { "field": "unknown6", "type": "Vector" },
+      { "field": "unknown13", "type": "DataPointer" },
+      { "field": "unknown14", "type": "DataPointer" },
+      { "field": "unknown15", "type": "DataPointer" },
+      { "field": "unknown16", "type": "UnsignedQword" },
+      { "field": "unknown17", "type": "DataPointer" },
+      { "field": "unknown18", "type": "DataPointer" },
+      { "field": "unknown19", "type": "DataPointer" },
+      { "field": "unknown20", "type": "DataPointer" },
+      { "field": "unknown21", "type": "UnsignedQword" },
+      { "field": "unknown22", "type": "UnsignedByte" },
+      { "field": "unknown23", "type": "UnsignedByte" },
+      { "field": "unknown24", "type": "UnsignedByte" },
+      { "field": "unknown25", "type": "UnsignedByte" },
+      { "field": "unknown26", "type": "UnsignedDword" }
+    ],
+    "LogicPointer": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "ouroboros", "type": "OuroborosPointer" },
+      { "field": "basecamp_speedrun", "type": "BasecampSpeedrunPointer" },
+      {
+        "field": "level_info",
+        "type": "LevelInfoPointer",
+        "comment": "unsure; every level seems to have this, except big boss levels and CO"
+      },
+      { "field": "unknown5", "type": "UnsignedQword" },
+      { "field": "unknown6", "type": "UnsignedQword" },
+      { "field": "diceshop", "type": "DiceShopPointer" },
+      {
+        "field": "tun_pre_challenge",
+        "type": "TunPreChallengePointer",
+        "comment": "until the challenge actually starts"
+      },
+      { "field": "tun_moon_challenge", "type": "MoonChallengePointer" },
+      { "field": "tun_star_challenge", "type": "StarChallengePointer" },
+      { "field": "tun_sun_challenge", "type": "SunChallengePointer" },
+      {
+        "field": "volcana_related",
+        "type": "VolcanaRelatedPointer",
+        "comment": "size is most likely incorrect"
+      },
+      { "field": "olmec_cutscene", "type": "OlmecCutscenePointer" },
+      { "field": "tiamat_cutscene", "type": "TiamatCutscenePointer" },
+      { "field": "apep_trigger", "type": "ApepTriggerPointer" },
+      { "field": "unknown16", "type": "UnsignedQword" },
+      { "field": "duat_bosses_trigger", "type": "DuatBossesTriggerPointer" },
+      { "field": "tiamat_related", "type": "TiamatInfoPointer" },
+      { "field": "tusk_pleasure_palace", "type": "TuskPleasurePalacePointer" },
+      {
+        "field": "discovery_info",
+        "type": "DiscoveryPointer",
+        "comment": "black market, vlad, wet fur discovery; shows the toast"
+      },
+      { "field": "black_market_door", "type": "BlackMarketDoorPointer" },
+      { "field": "cosmic_ocean", "type": "CosmicOceanPointer" },
+      { "field": "arena_1", "type": "Arena1Pointer" },
+      { "field": "arena_2", "type": "Arena2Pointer" },
+      { "field": "arena_3", "type": "Arena3Pointer" },
+      { "field": "unknown26", "type": "UnsignedQword" },
+      { "field": "unknown27", "type": "UnsignedQword" }
+    ],
+    "OuroborosPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      {
+        "field": "unknown3",
+        "type": "DataPointer",
+        "comment": "sound related?"
+      },
+      { "field": "timer", "type": "UnsignedWord" }
+    ],
+    "BasecampSpeedrunPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      {
+        "field": "official",
+        "type": "EntityUID",
+        "comment": "character that keeps the time"
+      },
+      {
+        "field": "crate",
+        "type": "EntityUID",
+        "comment": "you must break this run for the run to be valid, otherwise you're cheating"
+      },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" }
+    ],
+    "LevelInfoPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" }
+    ],
+    "TunPreChallengePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" }
+    ],
+    "MoonChallengePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "EntityUID" },
+      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "challenge_active", "type": "Bool" },
+      {
+        "field": "forcefield_countdown",
+        "type": "UnsignedByte",
+        "comment": "waiting area forcefield activation timer (the one that locks you in)"
+      },
+      { "field": "unknown7", "type": "UnsignedWord" },
+      { "field": "unknown8a", "type": "UnsignedWord" },
+      { "field": "unknown8b", "type": "UnsignedWord" },
+      { "field": "mattock", "type": "EntityUID" }
+    ],
+    "StarChallengePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "EntityUID" },
+      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "challenge_active", "type": "Bool" },
+      {
+        "field": "forcefield_countdown",
+        "type": "UnsignedByte",
+        "comment": "waiting area forcefield activation timer (the one that locks you in)"
+      },
+      { "field": "unknown7", "type": "UnsignedWord" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      {
+        "field": "torches",
+        "type": "StarChallengeTorchesPointer",
+        "comment": "there are more than 5 torches of course, but it seems the list is dynamic, too annoying to implement in the plugin"
+      },
+      {
+        "field": "one_after_last_torch",
+        "type": "DataPointer",
+        "comment": "this appears to be the address after the last torch, like an end iterator"
+      },
+      { "field": "unknown9", "type": "DataPointer" },
+      { "field": "start_countdown", "type": "UnsignedDword" }
+    ],
+    "StarChallengeTorchesPointer": [
+      { "field": "torch1", "type": "EntityPointer" },
+      { "field": "torch2", "type": "EntityPointer" },
+      { "field": "torch3", "type": "EntityPointer" },
+      { "field": "torch4", "type": "EntityPointer" },
+      { "field": "torch5", "type": "EntityPointer" }
+    ],
+    "SunChallengePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "EntityUID" },
+      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "challenge_active", "type": "Bool" },
+      {
+        "field": "forcefield_countdown",
+        "type": "UnsignedByte",
+        "comment": "waiting area forcefield activation timer (the one that locks you in)"
+      },
+      { "field": "unknown7", "type": "UnsignedWord" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "start_countdown", "type": "UnsignedByte" }
+    ],
+    "VolcanaRelatedPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "DataPointer" },
+      { "field": "unknown9", "type": "DataPointer" }
+    ],
+    "DiceShopPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      {
+        "field": "boss",
+        "type": "EntityUID",
+        "comment": "either tusk or the shopkeeper"
+      },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "bet_machine", "type": "EntityUID" },
+      { "field": "die1", "type": "EntityUID" },
+      { "field": "die2", "type": "EntityUID" },
+      { "field": "die_1_value", "type": "Byte" },
+      { "field": "die_2_value", "type": "Byte" },
+      { "field": "unknown8", "type": "UnsignedWord" },
+      { "field": "prize_dispenser", "type": "EntityUID" },
+      { "field": "prize", "type": "EntityUID" },
+      { "field": "forcefield", "type": "EntityUID" },
+      {
+        "field": "bet_active",
+        "type": "Bool",
+        "comment": "whether money has been spent, a bet is ongoing"
+      },
+      { "field": "forcefield_deactivated", "type": "Bool" },
+      { "field": "boss_angry", "type": "Bool" },
+      {
+        "field": "result_announcement_timer",
+        "type": "UnsignedByte",
+        "comment": "the time the boss waits after your second die throw to announce the results"
+      },
+      {
+        "field": "won_prizes_count",
+        "type": "UnsignedByte",
+        "comment": "to see whether you achieved high roller status"
+      },
+      { "field": "unknown14", "type": "UnsignedByte" },
+      { "field": "unknown15", "type": "UnsignedByte" },
+      { "field": "unknown16", "type": "UnsignedByte" },
+      {
+        "field": "balance",
+        "type": "Dword",
+        "comment": "cash balance of all the games"
+      }
+    ],
+    "OlmecCutscenePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6a", "type": "UnsignedByte" },
+      { "field": "unknown6b", "type": "UnsignedByte" },
+      { "field": "unknown6c", "type": "UnsignedByte" },
+      { "field": "unknown6d", "type": "UnsignedByte" },
+      { "field": "unknown7a", "type": "UnsignedByte" },
+      { "field": "unknown7b", "type": "UnsignedByte" },
+      { "field": "unknown7c", "type": "UnsignedByte" },
+      { "field": "unknown7d", "type": "UnsignedByte" },
+      { "field": "fx_olmecpart_large", "type": "EntityPointer" },
+      { "field": "olmec", "type": "EntityPointer" },
+      { "field": "player", "type": "EntityPointer" },
+      { "field": "cinematic_anchor", "type": "EntityPointer" },
+      { "field": "timer", "type": "UnsignedDword" }
+    ],
+    "TiamatCutscenePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "tiamat", "type": "EntityPointer" },
+      { "field": "player", "type": "EntityPointer" },
+      { "field": "cinematic_anchor", "type": "EntityPointer" },
+      { "field": "timer", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "Dword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+    "ApepTriggerPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "spawn_cooldown", "type": "UnsignedDword" },
+      { "field": "cooling_down", "type": "Bool" },
+      { "field": "unknown4b", "type": "Bool" },
+      { "field": "unknown4c", "type": "UnsignedByte" },
+      { "field": "unknown4d", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "DuatBossesTriggerPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "unknown1",
+        "type": "UnsignedDword",
+        "comment": "change this and really weird things happen"
+      },
+      {
+        "field": "unknown2",
+        "type": "UnsignedDword",
+        "comment": "this and below may be garbage"
+      },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "TiamatInfoPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedByte" }
+    ],
+    "TuskPleasurePalacePointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "locked_door", "type": "EntityUID" },
+      { "field": "unknown4", "type": "UnsignedDword" }
+    ],
+    "DiscoveryPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "BlackMarketDoorPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "CosmicOceanPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" }
+    ],
+    "Arena1Pointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "crate_spawn_timer", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
+    ],
+    "Arena2Pointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" }
+    ],
+    "Arena3Pointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "QuestsInfoPointer": [
       { "field": "unknown1", "type": "MysteryPointer3" },

@@ -1317,6 +1317,16 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::PointerType:
         {
+            auto value = Script::Memory::ReadQword(memoryOffset);
+            if (value == 0)
+            {
+                itemValue->setData("<font color='#aaa'>nullptr</font>", Qt::DisplayRole);
+            }
+            else
+            {
+                itemValue->setData("", Qt::DisplayRole);
+            }
+
             if (shouldUpdateChildren)
             {
                 for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
