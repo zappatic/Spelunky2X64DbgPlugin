@@ -127,7 +127,8 @@
     "Elevator": "Movable",
     "Boulder": "Movable",
     "Drill": "Movable",
-    "UdjatSocket": "Movable"
+    "UdjatSocket": "Movable",
+    "PushBlock": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -161,6 +162,7 @@
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_DRILL": "Drill",
+    "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
     "ACTIVEFLOOR_CRUSH_TRAP.*": "CrushTrap",
     "ACTIVEFLOOR_OLMEC": "Olmec",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
@@ -334,7 +336,8 @@
     "BlackMarketDoorPointer",
     "Arena1Pointer",
     "Arena2Pointer",
-    "Arena3Pointer"
+    "Arena3Pointer",
+    "EntityUIDPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4492,6 +4495,39 @@
         "comment": "it's forced to 0, for whatever reason"
       }
     ],
-    "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }]
+    "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }],
+    "EntityUIDPointer": [
+      { "field": "unknown1", "type": "EntityUID" }, //anything below this is just for testing
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "unknown10", "type": "UnsignedDword" },
+      { "field": "unknown11", "type": "UnsignedDword" }
+    ],
+    "PushBlock": [
+      {
+        "field": "unknown1_pointer",
+        "type": "EntityUIDPointer",
+        "comment": "this is weird"
+      },
+      {
+        "field": "unknown2_pointer",
+        "type": "EntityUIDPointer",
+        "comment": "this is weird"
+      },
+      {
+        "field": "unknown3_pointer",
+        "type": "EntityUIDPointer",
+        "comment": "this is weird"
+      },
+      { "field": "sound_info", "type": "PositionInfoPointer" },
+      { "field": "dust_particle", "type": "ParticleInfoPointer" },
+      { "field": "dest_pos_x", "type": "Float" }
+    ]
   }
 }
