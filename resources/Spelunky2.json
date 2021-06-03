@@ -334,7 +334,8 @@
     "BlackMarketDoorPointer",
     "Arena1Pointer",
     "Arena2Pointer",
-    "Arena3Pointer"
+    "Arena3Pointer",
+    "LiquidPhysicsPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -346,7 +347,8 @@
     "Map",
     "NodeSet",
     "PlayerSlot",
-    "PlayerSlotSettings"
+    "PlayerSlotSettings",
+    "LiquidPhysicsParams"
   ],
   "refs": {
     "screen_states": {
@@ -1162,10 +1164,83 @@
       { "field": "logic", "type": "LogicPointer" },
       { "field": "quests", "type": "QuestsInfoPointer" },
       { "field": "unknown24", "type": "DataPointer" },
-      { "field": "unknown25", "type": "DataPointer" },
+      { "field": "liquid_physics", "type": "LiquidPhysicsPointer" },
       { "field": "particle_emitters_info", "type": "DataPointer" },
       { "field": "unknown26", "type": "DataPointer" },
       { "field": "unknown27", "type": "MysteryPointer4" }
+    ],
+    "LiquidPhysicsPointer": [
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "liquidpool1", "type": "LiquidPhysicsParams" },
+      { "field": "liquidpool2", "type": "LiquidPhysicsParams" },
+      { "field": "liquidpool3", "type": "LiquidPhysicsParams" },
+      { "field": "liquidpool4", "type": "LiquidPhysicsParams" }
+    ],
+    "LiquidPhysicsParams": [
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "anything other than 1 and standing water doesn't visually generate"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "padding4", "type": "UnsignedByte" },
+      { "field": "padding5", "type": "UnsignedByte" },
+      { "field": "padding6", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "Float" },
+      {
+        "field": "cohesion?",
+        "type": "Float",
+        "comment": "negative number makes the liquid balls come apart more easily?"
+      },
+      {
+        "field": "gravity",
+        "type": "Float",
+        "comment": "negative number to invert gravity"
+      },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "agitation", "type": "Float" },
+      {
+        "field": "unknown9",
+        "type": "Float",
+        "comment": "starts going nuts at around 2.70"
+      },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
+      { "field": "unknown19", "type": "Float" },
+      { "field": "unknown20", "type": "UnsignedDword" },
+      { "field": "unknown21", "type": "Float" },
+      { "field": "unknown22", "type": "UnsignedDword" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "UnsignedDword" },
+      { "field": "unknown25", "type": "DataPointer" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "x_right", "type": "Float" },
+      { "field": "y_top", "type": "Float" },
+      { "field": "unknown29", "type": "Float" },
+      { "field": "unknown30", "type": "UnsignedDword" },
+      { "field": "unknown31", "type": "UnsignedDword" },
+      { "field": "unknown32", "type": "UnsignedDword" },
+      { "field": "unknown33", "type": "UnsignedDword" },
+      { "field": "unknown34", "type": "DataPointer" },
+      { "field": "unknown35", "type": "UnsignedDword" },
+      { "field": "unknown36", "type": "UnsignedDword" },
+      { "field": "unknown37", "type": "UnsignedDword" },
+      { "field": "unknown38", "type": "Float" },
+      { "field": "unknown39", "type": "EntityUID" },
+      { "field": "unknown40", "type": "Float" },
+      { "field": "unknown41", "type": "Float" },
+      { "field": "unknown42", "type": "UnsignedDword" }
     ],
     "MysteryPointer4": [
       { "field": "unknown1", "type": "UnsignedQword" },
