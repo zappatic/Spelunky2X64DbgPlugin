@@ -335,7 +335,8 @@
     "Arena1Pointer",
     "Arena2Pointer",
     "Arena3Pointer",
-    "LiquidPhysicsPointer"
+    "LiquidPhysicsPointer",
+    "CameraPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -345,10 +346,12 @@
     "SaturationAperture",
     "Color",
     "Map",
+    "UnorderedMap",
     "NodeSet",
     "PlayerSlot",
     "PlayerSlotSettings",
-    "LiquidPhysicsParams"
+    "LiquidPhysicsParams",
+    "CameraBounds"
   ],
   "refs": {
     "screen_states": {
@@ -1066,7 +1069,7 @@
       { "field": "i9f4d", "type": "UnsignedByte" },
       { "field": "time_last_level", "type": "UnsignedDword" },
       { "field": "time_level", "type": "UnsignedDword" },
-      { "field": "ia00", "type": "Dword" },
+      { "field": "time_speedrun", "type": "UnsignedDword" },
       { "field": "money_last_levels", "type": "UnsignedDword" },
       {
         "field": "hud_flags",
@@ -1079,8 +1082,8 @@
           "5": "Level has Tun/shop?",
           "6": "Tun killed?",
           "7": "Ghost pot level?",
-          "8": "",
-          "9": "",
+          "8": "Dead are restless",
+          "9": "Bees/Metal clanking/Oppression",
           "10": "Angry shopkeeper",
           "11": "Angry Tun",
           "12": "Angry caveman shopkeeper",
@@ -1200,7 +1203,11 @@
       { "field": "unknown18", "type": "UnsignedQword" },
       { "field": "next_entity_uid", "type": "UnsignedDword" },
       { "field": "unknown20", "type": "UnsignedWord" },
-      { "field": "unknown21", "type": "UnsignedWord" },
+      {
+        "field": "screen_change_counter",
+        "type": "UnsignedWord",
+        "comment": "increments every time screen changes; used in online sync together with next_entity_uid and unknown20 as a 64bit number"
+      },
       { "field": "player_inputs", "type": "PlayerInputs" },
       { "field": "items", "type": "StateItemsPointer" },
       { "field": "level_gen", "type": "LevelGenPointer" },
@@ -1212,7 +1219,114 @@
       { "field": "liquid_physics", "type": "LiquidPhysicsPointer" },
       { "field": "particle_emitters_info", "type": "DataPointer" },
       { "field": "unknown26", "type": "DataPointer" },
-      { "field": "unknown27", "type": "MysteryPointer4" }
+      { "field": "unknown27", "type": "MysteryPointer4" },
+      {
+        "field": "instance_id_to_pointer",
+        "type": "UnorderedMap",
+        "comment": "std::unordered_map<uint32_t, Entity*>"
+      },
+      { "field": "unknown28", "type": "UnsignedQword" },
+      { "field": "unknown29", "type": "UnsignedQword" },
+      { "field": "unknown30", "type": "UnsignedQword" },
+      { "field": "unknown31", "type": "UnsignedQword" },
+      { "field": "unknown32", "type": "DataPointer" },
+      { "field": "unknown33", "type": "UnsignedQword" },
+      { "field": "unknown34", "type": "DataPointer" },
+      { "field": "unknown35", "type": "DataPointer" },
+      { "field": "unknown36", "type": "DataPointer" },
+      { "field": "time_startup", "type": "UnsignedDword" },
+      { "field": "unknown38", "type": "UnsignedDword" },
+      { "field": "camera", "type": "CameraPointer" },
+      { "field": "unknown40", "type": "UnsignedByte" },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "unknown43", "type": "UnsignedByte" },
+      { "field": "unknown44", "type": "UnsignedDword" },
+      { "field": "unknown45", "type": "UnsignedQword" }
+    ],
+    "CameraPointer": [
+      { "field": "bounds", "type": "CameraBounds" },
+      {
+        "field": "adjusted_focus_x",
+        "type": "Float",
+        "comment": "focus adjusted so camera doesn't show beyond borders"
+      },
+      { "field": "adjusted_focus_y", "type": "Float" },
+      {
+        "field": "calculated_focus_x",
+        "type": "Float",
+        "comment": "forced values"
+      },
+      { "field": "calculated_focus_y", "type": "Float" },
+      {
+        "field": "focus_offset_x",
+        "type": "Float",
+        "comment": "added to position of focused entity, if any"
+      },
+      { "field": "focus_offset_y", "type": "Float" },
+      {
+        "field": "unknown1",
+        "type": "Float",
+        "comment": "does not get reset on level reload"
+      },
+      {
+        "field": "focus_x",
+        "type": "Float",
+        "comment": "the unadjusted center point to focus the camera on; set this for full camera control when the focused entity = -1"
+      },
+      { "field": "focus_y", "type": "Float" },
+      { "field": "unknown2", "type": "Float" },
+      {
+        "field": "vertical_pan",
+        "type": "Float",
+        "comment": "set to a high number, like 5000 and the camera pans from top to bottom"
+      },
+      {
+        "field": "shake_countdown_start",
+        "type": "UnsignedDword",
+        "comment": "probably used to calculate the percentage of the amplitude when progressing through the shake"
+      },
+      { "field": "shake_countdown", "type": "UnsignedDword" },
+      {
+        "field": "shake_amplitude",
+        "type": "Float",
+        "comment": "the amount of camera shake"
+      },
+      {
+        "field": "shake_multiplier_x",
+        "type": "Float",
+        "comment": "set to 0 to eliminate horizontal shake; negative inverts direction"
+      },
+      {
+        "field": "shake_multiplier_y",
+        "type": "Float",
+        "comment": "set to 0 to eliminate vertical shake; negative inverts direction"
+      },
+      {
+        "field": "uniform_shake",
+        "type": "Bool",
+        "comment": "if false, the shake gets randomized a bit"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      {
+        "field": "focused_entity_uid",
+        "type": "EntityUID",
+        "comment": "if set to -1, you have free control over camera focus through focus_x, focus_y"
+      },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown_adjustment", "type": "Float" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+    "CameraBounds": [
+      { "field": "left", "type": "Float" },
+      { "field": "right", "type": "Float" },
+      { "field": "bottom", "type": "Float" },
+      { "field": "top", "type": "Float" }
     ],
     "LiquidPhysicsPointer": [
       { "field": "unknown1", "type": "DataPointer" },
@@ -2647,6 +2761,45 @@
     "Map": [
       { "field": "items", "type": "DataPointer" },
       { "field": "size", "type": "UnsignedQword" }
+    ],
+    "UnorderedMap": [
+      { "field": "unknown1", "type": "Float" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      {
+        "field": "end",
+        "type": "DataPointer",
+        "comment": "value is address that represents a terminal for Nodes"
+      },
+      {
+        "field": "size",
+        "type": "UnsignedQword",
+        "comment": "number of elements in the map"
+      },
+      {
+        "field": "first_bucket_ptr",
+        "type": "DataPointer",
+        "comment": "points to Bucket[]"
+      },
+      {
+        "field": "end_of_buckets",
+        "type": "DataPointer",
+        "comment": "this is the address after the last bucket, not the last bucket"
+      },
+      {
+        "field": "unknown4",
+        "type": "DataPointer",
+        "comment": "this is always the same as end of buckets above under observation"
+      },
+      {
+        "field": "mask",
+        "type": "UnsignedQword",
+        "comment": "&'d with hashed key to find bucket"
+      },
+      {
+        "field": "bucket_size",
+        "type": "UnsignedQword",
+        "comment": "number of buckets"
+      }
     ],
     "TextureDB": [
       { "field": "id", "type": "UnsignedQword" },
