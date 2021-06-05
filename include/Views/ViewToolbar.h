@@ -2,8 +2,10 @@
 
 #include "Configuration.h"
 #include "Data/EntityDB.h"
+#include "Data/GameManager.h"
 #include "Data/LevelGen.h"
 #include "Data/ParticleDB.h"
+#include "Data/SaveGame.h"
 #include "Data/State.h"
 #include "Data/StringsTable.h"
 #include "Data/TextureDB.h"
@@ -11,7 +13,6 @@
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QVBoxLayout>
-
 
 namespace S2Plugin
 {
@@ -24,11 +25,12 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl, Configuration* config,
-                    QMdiArea* mdiArea, QWidget* parent = nullptr);
+        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl,
+                    Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
         void showEntity(size_t offset);
 
         State* state();
+        SaveGame* savegame();
         LevelGen* levelGen();
         EntityDB* entityDB();
         ParticleDB* particleDB();
@@ -48,6 +50,7 @@ namespace S2Plugin
         void showEntities();
         ViewVirtualTable* showVirtualTableLookup();
         void showStringsTable();
+        void showSaveGame();
         void clearLabels();
         void reloadConfig();
 
@@ -55,6 +58,8 @@ namespace S2Plugin
         EntityDB* mEntityDB;
         ParticleDB* mParticleDB;
         TextureDB* mTextureDB;
+        GameManager* mGameManager;
+        SaveGame* mSaveGame;
         State* mState;
         LevelGen* mLevelGen;
         VirtualTableLookup* mVirtualTableLookup;

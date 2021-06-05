@@ -4,6 +4,7 @@
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewLevelGen.h"
 #include "Views/ViewParticleDB.h"
+#include "Views/ViewSaveGame.h"
 #include "Views/ViewState.h"
 #include "Views/ViewStringsTable.h"
 #include "Views/ViewTextureDB.h"
@@ -12,10 +13,10 @@
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl,
-                                   Configuration* config, QMdiArea* mdiArea, QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mState(state), mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl),
-      mConfiguration(config), mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl,
+                                   StringsTable* stbl, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mGameManager(gm), mSaveGame(sg), mState(state), mLevelGen(levelGen),
+      mVirtualTableLookup(vtl), mStringsTable(stbl), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -46,20 +47,30 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     mMainLayout->addWidget(btnStringsTable);
     QObject::connect(btnStringsTable, &QPushButton::clicked, this, &ViewToolbar::showStringsTable);
 
+    auto divider = new QFrame(this);
+    divider->setFrameShape(QFrame::HLine);
+    divider->setFrameShadow(QFrame::Sunken);
+    mMainLayout->addWidget(divider);
+
     auto btnState = new QPushButton(this);
     btnState->setText("State");
     mMainLayout->addWidget(btnState);
     QObject::connect(btnState, &QPushButton::clicked, this, &ViewToolbar::showState);
+
+    auto btnEntities = new QPushButton(this);
+    btnEntities->setText("Entities");
+    mMainLayout->addWidget(btnEntities);
+    QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
 
     auto btnLevelGen = new QPushButton(this);
     btnLevelGen->setText("LevelGen");
     mMainLayout->addWidget(btnLevelGen);
     QObject::connect(btnLevelGen, &QPushButton::clicked, this, &ViewToolbar::showLevelGen);
 
-    auto btnEntities = new QPushButton(this);
-    btnEntities->setText("Entities");
-    mMainLayout->addWidget(btnEntities);
-    QObject::connect(btnEntities, &QPushButton::clicked, this, &ViewToolbar::showEntities);
+    auto btnSaveGame = new QPushButton(this);
+    btnSaveGame->setText("SaveGame");
+    mMainLayout->addWidget(btnSaveGame);
+    QObject::connect(btnSaveGame, &QPushButton::clicked, this, &ViewToolbar::showSaveGame);
 
     auto btnVirtualTable = new QPushButton(this);
     btnVirtualTable->setText("Virtual Table");
@@ -174,6 +185,16 @@ void S2Plugin::ViewToolbar::showEntities()
     }
 }
 
+void S2Plugin::ViewToolbar::showSaveGame()
+{
+    if (mSaveGame->loadSaveGame())
+    {
+        auto w = new ViewSaveGame(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
+}
+
 void S2Plugin::ViewToolbar::clearLabels()
 {
     auto list = BridgeList<Script::Label::LabelInfo>();
@@ -196,6 +217,12 @@ S2Plugin::State* S2Plugin::ViewToolbar::state()
 {
     mState->loadState();
     return mState;
+}
+
+S2Plugin::SaveGame* S2Plugin::ViewToolbar::savegame()
+{
+    mSaveGame->loadSaveGame();
+    return mSaveGame;
 }
 
 S2Plugin::LevelGen* S2Plugin::ViewToolbar::levelGen()
@@ -256,6 +283,8 @@ void S2Plugin::ViewToolbar::reloadConfig()
         mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
     }
     mState->reset();
+    mGameManager->reset();
+    mSaveGame->reset();
     mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();
@@ -266,6 +295,8 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
 {
     mMDIArea->closeAllSubWindows();
     mState->reset();
+    mGameManager->reset();
+    mSaveGame->reset();
     mLevelGen->reset();
     mEntityDB->reset();
     mParticleDB->reset();

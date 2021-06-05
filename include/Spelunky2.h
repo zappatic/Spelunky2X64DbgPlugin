@@ -68,6 +68,7 @@ namespace S2Plugin
         State32, // this is signed, can be negative!
         Skip,
         State,
+        SaveGame,
         LevelGen,
         EntityDB,
         EntityPointer,
@@ -117,6 +118,7 @@ namespace S2Plugin
         {MemoryFieldType::State16, "16-bit state"},
         {MemoryFieldType::State32, "32-bit state"},
         {MemoryFieldType::State, "State"},
+        {MemoryFieldType::SaveGame, "SaveGame"},
         {MemoryFieldType::LevelGen, "LevelGen"},
         {MemoryFieldType::EntityDB, "EntityDB"},
         {MemoryFieldType::EntityPointer, "Entity pointer"},
@@ -203,6 +205,7 @@ namespace S2Plugin
         {"State16", MemoryFieldType::State16},
         {"State32", MemoryFieldType::State32},
         {"State", MemoryFieldType::State},
+        {"SaveGame", MemoryFieldType::SaveGame},
         {"LevelGen", MemoryFieldType::LevelGen},
         {"EntityDB", MemoryFieldType::EntityDB},
         {"EntityPointer", MemoryFieldType::EntityPointer},

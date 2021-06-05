@@ -55,6 +55,8 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/EntityDB.h
 	include/Data/Entity.h
 	include/Data/State.h
+	include/Data/GameManager.h
+	include/Data/SaveGame.h
 	include/Data/LevelGen.h
 	include/Data/ParticleDB.h
 	include/Data/TextureDB.h
@@ -71,6 +73,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewEntity.h
 	include/Views/ViewEntities.h
 	include/Views/ViewState.h
+	include/Views/ViewSaveGame.h
 	include/Views/ViewLevelGen.h
 	include/Views/ViewVirtualTable.h
 	include/Views/ViewStringsTable.h
@@ -93,6 +96,8 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
+	src/Data/GameManager.cpp
+	src/Data/SaveGame.cpp
 	src/Data/LevelGen.cpp
 	src/Data/ParticleDB.cpp
 	src/Data/TextureDB.cpp
@@ -109,6 +114,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewEntity.cpp
 	src/Views/ViewEntities.cpp
 	src/Views/ViewState.cpp
+	src/Views/ViewSaveGame.cpp
 	src/Views/ViewLevelGen.cpp
 	src/Views/ViewVirtualTable.cpp
 	src/Views/ViewStringsTable.cpp

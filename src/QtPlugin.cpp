@@ -1,8 +1,10 @@
 #include "QtPlugin.h"
 #include "Configuration.h"
 #include "Data/EntityDB.h"
+#include "Data/GameManager.h"
 #include "Data/LevelGen.h"
 #include "Data/ParticleDB.h"
+#include "Data/SaveGame.h"
 #include "Data/State.h"
 #include "Data/StringsTable.h"
 #include "Data/TextureDB.h"
@@ -16,7 +18,6 @@
 #include <QMdiArea>
 #include <QWidget>
 
-
 static QMainWindow* gsSpelunky2MainWindow;
 static QMdiArea* gsMDIArea;
 static S2Plugin::Configuration* gsConfiguration;
@@ -24,7 +25,9 @@ static S2Plugin::ViewToolbar* gsViewToolbar;
 static S2Plugin::EntityDB* gsEntityDB;
 static S2Plugin::ParticleDB* gsParticleDB;
 static S2Plugin::TextureDB* gsTextureDB;
+static S2Plugin::GameManager* gsGameManager;
 static S2Plugin::State* gsState;
+static S2Plugin::SaveGame* gsSaveGame;
 static S2Plugin::LevelGen* gsLevelGen;
 static S2Plugin::VirtualTableLookup* gsVirtualTableLookup;
 static S2Plugin::StringsTable* gsStringsTable;
@@ -78,11 +81,14 @@ void QtPlugin::Setup()
         gsParticleDB = new S2Plugin::ParticleDB(gsConfiguration);
         gsTextureDB = new S2Plugin::TextureDB(gsConfiguration);
         gsState = new S2Plugin::State(gsConfiguration);
+        gsGameManager = new S2Plugin::GameManager(gsConfiguration);
+        gsSaveGame = new S2Plugin::SaveGame(gsConfiguration, gsGameManager);
         gsLevelGen = new S2Plugin::LevelGen(gsConfiguration, gsState);
         gsVirtualTableLookup = new S2Plugin::VirtualTableLookup(gsConfiguration);
         gsStringsTable = new S2Plugin::StringsTable(gsConfiguration);
 
-        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsConfiguration, gsMDIArea, parent);
+        gsViewToolbar =
+            new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsGameManager, gsSaveGame, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsConfiguration, gsMDIArea, parent);
         gsSpelunky2MainWindow->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, gsViewToolbar);
 
         GuiAddQWidgetTab(gsSpelunky2MainWindow);
