@@ -140,7 +140,8 @@
     "UnchainedSpikeBall": "Movable",
     "Thinice": "Movable",
     "ClamBase": "Movable",
-    "RegenBlock": "Movable"
+    "RegenBlock": "Movable",
+    "ClamTop": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -275,6 +276,7 @@
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
+    "ITEM_GIANTCLAM_TOP": "ClamTop",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -5421,8 +5423,8 @@
       { "field": "unused", "type": "UnsignedDword" },
       {
         "field": "timer",
-        "type": "UnsignedDword",
-        "comment": "timer till explosion, it's paused when set to FFFFFFFF, but just one less and it starts counting, can be stooped"
+        "type": "Dword",
+        "comment": "timer till explosion, it's paused when negative, can be stooped"
       }
     ],
     "ChainedPushBlock": [
@@ -5471,6 +5473,10 @@
       { "field": "treasure_y_pos", "type": "Float" },
       { "field": "top_part", "type": "EntityUID" }
     ],
-    "RegenBlock": [{ "field": "on_breaking", "type": "Bool" }]
+    "RegenBlock": [{ "field": "on_breaking", "type": "Bool" }],
+    "ClamTop": [
+      { "field": "close_timer", "type": "Byte" },
+      { "field": "open_timer", "type": "UnsignedByte" }
+    ]
   }
 }
