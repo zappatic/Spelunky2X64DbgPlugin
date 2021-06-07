@@ -304,7 +304,7 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
-//
+    //
     "ITEM_.*": "Movable",
     "ACTIVEFLOOR_.*": "Movable",
     "FLOOR_.*_GENERATOR": "Generator",
@@ -368,8 +368,7 @@
     "Arena2Pointer",
     "Arena3Pointer",
     "LiquidPhysicsPointer",
-    "CameraPointer",
-    "EntityUIDPointer"
+    "CameraPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -5858,7 +5857,6 @@
       }
     ],
     "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }],
-    "EntityUIDPointer": [{ "field": "unknown1", "type": "EntityUID" }],
     "PushBlock": [
       {
         "field": "unknown1_pointer",

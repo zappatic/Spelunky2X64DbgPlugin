@@ -121,6 +121,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::EntityUID:
         case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::EntityUIDPointer:
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::TextureDBPointer:
         case MemoryFieldType::TextureDBID:
@@ -1106,6 +1107,57 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             break;
         }
+        case MemoryFieldType::EntityUIDPointer:
+        {
+            int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(Script::Memory::ReadQword(memoryOffset)));
+            if (value <= 0)
+            {
+                itemValue->setData("Nothing", Qt::DisplayRole);
+            }
+            else
+            {
+                auto entityOffset = Entity::findEntityByUID(value, mToolbar->state());
+                if (entityOffset != 0)
+                {
+                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(entityOffset, mToolbar->entityDB());
+                    itemValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", value, entityName.c_str()), Qt::DisplayRole);
+                }
+                else
+                {
+                    itemValue->setData("UNKNOWN ENTITY", Qt::DisplayRole);
+                }
+            }
+            auto newHexValue = QString::asprintf("0x%08lX", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            int32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(Script::Memory::ReadQword(comparisonMemoryOffset)));
+            if (comparisonValue <= 0)
+            {
+                itemComparisonValue->setData("Nothing", Qt::DisplayRole);
+            }
+            else
+            {
+                auto comparisonEntityOffset = Entity::findEntityByUID(comparisonValue, mToolbar->state());
+                if (comparisonEntityOffset != 0)
+                {
+                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(comparisonEntityOffset, mToolbar->entityDB());
+                    itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", comparisonValue, entityName.c_str()), Qt::DisplayRole);
+                }
+                else
+                {
+                    itemComparisonValue->setData("UNKNOWN ENTITY", Qt::DisplayRole);
+                }
+            }
+            auto hexComparisonValue = QString::asprintf("0x%08lX", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+
+            break;
+        }
         case MemoryFieldType::EntityPointer:
         {
             size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
@@ -1402,6 +1454,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     break;
                 }
                 case MemoryFieldType::EntityUID:
+                case MemoryFieldType::EntityUIDPointer:
                 {
                     auto uid = clickedItem->data(gsRoleRawValue).toUInt();
                     if (uid != 0)

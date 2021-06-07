@@ -176,6 +176,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::TextureDBPointer:
         case MemoryFieldType::LevelGenPointer:
         case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::EntityUIDPointer:
         case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
@@ -263,6 +264,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::TextureDBPointer:
         case MemoryFieldType::LevelGenPointer:
         case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::EntityUIDPointer:
         case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
