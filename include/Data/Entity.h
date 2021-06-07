@@ -14,7 +14,7 @@
 
 namespace S2Plugin
 {
-    class Entity : MemoryMappedData
+    class Entity : public MemoryMappedData
     {
       public:
         Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB, Configuration* config);

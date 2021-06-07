@@ -52,7 +52,7 @@ void S2Plugin::ViewState::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewState::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->state(), this);
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
     {
         mMainTreeView->addMemoryField(field, "State." + field.name);

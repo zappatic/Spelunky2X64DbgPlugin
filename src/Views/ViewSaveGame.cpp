@@ -51,7 +51,7 @@ void S2Plugin::ViewSaveGame::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewSaveGame::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->savegame(), this);
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::SaveGame))
     {
         mMainTreeView->addMemoryField(field, "SaveGame." + field.name);

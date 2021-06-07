@@ -140,6 +140,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
     switch (field.type)
     {
         case MemoryFieldType::Flag:
+        case MemoryFieldType::PointerListItems:
             break;
         case MemoryFieldType::Skip:
             fieldSize = field.extraInfo;
@@ -178,6 +179,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityUIDPointer:
         case MemoryFieldType::ParticleDBPointer:
+        case MemoryFieldType::PointerList:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
@@ -227,6 +229,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
     switch (field.type)
     {
         case MemoryFieldType::Flag:
+        case MemoryFieldType::PointerListItems:
         case MemoryFieldType::Skip:
             break;
         case MemoryFieldType::Bool:
@@ -266,6 +269,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityUIDPointer:
         case MemoryFieldType::ParticleDBPointer:
+        case MemoryFieldType::PointerList:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:

@@ -62,7 +62,7 @@ void S2Plugin::ViewParticleDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->particleDB(), this);
         mMainTreeView->setEnableChangeHighlighting(false);
         for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
         {

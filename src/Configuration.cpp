@@ -143,6 +143,11 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = MemoryFieldType::InlineStructType;
                 memField.jsonName = fieldTypeStr;
             }
+            else if (fieldTypeStr == "PointerList")
+            {
+                memField.type = MemoryFieldType::PointerList;
+                memField.pointerListPointerType = field["pointer_type"].get<std::string>();
+            }
             else
             {
                 if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)

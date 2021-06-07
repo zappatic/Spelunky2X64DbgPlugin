@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Data/EntityDB.h"
+#include "Data/MemoryMappedData.h"
 #include "QtHelpers/HTMLDelegate.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -18,7 +19,7 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent = nullptr);
+        TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent = nullptr);
         QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
         void clear();
         void updateTableHeader(bool restoreColumnWidths = true);
@@ -42,10 +43,12 @@ namespace S2Plugin
 
       private slots:
         void cellClicked(const QModelIndex& index);
+        void cellCollapsed(const QModelIndex& index);
 
       private:
-        QStandardItemModel* mModel;
         ViewToolbar* mToolbar;
+        MemoryMappedData* mMemoryMappedData;
+        QStandardItemModel* mModel;
         std::unique_ptr<HTMLDelegate> mHTMLDelegate;
         std::array<uint32_t, 6> mSavedColumnWidths = {0};
         bool mEnableChangeHighlighting = true;

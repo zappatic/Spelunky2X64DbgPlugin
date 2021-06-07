@@ -9,7 +9,7 @@
 
 namespace S2Plugin
 {
-    class SaveGame : MemoryMappedData
+    class SaveGame : public MemoryMappedData
     {
       public:
         SaveGame(Configuration* config, GameManager* gm);

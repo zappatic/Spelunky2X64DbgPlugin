@@ -15,6 +15,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
     switch (field.type)
     {
         case MemoryFieldType::Flag:
+        case MemoryFieldType::PointerListItems:
             break;
         case MemoryFieldType::Skip:
             offset += field.extraInfo;
@@ -65,6 +66,20 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         {
             size_t pointerOffset = Script::Memory::ReadQword(offset);
             for (const auto& f : mConfiguration->typeFieldsOfPointer("ThemeInfoPointer"))
+            {
+                auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                if (pointerOffset != 0)
+                {
+                    pointerOffset = newOffset;
+                }
+            }
+            offset += 8;
+            break;
+        }
+        case MemoryFieldType::PointerList:
+        {
+            size_t pointerOffset = Script::Memory::ReadQword(offset);
+            for (const auto& f : mConfiguration->typeFields(MemoryFieldType::PointerList))
             {
                 auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
                 if (pointerOffset != 0)

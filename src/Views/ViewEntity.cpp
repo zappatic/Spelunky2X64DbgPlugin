@@ -116,7 +116,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mTopLayout->addWidget(mInterpretAsComboBox);
 
     // TAB FIELDS
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, mEntity.get(), this);
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();

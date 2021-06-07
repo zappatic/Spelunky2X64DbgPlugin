@@ -8,7 +8,7 @@
 
 namespace S2Plugin
 {
-    class GameManager : MemoryMappedData
+    class GameManager : public MemoryMappedData
     {
       public:
         explicit GameManager(Configuration* config);

@@ -141,7 +141,8 @@
     "Thinice": "Movable",
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
-    "ClamTop": "Movable"
+    "ClamTop": "Movable",
+    "CookFire": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -277,6 +278,7 @@
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
     "ITEM_GIANTCLAM_TOP": "ClamTop",
+    "ITEM_COOKFIRE": "CookFire",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -315,13 +317,12 @@
   // if you want to add a pointer, add its field definition under "fields" below, and
   // add it to "pointer_types" so it will be interpreted as a pointer instead of inline data
   "pointer_types": [
-    "IlluminationPointer",
     "StateItemsPointer",
     "LayerPointer",
     "PlayerInventoryPointer",
     "PositionInfoPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
-    "MysteryPointer1", // a bunch of floats, no __vftable ptr
+    "IlluminationPointer",
     "ThemeInfoPointer",
     "RenderInfoPointer",
     "ParticleInfoPointer",
@@ -375,7 +376,7 @@
   // add it to "inline_struct_types" so it will be interpreted as inline data
   "inline_struct_types": [
     "Rect",
-    "SaturationAperture",
+    "LightParams",
     "Color",
     "Map",
     "UnorderedMap",
@@ -1300,8 +1301,16 @@
       { "field": "quests", "type": "QuestsInfoPointer" },
       { "field": "unknown24", "type": "DataPointer" },
       { "field": "liquid_physics", "type": "LiquidPhysicsPointer" },
-      { "field": "particle_emitters_info", "type": "DataPointer" },
-      { "field": "unknown26", "type": "DataPointer" },
+      {
+        "field": "particle_emitters",
+        "type": "PointerList",
+        "pointer_type": "ParticleInfoPointer"
+      },
+      {
+        "field": "lightsources",
+        "type": "PointerList",
+        "pointer_type": "IlluminationPointer"
+      },
       { "field": "unknown27", "type": "MysteryPointer4" },
       {
         "field": "instance_id_to_pointer",
@@ -1331,6 +1340,19 @@
       { "field": "unknown44", "type": "UnsignedDword" },
       { "field": "unknown45", "type": "UnsignedQword" }
     ],
+    "PointerList": [
+      { "field": "begin", "type": "DataPointer" },
+      {
+        "field": "end",
+        "type": "DataPointer",
+        "comment": "one past the last pointer, like end iterator"
+      },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "items", "type": "PointerListItems" }
+    ],
+    "PointerListItems": [],
     "JournalProgression": [
       { "field": "unknown1", "type": "UnsignedWord" },
       { "field": "count", "type": "UnsignedWord" },
@@ -3783,7 +3805,7 @@
     "Player": [
       { "field": "inside", "type": "Map" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
-      { "field": "p140", "type": "MysteryPointer1" },
+      { "field": "lightsource", "type": "IlluminationPointer" },
       { "field": "i148", "type": "Dword" },
       { "field": "i14c", "type": "Dword" },
       { "field": "ai_func", "type": "DataPointer" },
@@ -3803,31 +3825,6 @@
       { "field": "can_use", "type": "UnsignedByte" },
       { "field": "b176", "type": "UnsignedByte" },
       { "field": "b177", "type": "UnsignedByte" }
-    ],
-    "MysteryPointer1": [
-      { "field": "f01", "type": "Float" },
-      { "field": "f02", "type": "Float" },
-      { "field": "f03", "type": "Float" },
-      { "field": "f04", "type": "Float" },
-      { "field": "f05", "type": "Float" },
-      { "field": "f06", "type": "Float" },
-      { "field": "f07", "type": "Float" },
-      { "field": "f08", "type": "Float" },
-      { "field": "f09", "type": "Float" },
-      { "field": "f10", "type": "Float" },
-      { "field": "f11", "type": "Float" },
-      { "field": "f12", "type": "Float" },
-      { "field": "f13", "type": "Float" },
-      { "field": "f14", "type": "Float" },
-      { "field": "f15", "type": "Float" },
-      { "field": "f16", "type": "Float" },
-      { "field": "f17", "type": "Float" },
-      { "field": "f18", "type": "Float" },
-      { "field": "entity_x", "type": "Float" },
-      { "field": "entity_y", "type": "Float" },
-      { "field": "f21", "type": "Float" },
-      { "field": "f22", "type": "Float" },
-      { "field": "f23", "type": "Float" }
     ],
     "PlayerInventoryPointer": [
       { "field": "money", "type": "UnsignedDword" },
@@ -3924,36 +3921,70 @@
       { "field": "player3", "type": "EntityPointer" },
       { "field": "player4", "type": "EntityPointer" }
     ],
-    "SaturationAperture": [
+    "LightParams": [
       { "field": "red", "type": "Float" },
       { "field": "green", "type": "Float" },
       { "field": "blue", "type": "Float" },
-      { "field": "aperture", "type": "Float" }
+      { "field": "size", "type": "Float" }
     ],
     "IlluminationPointer": [
-      { "field": "saturation_vignette_0", "type": "SaturationAperture" },
-      { "field": "saturation_vignette_1", "type": "SaturationAperture" },
-      { "field": "saturation_vignette_2", "type": "SaturationAperture" },
-      { "field": "saturation_vignette_3", "type": "SaturationAperture" },
-      { "field": "brightness1", "type": "Float" },
-      { "field": "brightness2", "type": "Float" },
+      { "field": "light1", "type": "LightParams" },
+      { "field": "light2", "type": "LightParams" },
+      { "field": "light3", "type": "LightParams" },
+      { "field": "light4", "type": "LightParams" },
+      { "field": "brightness", "type": "Float" },
+      { "field": "brightness_multiplier", "type": "Float" },
       { "field": "light_pos_x", "type": "Float" },
       { "field": "light_pos_y", "type": "Float" },
       { "field": "offset_x", "type": "Float" },
       { "field": "offset_y", "type": "Float" },
       {
-        "field": "vertical_scale",
+        "field": "distortion",
         "type": "Float",
-        "comment": "< 1.0 = larger"
+        "comment": "1 = circular, <1 = vertical ellipse ; >1 = horizontal ellipse"
       },
       { "field": "entity_uid", "type": "EntityUID" },
-      { "field": "unknown_timer", "type": "UnsignedDword" },
-      { "field": "frontlayer_global_illumination", "type": "UnsignedByte" },
-      { "field": "unknown_illumination1", "type": "UnsignedByte" },
-      { "field": "backlayer_global_illumination", "type": "UnsignedByte" },
-      { "field": "unknown_illumination2", "type": "UnsignedByte" },
-      { "field": "unknown_int1", "type": "UnsignedDword" },
-      { "field": "unknown_int2", "type": "UnsignedDword" }
+      { "field": "timer", "type": "UnsignedDword" },
+      {
+        "field": "flags",
+        "type": "Flags32",
+        "flags": {
+          "1": "Disable light1",
+          "2": "Enable light2",
+          "3": "Enable light3",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "Modulate brightness_multiplier",
+          "8": "",
+          "9": "",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "Back layer",
+          "18": "",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "Enabled",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" }
     ],
     "Rect": [
       { "field": "masks", "type": "UnsignedDword" },
@@ -5045,7 +5076,7 @@
       { "field": "pos_info", "type": "PositionInfoPointer" },
       { "field": "attack_effect_entity", "type": "EntityPointer" },
       { "field": "particle", "type": "ParticleInfoPointer" },
-      { "field": "mystery_ptr", "type": "MysteryPointer1" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
@@ -5634,7 +5665,7 @@
         "type": "PositionInfoPointer",
         "comment": "starts at timer 140"
       },
-      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "bounce_force?", "type": "Float", "comment": "max 1.0 ?" },
       {
         "field": "on_off",
@@ -5830,7 +5861,7 @@
       { "field": "unknown5", "type": "UnsignedByte" }
     ],
     "Elevator": [
-      { "field": "unknown1", "type": "IlluminationPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
       {
         "field": "timer",
         "type": "UnsignedDword",
@@ -5927,7 +5958,7 @@
     ],
     "LightArrowPlatform": [
       { "field": "unused", "type": "UnsignedQword" },
-      { "field": "unknown", "type": "MysteryPointer1" }
+      { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
     "FallingPlatform": [
       { "field": "timer", "type": "UnsignedDword" },
@@ -5967,6 +5998,18 @@
     "ClamTop": [
       { "field": "close_timer", "type": "Byte" },
       { "field": "open_timer", "type": "UnsignedByte" }
+    ],
+    "CookFire": [
+      { "field": "unknown1", "type": "Dword" },
+      { "field": "lit", "type": "Bool" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "particles_smoke", "type": "ParticleInfoPointer" },
+      { "field": "particles_flames", "type": "ParticleInfoPointer" },
+      { "field": "particles_warp", "type": "ParticleInfoPointer" },
+      { "field": "unknown10", "type": "DataPointer" }
     ]
   }
 }

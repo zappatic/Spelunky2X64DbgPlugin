@@ -63,7 +63,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->entityDB(), this);
         mMainTreeView->setEnableChangeHighlighting(false);
         for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
         {

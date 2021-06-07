@@ -35,7 +35,9 @@ namespace S2Plugin
     static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 14;
     static const uint16_t gsRoleFlagsSize = Qt::UserRole + 15;
     static const uint16_t gsRoleFieldName = Qt::UserRole + 16;
-    static const uint16_t gsRoleBaseFieldName = Qt::UserRole + 17;
+    static const uint16_t gsRoleFieldType = Qt::UserRole + 17;
+    static const uint16_t gsRoleBaseFieldName = Qt::UserRole + 18;
+    static const uint16_t gsRolePointerListPointerType = Qt::UserRole + 19;
 
     // new types need to be added to
     // - the MemoryFieldType enum
@@ -79,7 +81,6 @@ namespace S2Plugin
         ParticleDB,
         ParticleDBID,
         ParticleDBPointer,
-        ParticleInfoPointer,
         TextureDB,
         TextureDBID,
         TextureDBPointer,
@@ -95,6 +96,8 @@ namespace S2Plugin
         LevelGenPointer,
         UTF16Char,
         StringsTableID,
+        PointerList,
+        PointerListItems,
     };
 
     // for display purposes
@@ -130,7 +133,6 @@ namespace S2Plugin
         {MemoryFieldType::ParticleDBID, "ParticleDB ID"},
         {MemoryFieldType::ParticleDB, "ParticleDB"},
         {MemoryFieldType::ParticleDBPointer, "ParticleDB pointer"},
-        {MemoryFieldType::ParticleInfoPointer, "ParticleInfo pointer"},
         {MemoryFieldType::TextureDB, "TextureDB"},
         {MemoryFieldType::TextureDBID, "TextureDB ID"},
         {MemoryFieldType::TextureDBPointer, "TextureDB pointer"},
@@ -145,6 +147,8 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
         {MemoryFieldType::StringsTableID, "StringsTableID"},
+        {MemoryFieldType::PointerList, "PointerList"},
+        {MemoryFieldType::PointerListItems, "PointerListItems"},
     };
 
     // for C++ header generation
@@ -184,6 +188,8 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenPointer, "LevelGen*"},
         {MemoryFieldType::UTF16Char, "uint16_t"},
         {MemoryFieldType::StringsTableID, "uint32_t"},
+        {MemoryFieldType::PointerList, "PointerList"},
+        {MemoryFieldType::PointerListItems, "// ignore"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -219,7 +225,6 @@ namespace S2Plugin
         {"ParticleDB", MemoryFieldType::ParticleDB},
         {"ParticleDBID", MemoryFieldType::ParticleDBID},
         {"ParticleDBPointer", MemoryFieldType::ParticleDBPointer},
-        {"ParticleInfoPointer", MemoryFieldType::ParticleInfoPointer},
         {"TextureDB", MemoryFieldType::TextureDB},
         {"TextureDBID", MemoryFieldType::TextureDBID},
         {"TextureDBPointer", MemoryFieldType::TextureDBPointer},
@@ -232,6 +237,8 @@ namespace S2Plugin
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
         {"StringsTableID", MemoryFieldType::StringsTableID},
+        {"PointerList", MemoryFieldType::PointerList},
+        {"PointerListItems", MemoryFieldType::PointerListItems},
     };
 
     struct MemoryField
@@ -245,6 +252,7 @@ namespace S2Plugin
         std::string comment;
         std::string parentPointerJsonName;
         std::string parentStructJsonName;
+        std::string pointerListPointerType;
         bool isPointer = false;
         bool isInlineStruct = false;
     };

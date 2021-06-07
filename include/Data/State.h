@@ -8,7 +8,7 @@
 
 namespace S2Plugin
 {
-    class State : MemoryMappedData
+    class State : public MemoryMappedData
     {
       public:
         explicit State(Configuration* config);

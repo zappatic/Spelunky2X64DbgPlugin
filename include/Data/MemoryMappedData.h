@@ -14,10 +14,11 @@ namespace S2Plugin
       public:
         explicit MemoryMappedData(Configuration* config);
 
+        size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true);
+
       protected:
         Configuration* mConfiguration;
 
-        size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true);
         size_t updateOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets);
     };
 } // namespace S2Plugin
