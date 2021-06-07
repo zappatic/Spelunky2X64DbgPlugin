@@ -127,43 +127,37 @@
     "Elevator": "Movable",
     "Boulder": "Movable",
     "Drill": "Movable",
-    "UdjatSocket": "Movable"
+    "UdjatSocket": "Movable",
+    "PushBlock": "Movable",
+    "TeleportingFloor": "Entity",
+    "Woodenlog": "Movable",
+    "BoneBlock": "Movable",
+    "TimedPowderkeg": "PushBlock",
+    "ChainedPushBlock": "PushBlock",
+    "LightArrowPlatform": "Movable",
+    "FallingPlatform": "Movable",
+    "TrapPart": "Movable",
+    "UnchainedSpikeBall": "Movable",
+    "Thinice": "Movable",
+    "ClamBase": "Movable",
+    "RegenBlock": "Movable",
+    "ClamTop": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
     "FLOOR_ARROW_TRAP": "ArrowTrap",
-    "FLOOR_ALTAR": "Altar",
     "FLOOR_POISONED_ARROW_TRAP": "ArrowTrap",
+    "FLOOR_ALTAR": "Altar",
+    "FLOOR_SPIKEBALL_CEILING": "SpikeballTrap",
+    "FLOOR_SLIDINGWALL_CEILING": "SlidingWallCeiling",
+    "FLOOR_STICKYTRAP_CEILING": "StickyTrap",
+    "FLOOR_TELEPORTINGBORDER": "TeleportingFloor",
     "FLOOR_FORCEFIELD": "ForceField",
     "FLOOR_DICE_FORCEFIELD": "ForceField",
-    "FLOOR_TIMED_FORCEFIELD": "ForceField",
-    "FLOOR_HORIZONTAL_FORCEFIELD": "HorizontalFF",
     "FLOOR_CHALLENGE_ENTRANCE": "ForceField",
     "FLOOR_CHALLENGE_WAITROOM": "ForceField",
-    "FLOOR_SPIKEBALL_CEILING": "SpikeballTrap",
-    "FLOOR_STICKYTRAP_CEILING": "StickyTrap",
-    "FLOOR_SLIDINGWALL_CEILING": "SlidingWallCeiling",
-    "ITEM_CRATE": "Container",
-    "ITEM_WEBGUN": "Gun",
-    "ITEM_SHOTGUN": "Gun",
-    "ITEM_CLONEGUN": "Gun",
-    "ITEM_PLASMACANNON": "Gun",
-    "ITEM_MATTOCK": "Mattock",
-    "ITEM_HOVERPACK": "Hoverpack",
-    "ITEM_JETPACK": "Jetpack",
-    "ITEM_POWERPACK": "BackPack",
-    "ITEM_BOMB": "Bomb",
-    "ITEM_PASTEBOMB": "Bomb",
-    "ITEM_CAPE": "Cape",
-    "ITEM_VLADS_CAPE": "VladsCape",
-    "ITEM_POWERUP_KAPALA": "KapalaPowerup",
-    "ITEM_UDJAT_SOCKET": "UdjatSocket",
-    "ACTIVEFLOOR_ELEVATOR": "Elevator",
-    "ACTIVEFLOOR_BOULDER": "Boulder",
-    "ACTIVEFLOOR_DRILL": "Drill",
-    "ACTIVEFLOOR_CRUSH_TRAP.*": "CrushTrap",
-    "ACTIVEFLOOR_OLMEC": "Olmec",
-    "FX_OLMECPART_FLOATER": "OlmecFloater",
+    "FLOOR_TIMED_FORCEFIELD": "ForceField",
+    "FLOOR_HORIZONTAL_FORCEFIELD": "HorizontalFF",
     "MONS_BAT": "Monster",
     "MONS_JIANGSHI": "Jiangshi",
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
@@ -265,6 +259,44 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
+    "ITEM_CRATE": "Container",
+    "ITEM_WEBGUN": "Gun",
+    "ITEM_SHOTGUN": "Gun",
+    "ITEM_CLONEGUN": "Gun",
+    "ITEM_PLASMACANNON": "Gun",
+    "ITEM_MATTOCK": "Mattock",
+    "ITEM_HOVERPACK": "Hoverpack",
+    "ITEM_JETPACK": "Jetpack",
+    "ITEM_POWERPACK": "BackPack",
+    "ITEM_TELEPORTER_BACKPACK": "BackPack",
+    "ITEM_BOMB": "Bomb",
+    "ITEM_PASTEBOMB": "Bomb",
+    "ITEM_CAPE": "Cape",
+    "ITEM_VLADS_CAPE": "VladsCape",
+    "ITEM_POWERUP_KAPALA": "KapalaPowerup",
+    "ITEM_UDJAT_SOCKET": "UdjatSocket",
+    "ITEM_USHABTI": "Ushabti",
+    "ITEM_GIANTCLAM_TOP": "ClamTop",
+    "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
+    "ACTIVEFLOOR_BOULDER": "Boulder",
+    "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
+    "ACTIVEFLOOR_BONEBLOCK": "BoneBlock",
+    "ACTIVEFLOOR_POWDERKEG": "PushBlock",
+    "ACTIVEFLOOR_CHAINEDPUSHBLOCK": "ChainedPushBlock",
+    "ACTIVEFLOOR_LIGHTARROWPLATFORM": "LightArrowPlatform",
+    "ACTIVEFLOOR_FALLING_PLATFORM": "FallingPlatform",
+    "ACTIVEFLOOR_CHAINED_SPIKEBALL": "TrapPart",
+    "ACTIVEFLOOR_UNCHAINED_SPIKEBALL": "UnchainedSpikeBall",
+    "ACTIVEFLOOR_DRILL": "Drill",
+    "ACTIVEFLOOR_CRUSH_TRAP.*": "CrushTrap",
+    "ACTIVEFLOOR_OLMEC": "Olmec",
+    "ACTIVEFLOOR_TIMEDPOWDERKEG": "TimedPowderkeg",
+    "ACTIVEFLOOR_SLIDINGWALL": "TrapPart",
+    "ACTIVEFLOOR_THINICE": "Thinice",
+    "ACTIVEFLOOR_ELEVATOR": "Elevator",
+    "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
+    "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
+    "FX_OLMECPART_FLOATER": "OlmecFloater",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -272,7 +304,7 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
-    "ITEM_USHABTI": "Ushabti",
+//
     "ITEM_.*": "Movable",
     "ACTIVEFLOOR_.*": "Movable",
     "FLOOR_.*_GENERATOR": "Generator",
@@ -336,7 +368,8 @@
     "Arena2Pointer",
     "Arena3Pointer",
     "LiquidPhysicsPointer",
-    "CameraPointer"
+    "CameraPointer",
+    "EntityUIDPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -3950,7 +3983,17 @@
     ],
     "CrushTrap": [
       { "field": "dirx", "type": "Float" },
-      { "field": "diry", "type": "Float" }
+      { "field": "diry", "type": "Float" },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "count's from 30 to 0 when detecting player, then moves, when stops moving counts from 60 to 0 before it can be triggered again"
+      },
+      {
+        "field": "bounce_back_timer",
+        "type": "UnsignedByte",
+        "comment": "count's from 7 to 0 when it hits the wall and moves away from the wall, then moves back and count's from 255 until it hits the wall again, if needed it will start the counter again for another bounce"
+      }
     ],
     "Altar": [
       { "field": "unknown1", "type": "UnsignedQword" },
@@ -5814,6 +5857,118 @@
         "comment": "it's forced to 0, for whatever reason"
       }
     ],
-    "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }]
+    "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }],
+    "EntityUIDPointer": [{ "field": "unknown1", "type": "EntityUID" }],
+    "PushBlock": [
+      {
+        "field": "unknown1_pointer",
+        "type": "EntityUIDPointer",
+        "comment": "last pushed by?"
+      },
+      {
+        "field": "unknown2_pointer",
+        "type": "EntityUIDPointer",
+        "comment": "something to resolve conflicts in coop when 2 players pushing the same block"
+      },
+      {
+        "field": "unknown3_pointer",
+        "type": "EntityUIDPointer",
+        "comment": "dunno?"
+      },
+      { "field": "sound_info", "type": "PositionInfoPointer" },
+      { "field": "dust_particle", "type": "ParticleInfoPointer" },
+      { "field": "dest_pos_x", "type": "Float" }
+    ],
+    "TeleportingFloor": [
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown2", "type": "Qword" },
+      {
+        "field": "teleport",
+        "type": "State8",
+        "states": {
+          "0": "right",
+          "1": "left",
+          "2": "bottom",
+          "3": "top",
+          "4": "disable"
+        }
+      }
+    ],
+    "Woodenlog": [
+      { "field": "ceiling_1", "type": "EntityUID" },
+      { "field": "ceiling_2", "type": "EntityUID" },
+      { "field": "falling_speed", "type": "Float" },
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "it's forced to 0, for whatever reason"
+      }
+    ],
+    "BoneBlock": [
+      {
+        "field": "unknown1",
+        "type": "Float",
+        "comment": "1.0 when hited from left and -1.0 when hited from right"
+      }
+    ],
+    "TimedPowderkeg": [
+      { "field": "unused", "type": "UnsignedDword" },
+      {
+        "field": "timer",
+        "type": "Dword",
+        "comment": "timer till explosion, it's paused when negative, can be stooped"
+      }
+    ],
+    "ChainedPushBlock": [
+      { "field": "unused", "type": "UnsignedDword" },
+      {
+        "field": "is_chained",
+        "type": "Bool",
+        "comment": "changing this the chained does nothing, when unchained it's forced to 0"
+      }
+    ],
+    "LightArrowPlatform": [
+      { "field": "unused", "type": "UnsignedQword" },
+      { "field": "unknown", "type": "MysteryPointer1" }
+    ],
+    "FallingPlatform": [
+      { "field": "timer", "type": "UnsignedDword" },
+      { "field": "shaking_factor", "type": "Float" },
+      { "field": "y_pos", "type": "Float" }
+    ],
+    "TrapPart": [{ "field": "ceiling", "type": "EntityPointer" }],
+    "UnchainedSpikeBall": [
+      {
+        "field": "bounce",
+        "type": "Bool",
+        "comment": "if false it bounces when hitting the ground, it's also forced to true when moving sideways or rolling, can be changed to true in the air for weird effect"
+      }
+    ],
+    "Thinice": [
+      { "field": "unknown1", "type": "EntityUIDPointer" },
+      { "field": "unknown2", "type": "EntityUIDPointer" },
+      { "field": "unknown3", "type": "EntityUIDPointer" },
+      {
+        "field": "strength",
+        "type": "UnsignedWord",
+        "comment": "counts frames when standing on, maximum is 134 as based of this value it changes animation_frame, and above that value it changes to wrong sprite"
+      }
+    ],
+    "ClamBase": [
+      { "field": "treasure_type", "type": "EntityDBID" },
+      {
+        "field": "treasure_uid",
+        "type": "EntityUID",
+        "comment": "set to nothing when spawning in overlunky"
+      },
+      { "field": "treasure_x_pos", "type": "Float" },
+      { "field": "treasure_y_pos", "type": "Float" },
+      { "field": "top_part", "type": "EntityUID" }
+    ],
+    "RegenBlock": [{ "field": "on_breaking", "type": "Bool" }],
+    "ClamTop": [
+      { "field": "close_timer", "type": "Byte" },
+      { "field": "open_timer", "type": "UnsignedByte" }
+    ]
   }
 }
