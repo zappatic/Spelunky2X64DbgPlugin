@@ -359,7 +359,14 @@
     "SaveGameItems",
     "SaveGameTraps",
     "SaveGameBestiaryKilled",
-    "SaveGamePeopleKilled"
+    "SaveGamePeopleKilled",
+    "JournalProgression",
+    "JournalProgressionSlot",
+    "ThemeProgression",
+    "ArenaState",
+    "ArenaConfigArenas",
+    "ArenaConfigItems",
+    "ArenaConfigEquippedItems"
   ],
   "refs": {
     "screen_states": {
@@ -389,6 +396,19 @@
       "26": "Arena score",
       "27": "Online loading",
       "28": "Online lobby"
+    },
+    "theme_progression_themes": {
+      "0": "Unset",
+      "1": "Dwelling",
+      "2": "Jungle",
+      "3": "Volcana",
+      "4": "Olmec",
+      "5": "Tide Pool",
+      "6": "Temple",
+      "7": "Ice Caves",
+      "8": "Neo Babylon",
+      "9": "Sunken City",
+      "10": "Cosmic Ocean"
     }
   },
 
@@ -1033,11 +1053,28 @@
       { "field": "level_count", "type": "UnsignedByte" },
       { "field": "unknown1a", "type": "UnsignedByte" },
       { "field": "unknown1b", "type": "UnsignedByte" },
-      { "field": "unknown1c", "type": "UnsignedByte" },
-      { "field": "unknown1d", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      {
+        "field": "world2_coffin_spawned",
+        "type": "Bool",
+        "comment": "coffin spawn depends on random chance, this tracks whether the spawn has taken place"
+      },
+      { "field": "world4_coffin_spawned", "type": "Bool" },
+      { "field": "world6_coffin_spawned", "type": "Bool" },
+      { "field": "unknown2b", "type": "UnsignedByte" },
+      { "field": "unknown2c", "type": "UnsignedByte" },
+      { "field": "unknown2d", "type": "UnsignedByte" },
       { "field": "waddler_storage", "type": "WaddlerStorage" },
-      { "field": "-", "type": "Skip", "offset": 2012 },
+      { "field": "-", "type": "Skip", "offset": 196 },
+      { "field": "journal_progression", "type": "JournalProgression" },
+      { "field": "-", "type": "Skip", "offset": 844 },
+      { "field": "theme_progression", "type": "ThemeProgression" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5a", "type": "UnsignedByte" },
+      { "field": "unknown5b", "type": "UnsignedByte" },
+      { "field": "unknown5c", "type": "UnsignedByte" },
+      { "field": "unknown5d", "type": "UnsignedByte" },
+      { "field": "arena", "type": "ArenaState" },
       {
         "field": "journal_flags",
         "type": "Flags32",
@@ -1252,11 +1289,466 @@
       { "field": "unknown38", "type": "UnsignedDword" },
       { "field": "camera", "type": "CameraPointer" },
       { "field": "unknown40", "type": "UnsignedByte" },
-      { "field": "unknown41", "type": "UnsignedByte" },
+      {
+        "field": "unknown41",
+        "type": "Bool",
+        "comment": "eggplant child related"
+      },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
       { "field": "unknown44", "type": "UnsignedDword" },
       { "field": "unknown45", "type": "UnsignedQword" }
+    ],
+    "JournalProgression": [
+      { "field": "unknown1", "type": "UnsignedWord" },
+      { "field": "count", "type": "UnsignedWord" },
+      { "field": "slot1", "type": "JournalProgressionSlot" },
+      { "field": "slot2", "type": "JournalProgressionSlot" },
+      { "field": "slot3", "type": "JournalProgressionSlot" },
+      { "field": "slot4", "type": "JournalProgressionSlot" },
+      { "field": "slot5", "type": "JournalProgressionSlot" },
+      { "field": "slot6", "type": "JournalProgressionSlot" },
+      { "field": "slot7", "type": "JournalProgressionSlot" },
+      { "field": "slot8", "type": "JournalProgressionSlot" },
+      { "field": "slot9", "type": "JournalProgressionSlot" },
+      { "field": "slot10", "type": "JournalProgressionSlot" },
+      { "field": "slot11", "type": "JournalProgressionSlot" },
+      { "field": "slot12", "type": "JournalProgressionSlot" },
+      { "field": "slot13", "type": "JournalProgressionSlot" },
+      { "field": "slot14", "type": "JournalProgressionSlot" },
+      { "field": "slot15", "type": "JournalProgressionSlot" },
+      { "field": "slot16", "type": "JournalProgressionSlot" },
+      { "field": "slot17", "type": "JournalProgressionSlot" },
+      { "field": "slot18", "type": "JournalProgressionSlot" },
+      { "field": "slot19", "type": "JournalProgressionSlot" },
+      { "field": "slot20", "type": "JournalProgressionSlot" },
+      { "field": "slot21", "type": "JournalProgressionSlot" },
+      { "field": "slot22", "type": "JournalProgressionSlot" },
+      { "field": "slot23", "type": "JournalProgressionSlot" },
+      { "field": "slot24", "type": "JournalProgressionSlot" },
+      { "field": "slot25", "type": "JournalProgressionSlot" },
+      { "field": "slot26", "type": "JournalProgressionSlot" },
+      { "field": "slot27", "type": "JournalProgressionSlot" },
+      { "field": "slot28", "type": "JournalProgressionSlot" },
+      { "field": "slot29", "type": "JournalProgressionSlot" },
+      { "field": "slot30", "type": "JournalProgressionSlot" },
+      { "field": "slot31", "type": "JournalProgressionSlot" },
+      { "field": "slot32", "type": "JournalProgressionSlot" },
+      { "field": "slot33", "type": "JournalProgressionSlot" },
+      { "field": "slot34", "type": "JournalProgressionSlot" },
+      { "field": "slot35", "type": "JournalProgressionSlot" },
+      { "field": "slot36", "type": "JournalProgressionSlot" },
+      { "field": "slot37", "type": "JournalProgressionSlot" },
+      { "field": "slot38", "type": "JournalProgressionSlot" },
+      { "field": "slot39", "type": "JournalProgressionSlot" },
+      { "field": "slot40", "type": "JournalProgressionSlot" }
+    ],
+    "JournalProgressionSlot": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      {
+        "field": "grid_position",
+        "type": "Byte",
+        "comment": "-1 = unassigned, will be assigned when opening the journal and gets the zoom effect"
+      },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "entity", "type": "EntityDBID" },
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "angle", "type": "Float" }
+    ],
+    "ThemeProgression": [
+      { "field": "count", "type": "UnsignedByte" },
+      {
+        "field": "theme1",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme2",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme3",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme4",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme5",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme6",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme7",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      {
+        "field": "theme8",
+        "type": "State8",
+        "ref": "theme_progression_themes"
+      },
+      { "field": "theme9", "type": "State8", "ref": "theme_progression_themes" }
+    ],
+    "ArenaState": [
+      {
+        "field": "current_arena",
+        "type": "State32",
+        "states": {
+          "0": "dwelling_1",
+          "1": "dwelling_2",
+          "2": "dwelling_3",
+          "3": "dwelling_4",
+          "4": "dwelling_5",
+          "5": "jungle_1",
+          "6": "jungle_2",
+          "7": "jungle_3",
+          "8": "jungle_4",
+          "9": "jungle_5",
+          "10": "volcana_1",
+          "11": "volcana_2",
+          "12": "volcana_3",
+          "13": "volcana_4",
+          "14": "volcana_5",
+          "15": "tidepool_1",
+          "16": "tidepool_2",
+          "17": "tidepool_3",
+          "18": "tidepool_4",
+          "19": "tidepool_5",
+          "20": "temple_1",
+          "21": "temple_2",
+          "22": "temple_3",
+          "23": "temple_4",
+          "24": "temple_5",
+          "25": "icecaves_1",
+          "26": "icecaves_2",
+          "27": "icecaves_3",
+          "28": "icecaves_4",
+          "29": "icecaves_5",
+          "30": "neobabylon_1",
+          "31": "neobabylon_2",
+          "32": "neobabylon_3",
+          "33": "neobabylon_4",
+          "34": "neobabylon_5",
+          "35": "sunkencity_1",
+          "36": "sunkencity_2",
+          "37": "sunkencity_3",
+          "38": "sunkencity_4",
+          "39": "sunkencity_5"
+        }
+      },
+      { "field": "player1_team", "type": "UnsignedByte" },
+      { "field": "player2_team", "type": "UnsignedByte" },
+      { "field": "player3_team", "type": "UnsignedByte" },
+      { "field": "player4_team", "type": "UnsignedByte" },
+      {
+        "field": "format",
+        "type": "State8",
+        "states": {
+          "0": "Deathmatch",
+          "1": "Hold the idol"
+        }
+      },
+      {
+        "field": "ruleset",
+        "type": "State8",
+        "states": {
+          "0": "Casual",
+          "1": "Tournament",
+          "2": "Joust",
+          "3": "Frantic",
+          "4": "Custom"
+        }
+      },
+      { "field": "player1_lives", "type": "UnsignedByte" },
+      { "field": "player2_lives", "type": "UnsignedByte" },
+      { "field": "player3_lives", "type": "UnsignedByte" },
+      { "field": "player4_lives", "type": "UnsignedByte" },
+      { "field": "player1_totalwins", "type": "UnsignedByte" },
+      { "field": "player2_totalwins", "type": "UnsignedByte" },
+      { "field": "player3_totalwins", "type": "UnsignedByte" },
+      { "field": "player4_totalwins", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "Byte" },
+      { "field": "player1_won", "type": "Bool" },
+      { "field": "player2_won", "type": "Bool" },
+      { "field": "player3_won", "type": "Bool" },
+      { "field": "player4_won", "type": "Bool" },
+      { "field": "unknown14", "type": "UnsignedByte" },
+      {
+        "field": "timer",
+        "type": "State8",
+        "states": {
+          "0": "0:30",
+          "1": "1:00",
+          "2": "1:30",
+          "3": "2:00",
+          "4": "2:30",
+          "5": "3:00",
+          "6": "3:30",
+          "7": "4:00",
+          "8": "4:30",
+          "9": "5:00",
+          "10": "5:30",
+          "11": "6:00",
+          "12": "6:30",
+          "13": "7:00",
+          "14": "7:30",
+          "15": "8:00",
+          "16": "8:30",
+          "17": "9:00",
+          "18": "9:30",
+          "19": "10:00",
+          "20": "Infinite"
+        }
+      },
+      {
+        "field": "timer_ending",
+        "type": "State8",
+        "states": {
+          "0": "Round Ends",
+          "1": "Death Mist",
+          "2": "Alien Blast",
+          "3": "Loose Bombs",
+          "4": "Random"
+        }
+      },
+      { "field": "wins", "type": "UnsignedByte" },
+      { "field": "lives", "type": "UnsignedByte" },
+      { "field": "unknown15", "type": "UnsignedByte" },
+      { "field": "unknown16", "type": "UnsignedByte" },
+      { "field": "player1_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "player2_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "player3_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "player4_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "health", "type": "UnsignedByte" },
+      { "field": "bombs", "type": "UnsignedByte" },
+      { "field": "ropes", "type": "UnsignedByte" },
+      {
+        "field": "stun_time",
+        "type": "State8",
+        "states": {
+          "0": "x0.00",
+          "1": "x0.25",
+          "2": "x0.50",
+          "3": "x0.75",
+          "4": "x1.00",
+          "5": "x1.25",
+          "6": "x1.50",
+          "7": "x1.75",
+          "8": "x2.00"
+        }
+      },
+      {
+        "field": "mount",
+        "type": "State8",
+        "states": {
+          "0": "None",
+          "1": "Turkey",
+          "2": "Rockdog",
+          "3": "Axolotl",
+          "4": "Random"
+        }
+      },
+      {
+        "field": "arena_select",
+        "type": "State8",
+        "states": {
+          "0": "Take Turns",
+          "1": "Loser Picks",
+          "2": "Random Level"
+        }
+      },
+      { "field": "arenas", "type": "ArenaConfigArenas" },
+      {
+        "field": "dark_level_chance",
+        "type": "State8",
+        "states": {
+          "0": "None",
+          "1": "10%",
+          "2": "50%",
+          "3": "Always"
+        }
+      },
+      {
+        "field": "crate_frequency",
+        "type": "State8",
+        "states": {
+          "0": "None",
+          "1": "Low",
+          "2": "Medium",
+          "3": "High"
+        }
+      },
+      { "field": "items", "type": "ArenaConfigItems" },
+      {
+        "field": "held_item",
+        "type": "State8",
+        "states": {
+          "-1": "Nothing",
+          "7": "Machete",
+          "8": "Mattock",
+          "9": "Crossbow",
+          "10": "Webgun",
+          "11": "Freezeray",
+          "12": "Shotgun",
+          "13": "Camera",
+          "14": "Plasma cannon",
+          "15": "Teleporter",
+          "28": "Excalibur"
+        }
+      },
+      {
+        "field": "equipped_backitem",
+        "type": "State8",
+        "states": {
+          "-1": "Nothing",
+          "22": "Cape",
+          "23": "Vlad's cape",
+          "24": "Jetpack",
+          "25": "Hoverpack",
+          "26": "Telepack",
+          "27": "Powerpack"
+        }
+      },
+      { "field": "unknown25", "type": "UnsignedByte" },
+      { "field": "unknown26", "type": "UnsignedByte" },
+      { "field": "unknown27", "type": "UnsignedByte" },
+      { "field": "unknown28", "type": "UnsignedByte" },
+      { "field": "unknown29", "type": "UnsignedByte" },
+      { "field": "unknown30", "type": "UnsignedByte" },
+      { "field": "unknown31", "type": "UnsignedByte" },
+      { "field": "unknown32", "type": "UnsignedByte" },
+      { "field": "unknown33", "type": "UnsignedByte" },
+      { "field": "unknown34", "type": "UnsignedByte" },
+      { "field": "unknown35", "type": "UnsignedByte" },
+      { "field": "unknown36", "type": "UnsignedByte" },
+      { "field": "unknown37", "type": "UnsignedByte" },
+      { "field": "unknown38", "type": "UnsignedByte" },
+      { "field": "unknown39", "type": "UnsignedByte" },
+      { "field": "unknown40", "type": "UnsignedByte" },
+      { "field": "equipped_items", "type": "ArenaConfigEquippedItems" },
+      {
+        "field": "whip_damage",
+        "type": "State8",
+        "states": {
+          "0": "0",
+          "1": "1",
+          "2": "2",
+          "3": "3",
+          "4": "4",
+          "5": "5",
+          "6": "10",
+          "7": "99"
+        }
+      },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "unknown43", "type": "UnsignedByte" }
+    ],
+    "ArenaConfigArenas": [
+      { "field": "dwelling_1", "type": "Bool" },
+      { "field": "dwelling_2", "type": "Bool" },
+      { "field": "dwelling_3", "type": "Bool" },
+      { "field": "dwelling_4", "type": "Bool" },
+      { "field": "dwelling_5", "type": "Bool" },
+      { "field": "jungle_1", "type": "Bool" },
+      { "field": "jungle_2", "type": "Bool" },
+      { "field": "jungle_3", "type": "Bool" },
+      { "field": "jungle_4", "type": "Bool" },
+      { "field": "jungle_5", "type": "Bool" },
+      { "field": "volcana_1", "type": "Bool" },
+      { "field": "volcana_2", "type": "Bool" },
+      { "field": "volcana_3", "type": "Bool" },
+      { "field": "volcana_4", "type": "Bool" },
+      { "field": "volcana_5", "type": "Bool" },
+      { "field": "tidepool_1", "type": "Bool" },
+      { "field": "tidepool_2", "type": "Bool" },
+      { "field": "tidepool_3", "type": "Bool" },
+      { "field": "tidepool_4", "type": "Bool" },
+      { "field": "tidepool_5", "type": "Bool" },
+      { "field": "temple_1", "type": "Bool" },
+      { "field": "temple_2", "type": "Bool" },
+      { "field": "temple_3", "type": "Bool" },
+      { "field": "temple_4", "type": "Bool" },
+      { "field": "temple_5", "type": "Bool" },
+      { "field": "icecaves_1", "type": "Bool" },
+      { "field": "icecaves_2", "type": "Bool" },
+      { "field": "icecaves_3", "type": "Bool" },
+      { "field": "icecaves_4", "type": "Bool" },
+      { "field": "icecaves_5", "type": "Bool" },
+      { "field": "neobabylon_1", "type": "Bool" },
+      { "field": "neobabylon_2", "type": "Bool" },
+      { "field": "neobabylon_3", "type": "Bool" },
+      { "field": "neobabylon_4", "type": "Bool" },
+      { "field": "neobabylon_5", "type": "Bool" },
+      { "field": "sunkencity_1", "type": "Bool" },
+      { "field": "sunkencity_2", "type": "Bool" },
+      { "field": "sunkencity_3", "type": "Bool" },
+      { "field": "sunkencity_4", "type": "Bool" },
+      { "field": "sunkencity_5", "type": "Bool" }
+    ],
+    "ArenaConfigItems": [
+      { "field": "rock", "type": "Bool" },
+      { "field": "pot", "type": "Bool" },
+      { "field": "bombbag", "type": "Bool" },
+      { "field": "bombbox", "type": "Bool" },
+      { "field": "ropepile", "type": "Bool" },
+      { "field": "cooked_turkey", "type": "Bool" },
+      { "field": "royal_jelly", "type": "Bool" },
+      { "field": "machete", "type": "Bool" },
+      { "field": "mattock", "type": "Bool" },
+      { "field": "crossbow", "type": "Bool" },
+      { "field": "webgun", "type": "Bool" },
+      { "field": "freezeray", "type": "Bool" },
+      { "field": "shotgun", "type": "Bool" },
+      { "field": "camera", "type": "Bool" },
+      { "field": "plasma_cannon", "type": "Bool" },
+      { "field": "teleporter", "type": "Bool" },
+      { "field": "paste", "type": "Bool" },
+      { "field": "climbing_gloves", "type": "Bool" },
+      { "field": "pitchers_mitt", "type": "Bool" },
+      { "field": "spike_shoes", "type": "Bool" },
+      { "field": "spring_shoes", "type": "Bool" },
+      { "field": "parachute", "type": "Bool" },
+      { "field": "cape", "type": "Bool" },
+      { "field": "vlads_cape", "type": "Bool" },
+      { "field": "jetpack", "type": "Bool" },
+      { "field": "hoverpack", "type": "Bool" },
+      { "field": "telepack", "type": "Bool" },
+      { "field": "powerpack", "type": "Bool" },
+      { "field": "excalibur", "type": "Bool" },
+      { "field": "kapala", "type": "Bool" }
+    ],
+    "ArenaConfigEquippedItems": [
+      { "field": "paste", "type": "Bool" },
+      { "field": "climbing_gloves", "type": "Bool" },
+      { "field": "pitchers_mitt", "type": "Bool" },
+      { "field": "spike_shoes", "type": "Bool" },
+      { "field": "spring_shoes", "type": "Bool" },
+      { "field": "parachute", "type": "Bool" },
+      {
+        "field": "dummy1",
+        "type": "Bool",
+        "comment": "the backitems and excalibur have spaces here but are unused"
+      },
+      { "field": "dummy2", "type": "Bool" },
+      { "field": "dummy3", "type": "Bool" },
+      { "field": "dummy4", "type": "Bool" },
+      { "field": "dummy5", "type": "Bool" },
+      { "field": "dummy6", "type": "Bool" },
+      { "field": "dummy7", "type": "Bool" },
+      { "field": "kapala", "type": "Bool" }
     ],
     "WaddlerStorage": [
       { "field": "slot1", "type": "EntityDBID" },
@@ -1606,7 +2098,7 @@
       {
         "field": "crate",
         "type": "EntityUID",
-        "comment": "you must break this run for the run to be valid, otherwise you're cheating"
+        "comment": "you must break this crate for the run to be valid, otherwise you're cheating"
       },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" }
