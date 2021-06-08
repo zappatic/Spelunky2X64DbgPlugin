@@ -18,6 +18,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::PointerListItems:
             break;
         case MemoryFieldType::Skip:
+        case MemoryFieldType::UTF16StringFixedSize:
             offset += field.extraInfo;
             break;
         case MemoryFieldType::Bool:

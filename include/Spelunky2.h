@@ -95,9 +95,11 @@ namespace S2Plugin
         ThemeInfoName,
         LevelGenPointer,
         UTF16Char,
+        UTF16StringFixedSize,
         StringsTableID,
         PointerList,
         PointerListItems,
+        CharacterDB,
     };
 
     // for display purposes
@@ -146,9 +148,11 @@ namespace S2Plugin
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
+        {MemoryFieldType::UTF16StringFixedSize, "UTF16StringFixedSize"},
         {MemoryFieldType::StringsTableID, "StringsTableID"},
         {MemoryFieldType::PointerList, "PointerList"},
         {MemoryFieldType::PointerListItems, "PointerListItems"},
+        {MemoryFieldType::CharacterDB, "CharacterDB"},
     };
 
     // for C++ header generation
@@ -187,9 +191,11 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMeta*"},
         {MemoryFieldType::LevelGenPointer, "LevelGen*"},
         {MemoryFieldType::UTF16Char, "uint16_t"},
+        {MemoryFieldType::UTF16StringFixedSize, "// "},
         {MemoryFieldType::StringsTableID, "uint32_t"},
         {MemoryFieldType::PointerList, "PointerList"},
         {MemoryFieldType::PointerListItems, "// ignore"},
+        {MemoryFieldType::CharacterDB, "CharacterDB*"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -236,9 +242,11 @@ namespace S2Plugin
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
+        {"UTF16StringFixedSize", MemoryFieldType::UTF16StringFixedSize},
         {"StringsTableID", MemoryFieldType::StringsTableID},
         {"PointerList", MemoryFieldType::PointerList},
         {"PointerListItems", MemoryFieldType::PointerListItems},
+        {"CharacterDB", MemoryFieldType::CharacterDB},
     };
 
     struct MemoryField

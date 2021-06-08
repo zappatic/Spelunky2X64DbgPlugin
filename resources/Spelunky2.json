@@ -915,6 +915,28 @@
       { "field": "unknown41", "type": "UnsignedByte" },
       { "field": "unknown42", "type": "UnsignedDword" }
     ],
+    "CharacterDB": [
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "heart_red", "type": "Float" },
+      { "field": "heart_green", "type": "Float" },
+      { "field": "heart_blue", "type": "Float" },
+      { "field": "heart_alpha", "type": "Float" },
+      { "field": "full_name", "type": "UTF16StringFixedSize", "offset": 48 },
+      { "field": "first_name", "type": "UTF16StringFixedSize", "offset": 24 },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedByte" },
+      { "field": "unknown11", "type": "UnsignedByte" },
+      { "field": "unknown12", "type": "UnsignedByte" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "UnsignedByte" },
+      { "field": "unknown16", "type": "UnsignedByte" },
+      { "field": "unknown17", "type": "UnsignedByte" },
+      { "field": "unknown18", "type": "UnsignedByte" }
+    ],
     "State": [
       { "field": "p00", "type": "DataPointer" },
       { "field": "screen_last", "type": "State32", "ref": "screen_states" },
@@ -3805,7 +3827,7 @@
     "Player": [
       { "field": "inside", "type": "Map" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
-      { "field": "lightsource", "type": "IlluminationPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "i148", "type": "Dword" },
       { "field": "i14c", "type": "Dword" },
       { "field": "ai_func", "type": "DataPointer" },

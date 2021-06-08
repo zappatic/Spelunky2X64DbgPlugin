@@ -143,6 +143,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::PointerListItems:
             break;
         case MemoryFieldType::Skip:
+        case MemoryFieldType::UTF16StringFixedSize:
             fieldSize = field.extraInfo;
             break;
         case MemoryFieldType::Bool:
@@ -231,6 +232,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::Flag:
         case MemoryFieldType::PointerListItems:
         case MemoryFieldType::Skip:
+        case MemoryFieldType::UTF16StringFixedSize:
             break;
         case MemoryFieldType::Bool:
         case MemoryFieldType::Byte:

@@ -1,5 +1,6 @@
 #include "QtPlugin.h"
 #include "Configuration.h"
+#include "Data/CharacterDB.h"
 #include "Data/EntityDB.h"
 #include "Data/GameManager.h"
 #include "Data/LevelGen.h"
@@ -25,6 +26,7 @@ static S2Plugin::ViewToolbar* gsViewToolbar;
 static S2Plugin::EntityDB* gsEntityDB;
 static S2Plugin::ParticleDB* gsParticleDB;
 static S2Plugin::TextureDB* gsTextureDB;
+static S2Plugin::CharacterDB* gsCharacterDB;
 static S2Plugin::GameManager* gsGameManager;
 static S2Plugin::State* gsState;
 static S2Plugin::SaveGame* gsSaveGame;
@@ -80,6 +82,7 @@ void QtPlugin::Setup()
         gsEntityDB = new S2Plugin::EntityDB(gsConfiguration);
         gsParticleDB = new S2Plugin::ParticleDB(gsConfiguration);
         gsTextureDB = new S2Plugin::TextureDB(gsConfiguration);
+        gsCharacterDB = new S2Plugin::CharacterDB(gsConfiguration);
         gsState = new S2Plugin::State(gsConfiguration);
         gsGameManager = new S2Plugin::GameManager(gsConfiguration);
         gsSaveGame = new S2Plugin::SaveGame(gsConfiguration, gsGameManager);
@@ -87,8 +90,8 @@ void QtPlugin::Setup()
         gsVirtualTableLookup = new S2Plugin::VirtualTableLookup(gsConfiguration);
         gsStringsTable = new S2Plugin::StringsTable(gsConfiguration);
 
-        gsViewToolbar =
-            new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsGameManager, gsSaveGame, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsConfiguration, gsMDIArea, parent);
+        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsCharacterDB, gsGameManager, gsSaveGame, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable,
+                                                  gsConfiguration, gsMDIArea, parent);
         gsSpelunky2MainWindow->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, gsViewToolbar);
 
         GuiAddQWidgetTab(gsSpelunky2MainWindow);

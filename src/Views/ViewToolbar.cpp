@@ -1,4 +1,5 @@
 #include "Views/ViewToolbar.h"
+#include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
@@ -13,10 +14,10 @@
 #include <QMdiSubWindow>
 #include <QPushButton>
 
-S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl,
-                                   StringsTable* stbl, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
-    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mGameManager(gm), mSaveGame(sg), mState(state), mLevelGen(levelGen),
-      mVirtualTableLookup(vtl), mStringsTable(stbl), mConfiguration(config), mMDIArea(mdiArea)
+S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen,
+                                   VirtualTableLookup* vtl, StringsTable* stbl, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+    : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mCharacterDB(cdb), mGameManager(gm), mSaveGame(sg), mState(state),
+      mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -43,9 +44,14 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     QObject::connect(btnParticleDB, &QPushButton::clicked, this, &ViewToolbar::showParticleDB);
 
     auto btnStringsTable = new QPushButton(this);
-    btnStringsTable->setText("Strings Table");
+    btnStringsTable->setText("Strings DB");
     mMainLayout->addWidget(btnStringsTable);
     QObject::connect(btnStringsTable, &QPushButton::clicked, this, &ViewToolbar::showStringsTable);
+
+    auto btnCharacterDB = new QPushButton(this);
+    btnCharacterDB->setText("Character DB");
+    mMainLayout->addWidget(btnCharacterDB);
+    QObject::connect(btnCharacterDB, &QPushButton::clicked, this, &ViewToolbar::showCharacterDB);
 
     auto divider = new QFrame(this);
     divider->setFrameShape(QFrame::HLine);
@@ -124,6 +130,16 @@ S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
         return w;
     }
     return nullptr;
+}
+
+void S2Plugin::ViewToolbar::showCharacterDB()
+{
+    if (mCharacterDB->loadCharacters())
+    {
+        auto w = new ViewCharacterDB(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
 }
 
 void S2Plugin::ViewToolbar::showState()
@@ -244,6 +260,12 @@ S2Plugin::ParticleDB* S2Plugin::ViewToolbar::particleDB()
     return mParticleDB;
 }
 
+S2Plugin::CharacterDB* S2Plugin::ViewToolbar::characterDB()
+{
+    mCharacterDB->loadCharacters();
+    return mCharacterDB;
+}
+
 S2Plugin::TextureDB* S2Plugin::ViewToolbar::textureDB()
 {
     mTextureDB->loadTextureDB();
@@ -289,6 +311,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
     mEntityDB->reset();
     mParticleDB->reset();
     mTextureDB->reset();
+    mCharacterDB->reset();
 }
 
 void S2Plugin::ViewToolbar::resetSpelunky2Data()
@@ -303,5 +326,6 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mTextureDB->reset();
     mVirtualTableLookup->reset();
     mStringsTable->reset();
+    mCharacterDB->reset();
     mConfiguration->spelunky2()->reset();
 }

@@ -62,6 +62,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/TextureDB.h
 	include/Data/IDNameList.h
 	include/Data/EntityList.h
+	include/Data/CharacterDB.h
 	include/Data/ParticleEmittersList.h
 	include/Data/VirtualTableLookup.h
 	include/Data/StringsTable.h
@@ -69,6 +70,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
+	include/Views/ViewCharacterDB.h
 	include/Views/ViewTextureDB.h
 	include/Views/ViewEntity.h
 	include/Views/ViewEntities.h
@@ -103,6 +105,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/TextureDB.cpp
 	src/Data/IDNameList.cpp
 	src/Data/EntityList.cpp
+	src/Data/CharacterDB.cpp
 	src/Data/ParticleEmittersList.cpp
 	src/Data/VirtualTableLookup.cpp
 	src/Data/StringsTable.cpp
@@ -110,6 +113,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
+	src/Views/ViewCharacterDB.cpp
 	src/Views/ViewTextureDB.cpp
 	src/Views/ViewEntity.cpp
 	src/Views/ViewEntities.cpp

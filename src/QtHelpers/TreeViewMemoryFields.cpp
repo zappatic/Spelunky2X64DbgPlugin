@@ -134,6 +134,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::Vector:
         case MemoryFieldType::UTF16Char:
+        case MemoryFieldType::UTF16StringFixedSize:
         case MemoryFieldType::State8:
         case MemoryFieldType::State16:
         case MemoryFieldType::State32:
@@ -991,6 +992,22 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            break;
+        }
+        case MemoryFieldType::UTF16StringFixedSize:
+        {
+            char buffer[1024] = {0};
+            Script::Memory::Read(memoryOffset, buffer, field.extraInfo, nullptr);
+            auto valueString = QString::fromUtf16(reinterpret_cast<const ushort*>(buffer));
+            itemValue->setData(valueString, Qt::DisplayRole);
+            itemValueHex->setData("", Qt::DisplayRole);
+
+            char comparisonBuffer[1024] = {0};
+            Script::Memory::Read(comparisonMemoryOffset, comparisonBuffer, field.extraInfo, nullptr);
+            auto comparisonValueString = QString::fromUtf16(reinterpret_cast<const ushort*>(comparisonBuffer));
+            itemComparisonValue->setData(comparisonValueString, Qt::DisplayRole);
+            itemComparisonValueHex->setData("", Qt::DisplayRole);
+            itemComparisonValue->setBackground(valueString != comparisonValueString ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
         case MemoryFieldType::EntityDBID:

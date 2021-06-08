@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Configuration.h"
+#include "Data/CharacterDB.h"
 #include "Data/EntityDB.h"
 #include "Data/GameManager.h"
 #include "Data/LevelGen.h"
@@ -25,8 +26,8 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl, StringsTable* stbl,
-                    Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
+        ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl,
+                    StringsTable* stbl, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
         void showEntity(size_t offset);
 
         State* state();
@@ -34,6 +35,7 @@ namespace S2Plugin
         LevelGen* levelGen();
         EntityDB* entityDB();
         ParticleDB* particleDB();
+        CharacterDB* characterDB();
         TextureDB* textureDB();
         VirtualTableLookup* virtualTableLookup();
         StringsTable* stringsTable();
@@ -50,6 +52,7 @@ namespace S2Plugin
         void showEntities();
         ViewVirtualTable* showVirtualTableLookup();
         void showStringsTable();
+        void showCharacterDB();
         void showSaveGame();
         void clearLabels();
         void reloadConfig();
@@ -58,6 +61,7 @@ namespace S2Plugin
         EntityDB* mEntityDB;
         ParticleDB* mParticleDB;
         TextureDB* mTextureDB;
+        CharacterDB* mCharacterDB;
         GameManager* mGameManager;
         SaveGame* mSaveGame;
         State* mState;
