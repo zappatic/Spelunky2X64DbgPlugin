@@ -4,7 +4,7 @@
     "Movable": "Entity",
     "Monster": "Movable",
     "Player": "Movable",
-    "ArrowTrap": "Entity",
+    "ArrowTrap": "FloorDeco",
     "Container": "Movable",
     "Gun": "Movable",
     "CrushTrap": "Movable",
@@ -113,14 +113,14 @@
     "Axolotl": "Mount",
     "Mech": "Mount",
     "Qilin": "Mount",
-    "Altar": "Entity",
+    "Altar": "FloorDeco",
     "Ushabti": "Movable",
-    "Generator": "Entity",
-    "ForceField": "Entity",
-    "HorizontalFF": "Entity",
-    "StickyTrap": "Entity",
-    "SpikeballTrap": "Entity",
-    "SlidingWallCeiling": "Entity",
+    "Generator": "FloorDeco",
+    "ForceField": "FloorDeco",
+    "HorizontalFF": "FloorDeco",
+    "StickyTrap": "FloorDeco",
+    "SpikeballTrap": "FloorDeco",
+    "SlidingWallCeiling": "FloorDeco",
     "BackPack": "Movable",
     "Jetpack": "BackPack",
     "Hoverpack": "BackPack",
@@ -129,7 +129,7 @@
     "Drill": "Movable",
     "UdjatSocket": "Movable",
     "PushBlock": "Movable",
-    "TeleportingFloor": "Entity",
+    "TeleportingFloor": "FloorDeco",
     "Woodenlog": "Movable",
     "BoneBlock": "Movable",
     "TimedPowderkeg": "PushBlock",
@@ -142,7 +142,8 @@
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
     "ClamTop": "Movable",
-    "CookFire": "Movable"
+    "CookFire": "Movable",
+    "FloorDeco": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -307,6 +308,7 @@
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
     //
+    "FLOOR_.*": "FloorDeco",
     "ITEM_.*": "Movable",
     "ACTIVEFLOOR_.*": "Movable",
     "FLOOR_.*_GENERATOR": "Generator",
@@ -4017,11 +4019,7 @@
       { "field": "field_11", "type": "UnsignedByte" },
       { "field": "field_12", "type": "UnsignedWord" }
     ],
-    "ArrowTrap": [
-      { "field": "unknown1", "type": "Qword" },
-      { "field": "unknown2", "type": "Qword" },
-      { "field": "arrow_shot", "type": "Bool" }
-    ],
+    "ArrowTrap": [{ "field": "arrow_shot", "type": "Bool" }],
     "Container": [
       { "field": "inside", "type": "EntityDBID" },
       { "field": "timer", "type": "Dword" }
@@ -4048,8 +4046,6 @@
       }
     ],
     "Altar": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       {
         "field": "sacrifice_flags",
         "type": "Flags16",
@@ -5608,8 +5604,6 @@
     ],
     "Ushabti": [{ "field": "wiggle_timer", "type": "UnsignedWord" }],
     "Generator": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "spawned_uid", "type": "EntityUID" },
       { "field": "set_timer", "type": "UnsignedWord" },
       { "field": "timer", "type": "UnsignedWord" },
@@ -5625,8 +5619,6 @@
       }
     ],
     "HorizontalFF": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       {
         "field": "first_item_beam",
         "type": "EntityPointer",
@@ -5674,8 +5666,6 @@
       { "field": "unknown30", "type": "Dword" }
     ],
     "ForceField": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       {
         "field": "first_item_beam",
         "type": "EntityPointer",
@@ -5737,8 +5727,6 @@
       { "field": "unknown29", "type": "Dword" }
     ],
     "StickyTrap": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "sound_particle", "type": "PositionInfoPointer" },
       { "field": "unknown_pointer1", "type": "DataPointer" },
       {
@@ -5797,8 +5785,6 @@
       { "field": "unknown29", "type": "Dword" }
     ],
     "SpikeballTrap": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "sound_particle", "type": "PositionInfoPointer" },
       { "field": "unknown_pointer1", "type": "DataPointer" },
       {
@@ -5859,8 +5845,6 @@
       { "field": "unknown29", "type": "Dword" }
     ],
     "SlidingWallCeiling": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "attached_piece", "type": "EntityPointer" },
       { "field": "active_floor_part", "type": "EntityUID" },
       {
@@ -5931,8 +5915,6 @@
       { "field": "dest_pos_x", "type": "Float" }
     ],
     "TeleportingFloor": [
-      { "field": "unknown1", "type": "Qword" },
-      { "field": "unknown2", "type": "Qword" },
       {
         "field": "teleport",
         "type": "State8",
@@ -6032,6 +6014,12 @@
       { "field": "particles_flames", "type": "ParticleInfoPointer" },
       { "field": "particles_warp", "type": "ParticleInfoPointer" },
       { "field": "unknown10", "type": "DataPointer" }
+    ],
+    "FloorDeco": [
+      { "field": "deco_top", "type": "EntityUID" },
+      { "field": "deco_bottom", "type": "EntityUID" },
+      { "field": "deco_left", "type": "EntityUID" },
+      { "field": "deco_right", "type": "EntityUID" }
     ]
   }
 }
