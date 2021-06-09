@@ -18,6 +18,7 @@ bool S2Plugin::CharacterDB::loadCharacters()
 
     mMemoryOffsets.clear();
     mCharacterNames.clear();
+    mCharacterNamesStringList.clear();
 
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "0F B6 F2 4C 8D 2D");
     mCharactersPtr = instructionOffset + 10 + Script::Memory::ReadDword(instructionOffset + 6);

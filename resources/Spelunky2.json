@@ -916,7 +916,7 @@
       { "field": "unknown42", "type": "UnsignedDword" }
     ],
     "CharacterDB": [
-      { "field": "unknown1", "type": "Bool" },
+      { "field": "is_female", "type": "Bool" },
       { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedByte" },
@@ -930,8 +930,8 @@
       { "field": "unknown10", "type": "UnsignedByte" },
       { "field": "unknown11", "type": "UnsignedByte" },
       { "field": "unknown12", "type": "UnsignedByte" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Float" },
+      { "field": "basecamp_bed_x", "type": "Float" },
+      { "field": "basecamp_bed_y", "type": "Float" },
       { "field": "unknown15", "type": "UnsignedByte" },
       { "field": "unknown16", "type": "UnsignedByte" },
       { "field": "unknown17", "type": "UnsignedByte" },
