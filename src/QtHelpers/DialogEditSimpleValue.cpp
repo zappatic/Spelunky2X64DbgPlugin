@@ -216,7 +216,7 @@ void S2Plugin::DialogEditSimpleValue::decValueChanged(const QString& text)
         case MemoryFieldType::Byte:
         {
             int8_t v = mLineEditDecValue->text().toInt();
-            ss << "0x" << std::hex << std::setw(2) << std::setfill('0') << static_cast<uint32_t>(v);
+            ss << QString::asprintf("0x%02x", static_cast<uint8_t>(v)).toStdString();
             break;
         }
         case MemoryFieldType::UnsignedByte:

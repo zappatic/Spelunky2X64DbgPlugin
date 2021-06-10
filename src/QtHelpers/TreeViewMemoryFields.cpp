@@ -9,6 +9,7 @@
 #include <QDrag>
 #include <QMimeData>
 #include <inttypes.h>
+#include <iomanip>
 #include <sstream>
 
 S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent) : QTreeView(parent), mToolbar(toolbar), mMemoryMappedData(mmd)
@@ -446,7 +447,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             int8_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
             itemValue->setData(QString::asprintf("%d", value), Qt::DisplayRole);
-            auto newHexValue = QString::asprintf("0x%02X", value);
+            auto newHexValue = QString::asprintf("0x%02X", static_cast<uint8_t>(value));
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
