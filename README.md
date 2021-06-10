@@ -99,11 +99,23 @@ The memory viewer (as well as the level viewer) also show the other entity for c
 
 ![Entity Memory Comparison](/resources/docs_entity_compare_memory.png)
 
-## Strings table
+## Strings DB
 
 Shows a list of all the strings defined in the game.
 
-![Strings table](/resources/docs_stringstable.png)
+![Strings DB](/resources/docs_stringstable.png)
+
+## Character DB
+
+Shows a list of all the characters defined in the game.
+
+![Character DB](/resources/docs_characterdb.png)
+
+## SaveGame
+
+The SaveGame window displays the contents of your savegame (as represented in the game in memory).
+
+![SaveGame](/resources/docs_savegame.png)
 
 
 ## Advanced usage
