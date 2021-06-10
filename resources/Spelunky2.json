@@ -371,7 +371,8 @@
     "Arena2Pointer",
     "Arena3Pointer",
     "LiquidPhysicsPointer",
-    "CameraPointer"
+    "CameraPointer",
+    "ShopOwnerInfoList"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -401,7 +402,9 @@
     "ArenaState",
     "ArenaConfigArenas",
     "ArenaConfigItems",
-    "ArenaConfigEquippedItems"
+    "ArenaConfigEquippedItems",
+    "ShopOwnerInfo",
+    "ShopOwnerInfoDetails"
   ],
   "refs": {
     "screen_states": {
@@ -1341,28 +1344,103 @@
         "type": "UnorderedMap",
         "comment": "std::unordered_map<uint32_t, Entity*>"
       },
-      { "field": "unknown28", "type": "UnsignedQword" },
-      { "field": "unknown29", "type": "UnsignedQword" },
-      { "field": "unknown30", "type": "UnsignedQword" },
-      { "field": "unknown31", "type": "UnsignedQword" },
+      { "field": "backlayer_player_related1", "type": "DataPointer" },
+      { "field": "backlayer_player_related2", "type": "DataPointer" },
+      { "field": "unknown30", "type": "DataPointer" },
+      { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
+      { "field": "camera_layer", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "DataPointer" },
       { "field": "unknown33", "type": "UnsignedQword" },
-      { "field": "unknown34", "type": "DataPointer" },
-      { "field": "unknown35", "type": "DataPointer" },
+      { "field": "shop_owners_info", "type": "ShopOwnerInfo" },
       { "field": "unknown36", "type": "DataPointer" },
       { "field": "time_startup", "type": "UnsignedDword" },
-      { "field": "unknown38", "type": "UnsignedDword" },
+      {
+        "field": "special_visibility_flags",
+        "type": "Flags32",
+        "flags": {
+          "1": "Crust embedded items shown",
+          "2": "Crust embedded items shown (level transition)",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": "",
+          "9": "Compass door markers shown",
+          "10": "Compass door markers shown (level transition)",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "Special compass door markers shown",
+          "18": "Special compass door markers shown (level transition)",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "In back layer",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
       { "field": "camera", "type": "CameraPointer" },
       { "field": "unknown40", "type": "UnsignedByte" },
       {
         "field": "unknown41",
-        "type": "Bool",
-        "comment": "eggplant child related"
+        "type": "Flags8",
+        "flags": {
+          "1": "",
+          "2": "",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        },
+        "comment": "other character related (hired hand, basecamp characters)"
       },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
       { "field": "unknown44", "type": "UnsignedDword" },
       { "field": "unknown45", "type": "UnsignedQword" }
+    ],
+    "ShopOwnerInfo": [
+      {
+        "field": "data",
+        "type": "ShopOwnerInfoList",
+        "comment": "variable sized list of shopkeeper info"
+      },
+      {
+        "field": "end",
+        "type": "DataPointer",
+        "comment": "points to 1 after the end of the list, like an end iterator"
+      }
+    ],
+    "ShopOwnerInfoList": [
+      { "field": "0", "type": "ShopOwnerInfoDetails" },
+      { "field": "1", "type": "ShopOwnerInfoDetails" },
+      { "field": "2", "type": "ShopOwnerInfoDetails" },
+      { "field": "3", "type": "ShopOwnerInfoDetails" },
+      { "field": "4", "type": "ShopOwnerInfoDetails" },
+      { "field": "5", "type": "ShopOwnerInfoDetails" }
+    ],
+    "ShopOwnerInfoDetails": [
+      { "field": "layer", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "shop_owner", "type": "EntityUID" }
     ],
     "PointerList": [
       { "field": "begin", "type": "DataPointer" },
