@@ -1285,11 +1285,22 @@
         "type": "EntityDBID",
         "comment": "the contents of the coffin that will be spawned (during levelgen)"
       },
-      { "field": "player_died", "type": "Bool" },
+      {
+        "field": "cause_of_death",
+        "type": "State8",
+        "states": {
+          "0": "DEATH - I met my untimely demise",
+          "1": "Entity (see cause_of_death_entity_type)",
+          "2": "LONG FALL - I broke every bone in my body",
+          "3": "STILL FALLING - I haven't reached the bottom yet",
+          "4": "MISSED - I teleported right into a wall",
+          "5": "POISONED - Ooh, my insides hurt..."
+        }
+      },
       { "field": "padding10", "type": "UnsignedByte" },
       { "field": "padding11", "type": "UnsignedByte" },
       { "field": "padding12", "type": "UnsignedByte" },
-      { "field": "cause_of_death", "type": "EntityDBID" },
+      { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
       { "field": "waddler_floor_storage", "type": "EntityUID" },
       { "field": "toast", "type": "DataPointer" },
       { "field": "speechbubble", "type": "DataPointer" },
