@@ -21,6 +21,7 @@ namespace S2Plugin
     class ViewParticleDB;
     class ViewVirtualTable;
     class ViewTextureDB;
+    class ViewCharacterDB;
 
     class ViewToolbar : public QDockWidget
     {
@@ -52,7 +53,7 @@ namespace S2Plugin
         void showEntities();
         ViewVirtualTable* showVirtualTableLookup();
         void showStringsTable();
-        void showCharacterDB();
+        ViewCharacterDB* showCharacterDB();
         void showSaveGame();
         void clearLabels();
         void reloadConfig();

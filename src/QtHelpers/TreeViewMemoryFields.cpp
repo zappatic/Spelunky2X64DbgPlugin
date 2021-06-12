@@ -2,6 +2,7 @@
 #include "Data/Entity.h"
 #include "QtHelpers/DialogEditSimpleValue.h"
 #include "QtHelpers/DialogEditState.h"
+#include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewTextureDB.h"
@@ -11,6 +12,7 @@
 #include <inttypes.h>
 #include <iomanip>
 #include <sstream>
+
 
 S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent) : QTreeView(parent), mToolbar(toolbar), mMemoryMappedData(mmd)
 {
@@ -127,6 +129,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::EntityDBPointer:
         case MemoryFieldType::TextureDBPointer:
         case MemoryFieldType::TextureDBID:
+        case MemoryFieldType::CharacterDBID:
         case MemoryFieldType::LevelGenPointer:
         case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
@@ -1287,6 +1290,24 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
+        case MemoryFieldType::CharacterDBID:
+        {
+            uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
+            itemValue->setData(QString("<font color='blue'><u>%1 (%2)</u></font>").arg(value).arg(mToolbar->characterDB()->characterNames().at(value)), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%02X", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            uint32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadByte(comparisonMemoryOffset));
+            itemComparisonValue->setData(QString("<font color='blue'><u>%1 (%2)</u></font>").arg(comparisonValue).arg(mToolbar->characterDB()->characterNames().at(comparisonValue)), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("0x%02X", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            break;
+        }
         case MemoryFieldType::PointerList:
         {
             itemField->setData(QString::fromStdString(field.pointerListPointerType), gsRolePointerListPointerType);
@@ -1567,6 +1588,19 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     if (id != -1)
                     {
                         auto view = mToolbar->showEntityDB();
+                        if (view != nullptr)
+                        {
+                            view->showIndex(id);
+                        }
+                    }
+                    break;
+                }
+                case MemoryFieldType::CharacterDBID:
+                {
+                    auto id = clickedItem->data(gsRoleRawValue).toUInt();
+                    if (id != -1)
+                    {
+                        auto view = mToolbar->showCharacterDB();
                         if (view != nullptr)
                         {
                             view->showIndex(id);

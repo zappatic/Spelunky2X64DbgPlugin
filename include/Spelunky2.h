@@ -100,6 +100,7 @@ namespace S2Plugin
         PointerList,
         PointerListItems,
         CharacterDB,
+        CharacterDBID,
     };
 
     // for display purposes
@@ -153,6 +154,7 @@ namespace S2Plugin
         {MemoryFieldType::PointerList, "PointerList"},
         {MemoryFieldType::PointerListItems, "PointerListItems"},
         {MemoryFieldType::CharacterDB, "CharacterDB"},
+        {MemoryFieldType::CharacterDBID, "CharacterDBID"},
     };
 
     // for C++ header generation
@@ -196,6 +198,7 @@ namespace S2Plugin
         {MemoryFieldType::PointerList, "PointerList"},
         {MemoryFieldType::PointerListItems, "// ignore"},
         {MemoryFieldType::CharacterDB, "CharacterDB*"},
+        {MemoryFieldType::CharacterDBID, "uint8_t"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -247,6 +250,7 @@ namespace S2Plugin
         {"PointerList", MemoryFieldType::PointerList},
         {"PointerListItems", MemoryFieldType::PointerListItems},
         {"CharacterDB", MemoryFieldType::CharacterDB},
+        {"CharacterDBID", MemoryFieldType::CharacterDBID},
     };
 
     struct MemoryField

@@ -354,6 +354,7 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryF
         }
         case MemoryFieldType::Byte:
         case MemoryFieldType::State8:
+        case MemoryFieldType::CharacterDBID:
         {
             int8_t value = Script::Memory::ReadByte(offset);
             return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));

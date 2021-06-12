@@ -132,14 +132,16 @@ S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
     return nullptr;
 }
 
-void S2Plugin::ViewToolbar::showCharacterDB()
+S2Plugin::ViewCharacterDB* S2Plugin::ViewToolbar::showCharacterDB()
 {
     if (mCharacterDB->loadCharacters())
     {
         auto w = new ViewCharacterDB(this);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
+        return w;
     }
+    return nullptr;
 }
 
 void S2Plugin::ViewToolbar::showState()
