@@ -159,7 +159,8 @@
     "QuickSand": "FloorDeco",
     "Pipe": "TransferFloor",
     "Mother": "FloorDeco",
-    "Tentacle": "FloorDeco"
+    "Tentacle": "FloorDeco",
+    "TorchFlame": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -293,6 +294,7 @@
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
     "ITEM_CRATE": "Container",
+    "ITEM_WALLTORCHFLAME": "TorchFlame",
     "ITEM_WEBGUN": "Gun",
     "ITEM_SHOTGUN": "Gun",
     "ITEM_CLONEGUN": "Gun",
@@ -6615,6 +6617,10 @@
       { "field": "coop_pointer3?", "type": "EntityUIDPointer" },
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "item_tentacle", "type": "EntityUID" }
+    ],
+    "TorchFlame": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" }
     ]
   }
 }
