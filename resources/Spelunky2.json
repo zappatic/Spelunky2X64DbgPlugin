@@ -6182,7 +6182,7 @@
         "comment": "if killed, the whole beam goes out"
       },
       { "field": "fx_pointer", "type": "EntityPointer" },
-      { "field": "pointer3", "type": "PositionInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "laser_bounce?", "type": "Float" },
       {
         "field": "timer",
@@ -6199,8 +6199,8 @@
       },
       { "field": "fx_pointer", "type": "EntityPointer" },
       {
-        "field": "sound_particle",
-        "type": "PositionInfoPointer",
+        "field": "sound_pos",
+        "type": "SoundPositionPointer",
         "comment": "starts at timer 140"
       },
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -6220,7 +6220,7 @@
       { "field": "pause", "type": "Bool" } //only timed forcefield
     ],
     "StickyTrap": [
-      { "field": "sound_info", "type": "PositionInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "unknown_pointer1", "type": "EntityUIDPointer" },
       { "field": "unknown_pointer2", "type": "EntityUIDPointer" },
       { "field": "unknown_pointer3", "type": "EntityUIDPointer" },
@@ -6245,7 +6245,7 @@
       }
     ],
     "SpikeballTrap": [
-      { "field": "sound_info", "type": "PositionInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "chain", "type": "EntityPointer" },
       { "field": "end_pice", "type": "EntityPointer" },
       {
@@ -6488,7 +6488,7 @@
     ],
     "LockedDoor": [{ "field": "unlocked", "type": "Bool" }],
     "MainExit": [
-      { "field": "sound_info", "type": "PositionInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "top_value?", "type": "Float" },
       { "field": "value?", "type": "Float" }
     ],
