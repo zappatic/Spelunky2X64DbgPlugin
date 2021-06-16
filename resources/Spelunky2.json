@@ -160,7 +160,8 @@
     "Pipe": "TransferFloor",
     "Mother": "FloorDeco",
     "Tentacle": "FloorDeco",
-    "TorchFlame": "Movable"
+    "Flame": "Movable",
+    "SmallFlame": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -294,7 +295,12 @@
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
     "ITEM_CRATE": "Container",
-    "ITEM_WALLTORCHFLAME": "TorchFlame",
+    "ITEM_.*TORCHFLAME": "Flame",
+    "ITEM_LAMPFLAME": "Flame",
+    "ITEM_WHIP_FLAME": "Flame",
+    "ITEM_FLAMETHROWER_FIREBALL": "Flame",
+    "ITEM_PALACE_CANDLE_FLAME": "SmallFlame",
+    "ITEM_REDLANTERNFLAME": "SmallFlame",
     "ITEM_WEBGUN": "Gun",
     "ITEM_SHOTGUN": "Gun",
     "ITEM_CLONEGUN": "Gun",
@@ -6618,9 +6624,11 @@
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "item_tentacle", "type": "EntityUID" }
     ],
-    "TorchFlame": [
+    "Flame": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "illumination", "type": "IlluminationPointer" }
-    ]
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "smoke_particle", "type": "ParticleInfoPointer" }
+    ],
+    "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }]
   }
 }
