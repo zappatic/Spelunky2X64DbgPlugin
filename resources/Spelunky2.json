@@ -166,7 +166,8 @@
     "WalltorchFlame": "Flame",
     "WhipFlame": "Flame",
     "TorchFlame": "Flame",
-    "LampFlame": "Flame"
+    "LampFlame": "Flame",
+    "PoleDeco": "FloorDeco",
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -199,6 +200,8 @@
     "FLOOR_.*FORCEFIELD": "ForceField",
     "FLOOR_CHALLENGE_.*": "ForceField",
     "FLOOR_TENTACLE_BOTTOM": "Tentacle",
+    "FLOORSTYLED_MINEWOOD": "PoleDeco",
+    "FLOORSTYLED_PAGODA": "PoleDeco",
     "MONS_BAT": "Monster",
     "MONS_JIANGSHI": "Jiangshi",
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
@@ -354,7 +357,7 @@
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
     //
-    "FLOOR_.*": "FloorDeco",
+    "FLOOR.*": "FloorDeco",
     "ITEM_.*": "Movable",
     "ACTIVEFLOOR_.*": "Movable",
     "CHAR_.*": "Player",
@@ -6727,6 +6730,10 @@
       { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" }
     ],
     "WhipFlame": [{ "field": "flame_size", "type": "Float" }],
-    "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }]
+    "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }],
+    "PoleDeco": [
+      { "field": "deco_up", "type": "EntityUID" },
+      { "field": "deco_down", "type": "EntityUID" }
+    ]
   }
 }
