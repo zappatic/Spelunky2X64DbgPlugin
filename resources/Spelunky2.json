@@ -141,7 +141,7 @@
     "Thinice": "Movable",
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
-    "ClamTop": "Movable",
+    "GiantClamTop": "Movable",
     "CookFire": "Movable",
     "FloorDeco": "Entity",
     "Door": "FloorDeco",
@@ -161,7 +161,8 @@
     "Mother": "FloorDeco",
     "Tentacle": "FloorDeco",
     "Flame": "Movable",
-    "SmallFlame": "Movable"
+    "SmallFlame": "Movable",
+    "WalltorchFlame": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -317,8 +318,9 @@
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
-    "ITEM_GIANTCLAM_TOP": "ClamTop",
+    "ITEM_GIANTCLAM_TOP": "GiantClamTop",
     "ITEM_COOKFIRE": "CookFire",
+    "ITEM_WALLTORCHFLAME": "WalltorchFlame",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -930,9 +932,9 @@
       { "field": "ver_deflection_2", "type": "Float" },
       { "field": "hor_velocity", "type": "Float" },
       { "field": "ver_velocity", "type": "Float" },
-      { "field": "cyan", "type": "UnsignedByte" },
-      { "field": "magenta", "type": "UnsignedByte" },
-      { "field": "yellow", "type": "UnsignedByte" },
+      { "field": "red", "type": "UnsignedByte" },
+      { "field": "green", "type": "UnsignedByte" },
+      { "field": "blue", "type": "UnsignedByte" },
       { "field": "unknown28", "type": "UnsignedByte" },
       { "field": "texture", "type": "TextureDBPointer" },
       { "field": "unknown29", "type": "CodePointer" },
@@ -6508,7 +6510,7 @@
       { "field": "top_part", "type": "EntityUID" }
     ],
     "RegenBlock": [{ "field": "on_breaking", "type": "Bool" }],
-    "ClamTop": [
+    "GiantClamTop": [
       { "field": "close_timer", "type": "Byte" },
       { "field": "open_timer", "type": "UnsignedByte" }
     ],
@@ -6523,6 +6525,15 @@
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_warp", "type": "ParticleEmitterInfoPointer" },
       { "field": "unknown10", "type": "DataPointer" }
+    ],
+    "WalltorchFlame": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      {
+        "field": "flare_up_size",
+        "type": "Float",
+        "comment": "to make it temporarily bigger, flare up"
+      }
     ],
     "FloorDeco": [
       { "field": "deco_top", "type": "EntityUID" },
