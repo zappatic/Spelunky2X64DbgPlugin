@@ -167,7 +167,7 @@
     "WhipFlame": "Flame",
     "TorchFlame": "Flame",
     "LampFlame": "Flame",
-    "PoleDeco": "FloorDeco",
+    "PoleDeco": "FloorDeco"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
