@@ -357,11 +357,13 @@
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
     //
-    "FLOOR.*": "FloorDeco",
-    "ITEM_.*": "Movable",
-    "ACTIVEFLOOR_.*": "Movable",
+    "FLOOR_.*": "FloorDeco",
+    "FLOORSTYLED_.*": "FloorDeco",
+    "EMBED_.*": "FloorDeco",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster"
+    "ITEM_.*": "Movable",
+    "ACTIVEFLOOR_.*": "Movable",
   },
   // all the types that are pointers
   // if you want to add a pointer, add its field definition under "fields" below, and
