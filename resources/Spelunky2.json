@@ -296,7 +296,7 @@
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
     "ITEM_CRATE": "Container",
-    "ITEM_.*TORCHFLAME": "Flame",
+    "ITEM_TORCHFLAME": "Flame",
     "ITEM_LAMPFLAME": "Flame",
     "ITEM_WHIP_FLAME": "Flame",
     "ITEM_FLAMETHROWER_FIREBALL": "Flame",
