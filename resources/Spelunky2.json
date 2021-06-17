@@ -162,8 +162,10 @@
     "Tentacle": "FloorDeco",
     "Flame": "Movable",
     "SmallFlame": "Movable",
-    "WalltorchFlame": "Movable",
-    "WhipFlame": "Movable"
+    "WalltorchFlame": "Flame",
+    "WhipFlame": "Flame",
+    "TorchFlame": "Flame",
+    "LampFlame": "Flame"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -297,8 +299,8 @@
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
     "ITEM_CRATE": "Container",
-    "ITEM_TORCHFLAME": "Flame",
-    "ITEM_LAMPFLAME": "Flame",
+    "ITEM_TORCHFLAME": "TorchFlame",
+    "ITEM_LAMPFLAME": "LampFlame",
     "ITEM_WHIP_FLAME": "WhipFlame",
     "ITEM_FLAMETHROWER_FIREBALL": "WalltorchFlame",
     "ITEM_PALACE_CANDLE_FLAME": "SmallFlame",
@@ -6528,8 +6530,6 @@
       { "field": "unknown10", "type": "DataPointer" }
     ],
     "WalltorchFlame": [
-      { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "emitted_light", "type": "IlluminationPointer" },
       {
         "field": "flare_up_size",
         "type": "Float",
@@ -6711,17 +6711,18 @@
     ],
     "Flame": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "illumination", "type": "IlluminationPointer" },
-      { "field": "smoke_particle", "type": "ParticleInfoPointer" },
-      { "field": "flame_particle", "type": "ParticleInfoPointer" },
-      { "field": "warp_particle", "type": "ParticleInfoPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "TorchFlame": [
+      { "field": "smoke_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "warp_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "flame_size", "type": "Float" }
     ],
-    "WhipFlame": [
-      { "field": "sound_pos", "type": "PositionInfoPointer" },
-      { "field": "illumination", "type": "IlluminationPointer" },
-      { "field": "flame_size", "type": "Float" }
+    "LampFlame": [
+      { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" }
     ],
+    "WhipFlame": [{ "field": "flame_size", "type": "Float" }],
     "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }]
   }
 }
