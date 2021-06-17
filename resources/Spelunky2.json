@@ -117,6 +117,7 @@
     "Ushabti": "Movable",
     "Generator": "FloorDeco",
     "ForceField": "FloorDeco",
+    "TimedForceField": "ForceField",
     "HorizontalFF": "FloorDeco",
     "StickyTrap": "FloorDeco",
     "SpikeballTrap": "FloorDeco",
@@ -194,6 +195,7 @@
     "FLOOR_MOTHER_STATUE": "Mother",
     "FLOOR_TELEPORTINGBORDER": "TeleportingFloor",
     "FLOOR_HORIZONTAL_FORCEFIELD": "HorizontalFF",
+    "FLOOR_TIMED_FORCEFIELD": "TimedForceField",
     "FLOOR_.*FORCEFIELD": "ForceField",
     "FLOOR_CHALLENGE_.*": "ForceField",
     "FLOOR_TENTACLE_BOTTOM": "Tentacle",
@@ -6294,16 +6296,18 @@
       {
         "field": "on_off",
         "type": "Bool",
-        "comment": "starts the sound + first_item_beam but not fx_pointer for some reason"
-      },
+        "comment": "starts the sound + first_item_beam but not fx for some reason"
+      }
+    ],
+    "TimedForceField": [
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
       {
-        "field": "timer", //only timed forcefield
+        "field": "timer",
         "type": "UnsignedDword",
         "comment": "max 300? at 100 it's start the proces, changing the animation_frame"
       },
-      { "field": "pause", "type": "Bool" } //only timed forcefield
+      { "field": "pause", "type": "Bool" }
     ],
     "StickyTrap": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
