@@ -361,9 +361,9 @@
     "FLOORSTYLED_.*": "FloorDeco",
     "EMBED_.*": "FloorDeco",
     "CHAR_.*": "Player",
-    "MONS_.*": "Monster"
+    "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
-    "ACTIVEFLOOR_.*": "Movable",
+    "ACTIVEFLOOR_.*": "Movable"
   },
   // all the types that are pointers
   // if you want to add a pointer, add its field definition under "fields" below, and
