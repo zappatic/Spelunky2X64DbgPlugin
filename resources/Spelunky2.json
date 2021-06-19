@@ -163,8 +163,7 @@
     "Tentacle": "FloorDeco",
     "Flame": "Movable",
     "SmallFlame": "Movable",
-    "WalltorchFlame": "Flame",
-    "WhipFlame": "Flame",
+    "FlameSize": "Flame",
     "TorchFlame": "Flame",
     "LampFlame": "Flame",
     "PoleDeco": "FloorDeco",
@@ -309,10 +308,10 @@
     "ITEM_WHIP_FLAME": "WhipFlame",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
-    "ITEM_FLAMETHROWER_FIREBALL": "WalltorchFlame",
+    "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
     "ITEM_CHEST": "ChestInside",
     "ITEM_CRATE": "Container",
-    "ITEM_WALLTORCHFLAME": "WalltorchFlame",
+    "ITEM_WALLTORCHFLAME": "FlameSize",
     "ITEM_TORCHFLAME": "TorchFlame",
     "ITEM_LAMPFLAME": "LampFlame",
     "ITEM_REDLANTERNFLAME": "SmallFlame",
@@ -430,7 +429,6 @@
     "CameraPointer",
     "ShopOwnerInfoList",
     "UnorderedMapPointer",
-    "PointerToEntityPointer",
     "MysteryPointer1"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
@@ -6544,13 +6542,6 @@
       { "field": "particles_warp", "type": "ParticleEmitterInfoPointer" },
       { "field": "unknown10", "type": "DataPointer" }
     ],
-    "WalltorchFlame": [
-      {
-        "field": "flare_up_size",
-        "type": "Float",
-        "comment": "to make it temporarily bigger, flare up"
-      }
-    ],
     "FloorDeco": [
       { "field": "deco_top", "type": "EntityUID" },
       { "field": "deco_bottom", "type": "EntityUID" },
@@ -6638,19 +6629,10 @@
       { "field": "active?", "type": "UnsignedByte", "comment": "forced to 1" },
       {
         "field": "left_part?",
-        "type": "UnsignedByte",
+        "type": "Bool",
         "comment": "setting the laft part to 0 or right part to 1 destroys the trap"
-      },
-      { "field": "unused", "type": "UnsignedWord" },
-      {
-        "field": "left_part",
-        "type": "PointerToEntityPointer",
-        "comment": "pointer to pointer the left part that is actually doing the work"
       }
     ],
-    "PointerToEntityPointer": [
-      { "field": "the_spear", "type": "EntityPointer" }
-    ], //is this really just pointer to pointer?
     "LaserTrap": [
       { "field": "illumination_info", "type": "IlluminationPointer" },
       {
@@ -6665,15 +6647,7 @@
       { "field": "the_spark", "type": "EntityUID" }
     ],
     "TransferFloor": [
-      { "field": "unknown_f", "type": "Float" },
-      { "field": "unused?", "type": "UnsignedDword" }, //not accessed?
-      { "field": "unknown1", "type": "DataPointer" }, //accessed? probably everything below (unknown 1-7) is one thing? or related
-      { "field": "unknown2", "type": "UnsignedQword" }, //related to items? if changed to something bigger then 8, unknown7 to 16, 32, 64, 128 end so one, sometimes goes +1 for a frame
-      { "field": "unknown3", "type": "DataPointer" }, //accessed?
-      { "field": "unknown4", "type": "DataPointer" }, //not accessed?
-      { "field": "unknown5", "type": "DataPointer" }, //not accessed?
-      { "field": "unknown6", "type": "UnsignedQword" }, //7? always one less then below?
-      { "field": "unknown7", "type": "UnsignedQword" } //8? like a 8 byte?
+      { "field": "unknown_map", "type": "UnorderedMap" }
     ],
     "ConveyorBelt": [
       { "field": "something_coop1", "type": "EntityUIDPointer" },
@@ -6737,7 +6711,7 @@
     "LampFlame": [
       { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" }
     ],
-    "WhipFlame": [{ "field": "flame_size", "type": "Float" }],
+    "FlameSize": [{ "field": "flame_size", "type": "Float", "comment": "if changed, gradually goes down to the default size" }],
     "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }],
     "PoleDeco": [
       { "field": "deco_up", "type": "EntityUID" },
@@ -6768,7 +6742,7 @@
       {
         "field": "bomb",
         "type": "Bool",
-        "comment": "size of the bomb is random, if set both true the only leprechaun spawns"
+        "comment": "size of the bomb is random, if set both true only leprechaun spawns"
       }
     ]
   }
