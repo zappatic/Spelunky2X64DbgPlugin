@@ -305,7 +305,7 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
-    "ITEM_WHIP_FLAME": "WhipFlame",
+    "ITEM_WHIP_FLAME": "FlameSize",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
     "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
@@ -6646,9 +6646,7 @@
       { "field": "illumination_info", "type": "IlluminationPointer" },
       { "field": "the_spark", "type": "EntityUID" }
     ],
-    "TransferFloor": [
-      { "field": "unknown_map", "type": "UnorderedMap" }
-    ],
+    "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
     "ConveyorBelt": [
       { "field": "something_coop1", "type": "EntityUIDPointer" },
       { "field": "something_coop2", "type": "EntityUIDPointer" },
@@ -6711,7 +6709,13 @@
     "LampFlame": [
       { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" }
     ],
-    "FlameSize": [{ "field": "flame_size", "type": "Float", "comment": "if changed, gradually goes down to the default size" }],
+    "FlameSize": [
+      {
+        "field": "flame_size",
+        "type": "Float",
+        "comment": "if changed, gradually goes down to the default size"
+      }
+    ],
     "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }],
     "PoleDeco": [
       { "field": "deco_up", "type": "EntityUID" },
