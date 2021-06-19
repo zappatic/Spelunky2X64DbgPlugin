@@ -169,7 +169,9 @@
     "PoleDeco": "FloorDeco",
     "PunishBall": "Movable",
     "PunishChain": "Movable",
-    "ChestInside": "Movable"
+    "ChestInside": "Movable",
+    "LavaGlow": "Movable",
+    "Lava": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -354,6 +356,7 @@
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
+    "FX_LAVA_GLOW": "LavaGlow",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -361,6 +364,7 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
+    "LIQUID_LAVA": "Lava",
     //
     "FLOOR_.*": "FloorDeco",
     "FLOORSTYLED_.*": "FloorDeco",
@@ -6748,6 +6752,24 @@
         "type": "Bool",
         "comment": "size of the bomb is random, if set both true only leprechaun spawns"
       }
+    ],
+    "LavaGlow": [
+      { "field": "glow_radius", "type": "Float" },
+      { "field": "float_unknown", "type": "Float" }, //??
+      {
+        "field": "increment",
+        "type": "Float",
+        "comment": "just an of frame increment for the value above"
+      }
+    ],
+    "Lava": [
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown_readonly1", "type": "UnsignedWord" },
+      { "field": "unknown_readonly2", "type": "UnsignedWord" },
+      { "field": "unknown_timer1", "type": "UnsignedWord" },
+      { "field": "unknown_timer2", "type": "UnsignedWord" },
+      { "field": "illumination", "type": "IlluminationPointer" }
     ]
   }
 }
