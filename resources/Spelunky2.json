@@ -379,7 +379,12 @@
     "UnorderedMapBucketPointer",
     "UnorderedMapRecordPointer",
     "MysteryPointer1",
-    "LevelGenDataPointer"
+    "LevelGenDataPointer",
+    "ShopRestrictedItemPointer1",
+    "ShopRestrictedItemPointer2",
+    "ShopRestrictedItemPointer3",
+    "ShopRestrictedItemPointer4",
+    "ShopRestrictedItemPointer5"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -411,7 +416,7 @@
     "ArenaConfigArenas",
     "ArenaConfigItems",
     "ArenaConfigEquippedItems",
-    "ShopOwnerInfo",
+    "ShopsInfo",
     "ShopOwnerInfoDetails",
     "Dialogue",
     "DialogueDetails",
@@ -1381,9 +1386,7 @@
       { "field": "unknown30", "type": "DataPointer" },
       { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
       { "field": "camera_layer", "type": "UnsignedDword" },
-      { "field": "unknown32", "type": "DataPointer" },
-      { "field": "unknown33", "type": "UnsignedQword" },
-      { "field": "shop_owners_info", "type": "ShopOwnerInfo" },
+      { "field": "shops", "type": "ShopsInfo" },
       { "field": "unknown36", "type": "DataPointer" },
       { "field": "time_startup", "type": "UnsignedDword" },
       {
@@ -1598,18 +1601,95 @@
     "UnorderedMapPointer": [
       { "field": "unordered_map", "type": "UnorderedMap" }
     ],
-    "ShopOwnerInfo": [
+    "ShopsInfo": [
       {
-        "field": "data",
+        "field": "restricted_items",
+        "type": "ShopRestrictedItemPointer1",
+        "comment": "the items in a shop that set off the shopkeeper if you walk off with them"
+      },
+      { "field": "restricted_item_count", "type": "UnsignedQword" },
+      {
+        "field": "shop_owners_list",
         "type": "ShopOwnerInfoList",
         "comment": "variable sized list of shopkeeper info"
       },
       {
-        "field": "end",
+        "field": "shop_owners_list_end",
         "type": "DataPointer",
         "comment": "points to 1 after the end of the list, like an end iterator"
       }
     ],
+    "ShopRestrictedItemPointer1": [
+      { "field": "prev", "type": "ShopRestrictedItemPointer2" },
+      { "field": "next1", "type": "ShopRestrictedItemPointer2" },
+      { "field": "next2", "type": "ShopRestrictedItemPointer2" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" },
+      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
+      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
+      { "field": "restricted_item", "type": "EntityUID" },
+      { "field": "item_owner", "type": "EntityUID" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+    "ShopRestrictedItemPointer2": [
+      { "field": "prev", "type": "ShopRestrictedItemPointer3" },
+      { "field": "next1", "type": "ShopRestrictedItemPointer3" },
+      { "field": "next2", "type": "ShopRestrictedItemPointer3" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" },
+      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
+      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
+      { "field": "restricted_item", "type": "EntityUID" },
+      { "field": "item_owner", "type": "EntityUID" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+    "ShopRestrictedItemPointer3": [
+      { "field": "prev", "type": "ShopRestrictedItemPointer4" },
+      { "field": "next1", "type": "ShopRestrictedItemPointer4" },
+      { "field": "next2", "type": "ShopRestrictedItemPointer4" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" },
+      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
+      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
+      { "field": "restricted_item", "type": "EntityUID" },
+      { "field": "item_owner", "type": "EntityUID" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+    "ShopRestrictedItemPointer4": [
+      { "field": "prev", "type": "ShopRestrictedItemPointer5" },
+      { "field": "next1", "type": "ShopRestrictedItemPointer5" },
+      { "field": "next2", "type": "ShopRestrictedItemPointer5" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" },
+      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
+      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
+      { "field": "restricted_item", "type": "EntityUID" },
+      { "field": "item_owner", "type": "EntityUID" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+    "ShopRestrictedItemPointer5": [
+      { "field": "prev", "type": "DataPointer" },
+      { "field": "next1", "type": "DataPointer" },
+      { "field": "next2", "type": "DataPointer" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" },
+      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
+      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
+      { "field": "restricted_item", "type": "EntityUID" },
+      { "field": "item_owner", "type": "EntityUID" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" }
+    ],
+
     "ShopOwnerInfoList": [
       { "field": "0", "type": "ShopOwnerInfoDetails" },
       { "field": "1", "type": "ShopOwnerInfoDetails" },

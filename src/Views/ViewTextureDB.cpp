@@ -50,11 +50,11 @@ void S2Plugin::ViewTextureDB::initializeUI()
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewTextureDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mParticleNameCompleter = new QCompleter(mToolbar->textureDB()->namesStringList(), this);
-        mParticleNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-        mParticleNameCompleter->setFilterMode(Qt::MatchContains);
-        QObject::connect(mParticleNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewTextureDB::searchFieldCompleterActivated);
-        mSearchLineEdit->setCompleter(mParticleNameCompleter);
+        mTextureNameCompleter = new QCompleter(mToolbar->textureDB()->namesStringList(), this);
+        mTextureNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+        mTextureNameCompleter->setFilterMode(Qt::MatchContains);
+        QObject::connect(mTextureNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewTextureDB::searchFieldCompleterActivated);
+        mSearchLineEdit->setCompleter(mTextureNameCompleter);
 
         auto labelButton = new QPushButton("Label", this);
         QObject::connect(labelButton, &QPushButton::clicked, this, &ViewTextureDB::label);
