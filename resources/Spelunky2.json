@@ -376,7 +376,10 @@
     "CameraPointer",
     "ShopOwnerInfoList",
     "UnorderedMapPointer",
-    "MysteryPointer1"
+    "UnorderedMapBucketPointer",
+    "UnorderedMapRecordPointer",
+    "MysteryPointer1",
+    "LevelGenDataPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -2361,7 +2364,11 @@
       },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown_adjustment", "type": "Float" },
+      {
+        "field": "inertia",
+        "type": "Float",
+        "comment": "0 = still; 1 = follow immediately"
+      },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" }
@@ -3865,7 +3872,7 @@
     ],
 
     "LevelGen": [
-      { "field": "level_gen_system", "type": "DataPointer" },
+      { "field": "data", "type": "LevelGenDataPointer" },
       { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "theme_dwelling", "type": "ThemeInfoPointer" },
       { "field": "theme_jungle", "type": "ThemeInfoPointer" },
@@ -3944,6 +3951,42 @@
       { "field": "unknown49", "type": "UnsignedDword" },
       { "field": "unknown50", "type": "UnsignedDword" },
       { "field": "unknown51", "type": "UnsignedDword" }
+    ],
+    "LevelGenDataPointer": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "unknown10", "type": "UnsignedDword" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown14", "type": "UnsignedDword" },
+      { "field": "unknown15", "type": "UnsignedDword" },
+      { "field": "unknown16", "type": "UnsignedDword" },
+      { "field": "unknown17", "type": "UnsignedDword" },
+      { "field": "unknown18", "type": "UnsignedDword" },
+      {
+        "field": "short_tile_codes",
+        "type": "UnorderedMap",
+        "comment": "std::unordered_map<std::uint8_t, ShortTileCodeDef>"
+      },
+      {
+        "field": "tile_codes",
+        "type": "UnorderedMap",
+        "comment": "std::unordered_map<std::string, TileCodeDef>"
+      },
+      {
+        "field": "templates",
+        "type": "UnorderedMap",
+        "comment": "std::unordered_map<std::string, TemplateDef>"
+      },
+      { "field": "unknown21", "type": "UnorderedMap" }
     ],
     "MysteryPointer1": [
       { "field": "__vftable", "type": "DataPointer" },
@@ -4494,7 +4537,7 @@
       },
       {
         "field": "first_bucket_ptr",
-        "type": "DataPointer",
+        "type": "UnorderedMapBucketPointer",
         "comment": "points to Bucket[]"
       },
       {
@@ -4516,6 +4559,45 @@
         "field": "bucket_size",
         "type": "UnsignedQword",
         "comment": "number of buckets"
+      }
+    ],
+    "UnorderedMapBucketPointer": [
+      // If the bucket is empty it'll point to UnorderedMap::end
+      {
+        "field": "first",
+        "type": "UnorderedMapRecordPointer",
+        "comment": "Points to first element in linked list"
+      },
+      {
+        "field": "last",
+        "type": "UnorderedMapRecordPointer",
+        "comment": "Points to last element in linked list"
+      }
+    ],
+    "UnorderedMapRecordPointer": [
+      // next/prev point to things even when they're the only record in the bucket so you
+      // need to compare to the addresses from the Bucket to know if you're done iterating
+      // through the bucket. Following the linked list will traverse all buckets. If a Record
+      // is the first or last record in the entiry map the value will be UnorderedMap::end
+      {
+        "field": "next",
+        "type": "DataPointer",
+        "comment": "Also an UnorderedMapRecordPointer but will infinite recurse; just view the memory"
+      },
+      {
+        "field": "prev",
+        "type": "DataPointer",
+        "comment": "Also an UnorderedMapRecordPointer but will infinite recurse; just view the memory"
+      },
+      {
+        "field": "key",
+        "type": "UnsignedDword",
+        "comment": "Key from the map, obviously type dependent (UnsignedDword just for visualization purposes in plugin)"
+      },
+      {
+        "field": "value",
+        "type": "UnsignedDword",
+        "comment": "Value from the map, obviously type dependent (UnsignedDword just for visualization purposes in plugin)"
       }
     ],
     "TextureDB": [

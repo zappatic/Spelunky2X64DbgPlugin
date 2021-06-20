@@ -62,7 +62,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         itemFieldMemoryOffset->setEditable(false);
 
         auto itemFieldComment = new QStandardItem();
-        itemFieldComment->setData(QString::fromStdString(field.comment), Qt::DisplayRole);
+        itemFieldComment->setData(QString::fromStdString(field.comment).toHtmlEscaped(), Qt::DisplayRole);
         itemFieldComment->setEditable(false);
 
         auto itemFieldType = new QStandardItem();
