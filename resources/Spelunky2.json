@@ -6632,7 +6632,7 @@
       { "field": "the_spear", "type": "EntityUID" },
       { "field": "active?", "type": "UnsignedByte", "comment": "forced to 1" },
       {
-        "field": "left_part?",
+        "field": "left_part",
         "type": "Bool",
         "comment": "setting the laft part to 0 or right part to 1 destroys the trap"
       }
@@ -6642,7 +6642,7 @@
       {
         "field": "reset_timer",
         "type": "UnsignedByte",
-        "comment": "after triggering counts from 0 to 255, changes the 'faze_' then counts from 0 to 104"
+        "comment": "after triggering counts from 0 to 255, changes the 'faze_2' then counts from 0 to 104"
       },
       { "field": "faze_2", "type": "Bool" }
     ],
@@ -6660,7 +6660,7 @@
     "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
     "Pipe": [
       {
-        "field": "state",
+        "field": "type",
         "type": "State8",
         "states": {
           "3": "straight_horizontal",
@@ -6759,7 +6759,7 @@
       {
         "field": "increment",
         "type": "Float",
-        "comment": "just an of frame increment for the value above"
+        "comment": "just an on frame increment for the value above"
       }
     ],
     "Lava": [
