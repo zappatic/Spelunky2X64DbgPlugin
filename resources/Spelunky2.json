@@ -117,6 +117,7 @@
     "Ushabti": "Movable",
     "Generator": "FloorDeco",
     "ForceField": "FloorDeco",
+    "TimedForceField": "ForceField",
     "HorizontalFF": "FloorDeco",
     "StickyTrap": "FloorDeco",
     "SpikeballTrap": "FloorDeco",
@@ -144,23 +145,67 @@
     "GiantClamTop": "Movable",
     "CookFire": "Movable",
     "FloorDeco": "Entity",
-    "WalltorchFlame": "Movable"
+    "Door": "FloorDeco",
+    "ExitDoor": "Door",
+    "LockedDoor": "Door",
+    "CityOfGoldDoor": "ExitDoor",
+    "MainExit": "ExitDoor",
+    "EggShipDoor": "Door",
+    "TotemTrap": "FloorDeco",
+    "BigSpear": "FloorDeco",
+    "LaserTrap": "FloorDeco",
+    "SparkTrap": "FloorDeco",
+    "TransferFloor": "FloorDeco",
+    "ConveyorBelt": "TransferFloor",
+    "QuickSand": "FloorDeco",
+    "Pipe": "TransferFloor",
+    "Mother": "FloorDeco",
+    "Tentacle": "FloorDeco",
+    "Flame": "Movable",
+    "SmallFlame": "Movable",
+    "FlameSize": "Flame",
+    "TorchFlame": "Flame",
+    "LampFlame": "Flame",
+    "PoleDeco": "FloorDeco",
+    "PunishBall": "Movable",
+    "PunishChain": "Movable",
+    "ChestInside": "Movable",
+    "LavaGlow": "Movable",
+    "Lava": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
-    "FLOOR_ARROW_TRAP": "ArrowTrap",
-    "FLOOR_POISONED_ARROW_TRAP": "ArrowTrap",
-    "FLOOR_ALTAR": "Altar",
+    "FLOOR_DOOR_MAIN_EXIT": "MainExit",
+    "FLOOR_DOOR_.*EXIT": "ExitDoor",
+    "FLOOR_DOOR_EGGSHIP.*": "EggShipDoor",
+    "FLOOR_DOOR_LOCKED.*": "LockedDoor",
+    "FLOOR_DOOR_COG": "CityOfGoldDoor",
+    "FLOOR_DOOR_EGGPLANT_WORLD": "ExitDoor",
+    "FLOOR_DOOR_PLATFORM": "FloorDeco",
+    "FLOOR_DOOR_.*": "Door",
+    "FLOOR_.*ARROW_TRAP": "ArrowTrap",
+    "FLOOR_TOTEM_TRAP": "TotemTrap",
+    "FLOOR_LION_TRAP": "TotemTrap",
+    "FLOOR_LASER_TRAP": "LaserTrap",
+    "FLOOR_SPARK_TRAP": "SparkTrap",
+    "FLOOR_.*ALTAR": "Altar",
     "FLOOR_SPIKEBALL_CEILING": "SpikeballTrap",
+    "FLOOR_CONVEYORBELT_.*": "ConveyorBelt",
+    "FLOOR_.*_GENERATOR": "Generator",
     "FLOOR_SLIDINGWALL_CEILING": "SlidingWallCeiling",
+    "FLOOR_QUICKSAND": "QuickSand",
+    "FLOOR_PIPE": "Pipe",
+    "FLOOR_BIGSPEAR_TRAP": "BigSpear",
     "FLOOR_STICKYTRAP_CEILING": "StickyTrap",
+    "FLOOR_MOTHER_STATUE": "Mother",
     "FLOOR_TELEPORTINGBORDER": "TeleportingFloor",
-    "FLOOR_FORCEFIELD": "ForceField",
-    "FLOOR_DICE_FORCEFIELD": "ForceField",
-    "FLOOR_CHALLENGE_ENTRANCE": "ForceField",
-    "FLOOR_CHALLENGE_WAITROOM": "ForceField",
-    "FLOOR_TIMED_FORCEFIELD": "ForceField",
     "FLOOR_HORIZONTAL_FORCEFIELD": "HorizontalFF",
+    "FLOOR_TIMED_FORCEFIELD": "TimedForceField",
+    "FLOOR_.*FORCEFIELD": "ForceField",
+    "FLOOR_CHALLENGE_.*": "ForceField",
+    "FLOOR_TENTACLE_BOTTOM": "Tentacle",
+    "FLOORSTYLED_MINEWOOD": "PoleDeco",
+    "FLOORSTYLED_PAGODA": "PoleDeco",
     "MONS_BAT": "Monster",
     "MONS_JIANGSHI": "Jiangshi",
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
@@ -262,26 +307,35 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
-    "ITEM_CRATE": "Container",
-    "ITEM_WEBGUN": "Gun",
-    "ITEM_SHOTGUN": "Gun",
-    "ITEM_CLONEGUN": "Gun",
-    "ITEM_PLASMACANNON": "Gun",
-    "ITEM_MATTOCK": "Mattock",
-    "ITEM_HOVERPACK": "Hoverpack",
-    "ITEM_JETPACK": "Jetpack",
-    "ITEM_POWERPACK": "Backpack",
-    "ITEM_TELEPORTER_BACKPACK": "Backpack",
+    "ITEM_WHIP_FLAME": "FlameSize",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
-    "ITEM_CAPE": "Cape",
-    "ITEM_VLADS_CAPE": "VladsCape",
-    "ITEM_POWERUP_KAPALA": "KapalaPowerup",
+    "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
+    "ITEM_CHEST": "ChestInside",
+    "ITEM_CRATE": "Container",
+    "ITEM_WALLTORCHFLAME": "FlameSize",
+    "ITEM_TORCHFLAME": "TorchFlame",
+    "ITEM_LAMPFLAME": "LampFlame",
+    "ITEM_REDLANTERNFLAME": "SmallFlame",
+    "ITEM_PUNISHBALL": "PunishBall",
+    "ITEM_PUNISHCHAIN": "PunishChain",
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
+    "ITEM_PALACE_CANDLE_FLAME": "SmallFlame",
     "ITEM_COOKFIRE": "CookFire",
-    "ITEM_WALLTORCHFLAME": "WalltorchFlame",
+    "ITEM_POWERUP_KAPALA": "KapalaPowerup",
+    "ITEM_CAPE": "Cape",
+    "ITEM_VLADS_CAPE": "VladsCape",
+    "ITEM_JETPACK": "Jetpack",
+    "ITEM_TELEPORTER_BACKPACK": "Backpack",
+    "ITEM_HOVERPACK": "Hoverpack",
+    "ITEM_POWERPACK": "Backpack",
+    "ITEM_WEBGUN": "Gun",
+    "ITEM_SHOTGUN": "Gun",
+    "ITEM_MATTOCK": "Mattock",
+    "ITEM_PLASMACANNON": "Gun",
+    "ITEM_CLONEGUN": "Gun",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -302,6 +356,7 @@
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
+    "FX_LAVA_GLOW": "LavaGlow",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -309,13 +364,15 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
+    "LIQUID_LAVA": "Lava",
     //
     "FLOOR_.*": "FloorDeco",
-    "ITEM_.*": "Movable",
-    "ACTIVEFLOOR_.*": "Movable",
-    "FLOOR_.*_GENERATOR": "Generator",
+    "FLOORSTYLED_.*": "FloorDeco",
+    "EMBED_.*": "FloorDeco",
     "CHAR_.*": "Player",
-    "MONS_.*": "Monster"
+    "MONS_.*": "Monster",
+    "ITEM_.*": "Movable",
+    "ACTIVEFLOOR_.*": "Movable"
   },
   // all the types that are pointers
   // if you want to add a pointer, add its field definition under "fields" below, and
@@ -4824,26 +4881,14 @@
     ],
     "Altar": [
       {
-        "field": "sacrifice_flags",
-        "type": "Flags16",
-        "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
-          "6": "",
-          "7": "",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": ""
-        }
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "counts from 0 to 20 then 0, then 1 then 0 and sacrifice happens"
+      },
+      {
+        "field": "unknown",
+        "type": "Bool",
+        "comment": "goes true/false when body is landing on it, when it stops moving it increments timer on true"
       }
     ],
     "Mattock": [{ "field": "remaining", "type": "Dword" }],
@@ -6407,38 +6452,7 @@
         "type": "UnsignedWord",
         "comment": "As opposite to the vertical one, this one counts for the on and the for the off state"
       },
-      { "field": "on_off", "type": "Bool" },
-      {
-        "field": "unknown4",
-        "type": "UnsignedByte",
-        "comment": "Not sure if any of those unknowns are actually part of it, seams kind of random"
-      },
-      { "field": "unknown5", "type": "UnsignedWord" },
-      { "field": "unknown6", "type": "UnsignedWord" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
-      { "field": "unknown10", "type": "UnsignedWord" },
-      { "field": "unknown11", "type": "UnsignedWord" },
-      { "field": "unknown12", "type": "UnsignedDword" },
-      { "field": "unknown13", "type": "UnsignedQword" },
-      { "field": "unknown14", "type": "UnsignedDword" },
-      { "field": "unknown15", "type": "UnsignedDword" },
-      { "field": "unknown16", "type": "UnsignedWord" },
-      { "field": "unknown17", "type": "UnsignedWord" },
-      { "field": "unknown18", "type": "Dword" },
-      { "field": "unknown19", "type": "Dword" },
-      { "field": "unknown20", "type": "Dword" },
-      { "field": "unknown21", "type": "Dword" },
-      { "field": "unknown22", "type": "Bool" },
-      { "field": "unknown23", "type": "Bool" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "UnsignedByte" },
-      { "field": "unknown26", "type": "Dword" },
-      { "field": "unknown27", "type": "Dword" },
-      { "field": "unknown28", "type": "Word" },
-      { "field": "unknown29", "type": "Word" },
-      { "field": "unknown30", "type": "Dword" }
+      { "field": "on_off", "type": "Bool" }
     ],
     "ForceField": [
       {
@@ -6457,130 +6471,59 @@
       {
         "field": "on_off",
         "type": "Bool",
-        "comment": "starts the sound + first_item_beam but not fx_pointer for some reason"
-      },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedWord" },
+        "comment": "starts the sound + first_item_beam but not fx for some reason"
+      }
+    ],
+    "TimedForceField": [
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
       {
         "field": "timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "max 300? at 100 it's start the proces, changing the animation_frame"
       },
-      {
-        "field": "reset",
-        "type": "UnsignedWord",
-        "comment": "works like a bool, but it would be 16bit bool cuz you can set whatever bit to have the same effect, only the timed version"
-      },
-      { "field": "pause", "type": "Bool" },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "UnsignedWord" },
-      {
-        "field": "unknown8",
-        "type": "UnsignedWord",
-        "comment": "it's not float"
-      },
-      { "field": "unknown9", "type": "UnsignedWord" },
-      { "field": "unknown10", "type": "UnsignedWord" },
-      { "field": "unknown11", "type": "UnsignedWord" },
-      { "field": "unknown12", "type": "UnsignedQword" },
-      { "field": "unknown13", "type": "UnsignedDword" },
-      { "field": "unknown14", "type": "UnsignedDword" },
-      { "field": "unknown15", "type": "UnsignedWord" },
-      { "field": "unknown16", "type": "UnsignedWord" },
-      { "field": "unknown17", "type": "Dword" },
-      { "field": "unknown18", "type": "Dword" },
-      { "field": "unknown19", "type": "Dword" },
-      { "field": "unknown20", "type": "Dword" },
-      { "field": "unknown21", "type": "Bool" },
-      { "field": "unknown22", "type": "Bool" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "Dword" },
-      { "field": "unknown26", "type": "Dword" },
-      { "field": "unknown27", "type": "Word" },
-      { "field": "unknown28", "type": "Word" },
-      { "field": "unknown29", "type": "Dword" }
+      { "field": "pause", "type": "Bool" }
     ],
     "StickyTrap": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "unknown_pointer1", "type": "DataPointer" },
-      {
-        "field": "unknown_pointer2",
-        "type": "DataPointer",
-        "comment": "it's changing when he hit-stun you, but it's not EntityPointer"
-      },
-      { "field": "unknown_pointer3", "type": "DataPointer" },
+      { "field": "unknown_pointer1", "type": "EntityUIDPointer" },
+      { "field": "unknown_pointer2", "type": "EntityUIDPointer" },
+      { "field": "unknown_pointer3", "type": "EntityUIDPointer" },
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "ball", "type": "EntityUID" },
       {
         "field": "state",
-        "type": "Flags8",
-        "flags": {
-          "1": "Start",
-          "2": "Down",
-          "3": "Up",
-          "4": "pause",
-          "5": "pause",
-          "6": "pause",
-          "7": "pause",
-          "8": "pause"
-        },
-        "comment": "anything higher then 3 has the same effect, also there is sound for the eye opening"
+        "type": "State8",
+        "states": {
+          "0": "none",
+          "1": "start",
+          "2": "going_down",
+          "3": "down_position",
+          "4": "going_up",
+          "5": "pause"
+        }
       },
       {
         "field": "timer",
         "type": "UnsignedByte",
         "comment": "for the start and for the retract"
-      },
-      { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "UnsignedWord" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "UnsignedWord" },
-      { "field": "unknown8", "type": "UnsignedWord" },
-      { "field": "unknown9", "type": "UnsignedWord" },
-      { "field": "unknown10", "type": "UnsignedWord" },
-      { "field": "unknown12", "type": "UnsignedQword" },
-      { "field": "unknown13", "type": "UnsignedDword" },
-      { "field": "unknown14", "type": "UnsignedDword" },
-      { "field": "unknown15", "type": "UnsignedWord" },
-      { "field": "unknown16", "type": "UnsignedWord" },
-      { "field": "unknown17", "type": "Dword" },
-      { "field": "unknown18", "type": "Dword" },
-      { "field": "unknown19", "type": "Dword" },
-      { "field": "unknown20", "type": "Dword" },
-      { "field": "unknown21", "type": "Bool" },
-      { "field": "unknown22", "type": "Bool" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "Dword" },
-      { "field": "unknown26", "type": "Dword" },
-      { "field": "unknown27", "type": "Word" },
-      { "field": "unknown28", "type": "Word" },
-      { "field": "unknown29", "type": "Dword" }
+      }
     ],
     "SpikeballTrap": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "unknown_pointer1", "type": "DataPointer" },
-      {
-        "field": "unknown_pointer2",
-        "type": "DataPointer",
-        "comment": "it's changing when he hit-stun you, but it's not EntityPointer"
-      },
+      { "field": "chain", "type": "EntityPointer" },
+      { "field": "end_pice", "type": "EntityPointer" },
       {
         "field": "state",
-        "type": "Flags8",
-        "flags": {
-          "1": "Start",
-          "2": "Down",
-          "3": "pause",
-          "4": "pause",
-          "5": "pause",
-          "6": "pause",
-          "7": "pause",
-          "8": "pause"
+        "type": "State8",
+        "states": {
+          "0": "none",
+          "1": "start",
+          "2": "going_down",
+          "3": "going_up",
+          "4": "pause"
         },
-        "comment": "start just makes it moves, up/dwon is determinated by the state of Down, seting Down makes it go down immediately, seting start starts the timer, if it's zero it is set to 255"
+        "comment": "going_up is only right when timer is 0, otherwise it just sits at the bottom"
       },
       {
         "field": "timer",
@@ -6591,33 +6534,7 @@
         "field": "speed_direction?",
         "type": "UnsignedByte",
         "comment": "i have no clue what this is, goes 255 when detecting something, but when it hits the unbreakable tile it 255 for ever, changing it can teleport it up/down/change speed etc."
-      },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedWord" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "UnsignedWord" },
-      { "field": "unknown8", "type": "UnsignedWord" },
-      { "field": "unknown9", "type": "UnsignedWord" },
-      { "field": "unknown10", "type": "UnsignedWord" },
-      { "field": "unknown12", "type": "UnsignedQword" },
-      { "field": "unknown13", "type": "UnsignedDword" },
-      { "field": "unknown14", "type": "UnsignedDword" },
-      { "field": "unknown15", "type": "UnsignedWord" },
-      { "field": "unknown16", "type": "UnsignedWord" },
-      { "field": "unknown17", "type": "Dword" },
-      { "field": "unknown18", "type": "Dword" },
-      { "field": "unknown19", "type": "Dword" },
-      { "field": "unknown20", "type": "Dword" },
-      { "field": "unknown21", "type": "Bool" },
-      { "field": "unknown22", "type": "Bool" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "Dword" },
-      { "field": "unknown26", "type": "Dword" },
-      { "field": "unknown27", "type": "Word" },
-      { "field": "unknown28", "type": "Word" },
-      { "field": "unknown29", "type": "Dword" }
+      }
     ],
     "SlidingWallCeiling": [
       { "field": "attached_piece", "type": "EntityPointer" },
@@ -6637,9 +6554,10 @@
         },
         "comment": "i labeled some as wrong_pause cause they are probably not used, they pause the movement but not the sound"
       },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedByte" }
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "DataPointer" }
     ],
     "Elevator": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -6790,20 +6708,230 @@
       { "field": "particles_warp", "type": "ParticleEmitterInfoPointer" },
       { "field": "unknown10", "type": "DataPointer" }
     ],
-    "WalltorchFlame": [
-      { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "emitted_light", "type": "IlluminationPointer" },
-      {
-        "field": "flare_up_size",
-        "type": "Float",
-        "comment": "to make it temporarily bigger, flare up"
-      }
-    ],
     "FloorDeco": [
       { "field": "deco_top", "type": "EntityUID" },
       { "field": "deco_bottom", "type": "EntityUID" },
       { "field": "deco_left", "type": "EntityUID" },
       { "field": "deco_right", "type": "EntityUID" }
+    ],
+    "Door": [
+      {
+        "field": "counter",
+        "type": "UnsignedByte",
+        "comment": "counts down as you go thru it "
+      },
+      { "field": "unused1", "type": "Byte" },
+      { "field": "unused2", "type": "Word" },
+      { "field": "unused3", "type": "Dword" },
+      { "field": "fx_button", "type": "EntityPointer" }
+    ],
+    "ExitDoor": [
+      {
+        "field": "entered",
+        "type": "Bool",
+        "comment": "if true entering it does not load the transition, probably for use in multiplayer"
+      },
+      {
+        "field": "special_door",
+        "type": "Bool",
+        "comment": "use provided world/level/theme"
+      },
+      { "field": "level", "type": "UnsignedByte" },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "counts from 30 to 0, dunno why"
+      },
+      { "field": "world", "type": "UnsignedByte" },
+      { "field": "theme", "type": "UnsignedByte" },
+      { "field": "unused", "type": "UnsignedWord" },
+      { "field": "special_bg", "type": "EntityPointer" }
+    ],
+    "CityOfGoldDoor": [
+      { "field": "unlocked", "type": "Bool" },
+      { "field": "unknown1", "type": "UnsignedByte" }
+    ],
+    "LockedDoor": [{ "field": "unlocked", "type": "Bool" }],
+    "MainExit": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "top_value?", "type": "Float" },
+      { "field": "value?", "type": "Float" }
+    ],
+    "EggShipDoor": [
+      { "field": "unused1", "type": "UnsignedWord" },
+      { "field": "unused2", "type": "UnsignedByte" },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "counts from 30 to 0, dunno why"
+      },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      {
+        "field": "entered",
+        "type": "Bool",
+        "comment": "works only for DOOR_EGGSHIP"
+      }
+    ],
+    "TotemTrap": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "spawn_item", "type": "EntityDBID" },
+      { "field": "first_sound_id", "type": "UnsignedDword" },
+      {
+        "field": "counter",
+        "type": "UnsignedDword",
+        "comment": "adds some value depending on trap and with side is triggered, setting to low value pauses it?"
+      },
+      { "field": "unknown4", "type": "UnsignedByte", "comment": "forced to 1" },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
+      { "field": "unused3", "type": "UnsignedDword" },
+      { "field": "timer?", "type": "UnsignedByte" }
+    ],
+    "BigSpear": [
+      { "field": "the_spear", "type": "EntityUID" },
+      { "field": "active?", "type": "UnsignedByte", "comment": "forced to 1" },
+      {
+        "field": "left_part",
+        "type": "Bool",
+        "comment": "setting the laft part to 0 or right part to 1 destroys the trap"
+      }
+    ],
+    "LaserTrap": [
+      { "field": "illumination_info", "type": "IlluminationPointer" },
+      {
+        "field": "reset_timer",
+        "type": "UnsignedByte",
+        "comment": "after triggering counts from 0 to 255, changes the 'faze_2' then counts from 0 to 104"
+      },
+      { "field": "faze_2", "type": "Bool" }
+    ],
+    "SparkTrap": [
+      { "field": "illumination_info", "type": "IlluminationPointer" },
+      { "field": "the_spark", "type": "EntityUID" }
+    ],
+    "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
+    "ConveyorBelt": [
+      { "field": "something_coop1", "type": "EntityUIDPointer" },
+      { "field": "something_coop2", "type": "EntityUIDPointer" },
+      { "field": "something_coop3", "type": "EntityUIDPointer" },
+      { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" }
+    ],
+    "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
+    "Pipe": [
+      {
+        "field": "type",
+        "type": "State8",
+        "states": {
+          "3": "straight_horizontal",
+          "4": "blocked",
+          "5": "down_left_turn",
+          "6": "down_right_turn",
+          "8": "blocked",
+          "9": "up_left_turn",
+          "10": "up_right_turn",
+          "12": "straight_vertical",
+          "2": "straight_??"
+        }
+      },
+      { "field": "end_pipe", "type": "Bool" }
+    ],
+    "Mother": [
+      { "field": "player1_standing", "type": "Bool" },
+      { "field": "player2_standing", "type": "Bool" },
+      { "field": "player3_standing", "type": "Bool" },
+      { "field": "player4_standing", "type": "Bool" },
+      { "field": "player1_health_got ", "type": "Bool" },
+      { "field": "player2_health_got ", "type": "Bool" },
+      { "field": "player3_health_got ", "type": "Bool" },
+      { "field": "player4_health_got ", "type": "Bool" },
+      { "field": "health_p1_timer", "type": "UnsignedWord" },
+      { "field": "health_p2_timer", "type": "UnsignedWord" },
+      { "field": "health_p3_timer", "type": "UnsignedWord" },
+      { "field": "health_p4_timer", "type": "UnsignedWord" },
+      { "field": "eggplantchild_timer", "type": "UnsignedByte" },
+      { "field": "unknown", "type": "UnsignedByte" },
+      { "field": "eggplantchild_detect", "type": "Bool" }
+    ],
+    "Tentacle": [
+      { "field": "coop_pointer1?", "type": "EntityUIDPointer" },
+      { "field": "coop_pointer2?", "type": "EntityUIDPointer" },
+      { "field": "coop_pointer3?", "type": "EntityUIDPointer" },
+      { "field": "attached_piece", "type": "EntityUID" },
+      { "field": "item_tentacle", "type": "EntityUID" }
+    ],
+    "Flame": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "TorchFlame": [
+      { "field": "smoke_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "warp_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "flame_size", "type": "Float" }
+    ],
+    "LampFlame": [
+      { "field": "flame_particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "FlameSize": [
+      {
+        "field": "flame_size",
+        "type": "Float",
+        "comment": "if changed, gradually goes down to the default size"
+      }
+    ],
+    "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }],
+    "PoleDeco": [
+      { "field": "deco_up", "type": "EntityUID" },
+      { "field": "deco_down", "type": "EntityUID" }
+    ],
+    "PunishBall": [
+      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "state?", "type": "UnsignedByte" },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
+      { "field": "x_pos", "type": "Float" },
+      { "field": "t_pos", "type": "Float" }
+    ],
+    "PunishChain": [
+      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "stretch?", "type": "Float" },
+      {
+        "field": "number_in_chain",
+        "type": "UnsignedByte",
+        "comment": "0 closest to the ball, so if the chain has 15 segments the last one will be 14"
+      },
+      { "field": "state?", "type": "UnsignedByte" },
+      { "field": "unknown_timer", "type": "UnsignedByte" },
+      { "field": "is_chain_overlapping_ball", "type": "Bool" }
+    ],
+    "ChestInside": [
+      { "field": "leprechaun", "type": "Bool" },
+      {
+        "field": "bomb",
+        "type": "Bool",
+        "comment": "size of the bomb is random, if set both true only leprechaun spawns"
+      }
+    ],
+    "LavaGlow": [
+      { "field": "glow_radius", "type": "Float" },
+      { "field": "float_unknown", "type": "Float" }, //??
+      {
+        "field": "increment",
+        "type": "Float",
+        "comment": "just an on frame increment for the value above"
+      }
+    ],
+    "Lava": [
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown_readonly1", "type": "UnsignedWord" },
+      { "field": "unknown_readonly2", "type": "UnsignedWord" },
+      { "field": "unknown_timer1", "type": "UnsignedWord" },
+      { "field": "unknown_timer2", "type": "UnsignedWord" },
+      { "field": "illumination", "type": "IlluminationPointer" }
     ]
   }
 }
