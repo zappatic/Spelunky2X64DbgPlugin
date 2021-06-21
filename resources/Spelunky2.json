@@ -171,7 +171,17 @@
     "PunishChain": "Movable",
     "ChestInside": "Movable",
     "LavaGlow": "Movable",
-    "Lava": "Entity"
+    "Lava": "Entity",
+    "ClimbableRope": "Movable",
+    "EggShip": "Movable",
+    "TeleportShadow": "Movable",
+    "Pot": "Container",
+    "Coffin": "Container",
+    "SpecialShot": "Movable",
+    "Idol": "Movable",
+    "Spear": "Movable",
+    "JungleSpearCosmetic": "Movable",
+    "WebShot": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -310,19 +320,35 @@
     "ITEM_WHIP_FLAME": "FlameSize",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
+    "ITEM_CLIMBABLE_ROPE": "ClimbableRope",
+    "ITEM_UNROLLED_ROPE": "ClimbableRope",
+    "ITEM_IDOL": "Idol",
+    "ITEM_MADAMETUSK_IDOL": "Idol",
+    "ITEM_TOTEM_SPEAR": "Spear",
+    "ITEM_JUNGLE_SPEAR_COSMETIC": "JungleSpearCosmetic",
+    "ITEM_LION_SPEAR": "Spear",
+    "ITEM_BIG_SPEAR": "Spear",
+    "ITEM_WEBSHOT": "WebShot",
+    "ITEM_EGGSHIP": "EggShip",
     "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
+    "ITEM_SCEPTER_ANUBISSPECIALSHOT": "SpecialShot",
     "ITEM_CHEST": "ChestInside",
     "ITEM_CRATE": "Container",
+    "ITEM_DMCRATE": "Container",
     "ITEM_WALLTORCHFLAME": "FlameSize",
     "ITEM_TORCHFLAME": "TorchFlame",
     "ITEM_LAMPFLAME": "LampFlame",
     "ITEM_REDLANTERNFLAME": "SmallFlame",
+    "ITEM_PRESENT": "Container",
+    "ITEM_GHIST_PRESENT": "Container",
     "ITEM_PUNISHBALL": "PunishBall",
     "ITEM_PUNISHCHAIN": "PunishChain",
+    "ITEM_.*COFFIN": "Coffin",
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
     "ITEM_PALACE_CANDLE_FLAME": "SmallFlame",
+    "ITEM_POT": "Pot",
     "ITEM_COOKFIRE": "CookFire",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_CAPE": "Cape",
@@ -357,6 +383,7 @@
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
     "FX_LAVA_GLOW": "LavaGlow",
+    "FX_TELEPORTSHADOW": "TeleportShadow",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -4854,10 +4881,7 @@
       { "field": "field_12", "type": "UnsignedWord" }
     ],
     "ArrowTrap": [{ "field": "arrow_shot", "type": "Bool" }],
-    "Container": [
-      { "field": "inside", "type": "EntityDBID" },
-      { "field": "timer", "type": "Dword" }
-    ],
+    "Container": [{ "field": "inside", "type": "EntityDBID" }],
     "Gun": [
       { "field": "cooldown", "type": "UnsignedByte" },
       { "field": "shots", "type": "UnsignedByte" },
@@ -4925,7 +4949,7 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "scale_hor", "type": "Float" },
       { "field": "scale_ver", "type": "Float" },
-      { "field": "unknown2", "type": "Bool" }
+      { "field": "is_big_bomb", "type": "Bool", "comment": "makes the explosion radius bigger" }
     ],
     "Olmec": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -6879,7 +6903,7 @@
       {
         "field": "flame_size",
         "type": "Float",
-        "comment": "if changed, gradually goes down to the default size"
+        "comment": "if changed, gradually goes down (0.03 per frame) to the default size"
       }
     ],
     "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }],
@@ -6915,9 +6939,23 @@
         "comment": "size of the bomb is random, if set both true only leprechaun spawns"
       }
     ],
+    "ClimbableRope": [
+      { "field": "seg_nr_inverse", "type": "UnsignedDword" },
+      {
+        "field": "burn_timer",
+        "type": "Dword",
+        "comment": "entity is killed after 20"
+      },
+      { "field": "top_part", "type": "EntityPointer" },
+      { "field": "below_part", "type": "EntityPointer" },
+      { "field": "seg_nr", "type": "UnsignedDword" },
+      { "field": "unused", "type": "UnsignedDword" },
+      { "field": "unknown", "type": "UnsignedQword" }
+    ],
+    "EggShip": [{ "field": "unknown", "type": "SoundPositionPointer" }],
     "LavaGlow": [
       { "field": "glow_radius", "type": "Float" },
-      { "field": "float_unknown", "type": "Float" }, //??
+      { "field": "unknown_float", "type": "Float" }, //??
       {
         "field": "increment",
         "type": "Float",
@@ -6932,6 +6970,46 @@
       { "field": "unknown_timer1", "type": "UnsignedWord" },
       { "field": "unknown_timer2", "type": "UnsignedWord" },
       { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "TeleportShadow": [
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "Pot": [
+      {
+        "field": "dont_transfer_dmg",
+        "type": "Bool",
+        "comment": "if false, spawned entity will receive dmg that the pot received"
+      }
+    ],
+    "Coffin": [
+      { "field": "timer", "type": "Byte" },
+      { "field": "shake_state?", "type": "Byte" }
+    ],
+    "SpecialShot": [
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "target_x", "type": "Float" },
+      { "field": "target_Y", "type": "Float" }
+    ],
+    "Idol": [
+      { "field": "trap_triggered", "type": "Bool", "comment": "if you set it to true for the ice caves or volcano idol, the trap won't trigger" },
+      { "field": "touch", "type": "Byte", "comment": "changes to 0 when first picked up by player and back to -1 if HH picks it up" },
+      { "field": "unused", "type": "UnsignedWord" },
+      { "field": "spawn_x", "type": "Float" },
+      { "field": "spawn_y", "type": "Float" }
+    ],
+    "Spear": [
+    { "field": "sound_id", "type": "UnsignedDword" }
+    ],
+    "JungleSpearCosmetic": [
+      { "field": "move_x", "type": "Float" },
+      { "field": "move_y", "type": "Float" }
+    ],
+    "WebShot": [
+      { "field": "coop_pointer1?", "type": "EntityUIDPointer" },
+      { "field": "coop_pointer2?", "type": "EntityUIDPointer" },
+      { "field": "coop_pointer3?", "type": "EntityUIDPointer" },
+      { "field": "unknown1", "type": "Float" },
+      { "field": "shot", "type": "Bool", "comment": "if false, it's attached to the gun" }
     ]
   }
 }
