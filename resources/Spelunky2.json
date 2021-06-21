@@ -170,7 +170,8 @@
     "PunishChain": "Movable",
     "ChestInside": "Movable",
     "LavaGlow": "Movable",
-    "Lava": "Entity",
+    "Liquid": "Entity",
+    "Lava": "Liquid",
     "ClimbableRope": "Movable",
     "EggShip": "Movable",
     "Pot": "Container",
@@ -383,6 +384,7 @@
     "FX_OLMECPART_FLOATER": "OlmecFloater",
     "FX_LAVA_GLOW": "LavaGlow",
     "FX_TELEPORTSHADOW": "LightEmitter",
+    "FX_SMALLFLAME": "Flame",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -390,7 +392,8 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
-    "LIQUID_LAVA": "Lava",
+    "LIQUID_.*LAVA": "Lava",
+    "LIQUID_IMPOSTOR_LAKE": "Entity",
     //
     "FLOOR_.*": "FloorDeco",
     "FLOORSTYLED_.*": "FloorDeco",
@@ -398,7 +401,9 @@
     "CHAR_.*": "Player",
     "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
-    "ACTIVEFLOOR_.*": "Movable"
+    "ACTIVEFLOOR_.*": "Movable",
+    "FX_.*": "Movable",
+    "LIQUID_.*": "Liquid"
   },
   // all the types that are pointers
   // if you want to add a pointer, add its field definition under "fields" below, and
@@ -6940,14 +6945,14 @@
         "comment": "just an on frame increment for the value above"
       }
     ],
-    "Lava": [
-      { "field": "unknown1", "type": "Qword" },
-      { "field": "unknown2", "type": "DataPointer" },
+    "Lava": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
+    "Liquid": [
+      { "field": "fx_surface", "type": "EntityPointer" },
+      { "field": "unknown", "type": "DataPointer" },
       { "field": "unknown_readonly1", "type": "UnsignedWord" },
       { "field": "unknown_readonly2", "type": "UnsignedWord" },
       { "field": "unknown_timer1", "type": "UnsignedWord" },
-      { "field": "unknown_timer2", "type": "UnsignedWord" },
-      { "field": "illumination", "type": "IlluminationPointer" }
+      { "field": "unknown_timer2", "type": "UnsignedWord" }
     ],
     "Pot": [
       {
