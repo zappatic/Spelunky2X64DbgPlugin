@@ -162,7 +162,6 @@
     "Mother": "FloorDeco",
     "Tentacle": "FloorDeco",
     "Flame": "Movable",
-    "SmallFlame": "Movable",
     "FlameSize": "Flame",
     "TorchFlame": "Flame",
     "LampFlame": "Flame",
@@ -174,14 +173,14 @@
     "Lava": "Entity",
     "ClimbableRope": "Movable",
     "EggShip": "Movable",
-    "TeleportShadow": "Movable",
     "Pot": "Container",
     "Coffin": "Container",
-    "SpecialShot": "Movable",
+    "SpecialShot": "LightEmitter",
     "Idol": "Movable",
     "Spear": "Movable",
     "JungleSpearCosmetic": "Movable",
-    "WebShot": "Movable"
+    "WebShot": "Movable",
+    "LightEmitter": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -338,7 +337,7 @@
     "ITEM_WALLTORCHFLAME": "FlameSize",
     "ITEM_TORCHFLAME": "TorchFlame",
     "ITEM_LAMPFLAME": "LampFlame",
-    "ITEM_REDLANTERNFLAME": "SmallFlame",
+    "ITEM_REDLANTERNFLAME": "LightEmitter",
     "ITEM_PRESENT": "Container",
     "ITEM_GHIST_PRESENT": "Container",
     "ITEM_PUNISHBALL": "PunishBall",
@@ -347,7 +346,7 @@
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
-    "ITEM_PALACE_CANDLE_FLAME": "SmallFlame",
+    "ITEM_PALACE_CANDLE_FLAME": "LightEmitter",
     "ITEM_POT": "Pot",
     "ITEM_COOKFIRE": "CookFire",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
@@ -383,7 +382,7 @@
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
     "FX_LAVA_GLOW": "LavaGlow",
-    "FX_TELEPORTSHADOW": "TeleportShadow",
+    "FX_TELEPORTSHADOW": "LightEmitter",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -509,7 +508,8 @@
     "DialogueInteractionGroup",
     "TruncatedEntityDBIDArray",
     "TruncatedUnsignedDwordArray",
-    "AquiredPowerups"
+    "AquiredPowerups",
+    "CoopConflictResolver"
   ],
   "refs": {
     "screen_states": {
@@ -6510,9 +6510,7 @@
     ],
     "StickyTrap": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "unknown_pointer1", "type": "EntityUIDPointer" },
-      { "field": "unknown_pointer2", "type": "EntityUIDPointer" },
-      { "field": "unknown_pointer3", "type": "EntityUIDPointer" },
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "ball", "type": "EntityUID" },
       {
@@ -6612,21 +6610,7 @@
     ],
     "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }],
     "PushBlock": [
-      {
-        "field": "unknown1_pointer",
-        "type": "EntityUIDPointer",
-        "comment": "last pushed by?"
-      },
-      {
-        "field": "unknown2_pointer",
-        "type": "EntityUIDPointer",
-        "comment": "something to resolve conflicts in coop when 2 players pushing the same block"
-      },
-      {
-        "field": "unknown3_pointer",
-        "type": "EntityUIDPointer",
-        "comment": "dunno?"
-      },
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "dust_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "dest_pos_x", "type": "Float" }
@@ -6695,9 +6679,7 @@
       }
     ],
     "Thinice": [
-      { "field": "unknown1", "type": "EntityUIDPointer" },
-      { "field": "unknown2", "type": "EntityUIDPointer" },
-      { "field": "unknown3", "type": "EntityUIDPointer" },
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       {
         "field": "strength",
         "type": "UnsignedWord",
@@ -6738,6 +6720,7 @@
       { "field": "deco_left", "type": "EntityUID" },
       { "field": "deco_right", "type": "EntityUID" }
     ],
+    "LightEmitter": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "Door": [
       {
         "field": "counter",
@@ -6838,9 +6821,7 @@
     ],
     "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
     "ConveyorBelt": [
-      { "field": "something_coop1", "type": "EntityUIDPointer" },
-      { "field": "something_coop2", "type": "EntityUIDPointer" },
-      { "field": "something_coop3", "type": "EntityUIDPointer" },
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" }
     ],
     "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
@@ -6880,9 +6861,7 @@
       { "field": "eggplantchild_detect", "type": "Bool" }
     ],
     "Tentacle": [
-      { "field": "coop_pointer1?", "type": "EntityUIDPointer" },
-      { "field": "coop_pointer2?", "type": "EntityUIDPointer" },
-      { "field": "coop_pointer3?", "type": "EntityUIDPointer" },
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "item_tentacle", "type": "EntityUID" }
     ],
@@ -6906,7 +6885,6 @@
         "comment": "if changed, gradually goes down (0.03 per frame) to the default size"
       }
     ],
-    "SmallFlame": [{ "field": "illumination", "type": "IlluminationPointer" }],
     "PoleDeco": [
       { "field": "deco_up", "type": "EntityUID" },
       { "field": "deco_down", "type": "EntityUID" }
@@ -6971,9 +6949,6 @@
       { "field": "unknown_timer2", "type": "UnsignedWord" },
       { "field": "illumination", "type": "IlluminationPointer" }
     ],
-    "TeleportShadow": [
-      { "field": "illumination", "type": "IlluminationPointer" }
-    ],
     "Pot": [
       {
         "field": "dont_transfer_dmg",
@@ -6986,7 +6961,6 @@
       { "field": "shake_state?", "type": "Byte" }
     ],
     "SpecialShot": [
-      { "field": "illumination", "type": "IlluminationPointer" },
       { "field": "target_x", "type": "Float" },
       { "field": "target_Y", "type": "Float" }
     ],
@@ -7005,11 +6979,14 @@
       { "field": "move_y", "type": "Float" }
     ],
     "WebShot": [
-      { "field": "coop_pointer1?", "type": "EntityUIDPointer" },
-      { "field": "coop_pointer2?", "type": "EntityUIDPointer" },
-      { "field": "coop_pointer3?", "type": "EntityUIDPointer" },
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "unknown1", "type": "Float" },
       { "field": "shot", "type": "Bool", "comment": "if false, it's attached to the gun" }
+    ],
+    "CoopConflictResolver": [
+      { "field": "coop_pointer1", "type": "EntityUIDPointer" },
+      { "field": "coop_pointer2", "type": "EntityUIDPointer" },
+      { "field": "coop_pointer3", "type": "EntityUIDPointer" }
     ]
   }
 }
