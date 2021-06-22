@@ -458,7 +458,9 @@
     "ArenaItemsScreenPointer",
     "OnlineScreenPointer",
     "ShiftingWallsScreenPointer",
-    "PauseScreenPointer"
+    "PauseScreenPointer",
+    "BackgroundMusicManagerPointer",
+    "MusicTrackPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -503,7 +505,8 @@
     "FlyingThing",
     "FlyingThingParams",
     "ScreenZoomAnimation",
-    "ArenaRulesStringsEntry"
+    "ArenaRulesStringsEntry",
+    "AudioChannelParams"
   ],
   "refs": {
     "screen_states": {
@@ -1053,7 +1056,7 @@
       { "field": "unknown18", "type": "UnsignedByte" }
     ],
     "GameManager": [
-      { "field": "another_state", "type": "DataPointer" },
+      { "field": "backgroundmusic", "type": "BackgroundMusicManagerPointer" },
       { "field": "savegame", "type": "SaveGameHeapOffsetPointer" },
       {
         "field": "buttons_controls_player1",
@@ -1162,6 +1165,81 @@
       { "field": "unknown27", "type": "DataPointer" },
       { "field": "unknown28", "type": "Float" },
       { "field": "unknown29", "type": "Float" }
+    ],
+    "BackgroundMusicManagerPointer": [
+      { "field": "game_startup", "type": "MusicTrackPointer" },
+      { "field": "main_backgroundtrack", "type": "MusicTrackPointer" },
+      { "field": "basecamp", "type": "MusicTrackPointer" },
+      { "field": "win_scene", "type": "MusicTrackPointer" },
+      { "field": "arena", "type": "MusicTrackPointer" },
+      { "field": "arena_intro_and_win", "type": "MusicTrackPointer" },
+      { "field": "level_gameplay", "type": "MusicTrackPointer" },
+      { "field": "dark_level", "type": "MusicTrackPointer" },
+      { "field": "level_transition", "type": "MusicTrackPointer" },
+      { "field": "backlayer", "type": "MusicTrackPointer" },
+      { "field": "shop", "type": "MusicTrackPointer" },
+      { "field": "angered_shopkeeper", "type": "MusicTrackPointer" },
+      { "field": "inside_sunken_city_pipe", "type": "MusicTrackPointer" },
+      { "field": "pause_menu", "type": "MusicTrackPointer" },
+      { "field": "unknown15", "type": "DataPointer" },
+      { "field": "unknown16", "type": "DataPointer" },
+      { "field": "unknown17", "type": "UnsignedByte" },
+      { "field": "unknown18", "type": "UnsignedByte" },
+      { "field": "unknown19", "type": "UnsignedByte" },
+      { "field": "unknown20", "type": "UnsignedByte" }
+    ],
+    "MusicTrackPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "music_track?", "type": "DataPointer" },
+      {
+        "field": "fmod_param",
+        "type": "UnsignedQword",
+        "comment": "param to FMOD::Studio::EventInstance::setParameterByID"
+      },
+      { "field": "left_channel", "type": "AudioChannelParams" },
+      { "field": "right_channel", "type": "AudioChannelParams" },
+      {
+        "field": "music_start_over",
+        "type": "Bool",
+        "comment": "when false, current track starts from the beginning"
+      },
+      { "field": "unknown49", "type": "Bool" },
+      { "field": "music_on", "type": "Bool" },
+      { "field": "unknown51", "type": "UnsignedByte" }
+    ],
+    "AudioChannelParams": [
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "Float" },
+      {
+        "field": "unknown6",
+        "type": "Float",
+        "comment": "triggers on ghost (music distortion)"
+      },
+      { "field": "unknown7a", "type": "Float" },
+      { "field": "unknown7b", "type": "Float" },
+      { "field": "unknown8", "type": "UnsignedQword" },
+      { "field": "unknown9", "type": "UnsignedQword" },
+      { "field": "unknown10", "type": "UnsignedQword" },
+      { "field": "unknown11", "type": "UnsignedQword" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "UnsignedDword" },
+      { "field": "unknown18", "type": "UnsignedQword" },
+      { "field": "unknown19", "type": "UnsignedQword" },
+      { "field": "unknown20", "type": "UnsignedQword" },
+      { "field": "unknown21", "type": "UnsignedQword" },
+      { "field": "unknown22", "type": "Float" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "Float" },
+      { "field": "unknown25", "type": "UnsignedDword" }
     ],
     "PauseScreenPointer": [
       { "field": "menu_slidein_progress", "type": "Float" },
