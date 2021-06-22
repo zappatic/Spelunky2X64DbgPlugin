@@ -69,6 +69,7 @@ namespace S2Plugin
         State16, // this is signed, can be negative!
         State32, // this is signed, can be negative!
         Skip,
+        GameManager,
         State,
         SaveGame,
         LevelGen,
@@ -124,6 +125,7 @@ namespace S2Plugin
         {MemoryFieldType::State8, "8-bit state"},
         {MemoryFieldType::State16, "16-bit state"},
         {MemoryFieldType::State32, "32-bit state"},
+        {MemoryFieldType::GameManager, "GameManager"},
         {MemoryFieldType::State, "State"},
         {MemoryFieldType::SaveGame, "SaveGame"},
         {MemoryFieldType::LevelGen, "LevelGen"},
@@ -222,6 +224,7 @@ namespace S2Plugin
         {"State8", MemoryFieldType::State8},
         {"State16", MemoryFieldType::State16},
         {"State32", MemoryFieldType::State32},
+        {"GameManager", MemoryFieldType::GameManager},
         {"State", MemoryFieldType::State},
         {"SaveGame", MemoryFieldType::SaveGame},
         {"LevelGen", MemoryFieldType::LevelGen},

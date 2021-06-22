@@ -19,7 +19,7 @@ bool S2Plugin::GameManager::loadGameManager()
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "C6 80 39 01 00 00 00 48");
     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 10);
     auto offsetPtr = instructionOffset + pcOffset + 14;
-    mGameManagerPtr = Script::Memory::ReadDword(offsetPtr);
+    mGameManagerPtr = Script::Memory::ReadQword(offsetPtr);
     auto heapOffsetSaveGame = Script::Memory::ReadQword(Script::Memory::ReadQword(mGameManagerPtr + 8));
 
     THREADLIST threadList;
@@ -50,11 +50,11 @@ std::unordered_map<std::string, size_t>& S2Plugin::GameManager::offsets()
 void S2Plugin::GameManager::refreshOffsets()
 {
     mMemoryOffsets.clear();
-    // auto offset = mGameManagerPtr;
-    // for (const auto& field : mConfiguration->typeFields(MemoryFieldType::GameManager))
-    // {
-    //     offset = setOffsetForField(field, "GameManager." + field.name, offset, mMemoryOffsets);
-    // }
+    auto offset = mGameManagerPtr;
+    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::GameManager))
+    {
+        offset = setOffsetForField(field, "GameManager." + field.name, offset, mMemoryOffsets);
+    }
 }
 
 size_t S2Plugin::GameManager::offsetForField(const std::string& fieldName) const

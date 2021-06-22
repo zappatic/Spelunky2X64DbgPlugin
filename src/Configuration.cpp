@@ -157,9 +157,23 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
             }
 
-            if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16 || memField.type == MemoryFieldType::Flags8) && field.contains("flags"))
+            if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16 || memField.type == MemoryFieldType::Flags8) &&
+                (field.contains("flags") || field.contains("ref")))
             {
-                auto flagsObject = field["flags"];
+                nlohmann::json flagsObject;
+                if (field.contains("flags"))
+                {
+                    flagsObject = field["flags"];
+                }
+                else
+                {
+                    auto ref = field["ref"].get<std::string>();
+                    if (j["refs"].contains(ref))
+                    {
+                        flagsObject = j["refs"][ref];
+                    }
+                }
+
                 std::unordered_map<uint8_t, std::string> flagTitles;
                 for (const auto& [flagNumber, flagTitle] : flagsObject.items())
                 {

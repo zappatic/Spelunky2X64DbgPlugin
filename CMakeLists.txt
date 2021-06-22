@@ -76,6 +76,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewEntities.h
 	include/Views/ViewState.h
 	include/Views/ViewSaveGame.h
+	include/Views/ViewGameManager.h
 	include/Views/ViewLevelGen.h
 	include/Views/ViewVirtualTable.h
 	include/Views/ViewStringsTable.h
@@ -119,6 +120,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewEntities.cpp
 	src/Views/ViewState.cpp
 	src/Views/ViewSaveGame.cpp
+	src/Views/ViewGameManager.cpp
 	src/Views/ViewLevelGen.cpp
 	src/Views/ViewVirtualTable.cpp
 	src/Views/ViewStringsTable.cpp

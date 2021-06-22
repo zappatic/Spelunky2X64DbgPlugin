@@ -3,6 +3,7 @@
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
+#include "Views/ViewGameManager.h"
 #include "Views/ViewLevelGen.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewSaveGame.h"
@@ -72,6 +73,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     btnLevelGen->setText("LevelGen");
     mMainLayout->addWidget(btnLevelGen);
     QObject::connect(btnLevelGen, &QPushButton::clicked, this, &ViewToolbar::showLevelGen);
+
+    auto btnGameManager = new QPushButton(this);
+    btnGameManager->setText("GameManager");
+    mMainLayout->addWidget(btnGameManager);
+    QObject::connect(btnGameManager, &QPushButton::clicked, this, &ViewToolbar::showGameManager);
 
     auto btnSaveGame = new QPushButton(this);
     btnSaveGame->setText("SaveGame");
@@ -149,6 +155,16 @@ void S2Plugin::ViewToolbar::showState()
     if (mState->loadState())
     {
         auto w = new ViewState(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
+}
+
+void S2Plugin::ViewToolbar::showGameManager()
+{
+    if (mGameManager->loadGameManager())
+    {
+        auto w = new ViewGameManager(this);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
     }
@@ -235,6 +251,12 @@ S2Plugin::State* S2Plugin::ViewToolbar::state()
 {
     mState->loadState();
     return mState;
+}
+
+S2Plugin::GameManager* S2Plugin::ViewToolbar::gameManager()
+{
+    mGameManager->loadGameManager();
+    return mGameManager;
 }
 
 S2Plugin::SaveGame* S2Plugin::ViewToolbar::savegame()

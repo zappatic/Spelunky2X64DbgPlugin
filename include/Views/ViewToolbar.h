@@ -33,6 +33,7 @@ namespace S2Plugin
 
         State* state();
         SaveGame* savegame();
+        GameManager* gameManager();
         LevelGen* levelGen();
         EntityDB* entityDB();
         ParticleDB* particleDB();
@@ -49,6 +50,7 @@ namespace S2Plugin
         ViewParticleDB* showParticleDB();
         ViewTextureDB* showTextureDB();
         void showState();
+        void showGameManager();
         void showLevelGen();
         void showEntities();
         ViewVirtualTable* showVirtualTableLookup();
