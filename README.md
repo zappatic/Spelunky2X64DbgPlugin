@@ -117,6 +117,25 @@ The SaveGame window displays the contents of your savegame (as represented in th
 
 ![SaveGame](/resources/docs_savegame.png)
 
+## GameManager
+
+The GameManager shows some global information, mostly screens.
+
+![GameManager](/resources/docs_gamemanager.png)
+
+## Logger
+
+You can log changes in memory fields by dragging one or more fields onto the Logger window, choosing a sampling frequency, a duration and press the Start button.
+
+![LoggerFields](/resources/docs_logger_fields.png)
+
+After the logging has completed, you can view the results in table form, under the Samples tab:
+
+![LoggerSamples](/resources/docs_logger_samples.png)
+
+A plot of the data is also available:
+
+![LoggerPlot](/resources/docs_logger_plot.png)
 
 ## Advanced usage
 
