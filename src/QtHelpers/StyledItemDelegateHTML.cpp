@@ -1,8 +1,8 @@
-#include "QtHelpers/HTMLDelegate.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include <QPainter>
 #include <QTextDocument>
 
-void S2Plugin::HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void S2Plugin::StyledItemDelegateHTML::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     QStyleOptionViewItemV4 options = option;
     initStyleOption(&options, index);
@@ -31,7 +31,7 @@ void S2Plugin::HTMLDelegate::paint(QPainter* painter, const QStyleOptionViewItem
     painter->restore();
 }
 
-QSize S2Plugin::HTMLDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
+QSize S2Plugin::StyledItemDelegateHTML::sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const
 {
     QStyleOptionViewItemV4 options = option;
     initStyleOption(&options, index);
@@ -43,7 +43,7 @@ QSize S2Plugin::HTMLDelegate::sizeHint(const QStyleOptionViewItem& option, const
     return QSize(doc.idealWidth(), doc.size().height());
 }
 
-void S2Plugin::HTMLDelegate::setCenterVertically(bool b)
+void S2Plugin::StyledItemDelegateHTML::setCenterVertically(bool b)
 {
     mCenterVertically = b;
 }

@@ -2452,7 +2452,6 @@
       { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
       { "field": "camera_layer", "type": "UnsignedDword" },
       { "field": "shops", "type": "ShopsInfo" },
-      { "field": "unknown36", "type": "DataPointer" },
       { "field": "time_startup", "type": "UnsignedDword" },
       {
         "field": "special_visibility_flags",
@@ -2496,17 +2495,7 @@
       { "field": "unknown40", "type": "UnsignedByte" },
       {
         "field": "unknown41",
-        "type": "Flags8",
-        "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
-          "6": "",
-          "7": "",
-          "8": ""
-        },
+        "type": "Byte",
         "comment": "other character related (hired hand, basecamp characters)"
       },
       { "field": "unknown42", "type": "UnsignedByte" },
@@ -2682,6 +2671,11 @@
         "field": "shop_owners_list_end",
         "type": "DataPointer",
         "comment": "points to 1 after the end of the list, like an end iterator"
+      },
+      {
+        "field": "shop_owners_list_alloc_end",
+        "type": "DataPointer",
+        "comment": "points to 1 after the allocated space for the list?"
       }
     ],
     "ShopRestrictedItemPointer1": [
@@ -2765,10 +2759,14 @@
     ],
     "ShopOwnerInfoDetails": [
       { "field": "layer", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      {
+        "field": "room_index",
+        "type": "UnsignedDword",
+        "comment": "The room index that the shop is in: zero based, left to right, top to bottom, counting all 8 rooms per row (so second row = rooms 8 - 15)"
+      },
       { "field": "shop_owner", "type": "EntityUID" }
     ],
     "PointerList": [
@@ -6479,9 +6477,17 @@
       { "field": "unknown8", "type": "UnsignedByte" },
       { "field": "unknown9", "type": "UnsignedByte" },
       { "field": "unknown10", "type": "UnsignedQword" },
-      { "field": "unknown11", "type": "UnsignedByte" },
+      {
+        "field": "player_detected",
+        "type": "Bool",
+        "comment": "to show the welcome message"
+      },
       { "field": "on_the_ground", "type": "Bool" },
-      { "field": "aggro_timer", "type": "UnsignedWord" }
+      {
+        "field": "air_timer",
+        "type": "UnsignedWord",
+        "comment": "counts while in the air, jumping"
+      }
     ],
     "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }],
     "Octopus": [

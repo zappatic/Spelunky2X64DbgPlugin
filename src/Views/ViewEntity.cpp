@@ -120,8 +120,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();
-    mMainTreeView->setDragDropMode(QAbstractItemView::DragDropMode::DropOnly);
-    mMainTreeView->setDragEnabled(false);
+    mMainTreeView->setDragDropMode(QAbstractItemView::DragDropMode::DragDrop);
     mMainTreeView->setAcceptDrops(true);
     mMainTreeView->setColumnHidden(gsColComparisonValue, true);
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);

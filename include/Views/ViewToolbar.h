@@ -57,6 +57,7 @@ namespace S2Plugin
         void showStringsTable();
         ViewCharacterDB* showCharacterDB();
         void showSaveGame();
+        void showLogger();
         void clearLabels();
         void reloadConfig();
 

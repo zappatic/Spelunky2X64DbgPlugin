@@ -9,17 +9,23 @@
 #include "pluginmain.h"
 #include <QDrag>
 #include <QMimeData>
+#include <QTextCodec>
 #include <inttypes.h>
 #include <iomanip>
+#include <nlohmann/json.hpp>
 #include <sstream>
 
 S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent) : QTreeView(parent), mToolbar(toolbar), mMemoryMappedData(mmd)
 {
-    mHTMLDelegate = std::make_unique<HTMLDelegate>();
+    mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     setItemDelegate(mHTMLDelegate.get());
     setAlternatingRowColors(true);
     mModel = new QStandardItemModel();
     setModel(mModel);
+
+    setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
+    setDragEnabled(true);
+    setAcceptDrops(false);
 
     QObject::connect(this, &QTreeView::clicked, this, &TreeViewMemoryFields::cellClicked);
     QObject::connect(this, &QTreeView::collapsed, this, &TreeViewMemoryFields::cellCollapsed);
@@ -32,6 +38,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         auto itemFieldName = new QStandardItem();
         itemFieldName->setData(QString::fromStdString(field.name), Qt::DisplayRole);
         itemFieldName->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
+        itemFieldName->setData(QVariant::fromValue(field), gsRoleEntireMemoryField);
         itemFieldName->setEditable(false);
 
         auto itemFieldValue = new QStandardItem();
@@ -385,6 +392,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
 
         itemField->setData(QString::fromStdString(fieldNameOverride), gsRoleFieldName);
+        itemField->setData(memoryOffset, gsRoleMemoryOffset);
         itemMemoryOffset->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", memoryOffset), Qt::DisplayRole);
         itemMemoryOffset->setData(memoryOffset, gsRoleRawValue);
         itemValue->setData(memoryOffset, gsRoleMemoryOffset);
@@ -1812,11 +1820,38 @@ void S2Plugin::TreeViewMemoryFields::startDrag(Qt::DropActions supportedActions)
     {
         return;
     }
-    auto index = ix.at(0);
-    auto memoryOffset = Script::Memory::ReadQword(mModel->item(index.row(), gsColMemoryOffset)->data(gsRoleRawValue).toULongLong());
+
     QDrag* drag = new QDrag(this);
     auto mimeData = new QMimeData();
-    mimeData->setData("spelunky/entityoffset", QByteArray().setNum(memoryOffset));
+
+    auto index = ix.at(0);
+
+    // for spelunky/entityoffset: dragging an entity from ViewEntities on top of ViewEntity for comparison
+    auto entityItem = mModel->item(index.row(), gsColMemoryOffset);
+    if (entityItem != nullptr)
+    {
+        auto entityData = entityItem->data(gsRoleRawValue);
+        if (entityData.isValid())
+        {
+            mimeData->setData("spelunky/entityoffset", QByteArray().setNum(Script::Memory::ReadQword(entityData.toULongLong())));
+        }
+    }
+
+    // for spelunky/memoryfield: dragging any memoryfield onto ViewLogger
+    auto selectedItem = mModel->itemFromIndex(index);
+    auto memoryField = selectedItem->data(gsRoleEntireMemoryField).value<MemoryField>();
+    auto uniqueFieldName = selectedItem->data(gsRoleUID).toString().toStdString();
+    auto memoryOffset = selectedItem->data(gsRoleMemoryOffset).toULongLong();
+
+    nlohmann::json o;
+    o[gsJSONDragDropMemoryField_UID] = uniqueFieldName;
+    o[gsJSONDragDropMemoryField_Offset] = memoryOffset;
+    o[gsJSONDragDropMemoryField_Type] = memoryField.type;
+    auto json = QString::fromStdString(o.dump());
+
+    auto codec = QTextCodec::codecForName("UTF-8");
+    mimeData->setData("spelunky/memoryfield", codec->fromUnicode(json));
+
     drag->setMimeData(mimeData);
     drag->exec();
 }

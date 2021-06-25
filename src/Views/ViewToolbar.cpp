@@ -5,6 +5,7 @@
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewGameManager.h"
 #include "Views/ViewLevelGen.h"
+#include "Views/ViewLogger.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewSaveGame.h"
 #include "Views/ViewState.h"
@@ -88,6 +89,16 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     btnVirtualTable->setText("Virtual Table");
     mMainLayout->addWidget(btnVirtualTable);
     QObject::connect(btnVirtualTable, &QPushButton::clicked, this, &ViewToolbar::showVirtualTableLookup);
+
+    auto divider2 = new QFrame(this);
+    divider2->setFrameShape(QFrame::HLine);
+    divider2->setFrameShadow(QFrame::Sunken);
+    mMainLayout->addWidget(divider2);
+
+    auto btnLogger = new QPushButton(this);
+    btnLogger->setText("Logger");
+    mMainLayout->addWidget(btnLogger);
+    QObject::connect(btnLogger, &QPushButton::clicked, this, &ViewToolbar::showLogger);
 
     mMainLayout->addStretch();
 
@@ -227,6 +238,13 @@ void S2Plugin::ViewToolbar::showSaveGame()
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
     }
+}
+
+void S2Plugin::ViewToolbar::showLogger()
+{
+    auto w = new ViewLogger(this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
 }
 
 void S2Plugin::ViewToolbar::clearLabels()

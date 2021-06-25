@@ -33,9 +33,6 @@ void S2Plugin::ViewEntities::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, nullptr, this);
     mMainTreeView->setEnableChangeHighlighting(false);
-    mMainTreeView->setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
-    mMainTreeView->setDragEnabled(true);
-    mMainTreeView->setAcceptDrops(false);
 
     mMainLayout->addWidget(mMainTreeView);
 

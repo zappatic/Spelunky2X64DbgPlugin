@@ -34,7 +34,7 @@ void S2Plugin::ViewStringsTable::initializeUI()
     mMainTableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     mMainTableView->horizontalHeader()->setStretchLastSection(true);
     mMainTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
-    mHTMLDelegate = std::make_unique<HTMLDelegate>();
+    mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     mHTMLDelegate->setCenterVertically(true);
     mMainTableView->setItemDelegateForColumn(gsColStringMemoryOffset, mHTMLDelegate.get());
     QObject::connect(mMainTableView, &QTableView::clicked, this, &ViewStringsTable::cellClicked);

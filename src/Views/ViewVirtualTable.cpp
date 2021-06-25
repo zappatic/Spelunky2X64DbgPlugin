@@ -8,7 +8,7 @@
 
 S2Plugin::ViewVirtualTable::ViewVirtualTable(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
-    mHTMLDelegate = std::make_unique<HTMLDelegate>();
+    mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     mModel = std::make_unique<ItemModelVirtualTable>(toolbar->virtualTableLookup(), this);
     mSortFilterProxy = std::make_unique<SortFilterProxyModelVirtualTable>(toolbar->virtualTableLookup(), this);
 

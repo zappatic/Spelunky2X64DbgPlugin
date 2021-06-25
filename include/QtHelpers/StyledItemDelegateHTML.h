@@ -4,7 +4,7 @@
 
 namespace S2Plugin
 {
-    class HTMLDelegate : public QStyledItemDelegate
+    class StyledItemDelegateHTML : public QStyledItemDelegate
     {
       public:
         void setCenterVertically(bool b);

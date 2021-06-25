@@ -67,6 +67,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/VirtualTableLookup.h
 	include/Data/StringsTable.h
 	include/Data/CPPGenerator.h
+	include/Data/Logger.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
@@ -80,7 +81,9 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewLevelGen.h
 	include/Views/ViewVirtualTable.h
 	include/Views/ViewStringsTable.h
-	include/QtHelpers/HTMLDelegate.h
+	include/Views/ViewLogger.h
+	include/QtHelpers/StyledItemDelegateHTML.h
+	include/QtHelpers/StyledItemDelegateColorPicker.h
 	include/QtHelpers/TreeViewMemoryFields.h
 	include/QtHelpers/WidgetMemoryView.h
 	include/QtHelpers/WidgetSpelunkyLevel.h
@@ -93,6 +96,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/ItemModelStringsTable.h
 	include/QtHelpers/ItemModelStates.h
 	include/QtHelpers/CPPSyntaxHighlighter.h
+	include/QtHelpers/TableViewLogger.h
+	include/QtHelpers/ItemModelLoggerFields.h
+	include/QtHelpers/WidgetSampling.h
+	include/QtHelpers/WidgetSamplesPlot.h
+	include/QtHelpers/ItemModelLoggerSamples.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/MemoryMappedData.cpp
@@ -111,6 +119,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/VirtualTableLookup.cpp
 	src/Data/StringsTable.cpp
 	src/Data/CPPGenerator.cpp
+	src/Data/Logger.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
@@ -124,7 +133,9 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewLevelGen.cpp
 	src/Views/ViewVirtualTable.cpp
 	src/Views/ViewStringsTable.cpp
-	src/QtHelpers/HTMLDelegate.cpp
+	src/Views/ViewLogger.cpp
+	src/QtHelpers/StyledItemDelegateHTML.cpp
+	src/QtHelpers/StyledItemDelegateColorPicker.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
 	src/QtHelpers/WidgetMemoryView.cpp
 	src/QtHelpers/WidgetSpelunkyLevel.cpp
@@ -137,6 +148,11 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/ItemModelStringsTable.cpp
 	src/QtHelpers/ItemModelStates.cpp
 	src/QtHelpers/CPPSyntaxHighlighter.cpp
+	src/QtHelpers/TableViewLogger.cpp
+	src/QtHelpers/ItemModelLoggerFields.cpp
+	src/QtHelpers/WidgetSampling.cpp
+	src/QtHelpers/WidgetSamplesPlot.cpp
+	src/QtHelpers/ItemModelLoggerSamples.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )

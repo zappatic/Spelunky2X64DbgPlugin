@@ -1,12 +1,13 @@
 #pragma once
 
 #include "Data/VirtualTableLookup.h"
-#include "QtHelpers/HTMLDelegate.h"
 #include "QtHelpers/ItemModelVirtualTable.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "Views/ViewToolbar.h"
 #include <QTableView>
 #include <QTableWidget>
 #include <memory>
+
 
 namespace S2Plugin
 {
@@ -43,7 +44,7 @@ namespace S2Plugin
         QTableView* mDataTable;
         std::unique_ptr<ItemModelVirtualTable> mModel;
         std::unique_ptr<SortFilterProxyModelVirtualTable> mSortFilterProxy;
-        std::unique_ptr<HTMLDelegate> mHTMLDelegate;
+        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
 
         // LOOKUP
         QLineEdit* mLookupAddressLineEdit;

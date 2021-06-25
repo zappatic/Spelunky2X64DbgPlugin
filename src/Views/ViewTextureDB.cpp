@@ -134,7 +134,7 @@ void S2Plugin::ViewTextureDB::initializeUI()
         mCompareTableWidget->setColumnWidth(0, 40);
         mCompareTableWidget->setColumnWidth(1, 325);
         mCompareTableWidget->setColumnWidth(2, 150);
-        mHTMLDelegate = std::make_unique<HTMLDelegate>();
+        mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
         mCompareTableWidget->setItemDelegate(mHTMLDelegate.get());
         QObject::connect(mCompareTableWidget, &QTableWidget::cellClicked, this, &ViewTextureDB::comparisonCellClicked);
 

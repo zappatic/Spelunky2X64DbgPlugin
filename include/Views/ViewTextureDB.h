@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Data/TextureDB.h"
-#include "QtHelpers/HTMLDelegate.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "ViewToolbar.h"
 #include <QCheckBox>
@@ -41,7 +41,7 @@ namespace S2Plugin
 
       private:
         ViewToolbar* mToolbar;
-        std::unique_ptr<HTMLDelegate> mHTMLDelegate;
+        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
 
         QVBoxLayout* mMainLayout;
         QTabWidget* mMainTabWidget;

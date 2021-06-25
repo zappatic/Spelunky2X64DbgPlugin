@@ -2,7 +2,7 @@
 
 #include "Data/EntityDB.h"
 #include "Data/MemoryMappedData.h"
-#include "QtHelpers/HTMLDelegate.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
 #include <QDragEnterEvent>
@@ -49,7 +49,7 @@ namespace S2Plugin
         ViewToolbar* mToolbar;
         MemoryMappedData* mMemoryMappedData;
         QStandardItemModel* mModel;
-        std::unique_ptr<HTMLDelegate> mHTMLDelegate;
+        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
         std::array<uint32_t, 6> mSavedColumnWidths = {0};
         bool mEnableChangeHighlighting = true;
     };

@@ -17,6 +17,7 @@ bool S2Plugin::TextureDB::loadTextureDB()
 
     mMemoryOffsets.clear();
     mTextureNames.clear();
+    mTextureNamesStringList.clear();
 
     auto instructionPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "41 8B EC 41 8B F7 8B 1D");
     auto textureCount = Script::Memory::ReadQword(instructionPtr + 12 + Script::Memory::ReadDword(instructionPtr + 8));

@@ -1,14 +1,15 @@
 #pragma once
 
 #include "Data/StringsTable.h"
-#include "QtHelpers/HTMLDelegate.h"
 #include "QtHelpers/ItemModelStringsTable.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "Views/ViewToolbar.h"
 #include <QLineEdit>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 #include <QTableView>
 #include <QWidget>
+
 
 namespace S2Plugin
 {
@@ -34,7 +35,7 @@ namespace S2Plugin
         QTableView* mMainTableView;
         ItemModelStringsTable* mModel;
         SortFilterProxyModelStringsTable* mModelProxy;
-        std::unique_ptr<HTMLDelegate> mHTMLDelegate;
+        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
 
         void initializeUI();
     };
