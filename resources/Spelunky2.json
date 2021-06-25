@@ -506,7 +506,9 @@
     "FlyingThingParams",
     "ScreenZoomAnimation",
     "ArenaRulesStringsEntry",
-    "AudioChannelParams"
+    "AudioChannelParams",
+    "PlayerInventory",
+    "SelectPlayerSlot"
   ],
   "refs": {
     "screen_states": {
@@ -5447,7 +5449,7 @@
     ],
     "Player": [
       { "field": "inside", "type": "Map" },
-      { "field": "inventory", "type": "PlayerInventoryPointer" },
+      { "field": "inventory_ptr", "type": "PlayerInventoryPointer" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "linked_companion_child", "type": "EntityUID" },
       { "field": "linked_companion_parent", "type": "EntityUID" },
@@ -5470,6 +5472,9 @@
       { "field": "b177", "type": "UnsignedByte" }
     ],
     "PlayerInventoryPointer": [
+      { "field": "inventory", "type": "PlayerInventory" }
+    ],
+    "PlayerInventory": [
       { "field": "money", "type": "UnsignedDword" },
       { "field": "bombs", "type": "UnsignedByte" },
       { "field": "ropes", "type": "UnsignedByte" },
@@ -5589,21 +5594,7 @@
         "type": "AquiredPowerups",
         "comment": "assigned during level transition, so they can be applied to the newly created player entity in the next level"
       },
-      { "field": "collected_money_total", "type": "UnsignedDword" },
-      { "field": "unknown40", "type": "UnsignedDword" },
-      { "field": "unknown41", "type": "UnsignedByte" },
-      { "field": "unknown42", "type": "UnsignedByte" },
-      { "field": "unknown43", "type": "Word" },
-      { "field": "unknown44", "type": "UnsignedByte" },
-      { "field": "unknown45", "type": "UnsignedByte" },
-      { "field": "unknown46", "type": "UnsignedByte" },
-      { "field": "unknown47", "type": "UnsignedByte" },
-      { "field": "unknown48", "type": "UnsignedDword" },
-      { "field": "unknown49", "type": "UnsignedDword" },
-      { "field": "unknown50", "type": "UnsignedByte" },
-      { "field": "unknown51", "type": "UnsignedByte" },
-      { "field": "unknown52", "type": "UnsignedByte" },
-      { "field": "unknown53", "type": "UnsignedByte" }
+      { "field": "collected_money_total", "type": "UnsignedDword" }
     ],
     "AquiredPowerups": [
       { "field": "slot_1", "type": "EntityDBID" },
@@ -5783,7 +5774,23 @@
       { "field": "player1", "type": "EntityPointer" },
       { "field": "player2", "type": "EntityPointer" },
       { "field": "player3", "type": "EntityPointer" },
-      { "field": "player4", "type": "EntityPointer" }
+      { "field": "player4", "type": "EntityPointer" },
+      { "field": "player1_inventory", "type": "PlayerInventory" },
+      { "field": "player2_inventory", "type": "PlayerInventory" },
+      { "field": "player3_inventory", "type": "PlayerInventory" },
+      { "field": "player4_inventory", "type": "PlayerInventory" },
+      { "field": "select_player1_slot", "type": "SelectPlayerSlot" },
+      { "field": "select_player2_slot", "type": "SelectPlayerSlot" },
+      { "field": "select_player3_slot", "type": "SelectPlayerSlot" },
+      { "field": "select_player4_slot", "type": "SelectPlayerSlot" }
+    ],
+    "SelectPlayerSlot": [
+      { "field": "activated", "type": "Bool" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "character", "type": "EntityDBID" },
+      { "field": "texture_id", "type": "TextureDBID" }
     ],
     "LightParams": [
       { "field": "red", "type": "Float" },
