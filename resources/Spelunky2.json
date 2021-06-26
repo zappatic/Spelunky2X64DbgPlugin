@@ -173,7 +173,6 @@
     "Liquid": "Entity",
     "Lava": "Liquid",
     "ClimbableRope": "Movable",
-    "EggShip": "Movable",
     "Pot": "Container",
     "Coffin": "Container",
     "SpecialShot": "LightEmitter",
@@ -181,7 +180,16 @@
     "Spear": "Movable",
     "JungleSpearCosmetic": "Movable",
     "WebShot": "Movable",
-    "LightEmitter": "Movable"
+    "LightEmitter": "Movable",
+    "WebAnchor": "Movable",
+    "WebStrand": "Movable",
+    "Arrow": "Movable",
+    "LightArrow": "Arrow",
+    "LightShot": "Movable",
+    "ScepterShot": "LightEmitter",
+    "SoundShot": "LightShot",
+    "TimedShot": "LightShot",
+    "CloneGunShot": "TimedShot"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -329,9 +337,21 @@
     "ITEM_LION_SPEAR": "Spear",
     "ITEM_BIG_SPEAR": "Spear",
     "ITEM_WEBSHOT": "WebShot",
-    "ITEM_EGGSHIP": "EggShip",
-    "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
+    "ITEM_HANGSTRAND": "WebStrand",
+    "ITEM_HANGANCHOR": "WebAnchor",
+    "ITEM_WOODEN_ARROW": "Arrow",
+    "ITEM_METAL_ARROW": "Arrow",
+    "ITEM_LIGHT_ARROW": "LightArrow",
+    "ITEM_PLASMACANNON_SHOT": "LightShot",
+    "ITEM_SCEPTER_ANUBISSHOT": "ScepterShot",
     "ITEM_SCEPTER_ANUBISSPECIALSHOT": "SpecialShot",
+    "ITEM_SCEPTER_PLAYERSHOT": "ScepterShot",
+    "ITEM_UFO_LASER_SHOT": "SoundShot",
+    "ITEM_LAMASSU_LASER_SHOT": "SoundShot",
+    "ITEM_SORCERESS_DAGGER_SHOT": "LightShot",
+    "ITEM_LASERTRAP_SHOT": "LightShot",
+
+    "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
     "ITEM_CHEST": "ChestInside",
     "ITEM_CRATE": "Container",
     "ITEM_DMCRATE": "Container",
@@ -341,6 +361,8 @@
     "ITEM_REDLANTERNFLAME": "LightEmitter",
     "ITEM_PRESENT": "Container",
     "ITEM_GHIST_PRESENT": "Container",
+    "ITEM_FREEZERAYSHOT": "TimedShot",
+    "ITEM_CLONEGUNSHOT": "CloneGunShot",
     "ITEM_PUNISHBALL": "PunishBall",
     "ITEM_PUNISHCHAIN": "PunishChain",
     "ITEM_.*COFFIN": "Coffin",
@@ -4954,7 +4976,11 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "scale_hor", "type": "Float" },
       { "field": "scale_ver", "type": "Float" },
-      { "field": "is_big_bomb", "type": "Bool", "comment": "makes the explosion radius bigger" }
+      {
+        "field": "is_big_bomb",
+        "type": "Bool",
+        "comment": "makes the explosion radius bigger"
+      }
     ],
     "Olmec": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -6725,7 +6751,9 @@
       { "field": "deco_left", "type": "EntityUID" },
       { "field": "deco_right", "type": "EntityUID" }
     ],
-    "LightEmitter": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
+    "LightEmitter": [
+      { "field": "emitted_light", "type": "IlluminationPointer" }
+    ],
     "Door": [
       {
         "field": "counter",
@@ -6935,7 +6963,6 @@
       { "field": "unused", "type": "UnsignedDword" },
       { "field": "unknown", "type": "UnsignedQword" }
     ],
-    "EggShip": [{ "field": "unknown", "type": "SoundPositionPointer" }],
     "LavaGlow": [
       { "field": "glow_radius", "type": "Float" },
       { "field": "unknown_float", "type": "Float" }, //??
@@ -6970,15 +6997,21 @@
       { "field": "target_Y", "type": "Float" }
     ],
     "Idol": [
-      { "field": "trap_triggered", "type": "Bool", "comment": "if you set it to true for the ice caves or volcano idol, the trap won't trigger" },
-      { "field": "touch", "type": "Byte", "comment": "changes to 0 when first picked up by player and back to -1 if HH picks it up" },
+      {
+        "field": "trap_triggered",
+        "type": "Bool",
+        "comment": "if you set it to true for the ice caves or volcano idol, the trap won't trigger"
+      },
+      {
+        "field": "touch",
+        "type": "Byte",
+        "comment": "changes to 0 when first picked up by player and back to -1 if HH picks it up"
+      },
       { "field": "unused", "type": "UnsignedWord" },
       { "field": "spawn_x", "type": "Float" },
       { "field": "spawn_y", "type": "Float" }
     ],
-    "Spear": [
-    { "field": "sound_id", "type": "UnsignedDword" }
-    ],
+    "Spear": [{ "field": "sound_id", "type": "UnsignedDword" }],
     "JungleSpearCosmetic": [
       { "field": "move_x", "type": "Float" },
       { "field": "move_y", "type": "Float" }
@@ -6986,12 +7019,54 @@
     "WebShot": [
       { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "unknown1", "type": "Float" },
-      { "field": "shot", "type": "Bool", "comment": "if false, it's attached to the gun" }
+      {
+        "field": "shot",
+        "type": "Bool",
+        "comment": "if false, it's attached to the gun"
+      }
     ],
     "CoopConflictResolver": [
       { "field": "coop_pointer1", "type": "EntityUIDPointer" },
       { "field": "coop_pointer2", "type": "EntityUIDPointer" },
       { "field": "coop_pointer3", "type": "EntityUIDPointer" }
+    ],
+    "WebAnchor": [{ "field": "spider_uid", "type": "EntityUID" }],
+    "WebStrand": [{ "field": "start_pos_y", "type": "Float" }],
+    "Arrow": [
+      { "field": "flame_uid", "type": "EntityUID" },
+      { "field": "is_on_fire", "type": "Bool" },
+      { "field": "is_poisoned", "type": "Bool" },
+      { "field": "shoot_from_trap", "type": "Bool" }
+    ],
+    "LightArrow": [
+      { "field": "unused", "type": "Byte" },
+      { "field": "emitted_light", "type": "IlluminationPointer" }
+    ],
+    "LightShot": [
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
+      { "field": "emitted_light", "type": "IlluminationPointer" }
+    ],
+    "SoundShot": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
+    "ScepterShot": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "speed", "type": "Float" },
+      {
+        "field": "idle_timer",
+        "type": "UnsignedWord",
+        "comment": "short timer before it goes after target"
+      },
+      {
+        "field": "unknown",
+        "type": "Word",
+        "comment": "setting it low or high can make it last forever, won't matter if you change it back afterwards, anubis is 300 and player 400 by default"
+      }
+    ],
+    "TimedShot": [{ "field": "timer", "type": "UnsignedByte" }],
+    "CloneGunShot": [
+      { "field": "unused1", "type": "Byte" },
+      { "field": "unused2", "type": "Word" },
+      { "field": "spawn_y", "type": "Float" },
+      { "field": "float_timer?", "type": "Float" }
     ]
   }
 }
