@@ -167,7 +167,7 @@
     "LampFlame": "Flame",
     "PoleDeco": "FloorDeco",
     "PunishBall": "Movable",
-    "PunishChain": "Movable",
+    "PunishChain": "StretchChain",
     "ChestInside": "Movable",
     "LavaGlow": "Movable",
     "Liquid": "Entity",
@@ -189,7 +189,26 @@
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
-    "CloneGunShot": "TimedShot"
+    "CloneGunShot": "TimedShot",
+    "Spark": "Flame",
+    "TiamatShot": "LightEmitter",
+    "Fireball": "SoundShot",
+    "Leaf": "Movable",
+    "AcidBubble": "Movable",
+    "Claw": "Movable",
+    "StretchChain": "Movable",
+    "Treasure": "Movable",
+    "HundunChest": "Treasure",
+    "Boombox": "Movable",
+    "TV": "Movable",
+    "Telescope": "Movable",
+    "Torch": "Movable",
+    "WallTorch": "Torch",
+    "Bullet": "Movable",
+    "Chain": "Movable",
+    "Fly": "Movable",
+    "OlmecCannon": "Movable",
+    "Landmine": "LightEmitter"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -350,22 +369,50 @@
     "ITEM_LAMASSU_LASER_SHOT": "SoundShot",
     "ITEM_SORCERESS_DAGGER_SHOT": "LightShot",
     "ITEM_LASERTRAP_SHOT": "LightShot",
-
-    "ITEM_FLAMETHROWER_FIREBALL": "FlameSize",
+    "ITEM_SPARK": "Spark",
+    "ITEM_TIAMAT_SHOT": "TiamatShot",
+    "ITEM_FIREBALL": "Fireball",
+    "ITEM_HUNDUN_FIREBALL": "Fireball",
+    "ITEM_FLAMETHROWER_FIREBALL": "Flame",
+    "ITEM_LEAF": "Leaf",
+    "ITEM_CRABMAN_ACIDBUBBLE": "AcidBubble",
+    "ITEM_CRABMAN_CLAW": "Claw",
+    "ITEM_CRABMAN_CLAWCHAIN": "StretchChain",
     "ITEM_CHEST": "ChestInside",
+    "ITEM_ENDINGTREASURE_TIAMAT": "Treasure",
+    "ITEM_ENDINGTREASURE_HUNDUN": "HundunChest",
     "ITEM_CRATE": "Container",
     "ITEM_DMCRATE": "Container",
+    "ITEM_BOOMBOX": "Boombox",
+    "ITEM_TV": "TV",
+    "ITEM_TELESCOPE": "Telescope",
+    "ITEM_WALLTORCH": "WallTorch",
     "ITEM_WALLTORCHFLAME": "FlameSize",
+    "ITEM_LITWALLTORCH": "WallTorch",
+    "ITEM_AUTOWALLTORCH": "WallTorch",
+    "ITEM_TORCH": "Torch",
     "ITEM_TORCHFLAME": "TorchFlame",
+    "ITEM_LAMP": "Torch",
     "ITEM_LAMPFLAME": "LampFlame",
+    "ITEM_REDLANTERN": "Torch",
     "ITEM_REDLANTERNFLAME": "LightEmitter",
     "ITEM_PRESENT": "Container",
     "ITEM_GHIST_PRESENT": "Container",
+    "ITEM_BULLET": "Bullet",
     "ITEM_FREEZERAYSHOT": "TimedShot",
     "ITEM_CLONEGUNSHOT": "CloneGunShot",
     "ITEM_PUNISHBALL": "PunishBall",
     "ITEM_PUNISHCHAIN": "PunishChain",
+    "ITEM_CHAIN": "Chain",
+    "ITEM_CHAIN_LASTPIECE": "Chain",
+    "ITEM_SLIDINGWALL_CHAIN": "Chain",
+    "ITEM_SLIDINGWALL_CHAIN_LASTPIECE": "Chain",
     "ITEM_.*COFFIN": "Coffin",
+    "ITEM_FLY": "Fly",
+    "ITEM_OLMECCANNON_BOMBS": "OlmecCannon",
+    "ITEM_OLMECCANNON_UFO": "OlmecCannon",
+    "ITEM_LANDMINE": "Landmine",
+
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
@@ -4324,8 +4371,7 @@
         }
       },
       { "field": "uid", "type": "EntityUID" },
-      { "field": "animation_frame", "type": "UnsignedByte" },
-      { "field": "b3d", "type": "UnsignedByte" },
+      { "field": "animation_frame", "type": "UnsignedWord" },
       { "field": "draw_depth", "type": "UnsignedByte" },
       { "field": "b3f", "type": "UnsignedByte" },
       { "field": "x", "type": "Float" },
@@ -6689,7 +6735,7 @@
       {
         "field": "is_chained",
         "type": "Bool",
-        "comment": "changing this the chained does nothing, when unchained it's forced to 0"
+        "comment": "changing this when chained does nothing, when unchained it's forced to 0"
       }
     ],
     "LightArrowPlatform": [
@@ -6743,7 +6789,7 @@
       { "field": "particles_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_warp", "type": "ParticleEmitterInfoPointer" },
-      { "field": "unknown10", "type": "DataPointer" }
+      { "field": "sound_info", "type": "SoundPositionPointer" }
     ],
     "FloorDeco": [
       { "field": "deco_top", "type": "EntityUID" },
@@ -6931,13 +6977,6 @@
       { "field": "t_pos", "type": "Float" }
     ],
     "PunishChain": [
-      { "field": "attached_to", "type": "EntityUID" },
-      { "field": "stretch?", "type": "Float" },
-      {
-        "field": "number_in_chain",
-        "type": "UnsignedByte",
-        "comment": "0 closest to the ball, so if the chain has 15 segments the last one will be 14"
-      },
       { "field": "state?", "type": "UnsignedByte" },
       { "field": "unknown_timer", "type": "UnsignedByte" },
       { "field": "is_chain_overlapping_ball", "type": "Bool" }
@@ -7067,6 +7106,137 @@
       { "field": "unused2", "type": "Word" },
       { "field": "spawn_y", "type": "Float" },
       { "field": "float_timer?", "type": "Float" }
+    ],
+    "Spark": [
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "fx_pointer", "type": "EntityPointer" },
+      { "field": "rotation_center_x", "type": "Float" },
+      { "field": "rotation_center_Y", "type": "Float" },
+      { "field": "angle", "type": "Float" },
+      {
+        "field": "particle_size?",
+        "type": "Float",
+        "comment": "slowly goes down to default 1.0, is 0.0 when not on screen"
+      },
+      {
+        "field": "size_multiply",
+        "type": "Float",
+        "comment": "0.0 when not on screen"
+      },
+      {
+        "field": "next_size",
+        "type": "Float",
+        "comment": "width and height will be set to this value * size_multiply next frame"
+      },
+      { "field": "state?", "type": "UnsignedByte" }
+    ],
+    "TiamatShot": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
+    "Fireball": [{ "field": "particle", "type": "ParticleEmitterInfoPointer" }],
+    "Leaf": [
+      { "field": "unknown1", "type": "Qword" },
+      {
+        "field": "fade_away_counter",
+        "type": "Float",
+        "comment": "counts to 100.0 then the leaf fades away"
+      },
+      { "field": "swing_direction", "type": "Dword" },
+      {
+        "field": "fade_away_trigger",
+        "type": "Bool",
+        "comment": "if set true, it will fade away after a while"
+      }
+    ],
+    "AcidBubble": [
+      { "field": "speed_x", "type": "Float" },
+      { "field": "speed_y", "type": "Float" },
+      { "field": "float_counter", "type": "Float" }
+    ],
+    "Claw": [
+      { "field": "crabman", "type": "EntityUID" },
+      { "field": "spawn_x", "type": "Float" },
+      { "field": "spawn_Y", "type": "Float" }
+    ],
+    "StretchChain": [
+      { "field": "at_the_end_of_chain", "type": "EntityUID" },
+      { "field": "stretch?", "type": "Float" },
+      {
+        "field": "number_in_chain",
+        "type": "UnsignedByte",
+        "comment": "0 closest to the end, so if the chain has 15 segments the last one will be 14"
+      }
+    ],
+    "Treasure": [
+      { "field": "state?", "type": "UnsignedDword" },
+      { "field": "cashed", "type": "Bool", "comment": "spawns a dust effect" }
+    ],
+    "HundunChest": [
+      { "field": "unknown1", "type": "Byte" },
+      { "field": "unknown2", "type": "Word" },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "timer", "type": "UnsignedByte" }
+    ],
+    "Boombox": [
+      { "field": "fx_button", "type": "EntityPointer" },
+      { "field": "music_note1", "type": "ParticleEmitterInfoPointer" },
+      { "field": "music_note2", "type": "ParticleEmitterInfoPointer" },
+      { "field": "spawn_y?", "type": "Float" },
+      {
+        "field": "station",
+        "type": "Byte",
+        "comment": "-1 to turn off and bring back normal camp music, anything above 10 is mute"
+      },
+      { "field": "station_change_delay", "type": "UnsignedByte" },
+      { "field": "jump_timer", "type": "UnsignedByte" },
+      { "field": "jump_state", "type": "UnsignedByte" }
+    ],
+    "TV": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "fx_button", "type": "EntityPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" },
+      {
+        "field": "station",
+        "type": "UnsignedByte",
+        "comment": "0 to turn off, anything above 3 has the music from station 3 and the screen doesn't change"
+      }
+    ],
+    "Telescope": [
+      { "field": "fx_button", "type": "EntityPointer" },
+      { "field": "camera_anchor", "type": "EntityPointer" },
+      { "field": "looking_thru", "type": "EntityUID" },
+      { "field": "unknown", "type": "Float" }
+    ],
+    "Torch": [
+      { "field": "item_flame", "type": "EntityUID" },
+      { "field": "is_lit", "type": "Bool" }
+    ],
+    "WallTorch": [
+      { "field": "unknown1", "type": "Byte" },
+      { "field": "unknown2", "type": "Word" },
+      {
+        "field": "no_reward?",
+        "type": "Bool",
+        "comment": "if false, it will drop gold when lit up"
+      }
+    ],
+    "Bullet": [
+      { "field": "conflict_resolver", "type": "CoopConflictResolver" }
+    ],
+    "Chain": [
+      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "timer", "type": "Dword" }
+    ],
+    "Fly": [{ "field": "timer", "type": "UnsignedByte" }],
+    "OlmecCannon": [
+      { "field": "timer", "type": "UnsignedWord" },
+      { "field": "bombs_left", "type": "UnsignedByte" }
+    ],
+    "Landmine": [
+      {
+        "field": "timer",
+        "type": "Dword",
+        "comment": "explodes at 57, if you set it to 58 will count potentially to overflow and 57"
+      }
     ]
   }
 }
