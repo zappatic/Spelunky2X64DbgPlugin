@@ -66,6 +66,7 @@
     "Ammit": "Monster",
     "ApepPart": "Monster",
     "ApepHead": "ApepPart",
+    "ApepBody": "ApepPart",
     "AnubisTwo": "Monster",
     "OsirisHead": "Monster",
     "OsirisHand": "Monster",
@@ -179,13 +180,13 @@
     "Idol": "Movable",
     "Spear": "Movable",
     "JungleSpearCosmetic": "Movable",
-    "WebShot": "Movable",
+    "WebShot": "Bullet",
     "LightEmitter": "Movable",
     "WebAnchor": "Movable",
     "WebStrand": "Movable",
     "Arrow": "Movable",
     "LightArrow": "Arrow",
-    "LightShot": "Movable",
+    "LightShot": "Bullet",
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
@@ -208,7 +209,19 @@
     "Chain": "Movable",
     "Fly": "Movable",
     "OlmecCannon": "Movable",
-    "Landmine": "LightEmitter"
+    "Landmine": "LightEmitter",
+    "Honey": "Movable",
+    "PlayerGhost": "LightEmitter",
+    "GhostBreath": "Bullet",
+    "PlayerBag": "Movable",
+    "LaserBeam": "Movable",
+    "TreasureHook": "Movable",
+    "AxolotlShot": "Bullet",
+    "SkullDropTrap": "Movable",
+    "FrozenLiquid": "Movable",
+    "Switch": "Movable",
+    "FlyHead": "Movable",
+    "SnapTrap": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -300,7 +313,7 @@
     "MONS_QUEENBEE": "Bee",
     "MONS_AMMIT": "Ammit",
     "MONS_APEP_HEAD": "ApepHead",
-    "MONS_APEP_BODY": "ApepPart",
+    "MONS_APEP_BODY": "ApepBody",
     "MONS_APEP_TAIL": "ApepPart",
     "MONS_OSIRIS_HEAD": "OsirisHead",
     "MONS_OSIRIS_HAND": "OsirisHand",
@@ -412,13 +425,31 @@
     "ITEM_OLMECCANNON_BOMBS": "OlmecCannon",
     "ITEM_OLMECCANNON_UFO": "OlmecCannon",
     "ITEM_LANDMINE": "Landmine",
-
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
+    "ITEM_HONEY": "Honey",
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
+    "ITEM_PLAYERGHOST": "PlayerGhost",
+    "ITEM_PLAYERGHOST_BREATH": "GhostBreath",
+    "ITEM_LASERBEAM": "LaserBeam",
+    "ITEM_HORIZONTALLASERBEAM": "LaserBeam",
+    "ITEM_EGGSHIP_HOOK": "TreasureHook",
+    "ITEM_AXOLOTL_BUBBLESHOT": "AxolotlShot",
+    "ITEM_STICKYTRAP_PIECE": "Chain",
+    "ITEM_STICKYTRAP_LASTPIECE": "Chain",
+    "ITEM_STICKYTRAP_BALL": "TrapPart",
+    "ITEM_SKULLDROPTRAP": "SkullDropTrap",
+    "ITEM_FROZEN_LIQUID": "FrozenLiquid",
+    "ITEM_ALIVE_EMBEDDED_ON_ICE": "Container",
+    "ITEM_SLIDINGWALL_SWITCH.*": "Switch",
+    "ITEM_GIANTFLY_HEAD": "FlyHead",
     "ITEM_PALACE_CANDLE_FLAME": "LightEmitter",
+    "ITEM_SNAP_TRAP": "SnapTrap",
+
     "ITEM_POT": "Pot",
     "ITEM_COOKFIRE": "CookFire",
+
+    "ITEM_PICKUP_PLAYERBAG": "PlayerBag",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_CAPE": "Cape",
     "ITEM_VLADS_CAPE": "VladsCape",
@@ -4373,7 +4404,11 @@
       { "field": "uid", "type": "EntityUID" },
       { "field": "animation_frame", "type": "UnsignedWord" },
       { "field": "draw_depth", "type": "UnsignedByte" },
-      { "field": "b3f", "type": "UnsignedByte" },
+      {
+        "field": "door_entered",
+        "type": "UnsignedByte",
+        "comment": "this gets value 'counter' from the door entered"
+      },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       { "field": "w", "type": "Float" },
@@ -4442,8 +4477,7 @@
       { "field": "pa0", "type": "Map" },
       { "field": "pb0", "type": "Map" },
       { "field": "anim_func", "type": "DataPointer" },
-      { "field": "ic8", "type": "Dword" },
-      { "field": "icc", "type": "Dword" },
+      { "field": "ic8", "type": "Qword" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
       {
@@ -4505,7 +4539,8 @@
       { "field": "health", "type": "UnsignedByte" },
       { "field": "stun_timer", "type": "UnsignedWord" },
       { "field": "stun_state", "type": "UnsignedWord" },
-      { "field": "some_state", "type": "UnsignedDword" },
+      { "field": "after_dmg_airtime_timer?", "type": "UnsignedWord" },
+      { "field": "unknown", "type": "UnsignedWord" },
       { "field": "poison_tick_timer", "type": "Word" },
       {
         "field": "dark_shadow_timer",
@@ -4531,7 +4566,7 @@
       { "field": "i120d", "type": "UnsignedByte" },
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "airtime", "type": "UnsignedByte" },
-      { "field": "b126", "type": "UnsignedByte" },
+      { "field": "unknown_timer", "type": "UnsignedByte" },
       { "field": "b127", "type": "UnsignedByte" }
     ],
     "Monster": [
@@ -4941,8 +4976,7 @@
           "32": ""
         }
       },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" }
+      { "field": "flags2?", "type": "Qword" }
     ],
     "Rect": [
       { "field": "masks", "type": "UnsignedDword" },
@@ -5791,12 +5825,17 @@
     "ApepHead": [
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "sound_pos1", "type": "SoundPositionPointer" },
-      { "field": "sound_pos2", "type": "SoundPositionPointer" }
+      { "field": "sound_pos2", "type": "SoundPositionPointer" },
+      { "field": "distance_traveled", "type": "Float" },
+      { "field": "tail", "type": "EntityUID" },
+      { "field": "fx_mouth_piece1", "type": "EntityUID" },
+      { "field": "fx_mouth_piece2", "type": "EntityUID" }
     ],
     "ApepPart": [
       { "field": "y", "type": "Float" },
       { "field": "x", "type": "Float" }
     ],
+    "ApepBody": [{ "field": "sync?", "type": "UnsignedByte" }],
     "AnubisTwo": [
       { "field": "spawn_x", "type": "Float" },
       { "field": "spawn_y", "type": "Float" },
@@ -6523,7 +6562,10 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "attack_cooldown", "type": "UnsignedByte" }
     ],
-    "Ushabti": [{ "field": "wiggle_timer", "type": "UnsignedWord" }],
+    "Ushabti": [
+      { "field": "wiggle_timer", "type": "UnsignedWord" },
+      { "field": "shine_timer", "type": "UnsignedByte" }
+    ],
     "Generator": [
       { "field": "spawned_uid", "type": "EntityUID" },
       { "field": "set_timer", "type": "UnsignedWord" },
@@ -7056,7 +7098,6 @@
       { "field": "move_y", "type": "Float" }
     ],
     "WebShot": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "unknown1", "type": "Float" },
       {
         "field": "shot",
@@ -7081,10 +7122,7 @@
       { "field": "unused", "type": "Byte" },
       { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
-    "LightShot": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
-      { "field": "emitted_light", "type": "IlluminationPointer" }
-    ],
+    "LightShot": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "SoundShot": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
     "ScepterShot": [
       { "field": "sound_info", "type": "SoundPositionPointer" },
@@ -7235,8 +7273,86 @@
       {
         "field": "timer",
         "type": "Dword",
-        "comment": "explodes at 57, if you set it to 58 will count potentially to overflow and 57"
+        "comment": "explodes at 57, if you set it to 58 will count to overflow"
       }
+    ],
+    "Honey": [{ "field": "wiggle_timer", "type": "UnsignedByte" }],
+    "PlayerGhost": [
+      { "field": "sparkles_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "buttons", "type": "PlayerInputs" },
+      { "field": "inventory", "type": "PlayerInventoryPointer" },
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "unknown_timer", "type": "UnsignedWord" },
+      { "field": "shake_timer", "type": "UnsignedByte" },
+      { "field": "boost_timer", "type": "UnsignedByte" },
+      { "field": "unused?", "type": "Dword" },
+      { "field": "unknown", "type": "Qword" }
+    ],
+    "GhostBreath": [
+      { "field": "timer", "type": "UnsignedWord" },
+      { "field": "big_cloud", "type": "Bool" },
+      {
+        "field": "expand?",
+        "type": "Bool",
+        "comment": "when set true on start makes it go further"
+      }
+    ],
+    "PlayerBag": [
+      { "field": "bombs", "type": "UnsignedByte" },
+      { "field": "ropes", "type": "UnsignedByte" }
+    ],
+    "LaserBeam": [
+      { "field": "sparks", "type": "ParticleEmitterInfoPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "TreasureHook": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
+    "AxolotlShot": [
+      { "field": "traped_uid", "type": "EntityUID" },
+      { "field": "size", "type": "Float" },
+      {
+        "field": "swing",
+        "type": "Float",
+        "comment": "always swings to the right first"
+      },
+      {
+        "field": "swing_periodicity",
+        "type": "Float",
+        "comment": "how often switch from right to left swing"
+      },
+      { "field": "distance_after_capture", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown30", "type": "UnsignedWord" }
+    ],
+    "SkullDropTrap": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "left_skull", "type": "EntityUID" },
+      { "field": "middle_skull", "type": "EntityUID" },
+      { "field": "right_skull", "type": "EntityUID" },
+      { "field": "left_skull_drop_time", "type": "UnsignedByte" },
+      { "field": "middle_skull_drop_time", "type": "UnsignedByte" },
+      { "field": "right_skull_drop_time", "type": "UnsignedByte" },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "counts from 60 3 times, the last time dropping the skulls, then random longer timer for reset"
+      }
+    ],
+    "FrozenLiquid": [
+      { "field": "unknown1", "type": "Dword" }, //have problem cheeking those, looks like unused memory, but then, it's always zeros on spawn
+      { "field": "unknown2", "type": "Dword" }
+    ],
+    "Switch": [
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "has to be 0 before next use"
+      }
+    ],
+    "FlyHead": [{ "field": "vored_entity", "type": "EntityUID" }],
+    "SnapTrap": [
+      { "field": "bait", "type": "EntityUID" },
+      { "field": "reload_timer", "type": "UnsignedByte" }
     ]
   }
 }
