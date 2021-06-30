@@ -520,7 +520,7 @@
     "CHAR_.*": "Player",
     "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
-    //"ACTIVEFLOOR_.*": "Movable",
+    "ACTIVEFLOOR_.*": "Movable",
     "FX_.*": "Movable",
     "LIQUID_.*": "Liquid"
   },
