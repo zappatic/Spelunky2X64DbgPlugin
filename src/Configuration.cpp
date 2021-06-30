@@ -80,7 +80,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     for (const auto& [key, jsonValue] : defaultEntityTypes.items())
     {
         auto value = jsonValue.get<std::string>();
-        mDefaultEntityClassTypes[key] = value;
+        mDefaultEntityClassTypes.emplace_back(std::make_pair(key, value));
     }
 
     std::unordered_set<std::string> pointerTypes;
@@ -233,7 +233,7 @@ const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::ent
     return mEntityClassHierarchy;
 }
 
-const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::defaultEntityClassTypes() const noexcept
+const std::vector<std::pair<std::string, std::string>>& S2Plugin::Configuration::defaultEntityClassTypes() const noexcept
 {
     return mDefaultEntityClassTypes;
 }

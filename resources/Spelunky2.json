@@ -5782,7 +5782,24 @@
       { "field": "select_player1_slot", "type": "SelectPlayerSlot" },
       { "field": "select_player2_slot", "type": "SelectPlayerSlot" },
       { "field": "select_player3_slot", "type": "SelectPlayerSlot" },
-      { "field": "select_player4_slot", "type": "SelectPlayerSlot" }
+      { "field": "select_player4_slot", "type": "SelectPlayerSlot" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedByte" },
+      {
+        "field": "active_player_count?",
+        "type": "UnsignedByte",
+        "comment": "for online multiplayer, it's 4 though"
+      },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedByte" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "unknown13", "type": "UnsignedDword" }
     ],
     "SelectPlayerSlot": [
       { "field": "activated", "type": "Bool" },
