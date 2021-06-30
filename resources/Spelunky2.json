@@ -130,7 +130,7 @@
     "Boulder": "Movable",
     "Drill": "Movable",
     "UdjatSocket": "Movable",
-    "PushBlock": "Movable",
+    "PushBlock": "UnknownPointerGroup",
     "TeleportingFloor": "FloorDeco",
     "Woodenlog": "Movable",
     "BoneBlock": "Movable",
@@ -140,7 +140,7 @@
     "FallingPlatform": "Movable",
     "TrapPart": "Movable",
     "UnchainedSpikeBall": "Movable",
-    "Thinice": "Movable",
+    "Thinice": "UnknownPointerGroup",
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
     "GiantClamTop": "Movable",
@@ -180,13 +180,13 @@
     "Idol": "Movable",
     "Spear": "Movable",
     "JungleSpearCosmetic": "Movable",
-    "WebShot": "Bullet",
+    "WebShot": "UnknownPointerGroup",
     "LightEmitter": "Movable",
     "WebAnchor": "Movable",
     "WebStrand": "Movable",
     "Arrow": "Movable",
     "LightArrow": "Arrow",
-    "LightShot": "Bullet",
+    "LightShot": "UnknownPointerGroup",
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
@@ -205,23 +205,32 @@
     "Telescope": "Movable",
     "Torch": "Movable",
     "WallTorch": "Torch",
-    "Bullet": "Movable",
+    "UnknownPointerGroup": "Movable",
     "Chain": "Movable",
     "Fly": "Movable",
     "OlmecCannon": "Movable",
     "Landmine": "LightEmitter",
     "Honey": "Movable",
     "PlayerGhost": "LightEmitter",
-    "GhostBreath": "Bullet",
+    "GhostBreath": "UnknownPointerGroup",
     "PlayerBag": "Movable",
     "LaserBeam": "Movable",
     "TreasureHook": "Movable",
-    "AxolotlShot": "Bullet",
+    "AxolotlShot": "UnknownPointerGroup",
     "SkullDropTrap": "Movable",
     "FrozenLiquid": "Movable",
     "Switch": "Movable",
     "FlyHead": "Movable",
-    "SnapTrap": "Movable"
+    "SnapTrap": "Movable",
+    "Empress": "Movable",
+    "ItemTentacle": "Chain",
+    "MiniShip": "Movable",
+    "MiniAsteroid": "Movable",
+    "CursedPot": "Movable",
+    "Orb": "Movable",
+    "EggSac": "Movable",
+    "Goldbar": "Movable",
+    "Coin": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -411,7 +420,7 @@
     "ITEM_REDLANTERNFLAME": "LightEmitter",
     "ITEM_PRESENT": "Container",
     "ITEM_GHIST_PRESENT": "Container",
-    "ITEM_BULLET": "Bullet",
+    "ITEM_BULLET": "UnknownPointerGroup",
     "ITEM_FREEZERAYSHOT": "TimedShot",
     "ITEM_CLONEGUNSHOT": "CloneGunShot",
     "ITEM_PUNISHBALL": "PunishBall",
@@ -445,9 +454,19 @@
     "ITEM_GIANTFLY_HEAD": "FlyHead",
     "ITEM_PALACE_CANDLE_FLAME": "LightEmitter",
     "ITEM_SNAP_TRAP": "SnapTrap",
-
+    "ITEM_EMPRESS_GRAVE": "Empress",
+    "ITEM_TENTACLE": "ItemTentacle",
+    "ITEM_TENTACLE_.*": "Chain",
+    "ITEM_MINIGAME_SHIP": "MiniShip",
+    "ITEM_MINIGAME_.*ASTEROID.*": "MiniAsteroid",
     "ITEM_POT": "Pot",
+    "ITEM_CURSEDPOT": "CursedPot",
     "ITEM_COOKFIRE": "CookFire",
+    "ITEM_LAVAPOT": "LightEmitter",
+    "ITEM_FLOATING_ORB": "Orb",
+    "ITEM_EGGSAC": "EggSac",
+    "ITEM_GOLDBAR.*": "Goldbar",
+    "ITEM_GOLDCOIN": "Coin",
 
     "ITEM_PICKUP_PLAYERBAG": "PlayerBag",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
@@ -501,7 +520,7 @@
     "CHAR_.*": "Player",
     "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
-    "ACTIVEFLOOR_.*": "Movable",
+    //"ACTIVEFLOOR_.*": "Movable",
     "FX_.*": "Movable",
     "LIQUID_.*": "Liquid"
   },
@@ -613,8 +632,7 @@
     "DialogueInteractionGroup",
     "TruncatedEntityDBIDArray",
     "TruncatedUnsignedDwordArray",
-    "AquiredPowerups",
-    "CoopConflictResolver"
+    "AquiredPowerups"
   ],
   "refs": {
     "screen_states": {
@@ -6629,7 +6647,9 @@
     ],
     "StickyTrap": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
+      { "field": "unknown_uid1", "type": "EntityUIDPointer" }, //same as UnknownPointerGroup
+      { "field": "unknown_uid2", "type": "EntityUIDPointer" },
+      { "field": "unknown_uid3", "type": "EntityUIDPointer" },
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "ball", "type": "EntityUID" },
       {
@@ -6729,7 +6749,6 @@
     ],
     "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }],
     "PushBlock": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "dust_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "dest_pos_x", "type": "Float" }
@@ -6798,7 +6817,6 @@
       }
     ],
     "Thinice": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
       {
         "field": "strength",
         "type": "UnsignedWord",
@@ -6824,9 +6842,8 @@
     "CookFire": [
       { "field": "unknown1", "type": "Dword" },
       { "field": "lit", "type": "Bool" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "particles_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
@@ -6942,7 +6959,9 @@
     ],
     "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
     "ConveyorBelt": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
+      { "field": "unknown_uid1", "type": "EntityUIDPointer" }, //same as UnknownPointerGroup
+      { "field": "unknown_uid2", "type": "EntityUIDPointer" },
+      { "field": "unknown_uid3", "type": "EntityUIDPointer" },
       { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" }
     ],
     "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
@@ -6982,7 +7001,9 @@
       { "field": "eggplantchild_detect", "type": "Bool" }
     ],
     "Tentacle": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" },
+      { "field": "unknown_uid1", "type": "EntityUIDPointer" }, //same as UnknownPointerGroup
+      { "field": "unknown_uid2", "type": "EntityUIDPointer" },
+      { "field": "unknown_uid3", "type": "EntityUIDPointer" },
       { "field": "attached_piece", "type": "EntityUID" },
       { "field": "item_tentacle", "type": "EntityUID" }
     ],
@@ -7105,10 +7126,10 @@
         "comment": "if false, it's attached to the gun"
       }
     ],
-    "CoopConflictResolver": [
-      { "field": "coop_pointer1", "type": "EntityUIDPointer" },
-      { "field": "coop_pointer2", "type": "EntityUIDPointer" },
-      { "field": "coop_pointer3", "type": "EntityUIDPointer" }
+    "UnknownPointerGroup": [
+      { "field": "unknown_uid1", "type": "EntityUIDPointer" },
+      { "field": "unknown_uid2", "type": "EntityUIDPointer" },
+      { "field": "unknown_uid3", "type": "EntityUIDPointer" }
     ],
     "WebAnchor": [{ "field": "spider_uid", "type": "EntityUID" }],
     "WebStrand": [{ "field": "start_pos_y", "type": "Float" }],
@@ -7257,9 +7278,6 @@
         "comment": "if false, it will drop gold when lit up"
       }
     ],
-    "Bullet": [
-      { "field": "conflict_resolver", "type": "CoopConflictResolver" }
-    ],
     "Chain": [
       { "field": "attached_to", "type": "EntityUID" },
       { "field": "timer", "type": "Dword" }
@@ -7353,6 +7371,40 @@
     "SnapTrap": [
       { "field": "bait", "type": "EntityUID" },
       { "field": "reload_timer", "type": "UnsignedByte" }
-    ]
+    ],
+    "Empress": [
+      { "field": "fx_button", "type": "EntityPointer" },
+      { "field": "ghost", "type": "EntityPointer" }
+    ],
+    "ItemTentacle": [{ "field": "floor_part", "type": "EntityPointer" }],
+    "MiniShip": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "velocity_x", "type": "Float" },
+      { "field": "velocity_y", "type": "Float" },
+      { "field": "swing", "type": "Float" }, //angle change?
+      {
+        "field": "up_down_normal",
+        "type": "Float",
+        "comment": "0.0 means down, 1.0 means up, 0.5 idle"
+      }
+    ],
+    "MiniAsteroid": [{ "field": "spin_speed", "type": "Float" }],
+    "CursedPot": [
+      { "field": "smoke", "type": "ParticleEmitterInfoPointer" },
+      { "field": "smoke2", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "Orb": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "timer", "type": "UnsignedByte" }
+    ],
+    "EggSac": [{ "field": "timer", "type": "UnsignedByte" }],
+    "Goldbar": [
+      {
+        "field": "unknown_schnie",
+        "type": "UnsignedByte",
+        "comment": "get's updated every time animation_frame is changes by the game, setting it to 64 or less disables the effect"
+      }
+    ],
+    "Coin": [{ "field": "nominal_price?", "type": "UnsignedDword" }]
   }
 }
