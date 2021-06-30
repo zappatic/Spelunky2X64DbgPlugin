@@ -13,6 +13,7 @@
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
     "Cape": "Movable",
+    "YellowCape": "Cape",
     "VladsCape": "Cape",
     "KapalaPowerup": "Movable",
     "Jiangshi": "Monster",
@@ -230,7 +231,17 @@
     "Orb": "Movable",
     "EggSac": "Movable",
     "Goldbar": "Movable",
-    "Coin": "Movable"
+    "Coin": "Movable",
+    "RollingItem": "Movable",
+    "ParachutePowerup": "Movable",
+    "TrueCrownPowerup": "Movable",
+    "AnkhPowerup": "Movable",
+    "Teleporter": "Movable",
+    "Boomerang": "Movable",
+    "Excalibur": "Movable",
+    "CloneGun": "Gun",
+    "WebGun": "Gun",
+    "Shield": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -467,20 +478,31 @@
     "ITEM_EGGSAC": "EggSac",
     "ITEM_GOLDBAR.*": "Goldbar",
     "ITEM_GOLDCOIN": "Coin",
-
     "ITEM_PICKUP_PLAYERBAG": "PlayerBag",
+    "ITEM_PICKUP_.*": "RollingItem",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
-    "ITEM_CAPE": "Cape",
+    "ITEM_POWERUP_PARACHUTE": "ParachutePowerup",
+    "ITEM_POWERUP_TRUECROWN": "TrueCrownPowerup",
+    "ITEM_POWERUP_ANKH": "AnkhPowerup",
+    "ITEM_CAPE": "YellowCape",
     "ITEM_VLADS_CAPE": "VladsCape",
-    "ITEM_JETPACK": "Jetpack",
+    "ITEM_JETPACK.*": "Jetpack",
     "ITEM_TELEPORTER_BACKPACK": "Backpack",
     "ITEM_HOVERPACK": "Hoverpack",
     "ITEM_POWERPACK": "Backpack",
-    "ITEM_WEBGUN": "Gun",
+    "ITEM_WEBGUN": "WebGun",
     "ITEM_SHOTGUN": "Gun",
+    "ITEM_FREEZERAY": "Gun",
+    "ITEM_CAMERA": "Gun",
+    "ITEM_TELEPORTER": "Teleporter",
     "ITEM_MATTOCK": "Mattock",
+    "ITEM_BOOMERANG": "Boomerang",
+    "ITEM_EXCALIBUR": "Excalibur",
     "ITEM_PLASMACANNON": "Gun",
-    "ITEM_CLONEGUN": "Gun",
+    "ITEM_SCEPTER": "Gun",
+    "ITEM_CLONEGUN": "CloneGun",
+    "ITEM_WOODEN_SHIELD": "Shield",
+    "ITEM_METAL_SHIELD": "Shield",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -520,7 +542,7 @@
     "CHAR_.*": "Player",
     "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
-    "ACTIVEFLOOR_.*": "Movable",
+    //"ACTIVEFLOOR_.*": "Movable",
     "FX_.*": "Movable",
     "LIQUID_.*": "Liquid"
   },
@@ -4583,7 +4605,7 @@
       { "field": "i120c", "type": "UnsignedByte" },
       { "field": "i120d", "type": "UnsignedByte" },
       { "field": "b124", "type": "UnsignedByte" },
-      { "field": "airtime", "type": "UnsignedByte" },
+      { "field": "falling_timer", "type": "UnsignedByte" },
       { "field": "unknown_timer", "type": "UnsignedByte" },
       { "field": "b127", "type": "UnsignedByte" }
     ],
@@ -5007,12 +5029,16 @@
     ],
     "ArrowTrap": [{ "field": "arrow_shot", "type": "Bool" }],
     "Container": [{ "field": "inside", "type": "EntityDBID" }],
-    "Gun": [
-      { "field": "cooldown", "type": "UnsignedByte" },
+    "Gun": [{ "field": "cooldown", "type": "UnsignedByte" }],
+    "WebGun": [
       { "field": "shots", "type": "UnsignedByte" },
       { "field": "shots2", "type": "UnsignedByte" },
       { "field": "b12b", "type": "UnsignedByte" },
       { "field": "in_chamber", "type": "EntityUID" }
+    ],
+    "CloneGun": [
+      { "field": "unknown", "type": "UnsignedByte" },
+      { "field": "shots", "type": "UnsignedByte" }
     ],
     "CrushTrap": [
       { "field": "dirx", "type": "Float" },
@@ -5040,7 +5066,7 @@
         "comment": "goes true/false when body is landing on it, when it stops moving it increments timer on true"
       }
     ],
-    "Mattock": [{ "field": "remaining", "type": "Dword" }],
+    "Mattock": [{ "field": "remaining", "type": "UnsignedByte" }],
     "Backpack": [
       { "field": "explosion_trigger", "type": "Bool" },
       {
@@ -5048,8 +5074,8 @@
         "type": "UnsignedByte",
         "comment": "counts from 0 to 30"
       },
-      { "field": "unknown1", "type": "UnsignedWord" },
-      { "field": "unknown2", "type": "UnsignedDword" }
+      { "field": "unused1", "type": "UnsignedWord" },
+      { "field": "unused2", "type": "UnsignedDword" }
     ],
     "Jetpack": [
       {
@@ -5057,12 +5083,12 @@
         "type": "Bool",
         "comment": "Can be used as is_on"
       },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
       {
-        "field": "fly_time?",
+        "field": "fly_counter",
         "type": "UnsignedDword",
-        "comment": "it's per level, not even per jetpack lol, it also adds at when it explodes"
+        "comment": "it's per level, not per jetpack, it also adds at when it explodes"
       },
       { "field": "fuel", "type": "UnsignedWord" }
     ],
@@ -5095,11 +5121,15 @@
     "Cape": [
       { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "floating_count", "type": "UnsignedDword" }
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
+      {
+        "field": "floating_count",
+        "type": "UnsignedDword",
+        "comment": "it's per level, not per cape"
+      }
     ],
+    "YellowCape": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
     "VladsCape": [{ "field": "can_double_jump", "type": "Bool" }],
     "KapalaPowerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
     "Ghost": [
@@ -7405,6 +7435,75 @@
         "comment": "get's updated every time animation_frame is changes by the game, setting it to 64 or less disables the effect"
       }
     ],
-    "Coin": [{ "field": "nominal_price?", "type": "UnsignedDword" }]
+    "Coin": [{ "field": "nominal_price?", "type": "UnsignedDword" }],
+    "RollingItem": [
+      {
+        "field": "roll_speed",
+        "type": "Float",
+        "comment": "only positive numbers"
+      }
+    ],
+    "ParachutePowerup": [
+      {
+        "field": "falltime_deploy",
+        "type": "UnsignedByte",
+        "comment": "this get's compared with users falling_timer"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      {
+        "field": "deploy",
+        "type": "Bool",
+        "comment": "if you set only this one it will crash the game after a while, also won't add new parachute to inventory"
+      },
+      { "field": "deploy2?", "type": "Bool" },
+      {
+        "field": "after_deploy",
+        "type": "Bool",
+        "comment": "if set to true before deploying, parachute will drop imminently after deploy"
+      }
+    ],
+    "TrueCrownPowerup": [{ "field": "timer", "type": "UnsignedWord" }],
+    "AnkhPowerup": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "player", "type": "EntityPointer" },
+      { "field": "fx_glow", "type": "EntityPointer" },
+      { "field": "unknown1", "type": "Float" },
+      { "field": "timer1", "type": "UnsignedWord" },
+      { "field": "timer2", "type": "UnsignedWord" },
+      { "field": "timer3", "type": "UnsignedWord" },
+      { "field": "music_on_off", "type": "Bool" }
+    ],
+    "Teleporter": [
+      {
+        "field": "teleport_numer",
+        "type": "UnsignedWord",
+        "comment": "max 3, need to stand on the ground to reset"
+      }
+    ],
+    "Boomerang": [
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "trail", "type": "ParticleEmitterInfoPointer" },
+      { "field": "distance", "type": "Float" },
+      { "field": "rotation", "type": "Float" },
+      { "field": "wall_collision?", "type": "Float" },
+      { "field": "state?", "type": "UnsignedByte" },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" },
+      {
+        "field": "user",
+        "type": "EntityUID",
+        "comment": "entity to return to"
+      },
+      {
+        "field": "unknown1",
+        "type": "UnsignedWord",
+        "comment": "something when the boomerang can't get to you"
+      },
+      { "field": "unknown2", "type": "UnsignedByte" }
+    ],
+    "Excalibur": [{ "field": "in_stone", "type": "Bool" }],
+    "Shield": [{ "field": "shake", "type": "Float" }]
   }
 }
