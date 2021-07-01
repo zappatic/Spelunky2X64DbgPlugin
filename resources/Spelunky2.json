@@ -5032,8 +5032,7 @@
     "Gun": [{ "field": "cooldown", "type": "UnsignedByte" }],
     "WebGun": [
       { "field": "shots", "type": "UnsignedByte" },
-      { "field": "shots2", "type": "UnsignedByte" },
-      { "field": "b12b", "type": "UnsignedByte" },
+      { "field": "unused", "type": "UnsignedWord" },
       { "field": "in_chamber", "type": "EntityUID" }
     ],
     "CloneGun": [
