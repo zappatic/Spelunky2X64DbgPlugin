@@ -61,8 +61,9 @@ namespace S2Plugin
 
         void initializeUI();
         void updateFieldValues();
+        void populateComparisonCombobox(const std::string& prefix, const std::vector<S2Plugin::MemoryField>& fields);
         void populateComparisonTableWidget();
         void populateComparisonTreeWidget();
-        std::pair<QString, QVariant> valueForField(const MemoryField& field, size_t entityDBIndex);
+        std::pair<QString, QVariant> valueForField(const std::string& prefix, const MemoryField& field, size_t entityDBIndex);
     };
 } // namespace S2Plugin

@@ -10,6 +10,13 @@
 #include <QPushButton>
 #include <QTreeWidgetItem>
 
+struct ComparisonField
+{
+    std::string prefix;
+    S2Plugin::MemoryField field;
+};
+Q_DECLARE_METATYPE(ComparisonField)
+
 S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     initializeUI();
@@ -83,38 +90,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
-        {
-            switch (field.type)
-            {
-                case MemoryFieldType::Skip:
-                case MemoryFieldType::PointerType:
-                case MemoryFieldType::InlineStructType: // todo, maybe
-                    continue;
-                case MemoryFieldType::Flags32:
-                case MemoryFieldType::Flags16:
-                case MemoryFieldType::Flags8:
-                {
-                    mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                    auto flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
-                    for (uint8_t x = 1; x <= flagCount; ++x)
-                    {
-                        MemoryField flagField;
-                        flagField.name = field.name; // + ".flag_" + std::to_string(x);
-                        flagField.type = MemoryFieldType::Flag;
-                        flagField.extraInfo = x - 1;
-                        flagField.comment = std::to_string(flagCount); // abuse the comment field to transmit the size to fetch
-                        mCompareFieldComboBox->addItem(QString::fromStdString(field.name + ".flag_" + std::to_string(x)), QVariant::fromValue(flagField));
-                    }
-                    break;
-                }
-                default:
-                {
-                    mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                    break;
-                }
-            }
-        }
+        populateComparisonCombobox("", mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB));
         QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewEntityDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
 
@@ -259,11 +235,61 @@ void S2Plugin::ViewEntityDB::comparisonFieldChosen(const QString& fieldName)
     populateComparisonTreeWidget();
 }
 
+void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefix, const std::vector<S2Plugin::MemoryField>& fields)
+{
+    for (const auto& field : fields)
+    {
+        switch (field.type)
+        {
+            case MemoryFieldType::Skip:
+            case MemoryFieldType::PointerType:
+                continue;
+            case MemoryFieldType::Flags32:
+            case MemoryFieldType::Flags16:
+            case MemoryFieldType::Flags8:
+            {
+                mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
+                auto flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
+                for (uint8_t x = 1; x <= flagCount; ++x)
+                {
+                    MemoryField flagField;
+                    flagField.name = field.name; // + ".flag_" + std::to_string(x);
+                    flagField.type = MemoryFieldType::Flag;
+                    flagField.extraInfo = x - 1;
+                    flagField.comment = std::to_string(flagCount); // abuse the comment field to transmit the size to fetch
+
+                    ComparisonField tmp;
+                    tmp.prefix = prefix;
+                    tmp.field = flagField;
+                    mCompareFieldComboBox->addItem(QString::fromStdString(prefix + field.name + ".flag_" + std::to_string(x)), QVariant::fromValue(tmp));
+                }
+                break;
+            }
+            case MemoryFieldType::InlineStructType:
+            {
+                populateComparisonCombobox(field.name + ".", mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName));
+                break;
+            }
+            default:
+            {
+                ComparisonField tmp;
+                tmp.prefix = prefix;
+                tmp.field = field;
+                mCompareFieldComboBox->addItem(QString::fromStdString(prefix + field.name), QVariant::fromValue(tmp));
+                break;
+            }
+        }
+    }
+}
+
 void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
 {
     mCompareTableWidget->setSortingEnabled(false);
 
-    auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
+    auto tmp = mCompareFieldComboBox->currentData().value<ComparisonField>();
+    auto field = tmp.field;
+    auto prefix = tmp.prefix;
+
     auto entityDB = mToolbar->entityDB();
     auto entityList = entityDB->entityList();
 
@@ -280,7 +306,7 @@ void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
         mCompareTableWidget->setItem(row, 0, item0);
         mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(QString::fromStdString(entityList->nameForID(x)))));
 
-        auto [caption, value] = valueForField(field, x);
+        auto [caption, value] = valueForField(prefix, field, x);
         auto item = new TableWidgetItemNumeric(caption);
         item->setData(Qt::UserRole, value);
         mCompareTableWidget->setItem(row, 2, item);
@@ -295,7 +321,10 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
 {
     mCompareTreeWidget->setSortingEnabled(false);
 
-    auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
+    auto tmp = mCompareFieldComboBox->currentData().value<ComparisonField>();
+    auto field = tmp.field;
+    auto prefix = tmp.prefix;
+
     auto entityDB = mToolbar->entityDB();
     auto entityList = entityDB->entityList();
 
@@ -308,7 +337,7 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
             continue;
         }
 
-        auto [caption, value] = valueForField(field, x);
+        auto [caption, value] = valueForField(prefix, field, x);
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;
 
@@ -341,9 +370,10 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
     mCompareTreeWidget->sortItems(0, Qt::AscendingOrder);
 }
 
-std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const MemoryField& field, size_t entityDBIndex)
+std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const std::string& prefix, const MemoryField& field, size_t entityDBIndex)
 {
-    auto offset = mToolbar->entityDB()->offsetsForIndex(entityDBIndex).at("EntityDB." + field.name);
+    dprintf("req: %s\n", ("EntityDB." + prefix + field.name).c_str());
+    auto offset = mToolbar->entityDB()->offsetsForIndex(entityDBIndex).at("EntityDB." + prefix + field.name);
     switch (field.type)
     {
         case MemoryFieldType::CodePointer:
