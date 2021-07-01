@@ -6600,17 +6600,25 @@
     "Rockdog": [{ "field": "attack_cooldown", "type": "UnsignedByte" }],
     "Axolotl": [
       { "field": "attack_cooldown", "type": "UnsignedByte" },
-      { "field": "unknown1", "type": "Bool" }
+      { "field": "can_teleport", "type": "Bool" },
+      { "field": "unknown", "type": "UnsignedByte" }
     ],
     "Mech": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "explosion_sound_pos", "type": "SoundPositionPointer" },
-      { "field": "unknown2", "type": "UnsignedQword" },
-      { "field": "attack_cooldown", "type": "UnsignedByte" }
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "gun_cooldown", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "walking", "type": "Bool" },
+      { "field": "breaking_wall", "type": "Bool" }
     ],
     "Qilin": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "attack_cooldown", "type": "UnsignedByte" }
+      {
+        "field": "attack_cooldown",
+        "type": "UnsignedByte",
+        "comment": "not actually used? you can fire again before it's 0"
+      }
     ],
     "Ushabti": [
       { "field": "wiggle_timer", "type": "UnsignedWord" },
