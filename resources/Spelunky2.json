@@ -169,7 +169,6 @@
     "LampFlame": "Flame",
     "PoleDeco": "FloorDeco",
     "PunishBall": "Movable",
-    "PunishChain": "StretchChain",
     "ChestInside": "Movable",
     "LavaGlow": "Movable",
     "Liquid": "Entity",
@@ -239,7 +238,6 @@
     "Teleporter": "Movable",
     "Boomerang": "Movable",
     "Excalibur": "Movable",
-    "CloneGun": "Gun",
     "WebGun": "Gun",
     "Shield": "Movable"
   },
@@ -435,7 +433,7 @@
     "ITEM_FREEZERAYSHOT": "TimedShot",
     "ITEM_CLONEGUNSHOT": "CloneGunShot",
     "ITEM_PUNISHBALL": "PunishBall",
-    "ITEM_PUNISHCHAIN": "PunishChain",
+    "ITEM_PUNISHCHAIN": "StretchChain",
     "ITEM_CHAIN": "Chain",
     "ITEM_CHAIN_LASTPIECE": "Chain",
     "ITEM_SLIDINGWALL_CHAIN": "Chain",
@@ -500,7 +498,7 @@
     "ITEM_EXCALIBUR": "Excalibur",
     "ITEM_PLASMACANNON": "Gun",
     "ITEM_SCEPTER": "Gun",
-    "ITEM_CLONEGUN": "CloneGun",
+    "ITEM_CLONEGUN": "Gun",
     "ITEM_WOODEN_SHIELD": "Shield",
     "ITEM_METAL_SHIELD": "Shield",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
@@ -5029,16 +5027,21 @@
     ],
     "ArrowTrap": [{ "field": "arrow_shot", "type": "Bool" }],
     "Container": [{ "field": "inside", "type": "EntityDBID" }],
-    "Gun": [{ "field": "cooldown", "type": "UnsignedByte" }],
-    "WebGun": [
-      { "field": "shots", "type": "UnsignedByte" },
-      { "field": "unused", "type": "UnsignedWord" },
-      { "field": "in_chamber", "type": "EntityUID" }
+    "Gun": [
+      { "field": "cooldown", "type": "UnsignedByte" },
+      {
+        "field": "shots",
+        "type": "UnsignedByte",
+        "comment": "used only for webgun"
+      },
+      {
+        "field": "shots2",
+        "type": "UnsignedByte",
+        "comment": "used only for clonegun"
+      },
+      { "field": "unused", "type": "UnsignedByte" }
     ],
-    "CloneGun": [
-      { "field": "unknown", "type": "UnsignedByte" },
-      { "field": "shots", "type": "UnsignedByte" }
-    ],
+    "WebGun": [{ "field": "in_chamber", "type": "EntityUID" }],
     "CrushTrap": [
       { "field": "dirx", "type": "Float" },
       { "field": "diry", "type": "Float" },
@@ -7068,11 +7071,6 @@
       { "field": "x_pos", "type": "Float" },
       { "field": "t_pos", "type": "Float" }
     ],
-    "PunishChain": [
-      { "field": "state?", "type": "UnsignedByte" },
-      { "field": "unknown_timer", "type": "UnsignedByte" },
-      { "field": "is_chain_overlapping_ball", "type": "Bool" }
-    ],
     "ChestInside": [
       { "field": "leprechaun", "type": "Bool" },
       {
@@ -7166,12 +7164,10 @@
       { "field": "flame_uid", "type": "EntityUID" },
       { "field": "is_on_fire", "type": "Bool" },
       { "field": "is_poisoned", "type": "Bool" },
-      { "field": "shoot_from_trap", "type": "Bool" }
+      { "field": "shoot_from_trap", "type": "Bool" },
+      { "field": "unused", "type": "Byte" }
     ],
-    "LightArrow": [
-      { "field": "unused", "type": "Byte" },
-      { "field": "emitted_light", "type": "IlluminationPointer" }
-    ],
+    "LightArrow": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "LightShot": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "SoundShot": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
     "ScepterShot": [
@@ -7251,15 +7247,30 @@
         "field": "number_in_chain",
         "type": "UnsignedByte",
         "comment": "0 closest to the end, so if the chain has 15 segments the last one will be 14"
+      },
+      {
+        "field": "state?",
+        "type": "UnsignedByte",
+        "comment": "only punish chain"
+      },
+      {
+        "field": "unknown_timer",
+        "type": "UnsignedByte",
+        "comment": "only punish chain"
+      },
+      {
+        "field": "is_chain_overlapping_ball",
+        "type": "Bool",
+        "comment": "only punish chain"
       }
     ],
     "Treasure": [
       { "field": "state?", "type": "UnsignedDword" },
-      { "field": "cashed", "type": "Bool", "comment": "spawns a dust effect" }
+      { "field": "cashed", "type": "Bool", "comment": "spawns a dust effect" },
+      { "field": "unknown1", "type": "Byte" },
+      { "field": "unknown2", "type": "Word" }
     ],
     "HundunChest": [
-      { "field": "unknown1", "type": "Byte" },
-      { "field": "unknown2", "type": "Word" },
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "timer", "type": "UnsignedByte" }
@@ -7296,11 +7307,11 @@
     ],
     "Torch": [
       { "field": "item_flame", "type": "EntityUID" },
-      { "field": "is_lit", "type": "Bool" }
+      { "field": "is_lit", "type": "Bool" },
+      { "field": "unknown1", "type": "Byte" },
+      { "field": "unknown2", "type": "Word" }
     ],
     "WallTorch": [
-      { "field": "unknown1", "type": "Byte" },
-      { "field": "unknown2", "type": "Word" },
       {
         "field": "no_reward?",
         "type": "Bool",
