@@ -751,7 +751,7 @@
           "6": "Take no damage",
           "7": "Throwable/Knockbackable",
           "8": "Is platform",
-          "9": "Climbable?",
+          "9": "Climbable (as rope/ladder)",
           "10": "No gravity",
           "11": "Interact with water?",
           "12": "Stunnable",
@@ -824,15 +824,15 @@
           "3": "",
           "4": "",
           "5": "Squirts blood on damage",
-          "6": "",
+          "6": "Climbable (as wall)",
           "7": "",
-          "8": "",
+          "8": "Fireproof",
           "9": "",
           "10": "Is on fire/lights on fire",
           "11": "",
-          "12": "",
+          "12": "Turns arrow tip to poison when hit",
           "13": "",
-          "14": "",
+          "14": "Cursed pot effect (curses you when destroyed closeby)",
           "15": "",
           "16": "",
           "17": "",
@@ -5213,7 +5213,7 @@
           "6": "Take no damage",
           "7": "Throwable/Knockbackable",
           "8": "Is platform",
-          "9": "Climbable?",
+          "9": "Climbable (as rope/ladder)",
           "10": "No gravity",
           "11": "Interact with water?",
           "12": "Stunnable",
@@ -6049,7 +6049,7 @@
       { "field": "burrowing_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "burrow_dir_x", "type": "Float" },
       { "field": "burrow_dir_y", "type": "Float" },
-      { "field": "burrowing_in", "type": "EntityUID" },
+      { "field": "burrowing_in_uid", "type": "EntityUID" },
       { "field": "counter_burrowing", "type": "UnsignedByte" },
       { "field": "counter_nonburrowing", "type": "UnsignedByte" },
       { "field": "countdown_for_appearing", "type": "UnsignedByte" },
@@ -6143,7 +6143,7 @@
       { "field": "padding1", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedDword" },
       {
-        "field": "active",
+        "field": "active_state",
         "type": "Byte",
         "comment": "-1 = sitting and yelling; 0 = either running, dead or picked up"
       }
@@ -6251,7 +6251,7 @@
       { "field": "padding", "type": "UnsignedByte" }
     ],
     "Imp": [
-      { "field": "carrying", "type": "EntityUID" },
+      { "field": "carrying_uid", "type": "EntityUID" },
       { "field": "patrol_y_level", "type": "Float" }
     ],
     "Lavamander": [
@@ -6588,7 +6588,7 @@
       { "field": "poison_attack_timer", "type": "UnsignedByte" },
       { "field": "padding4", "type": "UnsignedByte" },
       { "field": "padding5", "type": "UnsignedByte" },
-      { "field": "attacking_claw", "type": "EntityUID" },
+      { "field": "attacking_claw_uid", "type": "EntityUID" },
       { "field": "at_maximum_attack", "type": "Bool" },
       { "field": "unknown3", "type": "UnsignedByte" }
     ],
@@ -6609,7 +6609,7 @@
         "type": "UnsignedByte",
         "comment": "excalibur wipes out immediately, bombs take off 11 points; when 0 vulnerable to whip"
       },
-      { "field": "seen_by_kingu?", "type": "Bool" }
+      { "field": "player_seen_by_kingu?", "type": "Bool" }
     ],
     "Anubis": [
       { "field": "spawn_x", "type": "Float" },
@@ -6749,11 +6749,11 @@
     ],
     "OsirisHead": [
       {
-        "field": "right_hand",
+        "field": "right_hand_uid",
         "type": "EntityUID",
         "comment": "right from his perspective"
       },
-      { "field": "left_hand", "type": "EntityUID" },
+      { "field": "left_hand_uid", "type": "EntityUID" },
       { "field": "moving_left", "type": "Bool" },
       { "field": "targeting_timer?", "type": "UnsignedByte" },
       { "field": "invincibility_timer", "type": "UnsignedByte" }
