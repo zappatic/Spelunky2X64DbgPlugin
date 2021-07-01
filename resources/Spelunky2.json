@@ -5880,8 +5880,8 @@
       { "field": "fx_mouth_piece2", "type": "EntityUID" }
     ],
     "ApepPart": [
-      { "field": "y", "type": "Float" },
-      { "field": "x", "type": "Float" }
+      { "field": "y_pos", "type": "Float" },
+      { "field": "wiggle", "type": "Float" }
     ],
     "ApepBody": [{ "field": "sync?", "type": "UnsignedByte" }],
     "AnubisTwo": [
