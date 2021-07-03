@@ -746,7 +746,7 @@
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
       { "field": "draw_depth", "type": "UnsignedByte" },
-      { "field": "default_b3f", "type": "UnsignedByte" },
+      { "field": "default_b3f", "type": "Byte" },
       { "field": "field_26", "type": "Word" },
       { "field": "rect_collision", "type": "Rect" },
       {
@@ -1440,7 +1440,7 @@
       { "field": "time_speedrun", "type": "UnsignedDword" },
       { "field": "money_last_levels", "type": "UnsignedDword" },
       {
-        "field": "hud_flags",
+        "field": "level_flags",
         "type": "Flags32",
         "flags": {
           "1": "Upbeat dwelling intro music played",
@@ -4447,9 +4447,9 @@
       { "field": "animation_frame", "type": "UnsignedWord" },
       { "field": "draw_depth", "type": "UnsignedByte" },
       {
-        "field": "door_entered",
-        "type": "UnsignedByte",
-        "comment": "this gets value 'counter' from the door entered"
+        "field": "b3f",
+        "type": "Byte",
+        "comment": "depth related, changed when going thru doors etc."
       },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
@@ -5887,7 +5887,7 @@
     ],
     "ApepPart": [
       { "field": "y_pos", "type": "Float" },
-      { "field": "wiggle", "type": "Float" }
+      { "field": "sine_angle", "type": "Float" }
     ],
     "ApepBody": [{ "field": "sync?", "type": "UnsignedByte" }],
     "AnubisTwo": [
