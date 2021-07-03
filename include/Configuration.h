@@ -25,6 +25,7 @@ namespace S2Plugin
         const std::vector<MemoryField>& typeFieldsOfEntitySubclass(const std::string& type) const;
         const std::vector<MemoryField>& typeFieldsOfPointer(const std::string& type) const;
         const std::vector<MemoryField>& typeFieldsOfInlineStruct(const std::string& type) const;
+        std::vector<VirtualFunction> virtualFunctionsOfType(const std::string& field) const;
 
         bool isEntitySubclass(const std::string& type) const;
         bool isPointer(const std::string& type) const;
@@ -49,8 +50,9 @@ namespace S2Plugin
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsInlineStructs;
         std::unordered_map<std::string, std::unordered_map<uint8_t, std::string>> mFlagTitles;  // fieldname => (flagnr 1-based => title)
         std::unordered_map<std::string, std::unordered_map<int64_t, std::string>> mStateTitles; // fieldname => (state => title)
+        std::unordered_map<std::string, std::vector<VirtualFunction>> mVirtualFunctions;
 
         void processJSON(const ordered_json& j);
-        bool isKnownEntitySubclass(const std::string& typeName);
+        bool isKnownEntitySubclass(const std::string& typeName) const;
     };
 } // namespace S2Plugin

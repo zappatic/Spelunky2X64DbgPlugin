@@ -99,6 +99,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     mTypeFields.clear();
     mTypeFieldsPointers.clear();
     mTypeFieldsInlineStructs.clear();
+    mVirtualFunctions.clear();
 
     auto fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
@@ -113,6 +114,22 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
         std::vector<MemoryField> vec;
         for (const auto& field : jsonArray)
         {
+            if (field.contains("vftablefunctions"))
+            {
+                for (const auto& [funcIndex, func] : field["vftablefunctions"].items())
+                {
+                    VirtualFunction f;
+                    f.index = std::stoll(funcIndex);
+                    f.name = func.contains("name") ? func["name"].get<std::string>() : "unnamed function";
+                    f.params = func.contains("params") ? func["params"].get<std::string>() : "";
+                    f.returnValue = func.contains("return") ? func["return"].get<std::string>() : "";
+                    f.type = key;
+                    mVirtualFunctions[key].emplace_back(f);
+                }
+
+                continue;
+            }
+
             MemoryField memField;
             if (isPointer)
             {
@@ -147,6 +164,11 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
             {
                 memField.type = MemoryFieldType::PointerList;
                 memField.pointerListPointerType = field["pointer_type"].get<std::string>();
+            }
+            else if (fieldTypeStr == "VirtualFunctionTable")
+            {
+                memField.type = MemoryFieldType::VirtualFunctionTable;
+                memField.virtualFunctionTableType = key;
             }
             else
             {
@@ -204,6 +226,20 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                     stateTitles[std::stoll(state)] = stateTitle.get<std::string>();
                 }
                 mStateTitles[key + "." + memField.name] = stateTitles;
+            }
+
+            if (memField.type == MemoryFieldType::VirtualFunctionTable && field.contains("functions"))
+            {
+                for (const auto& [funcIndex, func] : field["functions"].items())
+                {
+                    VirtualFunction f;
+                    f.index = std::stoll(funcIndex);
+                    f.name = func.contains("name") ? func["name"].get<std::string>() : "unnamed function";
+                    f.params = func.contains("params") ? func["params"].get<std::string>() : "";
+                    f.returnValue = func.contains("return") ? func["return"].get<std::string>() : "";
+                    f.type = key;
+                    mVirtualFunctions[key].emplace_back(f);
+                }
             }
 
             vec.emplace_back(memField);
@@ -331,11 +367,40 @@ const std::unordered_map<int64_t, std::string>& S2Plugin::Configuration::stateTi
     return mStateTitles.at(fieldName);
 }
 
-bool S2Plugin::Configuration::isKnownEntitySubclass(const std::string& typeName)
+bool S2Plugin::Configuration::isKnownEntitySubclass(const std::string& typeName) const
 {
     if (typeName == "Entity")
     {
         return true;
     }
     return (mEntityClassHierarchy.count(typeName) > 0);
+}
+
+std::vector<S2Plugin::VirtualFunction> S2Plugin::Configuration::virtualFunctionsOfType(const std::string& type) const
+{
+    if (isKnownEntitySubclass(type))
+    {
+        std::vector<S2Plugin::VirtualFunction> functions;
+        std::string currentType = type;
+        while (true)
+        {
+            if (mVirtualFunctions.count(currentType) > 0)
+            {
+                for (const auto& f : mVirtualFunctions.at(currentType))
+                {
+                    functions.emplace_back(f);
+                }
+            }
+            if (currentType == "Entity")
+            {
+                break;
+            }
+            currentType = mEntityClassHierarchy.at(currentType);
+        }
+        return functions;
+    }
+    else
+    {
+        return mVirtualFunctions.at(type);
+    }
 }

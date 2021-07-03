@@ -62,6 +62,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::VirtualFunctionTable:
             offset += 8;
             break;
         case MemoryFieldType::UndeterminedThemeInfoPointer:

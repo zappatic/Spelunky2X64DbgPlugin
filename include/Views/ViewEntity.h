@@ -26,6 +26,7 @@ namespace S2Plugin
         Q_OBJECT
       public:
         ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent = nullptr);
+        Entity* entity() const;
 
       protected:
         void closeEvent(QCloseEvent* event) override;

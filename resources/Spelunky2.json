@@ -1191,7 +1191,13 @@
       { "field": "unknown20", "type": "UnsignedByte" }
     ],
     "MusicTrackPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~MusicTrackPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "music_track?", "type": "DataPointer" },
@@ -1279,7 +1285,13 @@
       { "field": "heap_offset", "type": "UnsignedQword" }
     ],
     "IntroLogoScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~IntroLogoScreenPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1290,14 +1302,30 @@
       { "field": "unknown5", "type": "UnsignedDword" }
     ],
     "IntroAnimationScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~IntroAnimationScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "unknown4", "type": "NodeSet" }
     ],
     "IntroTextScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~IntroTextScreenPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1306,7 +1334,17 @@
       { "field": "line3", "type": "StringsTableID" }
     ],
     "SpelunkyTitleScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~SpelunkyTitleScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1325,7 +1363,13 @@
       { "field": "unknown4", "type": "NodeSet" }
     ],
     "MainMenuScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~MainMenuScreenPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1417,7 +1461,13 @@
       { "field": "scroll_text", "type": "StringsTableID" }
     ],
     "OptionsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~OptionsScreenPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1510,17 +1560,43 @@
       { "field": "padding1", "type": "UnsignedByte" }
     ],
     "LeaderboardsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~LeaderboardsScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" }
       // INCOMPLETE
     ],
     "OnlineScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~OnlineScreenPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "render_timer", "type": "Float" }
       // INCOMPLETE
     ],
     "ShiftingWallsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ShiftingWallsScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1529,11 +1605,27 @@
       { "field": "ouroboros", "type": "NodeSet" }
     ],
     "PlayerProfileScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~PlayerProfileScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" }
     ],
     "EnterSeedScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~EnterSeedScreenPointer", "params": "", "return": "" }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1588,7 +1680,17 @@
       { "field": "start_sidepanel_slidein_timer", "type": "Float" }
     ],
     "CharacterSelectionScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~CharacterSelectionScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1860,7 +1962,17 @@
       { "field": "unknown22", "type": "UnsignedDword" }
     ],
     "ArenaRulesScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ArenaRulesScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -1965,7 +2077,17 @@
       { "field": "zoom_target", "type": "Float" }
     ],
     "ArenaItemsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ArenaItemsScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
@@ -3665,7 +3787,17 @@
       { "field": "unknown27", "type": "UnsignedQword" }
     ],
     "OuroborosPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~OuroborosPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       {
@@ -3676,7 +3808,17 @@
       { "field": "timer", "type": "UnsignedWord" }
     ],
     "BasecampSpeedrunPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~BasecampSpeedrunPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       {
@@ -3693,15 +3835,45 @@
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "LevelInfoPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~LevelInfoPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "TunPreChallengePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~TunPreChallengePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "MoonChallengePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~MoonChallengePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -3720,7 +3892,17 @@
       { "field": "mattock", "type": "EntityUID" }
     ],
     "StarChallengePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~StarChallengePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -3756,7 +3938,17 @@
       { "field": "torch5", "type": "EntityPointer" }
     ],
     "SunChallengePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~SunChallengePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -3774,7 +3966,17 @@
       { "field": "start_countdown", "type": "UnsignedByte" }
     ],
     "VolcanaRelatedPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~VolcanaRelatedPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "DataPointer" },
@@ -3786,7 +3988,17 @@
       { "field": "unknown9", "type": "DataPointer" }
     ],
     "DiceShopPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~DiceShopPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       {
@@ -3831,7 +4043,17 @@
       }
     ],
     "OlmecCutscenePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~OlmecCutscenePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
@@ -3852,7 +4074,17 @@
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "TiamatCutscenePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~TiamatCutscenePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -3866,7 +4098,17 @@
       { "field": "unknown7", "type": "UnsignedDword" }
     ],
     "ApepTriggerPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ApepTriggerPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "spawn_cooldown", "type": "UnsignedDword" },
@@ -3878,7 +4120,17 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "DuatBossesTriggerPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~DuatBossesTriggerPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       {
         "field": "unknown1",
         "type": "UnsignedDword",
@@ -3895,20 +4147,50 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "TiamatInfoPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~TiamatInfoPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedByte" }
     ],
     "TuskPleasurePalacePointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~TuskPleasurePalacePointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "locked_door", "type": "EntityUID" },
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "DiscoveryPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~DiscoveryPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -3917,7 +4199,17 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "BlackMarketDoorPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~BlackMarketDoorPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -3926,11 +4218,31 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "CosmicOceanPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~CosmicOceanPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "Arena1Pointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~Arena1Pointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "crate_spawn_timer", "type": "UnsignedDword" },
@@ -3939,11 +4251,31 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "Arena2Pointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~Arena2Pointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "Arena3Pointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~Arena3Pointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "QuestsInfoPointer": [
@@ -4041,7 +4373,17 @@
       { "field": "unknown16", "type": "UnsignedDword" }
     ],
     "MysteryPointer3": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~MysteryPointer3",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "id", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -4050,7 +4392,17 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "MysteryPointer2": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~MysteryPointer2",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       {
@@ -4160,7 +4512,17 @@
       { "field": "down", "type": "Byte" }
     ],
     "ArenaLineupScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ArenaLineupScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "players", "type": "NodeSet" },
@@ -4199,7 +4561,17 @@
       { "field": "unknown16", "type": "UnsignedDword" }
     ],
     "ArenaChooseTeamsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ArenaChooseTeamsScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "ana_carrying_torch", "type": "NodeSet" },
@@ -4239,7 +4611,17 @@
       { "field": "unknown7", "type": "UnsignedDword" }
     ],
     "ArenaScorePillarsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ArenaScorePillarsScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3a", "type": "UnsignedWord" },
@@ -4269,7 +4651,17 @@
       { "field": "unknown15", "type": "UnsignedDword" }
     ],
     "UnknownScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~UnknownScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3a", "type": "UnsignedWord" },
@@ -4283,7 +4675,17 @@
       { "field": "unknown10", "type": "NodeSet" }
     ],
     "ArenaGameplayScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ArenaGameplayScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
@@ -4345,7 +4747,17 @@
       { "field": "unknown53", "type": "NodeSet" }
     ],
     "TransitionScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~TransitionScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "Float" },
       {
@@ -4412,7 +4824,17 @@
       { "field": "unknown15", "type": "UnsignedWord" }
     ],
     "DearJournalScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~DearJournalScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -4421,7 +4843,17 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "CosmicOceanWinScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~CosmicOceanWinScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedDword" },
       {
@@ -4479,7 +4911,17 @@
       { "field": "unknown32", "type": "UnsignedDword" }
     ],
     "VictoryWalkScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~VictoryWalkScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedQword" },
@@ -4499,7 +4941,17 @@
       { "field": "unknown10", "type": "UnsignedDword" }
     ],
     "CreditsScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~CreditsScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       {
@@ -4520,7 +4972,17 @@
       { "field": "timer", "type": "Float" }
     ],
     "FinalScoreScreenPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~FinalScoreScreenPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
       {
@@ -5134,7 +5596,17 @@
       { "field": "unknown21", "type": "UnorderedMap" }
     ],
     "MysteryPointer1": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~MysteryPointer1",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
@@ -5197,7 +5669,39 @@
       { "field": "door2_y", "type": "Float" }
     ],
     "Entity": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~Entity", "params": "", "return": "" },
+          "1": { "name": "created", "params": "", "return": "void" },
+          "2": {
+            "name": "kill",
+            "params": "bool, Entity* frm",
+            "return": "void"
+          },
+          "3": { "name": "v2", "params": "Entity*", "return": "void" },
+          "6": {
+            "name": "hiredhand_description",
+            "params": "char*",
+            "return": "void"
+          },
+          "14": { "name": "set_invisible", "params": "bool", "return": "void" },
+          "15": { "name": "v14", "params": "bool", "return": "void" },
+          "16": {
+            "name": "v15",
+            "params": "uint8_t a, uint_8t b",
+            "return": "void"
+          },
+          "18": { "name": "friction", "params": "", "return": "float" },
+          "20": {
+            "name": "remove_item_ptr",
+            "params": "Entity*",
+            "return": "void"
+          },
+          "35": { "name": "apply_db", "params": "", "return": "void" }
+        }
+      },
       { "field": "type", "type": "EntityDBPointer" },
       { "field": "overlay", "type": "EntityPointer" },
       { "field": "items", "type": "Vector" },
@@ -5347,6 +5851,11 @@
       { "field": "i9c", "type": "UnsignedDword" }
     ],
     "Movable": [
+      {
+        "vftablefunctions": {
+          "39": { "name": "sprint_factor", "params": "", "return": "float" }
+        }
+      },
       { "field": "pa0", "type": "Map" },
       { "field": "pb0", "type": "Map" },
       { "field": "anim_func", "type": "DataPointer" },
@@ -6010,7 +6519,17 @@
       { "field": "on_vine", "type": "Bool" }
     ],
     "SoundPositionPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~SoundPositionPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       {
@@ -6796,7 +7315,17 @@
       }
     ],
     "PlayerTrackerPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~PlayerTrackerPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       {
         "field": "unknown1",
         "type": "DataPointer",
@@ -6846,7 +7375,17 @@
       { "field": "texture_offset_y", "type": "Float" }
     ],
     "RenderInfoPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~RenderInfoPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
@@ -7401,7 +7940,14 @@
       }
     ],
     "ThemeInfoPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~ThemeInfoPointer", "params": "", "return": "" },
+          "38": { "name": "backlayer_lut", "params": "", "return": "uint32_t" }
+        }
+      },
       {
         "field": "unknown1",
         "type": "Bool",

@@ -58,6 +58,7 @@ namespace S2Plugin
         ViewCharacterDB* showCharacterDB();
         void showSaveGame();
         void showLogger();
+        void showVirtualFunctions(size_t offset, const std::string& typeName);
         void clearLabels();
         void reloadConfig();
 

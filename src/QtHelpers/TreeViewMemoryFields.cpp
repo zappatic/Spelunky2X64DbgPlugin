@@ -3,6 +3,7 @@
 #include "QtHelpers/DialogEditSimpleValue.h"
 #include "QtHelpers/DialogEditState.h"
 #include "Views/ViewCharacterDB.h"
+#include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewTextureDB.h"
@@ -31,6 +32,11 @@ S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, Memor
     QObject::connect(this, &QTreeView::collapsed, this, &TreeViewMemoryFields::cellCollapsed);
 }
 
+void S2Plugin::TreeViewMemoryFields::setMemoryMappedData(MemoryMappedData* mmd)
+{
+    mMemoryMappedData = mmd;
+}
+
 QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
     auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem*
@@ -45,12 +51,14 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         itemFieldValue->setData("", Qt::DisplayRole);
         itemFieldValue->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
         itemFieldValue->setData(QVariant::fromValue(field.type), gsRoleType); // in case we click on, we can see the type
+        itemFieldValue->setData(QVariant::fromValue(field), gsRoleEntireMemoryField);
         itemFieldValue->setEditable(false);
 
         auto itemFieldValueHex = new QStandardItem();
         itemFieldValueHex->setData("", Qt::DisplayRole);
         itemFieldValueHex->setData(QString::fromStdString(fieldNameUID), gsRoleUID);
         itemFieldValueHex->setData(QVariant::fromValue(field.type), gsRoleType); // in case we click on, we can see the type
+        itemFieldValueHex->setData(QVariant::fromValue(field), gsRoleEntireMemoryField);
         itemFieldValueHex->setEditable(false);
 
         auto itemFieldComparisonValue = new QStandardItem();
@@ -148,6 +156,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::State8:
         case MemoryFieldType::State16:
         case MemoryFieldType::State32:
+        case MemoryFieldType::VirtualFunctionTable:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
@@ -1297,6 +1306,24 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
+        case MemoryFieldType::VirtualFunctionTable:
+        {
+            size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
+            itemValue->setData("<font color='blue'><u>Show functions</u></font>", Qt::DisplayRole);
+            itemField->setBackground(Qt::transparent);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            size_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadQword(comparisonMemoryOffset));
+            itemComparisonValue->setData("", Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(Qt::transparent);
+            itemComparisonValueHex->setBackground(Qt::transparent);
+            break;
+        }
         case MemoryFieldType::CharacterDBID:
         {
             uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
@@ -1701,6 +1728,27 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         if (view != nullptr)
                         {
                             view->showIndex(id);
+                        }
+                    }
+                    break;
+                }
+                case MemoryFieldType::VirtualFunctionTable:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    if (offset != 0)
+                    {
+                        auto vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
+                        if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
+                        {
+                            auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
+                            if (entity != nullptr)
+                            {
+                                mToolbar->showVirtualFunctions(offset, entity->entityType());
+                            }
+                        }
+                        else
+                        {
+                            mToolbar->showVirtualFunctions(offset, vftType);
                         }
                     }
                     break;

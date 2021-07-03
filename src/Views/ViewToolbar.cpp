@@ -11,6 +11,7 @@
 #include "Views/ViewState.h"
 #include "Views/ViewStringsTable.h"
 #include "Views/ViewTextureDB.h"
+#include "Views/ViewVirtualFunctions.h"
 #include "Views/ViewVirtualTable.h"
 #include "pluginmain.h"
 #include <QMdiSubWindow>
@@ -243,6 +244,13 @@ void S2Plugin::ViewToolbar::showSaveGame()
 void S2Plugin::ViewToolbar::showLogger()
 {
     auto w = new ViewLogger(this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
+}
+
+void S2Plugin::ViewToolbar::showVirtualFunctions(size_t offset, const std::string& typeName)
+{
+    auto w = new ViewVirtualFunctions(typeName, offset, this, this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }

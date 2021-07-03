@@ -20,6 +20,8 @@ namespace S2Plugin
         Q_OBJECT
       public:
         TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent = nullptr);
+        void setMemoryMappedData(MemoryMappedData* mmd);
+
         QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
         void clear();
         void updateTableHeader(bool restoreColumnWidths = true);

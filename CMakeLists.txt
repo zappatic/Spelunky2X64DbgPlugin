@@ -82,6 +82,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewVirtualTable.h
 	include/Views/ViewStringsTable.h
 	include/Views/ViewLogger.h
+	include/Views/ViewVirtualFunctions.h
 	include/QtHelpers/StyledItemDelegateHTML.h
 	include/QtHelpers/StyledItemDelegateColorPicker.h
 	include/QtHelpers/TreeViewMemoryFields.h
@@ -93,6 +94,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/TableWidgetItemNumeric.h
 	include/QtHelpers/TreeWidgetItemNumeric.h
 	include/QtHelpers/ItemModelVirtualTable.h
+	include/QtHelpers/ItemModelVirtualFunctions.h
 	include/QtHelpers/ItemModelStringsTable.h
 	include/QtHelpers/ItemModelStates.h
 	include/QtHelpers/CPPSyntaxHighlighter.h
@@ -134,6 +136,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewVirtualTable.cpp
 	src/Views/ViewStringsTable.cpp
 	src/Views/ViewLogger.cpp
+	src/Views/ViewVirtualFunctions.cpp
 	src/QtHelpers/StyledItemDelegateHTML.cpp
 	src/QtHelpers/StyledItemDelegateColorPicker.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp
@@ -145,6 +148,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/TableWidgetItemNumeric.cpp
 	src/QtHelpers/TreeWidgetItemNumeric.cpp
 	src/QtHelpers/ItemModelVirtualTable.cpp
+	src/QtHelpers/ItemModelVirtualFunctions.cpp
 	src/QtHelpers/ItemModelStringsTable.cpp
 	src/QtHelpers/ItemModelStates.cpp
 	src/QtHelpers/CPPSyntaxHighlighter.cpp

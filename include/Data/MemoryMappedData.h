@@ -13,6 +13,7 @@ namespace S2Plugin
     {
       public:
         explicit MemoryMappedData(Configuration* config);
+        virtual ~MemoryMappedData() = default;
 
         size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true);
 

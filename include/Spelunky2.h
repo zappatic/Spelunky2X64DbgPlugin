@@ -107,6 +107,7 @@ namespace S2Plugin
         PointerListItems,
         CharacterDB,
         CharacterDBID,
+        VirtualFunctionTable,
     };
 
     // for display purposes
@@ -162,6 +163,7 @@ namespace S2Plugin
         {MemoryFieldType::PointerListItems, "PointerListItems"},
         {MemoryFieldType::CharacterDB, "CharacterDB"},
         {MemoryFieldType::CharacterDBID, "CharacterDBID"},
+        {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable"},
     };
 
     // for C++ header generation
@@ -206,6 +208,7 @@ namespace S2Plugin
         {MemoryFieldType::PointerListItems, "// ignore"},
         {MemoryFieldType::CharacterDB, "CharacterDB*"},
         {MemoryFieldType::CharacterDBID, "uint8_t"},
+        {MemoryFieldType::VirtualFunctionTable, "size_t"},
     };
 
     // the type strings as they occur in Spelunky2.json
@@ -259,6 +262,16 @@ namespace S2Plugin
         {"PointerListItems", MemoryFieldType::PointerListItems},
         {"CharacterDB", MemoryFieldType::CharacterDB},
         {"CharacterDBID", MemoryFieldType::CharacterDBID},
+        {"VirtualFunctionTable", MemoryFieldType::VirtualFunctionTable},
+    };
+
+    struct VirtualFunction
+    {
+        size_t index;
+        std::string name;
+        std::string params;
+        std::string returnValue;
+        std::string type;
     };
 
     struct MemoryField
@@ -273,9 +286,11 @@ namespace S2Plugin
         std::string parentPointerJsonName;
         std::string parentStructJsonName;
         std::string pointerListPointerType;
+        std::string virtualFunctionTableType;
         bool isPointer = false;
         bool isInlineStruct = false;
     };
+    Q_DECLARE_METATYPE(S2Plugin::VirtualFunction)
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(S2Plugin::MemoryField)
 

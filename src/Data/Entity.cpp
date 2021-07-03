@@ -185,6 +185,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::VirtualFunctionTable:
             fieldSize = 8;
             break;
         case MemoryFieldType::PointerType:
@@ -273,6 +274,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::EntityPointer:
         case MemoryFieldType::EntityUIDPointer:
         case MemoryFieldType::ParticleDBPointer:
+        case MemoryFieldType::VirtualFunctionTable:
         case MemoryFieldType::PointerList:
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:

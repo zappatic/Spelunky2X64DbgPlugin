@@ -16,6 +16,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     setWindowIcon(QIcon(":/icons/caveman.png"));
 
     mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mMemoryComparisonView, mToolbar->entityDB(), mToolbar->configuration());
+    mMainTreeView->setMemoryMappedData(mEntity.get());
     mEntity->populateTreeView();
 
     mMainLayout->setMargin(5);
@@ -320,4 +321,9 @@ void S2Plugin::ViewEntity::tabChanged(int index)
         mCPPSyntaxHighlighter->finalCustomRuleAdded();
         mCPPTextEdit->setText(QString::fromStdString(g.result()));
     }
+}
+
+S2Plugin::Entity* S2Plugin::ViewEntity::entity() const
+{
+    return mEntity.get();
 }
