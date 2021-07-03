@@ -1353,7 +1353,7 @@
       },
       { "field": "shoppie_aggro", "type": "UnsignedByte" },
       { "field": "shoppie_aggro_levels", "type": "UnsignedByte" },
-      { "field": "merchant_aggro", "type": "UnsignedByte" },
+      { "field": "tun_aggro", "type": "UnsignedByte" },
       { "field": "saved_dogs", "type": "UnsignedByte" },
       { "field": "saved_cats", "type": "UnsignedByte" },
       { "field": "saved_hamsters", "type": "UnsignedByte" },
