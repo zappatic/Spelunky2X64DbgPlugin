@@ -1359,7 +1359,11 @@
       { "field": "saved_hamsters", "type": "UnsignedByte" },
       { "field": "kills_npc", "type": "UnsignedByte" },
       { "field": "level_count", "type": "UnsignedByte" },
-      { "field": "unknown1a", "type": "UnsignedByte" },
+      {
+        "field": "unknown1a",
+        "type": "UnsignedByte",
+        "comment": "online dmg count?"
+      },
       { "field": "unknown1b", "type": "UnsignedByte" },
       {
         "field": "world2_coffin_spawned",
