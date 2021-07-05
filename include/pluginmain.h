@@ -6,7 +6,7 @@
 #else
 #define PLUGIN_NAME "UnnamedPlugin"
 #endif // PLUGIN_NAME
-#define PLUGIN_VERSION 14
+#define PLUGIN_VERSION 15
 
 #include <windows.h>
 
