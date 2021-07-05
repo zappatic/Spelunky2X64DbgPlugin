@@ -6848,8 +6848,9 @@
         "type": "Word",
         "comment": "counts up to 400 (6.6 sec); when 0 the pet yells out"
       },
-      { "field": "padding1", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      { "field": "unknown5", "type": "UnsignedWord" },
       {
         "field": "active_state",
         "type": "Byte",
