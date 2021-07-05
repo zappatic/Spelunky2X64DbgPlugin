@@ -478,12 +478,12 @@
     "ITEM_GOLDCOIN": "Coin",
     "ITEM_PICKUP_PLAYERBAG": "PlayerBag",
     "ITEM_PICKUP_.*": "RollingItem",
-    "ITEM_POWERUP_KAPALA": "Kapala_Powerup",
+    "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_POWERUP_PARACHUTE": "ParachutePowerup",
     "ITEM_POWERUP_TRUECROWN": "TrueCrownPowerup",
     "ITEM_POWERUP_ANKH": "AnkhPowerup",
     "ITEM_CAPE": "YellowCape",
-    "ITEM_VLADS_CAPE": "Vlads_Cape",
+    "ITEM_VLADS_CAPE": "VladsCape",
     "ITEM_JETPACK.*": "Jetpack",
     "ITEM_TELEPORTER_BACKPACK": "Backpack",
     "ITEM_HOVERPACK": "Hoverpack",
@@ -6675,8 +6675,8 @@
       }
     ],
     "YellowCape": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
-    "Vlads_Cape": [{ "field": "can_double_jump", "type": "Bool" }],
-    "Kapala_Powerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
+    "VladsCape": [{ "field": "can_double_jump", "type": "Bool" }],
+    "KapalaPowerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
     "Ghost": [
       {
         "field": "split_timer",
