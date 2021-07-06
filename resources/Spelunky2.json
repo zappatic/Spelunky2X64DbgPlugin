@@ -7557,10 +7557,9 @@
       { "field": "affected_entity_uid", "type": "EntityUID" },
       {
         "field": "animation_frame?",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "changes the color of the eyeball on Lahamu"
       },
-      { "field": "unknown9b", "type": "UnsignedByte" },
       { "field": "unknown9c", "type": "UnsignedByte" },
       { "field": "unknown9d", "type": "UnsignedByte" },
       { "field": "offset_x", "type": "Float" },
@@ -7680,10 +7679,7 @@
         "type": "UnsignedDword",
         "comment": "changes when climbing"
       },
-      { "field": "animation_frame", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "animation_frame", "type": "UnsignedDword" },
       { "field": "unknown38", "type": "UnsignedDword" },
       { "field": "texture", "type": "TextureDBPointer" },
       { "field": "texture_name", "type": "ConstCharPointerPointer" }
