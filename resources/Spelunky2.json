@@ -149,8 +149,9 @@
     "FloorDeco": "Entity",
     "Door": "FloorDeco",
     "ExitDoor": "Door",
+    "DecoratedDoor": "ExitDoor",
     "LockedDoor": "Door",
-    "CityOfGoldDoor": "ExitDoor",
+    "CityOfGoldDoor": "DecoratedDoor",
     "MainExit": "ExitDoor",
     "EggShipDoor": "Door",
     "TotemTrap": "FloorDeco",
@@ -246,12 +247,14 @@
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
+    "FLOOR_DOOR_ENTRANCE": "Door",
+    "FLOOR_DOOR_EXIT": "ExitDoor",
     "FLOOR_DOOR_MAIN_EXIT": "MainExit",
-    "FLOOR_DOOR_.*EXIT": "ExitDoor",
-    "FLOOR_DOOR_EGGSHIP.*": "EggShipDoor",
+    "FLOOR_DOOR_STARTING_EXIT": "ExitDoor",
     "FLOOR_DOOR_LOCKED.*": "LockedDoor",
     "FLOOR_DOOR_COG": "CityOfGoldDoor",
-    "FLOOR_DOOR_EGGPLANT_WORLD": "ExitDoor",
+    "FLOOR_DOOR_EGGSHIP.*": "EggShipDoor",
+    "FLOOR_DOOR_EGGPLANT_WORLD": "DecoratedDoor",
     "FLOOR_DOOR_PLATFORM": "FloorDeco",
     "FLOOR_DOOR_.*": "Door",
     "FLOOR_.*ARROW_TRAP": "ArrowTrap",
@@ -8546,7 +8549,9 @@
       },
       { "field": "world", "type": "UnsignedByte" },
       { "field": "theme", "type": "UnsignedByte" },
-      { "field": "unused", "type": "UnsignedWord" },
+      { "field": "padding", "type": "UnsignedWord" }
+    ],
+    "DecoratedDoor":[
       { "field": "special_bg", "type": "EntityPointer" }
     ],
     "CityOfGoldDoor": [
@@ -8555,6 +8560,7 @@
     ],
     "LockedDoor": [{ "field": "unlocked", "type": "Bool" }],
     "MainExit": [
+      { "field": "unknown", "type": "Qword" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "top_value?", "type": "Float" },
       { "field": "value?", "type": "Float" }
