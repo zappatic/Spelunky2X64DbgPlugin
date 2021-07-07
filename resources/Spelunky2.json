@@ -255,7 +255,7 @@
     "FLOOR_DOOR_COG": "CityOfGoldDoor",
     "FLOOR_DOOR_EGGSHIP.*": "EggShipDoor",
     "FLOOR_DOOR_EGGPLANT_WORLD": "DecoratedDoor",
-    "FLOOR_DOOR_PLATFORM": "FloorDeco",
+    "FLOOR_DOOR_PLATFORM": "Floor",
     "FLOOR_DOOR_.*": "Door",
     "FLOOR_.*ARROW_TRAP": "Arrowtrap",
     "FLOOR_TOTEM_TRAP": "TotemTrap",
@@ -8551,9 +8551,7 @@
       { "field": "theme", "type": "UnsignedByte" },
       { "field": "padding", "type": "UnsignedWord" }
     ],
-    "DecoratedDoor":[
-      { "field": "special_bg", "type": "EntityPointer" }
-    ],
+    "DecoratedDoor": [{ "field": "special_bg", "type": "EntityPointer" }],
     "CityOfGoldDoor": [
       { "field": "unlocked", "type": "Bool" },
       { "field": "unknown1", "type": "UnsignedByte" }
@@ -9158,7 +9156,7 @@
       },
       { "field": "x_pos", "type": "Float" },
       { "field": "unknown", "type": "UnsignedWord" },
-      { "field": "unknown_timer", "type": "UnsignedWord" }
+      { "field": "abuse_speechbubble_timer", "type": "UnsignedWord" }
     ],
     "Ai_func": [
       { "field": "unknown1a", "type": "Flags32", "comment": "flags?" },
