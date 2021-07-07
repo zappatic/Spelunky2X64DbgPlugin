@@ -190,7 +190,7 @@ void S2Plugin::ViewEntities::refreshEntities()
             {
                 matchesFilter = true;
             }
-            else if (mCheckboxMIDBG->checkState() == Qt::Checked && entityName.startsWith("MIDBG_"))
+            else if (mCheckboxMIDBG->checkState() == Qt::Checked && entityName.startsWith("MIDBG"))
             {
                 matchesFilter = true;
             }
