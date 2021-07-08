@@ -51,7 +51,7 @@
     "Vampire": "Monster",
     "Vlad": "Vampire",
     "Waddler": "Monster",
-    "Octopus": "Monster",
+    "Octopus": "WalkingMonster",
     "Bodyguard": "Monster",
     "MadameTusk": "Monster",
     "Fish": "Monster",
@@ -70,7 +70,6 @@
     "AnubisTwo": "Monster",
     "OsirisHead": "Monster",
     "OsirisHand": "Monster",
-    "Yeti": "Monster",
     "Alien": "Monster",
     "UFO": "Monster",
     "Lahamu": "Monster",
@@ -327,7 +326,7 @@
     "MONS_GIANTFISH": "GiantFish",
     "MONS_UFO": "UFO",
     "MONS_ALIEN": "Alien",
-    "MONS_YETI": "Yeti",
+    "MONS_YETI": "WalkingMonster",
     "MONS_YETIKING": "YetiKing",
     "MONS_YETIQUEEN": "YetiQueen",
     "MONS_ALIENQUEEN": "Lahamu",
@@ -6907,9 +6906,9 @@
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
       {
-        "field": "chatting_timer",
+        "field": "cooldown_timer",
         "type": "Word",
-        "comment": "when greater than 0 it counts down during chatting; when smaller than 0 no chatting will occur until back to 0 ; 0 = ready to chat"
+        "comment": "used fo chatting with other monsters, attack cooldowns etc."
       }
     ],
     "Caveman": [
@@ -7240,13 +7239,24 @@
         "comment": "counts while in the air, jumping"
       }
     ],
-    "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }],
-    "Octopus": [
-      { "field": "unknown1", "type": "Dword" },
+    "Jiangshi": [
+      { "field": "wait_timer", "type": "UnsignedByte" },
       {
-        "field": "walk_pause_timer",
+        "field": "jump_counter",
         "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
+        "comment": "only female aka assassin, when 0 will jump up into ceiling"
+      },
+      {
+        "field": "on_ceiling",
+        "type": "Bool",
+        "comment": "only female aka assassin"
+      }
+    ],
+    "Octopus": [
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "something to do with state?"
       }
     ],
     "Bodyguard": [
@@ -7279,7 +7289,7 @@
       { "field": "unknown6", "type": "UnsignedByte" },
       { "field": "unknown7", "type": "UnsignedByte" }
     ],
-    "Fish": [{ "field": "change_direction_timer", "type": "UnsignedByte" }],
+    "Fish": [{ "field": "change_direction_timer", "type": "UnsignedDword" }],
     "GiantFish": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       {
@@ -7292,10 +7302,18 @@
         "type": "UnsignedWord",
         "comment": "delay in-between attacks"
       },
-      { "field": "unknown_timer", "type": "UnsignedWord" },
+      {
+        "field": "unknown_timer",
+        "type": "UnsignedWord",
+        "comment": "at 0 writes random value to unknown2, maybe unknown1 as well?"
+      },
       { "field": "padding1", "type": "UnsignedWord" },
       { "field": "unknown1", "type": "Float" },
-      { "field": "unknown2", "type": "Float" },
+      {
+        "field": "unknown2",
+        "type": "Float",
+        "comment": "increment value for unknown3?"
+      },
       { "field": "unknown3", "type": "Float" }
     ],
     "Crabman": [
@@ -7487,19 +7505,17 @@
     "OsirisHand": [
       { "field": "attack_cooldown_timer", "type": "UnsignedByte" }
     ],
-    "Yeti": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedWord",
-        "comment": "alternates between walking and pausing every time it reaches zero"
-      }
-    ],
     "Alien": [
       {
         "field": "jump_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "when 0 it jumps"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      {
+        "field": "unknown2",
+        "type": "UnsignedByte",
+        "comment": "seen timer here once maybe? it's accessed right as he jumps from the ufo"
       }
     ],
     "UFO": [
@@ -7509,7 +7525,12 @@
         "type": "Word",
         "comment": "pos = right, neg = left"
       },
-      { "field": "attack_cooldown_timer", "type": "UnsignedByte" }
+      { "field": "attack_cooldown_timer", "type": "UnsignedByte" },
+      {
+        "field": "is_falling",
+        "type": "Bool",
+        "comment": "read only, manually setting this true has no effect"
+      }
     ],
     "Lahamu": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7677,9 +7698,10 @@
     "YetiQueen": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
-      }
+      },
+      { "field": "unknown_timer", "type": "UnsignedByte" }
     ],
     "YetiKing": [
       {
@@ -7687,8 +7709,13 @@
         "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "emitted_light", "type": "IlluminationPointer" }
+      { "field": "unknown_timer", "type": "UnsignedByte" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "particle_fog", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_dust", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_sparkles", "type": "ParticleEmitterInfoPointer" }
     ],
     "Lamassu": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7936,7 +7963,7 @@
       }
     ],
     "Hermitcrab": [
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "carried_entity_type", "type": "EntityDBID" },
       { "field": "carried_entity_uid", "type": "EntityUID" },
       {
         "field": "walk_spit_timer",
@@ -7946,17 +7973,22 @@
       {
         "field": "is_active",
         "type": "Bool",
-        "comment": "whether it is hidden behind the carried block or not"
+        "comment": "whether it is hidden behind the carried block or not, if true you can damage him"
       },
       {
         "field": "is_inactive",
         "type": "Bool",
-        "comment": "must be something else, since we already have is_active (or vice versa)"
+        "comment": "must be something else, since we already have is_active (or vice versa), gets triggered about have a second after is_active, maybe something like, can attack"
       },
       {
         "field": "spawn_new_carried_item",
         "type": "Bool",
         "comment": "defaults to true, when toggled to false, a new carried item spawns"
+      },
+      {
+        "field": "unknown",
+        "type": "UnsignedByte",
+        "comment": "sometimes i see 1 here, didn't get anything with breakpoint"
       }
     ],
     "Necromancer": [
