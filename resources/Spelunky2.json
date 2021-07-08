@@ -6653,12 +6653,16 @@
     ],
     "Bomb": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "scale_hor", "type": "Float" },
+      {
+        "field": "scale_hor",
+        "type": "Float",
+        "comment": "1.25 = default regular bomb ; 1.875 = default giant bomb ; > 1.25 generates ENT_TYPE_FX_POWEREDEXPLOSION"
+      },
       { "field": "scale_ver", "type": "Float" },
       {
         "field": "is_big_bomb",
         "type": "Bool",
-        "comment": "makes the explosion radius bigger"
+        "comment": "is bomb from powerpack"
       }
     ],
     "Olmec": [
