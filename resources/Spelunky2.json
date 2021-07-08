@@ -27,7 +27,7 @@
     "GhistShopkeeper": "Shopkeeper",
     "Yang": "Shopkeeper",
     "Pet": "Monster",
-    "Caveman": "Monster",
+    "WalkingMonster": "Monster",
     "CavemanShopkeeper": "Monster",
     "HornedLizard": "Monster",
     "Mosquito": "Monster",
@@ -39,13 +39,13 @@
     "Lavamander": "Monster",
     "Firebug": "Monster",
     "FirebugUnchained": "Monster",
-    "Robot": "Caveman",
+    "Robot": "WalkingMonster",
     "Quillback": "Monster",
     "Leprechaun": "Monster",
     "Crocman": "Monster",
     "Mummy": "Monster",
     "VanHorsing": "Monster",
-    "WitchDoctor": "Caveman",
+    "WitchDoctor": "WalkingMonster",
     "WitchDoctorSkull": "Monster",
     "ForestSister": "Monster",
     "Vampire": "Monster",
@@ -244,7 +244,7 @@
     "Bat": "Monster",
     "Terra": "Monster",
     "CritterBeetle": "Critter",
-    "CavemanSleep": "Caveman"
+    "Caveman": "WalkingMonster"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -285,7 +285,7 @@
     "MONS_HANGSPIDER": "HangSpider",
     "MONS_GIANTSPIDER": "Spider",
     "MONS_BAT": "Bat",
-    "MONS_CAVEMAN": "CavemanSleep",
+    "MONS_CAVEMAN": "Caveman",
     "MONS_CAVEMAN_SHOPKEEPER": "CavemanShopkeeper",
     "MONS_SKELETON": "Skeleton",
     "MONS_REDSKELETON": "Skeleton",
@@ -294,7 +294,7 @@
     "MONS_MOLE": "Mole",
     "MONS_CAVEMAN_BOSS": "Quillback",
     "MONS_MANTRAP": "Mantrap",
-    "MONS_TIKIMAN": "Caveman",
+    "MONS_TIKIMAN": "WalkingMonster",
     "MONS_WITCHDOCTOR": "WitchDoctor",
     "MONS_WITCHDOCTORSKULL": "WitchDoctorSkull",
     "MONS_MOSQUITO": "Mosquito",
@@ -6894,7 +6894,7 @@
         "comment": "-1 = sitting and yelling; 0 = either running, dead or picked up"
       }
     ],
-    "Caveman": [
+    "WalkingMonster": [
       { "field": "chatting_to_uid", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
@@ -6907,7 +6907,7 @@
         "comment": "when greater than 0 it counts down during chatting; when smaller than 0 no chatting will occur until back to 0 ; 0 = ready to chat"
       }
     ],
-    "CavemanSleep": [
+    "Caveman": [
       { "field": "wake_up_timer", "type": "UnsignedByte" },
       {
         "field": "can_pick_up_timer",
@@ -7011,14 +7011,13 @@
       { "field": "padding1", "type": "UnsignedByte" },
       {
         "field": "jump_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "jump pause when cool; runs continuously when hot"
       },
-      { "field": "padding2", "type": "UnsignedByte" },
       { "field": "lava_detection_timer?", "type": "UnsignedByte" },
       { "field": "is_hot", "type": "Bool" },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" }
+      { "field": "player_detect_state", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" }
     ],
     "Firebug": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7039,22 +7038,18 @@
       },
       {
         "field": "ai_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "when reaches zero, decides whether to walk or fly or pause; doesn't reset when flying"
       },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
       {
         "field": "walking_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "counts down only when walking; can't start flying unless this is at zero"
       }
     ],
     "Robot": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "emitted_light_explosion", "type": "IlluminationPointer" },
-      { "field": "unknown2", "type": "UnsignedByte" }
+      { "field": "emitted_light_explosion", "type": "IlluminationPointer" }
     ],
     "Quillback": [
       { "field": "unknown1", "type": "Dword" },
@@ -7123,7 +7118,7 @@
     "Mummy": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing when timer reaches zero"
       }
     ],
