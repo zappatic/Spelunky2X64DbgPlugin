@@ -39,13 +39,13 @@
     "Lavamander": "Monster",
     "Firebug": "Monster",
     "FirebugUnchained": "Monster",
-    "Robot": "Monster",
+    "Robot": "Caveman",
     "Quillback": "Monster",
     "Leprechaun": "Monster",
     "Crocman": "Monster",
     "Mummy": "Monster",
     "VanHorsing": "Monster",
-    "WitchDoctor": "Monster",
+    "WitchDoctor": "Caveman",
     "WitchDoctorSkull": "Monster",
     "ForestSister": "Monster",
     "Vampire": "Monster",
@@ -243,7 +243,8 @@
     "Shield": "Movable",
     "Bat": "Monster",
     "Terra": "Monster",
-    "CritterBeetle": "Critter"
+    "CritterBeetle": "Critter",
+    "CavemanSleep": "Caveman"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -284,7 +285,7 @@
     "MONS_HANGSPIDER": "HangSpider",
     "MONS_GIANTSPIDER": "Spider",
     "MONS_BAT": "Bat",
-    "MONS_CAVEMAN": "Caveman",
+    "MONS_CAVEMAN": "CavemanSleep",
     "MONS_CAVEMAN_SHOPKEEPER": "CavemanShopkeeper",
     "MONS_SKELETON": "Skeleton",
     "MONS_REDSKELETON": "Skeleton",
@@ -6771,11 +6772,18 @@
       { "field": "burrowing_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "burrow_dir_x", "type": "Float" },
       { "field": "burrow_dir_y", "type": "Float" },
-      { "field": "burrowing_in_uid", "type": "EntityUID" },
+      { "field": "burrowing_in_uid", "type": "EntityUID", "comment": "stores the last uid as well" },
       { "field": "counter_burrowing", "type": "UnsignedByte" },
       { "field": "counter_nonburrowing", "type": "UnsignedByte" },
       { "field": "countdown_for_appearing", "type": "UnsignedByte" },
-      { "field": "unknown_two_while_burrowed", "type": "UnsignedByte" }
+      { "field": "unknown_two_while_burrowed", "type": "UnsignedByte" },
+      { "field": "state", "type": "State8",
+      "states": {
+          "0": "non_borrowed",
+          "2": "borrowed",
+          "3": "state_change"
+        }
+       }
     ],
     "Spider": [
       { "field": "ceiling_pos_x", "type": "Float" },
@@ -6897,7 +6905,9 @@
         "field": "chatting_timer",
         "type": "Word",
         "comment": "when greater than 0 it counts down during chatting; when smaller than 0 no chatting will occur until back to 0 ; 0 = ready to chat"
-      },
+      }
+    ],
+    "CavemanSleep": [
       { "field": "wake_up_timer", "type": "UnsignedByte" },
       {
         "field": "can_pick_up_timer",
@@ -6925,15 +6935,14 @@
       },
       { "field": "stuck_rel_pos_y", "type": "Float" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "timer", "type": "UnsignedByte" }
+      { "field": "timer", "type": "UnsignedDword" }
     ],
     "Mantrap": [
       {
         "field": "walk_pause_timer",
-        "type": "Word",
+        "type": "Dword",
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
-      { "field": "padding", "type": "UnsignedWord" },
       {
         "field": "eaten_uid",
         "type": "EntityUID",
@@ -7043,32 +7052,23 @@
       }
     ],
     "Robot": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedByte" },
-      {
-        "field": "targeting_timer",
-        "type": "Word",
-        "comment": "When a target is spotted, set to -600 (10 sec), then, when target can't be seen, counts down, but no behavioural change is seen after 10 sec?"
-      },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "emitted_light_explosion", "type": "IlluminationPointer" }
+      { "field": "emitted_light_explosion", "type": "IlluminationPointer" },
+      { "field": "unknown2", "type": "UnsignedByte" }
     ],
     "Quillback": [
       { "field": "unknown1", "type": "Dword" },
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "alternates between walking and pausing when timer reaches zero"
       },
-      { "field": "padding1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "Word" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown_state", "type": "Flags16", "comment": "accessed as byte and word, so, flags?, changed mostly when breaking floors" },
+      { "field": "unknown_timer", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte", "comment": "forced to 1 when rolling, otherwise compared with 0" }
     ],
     "HornedLizard": [
       { "field": "dungbeetle_being_eaten", "type": "EntityUID" },
@@ -7137,18 +7137,6 @@
       { "field": "aggro", "type": "Bool" }
     ],
     "WitchDoctor": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedByte" },
-      {
-        "field": "attack_timer",
-        "type": "Word",
-        "comment": "10 sec timer starts counting after attack; won't start again until attack cycle is broken"
-      },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       {
         "field": "skull_regen_timer",
@@ -7409,13 +7397,12 @@
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       {
         "field": "jump_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "when 0 it jumps"
       },
-      { "field": "padding1", "type": "UnsignedWord" },
       {
         "field": "alive_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "when 0, the magmaman disappears"
       }
     ],
