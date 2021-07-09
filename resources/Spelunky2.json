@@ -76,7 +76,7 @@
     "YetiQueen": "Monster",
     "YetiKing": "Monster",
     "Lamassu": "Monster",
-    "Olmite": "Monster",
+    "Olmite": "WalkingMonster",
     "Tiamat": "Monster",
     "GiantFrog": "Monster",
     "Frog": "Monster",
@@ -7338,8 +7338,8 @@
       { "field": "unknown3", "type": "UnsignedByte" }
     ],
     "Kingu": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "sound_info1", "type": "SoundPositionPointer", "comment": "initialized when breaking the shell (sliding down sound maybe?)" },
+      { "field": "sound_info2", "type": "SoundPositionPointer", "comment": "Turning into stone sound" },
       {
         "field": "climb_direction_x",
         "type": "Float",
@@ -7415,11 +7415,10 @@
       }
     ],
     "Bee": [
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "can_rest", "type": "Bool" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "padding3", "type": "UnsignedDword" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       {
         "field": "fly_hang_timer",
@@ -7440,10 +7439,10 @@
       {
         "field": "unknown_rand2",
         "type": "UnsignedByte",
-        "comment": "looks to be a random number being put in here"
+        "comment": "looks to be a random number being put in here, something related to other bees in a level?"
       },
-      { "field": "unknown11", "type": "UnsignedByte" },
-      { "field": "unknown12", "type": "UnsignedByte" },
+      { "field": "unknown11", "type": "UnsignedByte", "comment": "padding?" },
+      { "field": "unknown12", "type": "UnsignedByte", "comment": "padding? quite a lot of unused memory in this entity, maybe this is more the one type?" },
       {
         "field": "wobble_x?",
         "type": "Float",
@@ -7454,9 +7453,11 @@
     "Ammit": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
-      }
+      },
+      { "field": "padding?", "type": "UnsignedDword" },
+      { "field": "particle_trail", "type": "ParticleEmitterInfoPointer" }
     ],
     "ApepHead": [
       { "field": "sound_pos1", "type": "SoundPositionPointer" },
@@ -7738,39 +7739,31 @@
         "comment": "greater than 0 = charging up; 0 = fire ; less than 0 = cooldown"
       },
       { "field": "attack_angle", "type": "Float" },
-      { "field": "unknown_state", "type": "UnsignedByte" }
+      { "field": "unknown_state", "type": "UnsignedByte", "comment": "bool: is flying when attacking?" }
     ],
     "Olmite": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedWord",
-        "comment": "alternates between walking and pausing every time it reaches zero"
-      },
-      {
-        "field": "unknown2",
-        "type": "Word",
-        "comment": "10 sec timer starts ticking when pounce attack starts"
-      },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "Dword" },
-      { "field": "unknown5", "type": "Float" },
+      { "field": "armore_on", "type": "Bool" },
+      { "field": "in_stack", "type": "Bool", "comment": "disables the attack, stun, lock's looking left flag between stack" },
+      { "field": "unknown_in_stack", "type": "Bool", "comment": "is set to false couple frame after being detached from stack"},
+      { "field": "unknown1", "type": "Byte", "comment": "padding?" },
+      { "field": "on_top_uid", "type": "EntityUID" },
+      { "field": "y_offset", "type": "Float", "comment": "same as y position when stacked" },
       {
         "field": "attack_cooldown_timer",
         "type": "UnsignedByte",
-        "comment": "jump attacks can start when 0"
+        "comment": "jump attacks can start when 0, used also by the bottom one in stack"
       },
-      { "field": "unknown_countdown", "type": "UnsignedByte" }
+      { "field": "unknown_countdown", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedWord", "comment": "padding?" }
     ],
     "Tiamat": [
-      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "sound_info", "type": "SoundPositionPointer", "comment": "Turning into stone sound" },
       { "field": "fx_tiamat_head", "type": "EntityUID" },
       { "field": "fx_tiamat_arm_right1", "type": "EntityUID" },
       { "field": "fx_tiamat_arm_right2", "type": "EntityUID" },
       {
-        "field": "frown_timer",
-        "type": "UnsignedByte",
-        "comment": "makes her frown but doesn't seem to be used in cutscene or during attack"
+        "field": "invincibility_timer",
+        "type": "UnsignedByte"
       },
       { "field": "padding1", "type": "UnsignedByte" },
       {
@@ -7784,10 +7777,10 @@
         "comment": "when 0, she attacks"
       },
       { "field": "unknown2", "type": "Float" },
-      { "field": "unknown3", "type": "Float" },
-      { "field": "unknown4", "type": "Float" },
-      { "field": "unknown5", "type": "Float" },
-      { "field": "unknown6", "type": "Float" }
+      { "field": "tail_angle", "type": "Float" },
+      { "field": "tail_radian", "type": "Float", "comment": "Counts from 0 to 2 radians, Used to calculate tail angle" },
+      { "field": "tail_move_speed", "type": "Float" },
+      { "field": "right_arm_angle", "type": "Float" }
     ],
     "GiantFrog": [
       { "field": "door_front_layer", "type": "EntityPointer" },
@@ -7801,12 +7794,14 @@
       }
     ],
     "Frog": [
-      { "field": "unknown1", "type": "Dword" },
+      { "field": "grub_being_eaten", "type": "EntityUID" },
       {
         "field": "jump_timer",
-        "type": "UnsignedDword",
+        "type": "UnsignedByte",
         "comment": "when 0 it jumps"
-      }
+      },
+      { "field": "pause", "type": "Bool", "comment": "not actually used?" },
+      { "field": "padding", "type": "UnsignedWord" }
     ],
     "FireFrog": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
     "Grub": [
