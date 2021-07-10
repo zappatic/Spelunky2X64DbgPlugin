@@ -40,7 +40,7 @@
     "Firebug": "Monster",
     "FirebugUnchained": "Monster",
     "Robot": "WalkingMonster",
-    "Quillback": "Monster",
+    "Quillback": "WalkingMonster",
     "Leprechaun": "WalkingMonster",
     "Crocman": "WalkingMonster",
     "Mummy": "Monster",
@@ -7076,7 +7076,7 @@
       {
         "field": "challenge_fee_paid",
         "type": "Bool",
-        "comment": "affect only the speech bubble "
+        "comment": "affect only the speech bubble"
       },
       {
         "field": "congrats_challenge",
@@ -7160,13 +7160,6 @@
       { "field": "emitted_light_explosion", "type": "IlluminationPointer" }
     ],
     "Quillback": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedWord",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "unknown2", "type": "Word" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       {
@@ -7269,7 +7262,7 @@
       { "field": "timer4", "type": "UnsignedByte" },
       { "field": "tripping", "type": "Bool" },
       { "field": "timer5", "type": "Word" },
-      { "field": "padding?", "type": "Word" },
+      { "field": "padding", "type": "Word" },
       { "field": "shop_entered", "type": "Bool" }
     ],
     "Vampire": [
