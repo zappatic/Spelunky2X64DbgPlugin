@@ -23,19 +23,19 @@
     "Mole": "Monster",
     "Spider": "Monster",
     "HangSpider": "Monster",
-    "NPC": "Monster",
-    "Shopkeeper": "NPC",
+    "RoomOwner": "Monster",
+    "Shopkeeper": "RoomOwner",
     "GhistShopkeeper": "Monster",
-    "Yang": "NPC",
+    "Yang": "RoomOwner",
     "Pet": "Monster",
     "WalkingMonster": "Monster",
-    "CavemanShopkeeper": "Monster",
+    "CavemanShopkeeper": "WalkingMonster",
     "HornedLizard": "Monster",
     "Mosquito": "Monster",
     "Mantrap": "Monster",
     "Skeleton": "Monster",
     "Scarab": "Monster",
-    "Tun": "NPC",
+    "Tun": "RoomOwner",
     "Imp": "Monster",
     "Lavamander": "Monster",
     "Firebug": "Monster",
@@ -54,7 +54,7 @@
     "Waddler": "Monster",
     "Octopus": "WalkingMonster",
     "Bodyguard": "Monster",
-    "MadameTusk": "Monster",
+    "MadameTusk": "RoomOwner",
     "Fish": "Monster",
     "GiantFish": "Monster",
     "Crabman": "Monster",
@@ -6812,14 +6812,14 @@
       { "field": "ceiling_pos_x", "type": "Float" },
       { "field": "ceiling_pos_y", "type": "Float" }
     ],
-    "NPC": [
+    "RoomOwner": [
       { "field": "room_index", "type": "UnsignedDword" },
       {
         "field": "climb_y_direction",
         "type": "Float",
         "comment": "when on a rope or ladder"
       },
-      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "ai_state", "type": "UnsignedByte" },
       { "field": "patrol_timer", "type": "UnsignedByte" },
       {
         "field": "lose_interest_timer",
@@ -6839,36 +6839,83 @@
         "comment": "to set off a shopkeeper, combine this with state.shoppie_aggro_levels > 0"
       },
       {
-        "field": "unknown2",
+        "field": "aggro",
         "type": "Bool",
-        "comment": "aggro?, setting this makes him angry and you get 2 agrro points"
+        "comment": "setting this makes him angry, if it's shopkeeper you get 2 agrro points"
       },
       {
-        "field": "whip_him",
+        "field": "was_hurt",
         "type": "Bool",
-        "comment": "also gets set true if you set unknown2 to true"
+        "comment": "also is set true if you set aggro to true, get's trigger even when whiping"
       },
-      { "field": "unknown4", "type": "UnsignedByte" }, // some of this is padding probably
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "Dword" }
+      { "field": "padding1", "type": "UnsignedByte" }, // some of this is padding probably
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "Dword" }
     ],
     "Shopkeeper": [
-      { "field": "unknown1", "type": "UnsignedByte", "comment": "some number" },
       {
-        "field": "unknown_timer2",
+        "field": "name",
+        "type": "State8",
+        "states": {
+          "0": "Ali",
+          "1": "Bob",
+          "2": "Cosmo",
+          "3": "Darwin",
+          "4": "Ear",
+          "5": "Earl",
+          "6": "Frank",
+          "7": "Garth",
+          "8": "Hakim",
+          "9": "Iggy",
+          "10": "Ivan",
+          "11": "Jimbo",
+          "12": "Kinni",
+          "13": "Lou",
+          "14": "Micky",
+          "15": "Nacho",
+          "16": "Omar",
+          "17": "Pancho",
+          "18": "Quincy",
+          "19": "Ron",
+          "20": "Sparky",
+          "21": "Tarn",
+          "22": "Ulf",
+          "23": "Vern",
+          "24": "Wang",
+          "25": "Willy",
+          "26": "Xander",
+          "27": "Yoshi",
+          "28": "Ziggy"
+          //29 - "No"
+          //30 - 31 - game crash
+          //32 - 36 - "Yes"
+          //37 - 43 - game crash
+          //not gonna check futher, if someone want's to, go on
+        },
+        "comment": "anything above 28 is just random string, can crash the game"
+      },
+      {
+        "field": "shotgun_attack_delay",
         "type": "UnsignedByte",
         "comment": "can't shot when the timer is running"
       },
       {
         "field": "unknown3",
         "type": "UnsignedByte",
-        "comment": "accessed on stun/dmg?"
+        "comment": "accessed on stun/dmg? probably bool"
       },
       {
-        "field": "unknown4",
-        "type": "UnsignedByte",
-        "comment": "sometimes set to 1"
-      }
+        "field": "shop_owner",
+        "type": "Bool"
+      },
+            {
+        "field": "unknown5a",
+        "type": "Bool",
+        "comment": "sometimes set to true"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
     ],
     "GhistShopkeeper": [
       { "field": "body_uid", "type": "EntityUID" },
@@ -6886,12 +6933,7 @@
       }
     ],
     "Yang": [
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "turkeys_in_pen", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "Map" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
       {
@@ -7015,7 +7057,7 @@
       {
         "field": "challenge_fee_paid",
         "type": "Bool",
-        "comment": "can't reset, you can only pay once"
+        "comment": "affect only the speech bubble "
       },
       {
         "field": "congrats_challenge",
@@ -7028,7 +7070,7 @@
         "comment": "when she disappears in a cloud of smoke"
       },
       { "field": "shop_entered", "type": "Bool" },
-      { "field": "tiamat_encounter", "type": "Bool" },
+      { "field": "tiamat_encounter", "type": "Bool", "comment": "if set to false, greets you with 'you've done well to reach this place'" },
       { "field": "padding", "type": "UnsignedByte" }
     ],
     "Imp": [
@@ -7167,7 +7209,14 @@
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "target_spotted_timer", "type": "UnsignedByte" },
       { "field": "attack_state?", "type": "UnsignedByte" },
-      { "field": "aggro", "type": "Bool" }
+      { "field": "aggro", "type": "Bool" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "UnsignedByte" },
+      { "field": "unknown8", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "show_text", "type": "Bool" }
     ],
     "WitchDoctor": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7202,14 +7251,6 @@
       }
     ],
     "CavemanShopkeeper": [
-      {
-        "field": "chatting_to_uid",
-        "type": "EntityUID",
-        "comment": "not sure why but yeah, he can talk with other caveman, it's also broken as he won't stop xd"
-      },
-      { "field": "timer1", "type": "UnsignedWord" },
-      { "field": "timer2", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "Byte" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "timer3", "type": "UnsignedByte" },
       { "field": "timer4", "type": "UnsignedByte" },
@@ -7309,19 +7350,6 @@
       { "field": "unknown8", "type": "UnsignedByte" }
     ],
     "MadameTusk": [
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "target_timer?", "type": "UnsignedByte" },
-      { "field": "padding4", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "UnsignedByte" }
     ],
     "Fish": [{ "field": "change_direction_timer", "type": "UnsignedDword" }],
     "GiantFish": [
@@ -7867,7 +7895,7 @@
       {
         "field": "mouth_open_trigger",
         "type": "Bool",
-        "comment": "opens the mouth and starts mouth_close_timer, used when detecting grup in the mouth area"
+        "comment": "opens the mouth and starts mouth_close_timer, used when detecting grub in the mouth area"
       },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" }
