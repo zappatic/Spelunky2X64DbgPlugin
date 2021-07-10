@@ -169,7 +169,7 @@
     "LampFlame": "Flame",
     "PoleDeco": "Floor",
     "PunishBall": "Movable",
-    "ChestInside": "Movable",
+    "Chest": "Movable",
     "LavaGlow": "Movable",
     "Liquid": "Entity",
     "Lava": "Liquid",
@@ -222,10 +222,10 @@
     "Switch": "Movable",
     "FlyHead": "Movable",
     "SnapTrap": "Movable",
-    "Empress": "Movable",
+    "EmpressGrave": "Movable",
     "Tentacle": "Chain",
-    "MiniShip": "Movable",
-    "MiniAsteroid": "Movable",
+    "MiniGameShip": "Movable",
+    "MiniGameAsteroid": "Movable",
     "CursedPot": "Movable",
     "Orb": "Movable",
     "EggSac": "Movable",
@@ -417,7 +417,7 @@
     "ITEM_CRABMAN_ACIDBUBBLE": "AcidBubble",
     "ITEM_CRABMAN_CLAW": "Claw",
     "ITEM_CRABMAN_CLAWCHAIN": "StretchChain",
-    "ITEM_CHEST": "ChestInside",
+    "ITEM_CHEST": "Chest",
     "ITEM_ENDINGTREASURE_TIAMAT": "Treasure",
     "ITEM_ENDINGTREASURE_HUNDUN": "HundunChest",
     "ITEM_CRATE": "Container",
@@ -471,11 +471,11 @@
     "ITEM_GIANTFLY_HEAD": "FlyHead",
     "ITEM_PALACE_CANDLE_FLAME": "LightEmitter",
     "ITEM_SNAP_TRAP": "SnapTrap",
-    "ITEM_EMPRESS_GRAVE": "Empress",
+    "ITEM_EMPRESS_GRAVE": "EmpressGrave",
     "ITEM_TENTACLE": "Tentacle",
     "ITEM_TENTACLE_.*": "Chain",
-    "ITEM_MINIGAME_SHIP": "MiniShip",
-    "ITEM_MINIGAME_.*ASTEROID.*": "MiniAsteroid",
+    "ITEM_MINIGAME_SHIP": "MiniGameShip",
+    "ITEM_MINIGAME_.*ASTEROID.*": "MiniGameAsteroid",
     "ITEM_POT": "Pot",
     "ITEM_CURSEDPOT": "CursedPot",
     "ITEM_COOKFIRE": "CookFire",
@@ -6684,7 +6684,7 @@
         "comment": "it's per level, not per cape"
       }
     ],
-    "YellowCape": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
+    "YellowCape": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
     "VladsCape": [{ "field": "can_double_jump", "type": "Bool" }],
     "KapalaPowerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
     "Ghost": [
@@ -8496,7 +8496,7 @@
       { "field": "particles_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_warp", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound_info", "type": "SoundPositionPointer" }
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
     ],
     "Floor": [
       { "field": "deco_top", "type": "EntityUID" },
@@ -8681,14 +8681,14 @@
       { "field": "deco_down", "type": "EntityUID" }
     ],
     "PunishBall": [
-      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "attached_to_uid", "type": "EntityUID" },
       { "field": "state?", "type": "UnsignedByte" },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
       { "field": "x_pos", "type": "Float" },
-      { "field": "t_pos", "type": "Float" }
+      { "field": "y_pos", "type": "Float" }
     ],
-    "ChestInside": [
+    "Chest": [
       { "field": "leprechaun", "type": "Bool" },
       {
         "field": "bomb",
@@ -8900,7 +8900,7 @@
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "music_note1", "type": "ParticleEmitterInfoPointer" },
       { "field": "music_note2", "type": "ParticleEmitterInfoPointer" },
-      { "field": "spawn_y?", "type": "Float" },
+      { "field": "spawn_y", "type": "Float" },
       {
         "field": "station",
         "type": "Byte",
@@ -8911,9 +8911,9 @@
       { "field": "jump_state", "type": "UnsignedByte" }
     ],
     "TV": [
-      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "fx_button", "type": "EntityPointer" },
-      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
       {
         "field": "station",
         "type": "UnsignedByte",
@@ -8923,11 +8923,11 @@
     "Telescope": [
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "camera_anchor", "type": "EntityPointer" },
-      { "field": "looking_thru", "type": "EntityUID" },
+      { "field": "looked_through_by_uid", "type": "EntityUID" },
       { "field": "unknown", "type": "Float" }
     ],
     "Torch": [
-      { "field": "item_flame", "type": "EntityUID" },
+      { "field": "flame_uid", "type": "EntityUID" },
       { "field": "is_lit", "type": "Bool" },
       { "field": "unknown1", "type": "Byte" },
       { "field": "unknown2", "type": "Word" }
@@ -8940,7 +8940,7 @@
       }
     ],
     "Chain": [
-      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "attached_to_uid", "type": "EntityUID" },
       { "field": "timer", "type": "Dword" }
     ],
     "Fly": [{ "field": "timer", "type": "UnsignedByte" }],
@@ -8958,9 +8958,9 @@
     "Honey": [{ "field": "wiggle_timer", "type": "UnsignedByte" }],
     "PlayerGhost": [
       { "field": "sparkles_particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "buttons", "type": "PlayerInputs" },
+      { "field": "player_inputs", "type": "PlayerInputs" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
-      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "unknown_timer", "type": "UnsignedWord" },
       { "field": "shake_timer", "type": "UnsignedByte" },
       { "field": "boost_timer", "type": "UnsignedByte" },
@@ -8983,12 +8983,12 @@
     ],
     "LaserBeam": [
       { "field": "sparks", "type": "ParticleEmitterInfoPointer" },
-      { "field": "illumination", "type": "IlluminationPointer" }
+      { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
-    "TreasureHook": [{ "field": "sound_info", "type": "SoundPositionPointer" }],
+    "TreasureHook": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
     "AxolotlShot": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
-      { "field": "traped_uid", "type": "EntityUID" },
+      { "field": "trapped_uid", "type": "EntityUID" },
       { "field": "size", "type": "Float" },
       {
         "field": "swing",
@@ -9006,10 +9006,10 @@
       { "field": "unknown4", "type": "UnsignedWord" }
     ],
     "SkullDropTrap": [
-      { "field": "sound_info", "type": "SoundPositionPointer" },
-      { "field": "left_skull", "type": "EntityUID" },
-      { "field": "middle_skull", "type": "EntityUID" },
-      { "field": "right_skull", "type": "EntityUID" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "left_skull_uid", "type": "EntityUID" },
+      { "field": "middle_skull_uid", "type": "EntityUID" },
+      { "field": "right_skull_uid", "type": "EntityUID" },
       { "field": "left_skull_drop_time", "type": "UnsignedByte" },
       { "field": "middle_skull_drop_time", "type": "UnsignedByte" },
       { "field": "right_skull_drop_time", "type": "UnsignedByte" },
@@ -9030,18 +9030,18 @@
         "comment": "has to be 0 before next use"
       }
     ],
-    "FlyHead": [{ "field": "vored_entity", "type": "EntityUID" }],
+    "FlyHead": [{ "field": "vored_entity_uid", "type": "EntityUID" }],
     "SnapTrap": [
-      { "field": "bait", "type": "EntityUID" },
+      { "field": "bait_uid", "type": "EntityUID" },
       { "field": "reload_timer", "type": "UnsignedByte" }
     ],
-    "Empress": [
+    "EmpressGrave": [
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "ghost", "type": "EntityPointer" }
     ],
     "Tentacle": [{ "field": "bottom", "type": "EntityPointer" }],
-    "MiniShip": [
-      { "field": "sound_info", "type": "SoundPositionPointer" },
+    "MiniGameShip": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "velocity_x", "type": "Float" },
       { "field": "velocity_y", "type": "Float" },
       { "field": "swing", "type": "Float" }, //angle change?
@@ -9051,13 +9051,13 @@
         "comment": "0.0 means down, 1.0 means up, 0.5 idle"
       }
     ],
-    "MiniAsteroid": [{ "field": "spin_speed", "type": "Float" }],
+    "MiniGameAsteroid": [{ "field": "spin_speed", "type": "Float" }],
     "CursedPot": [
       { "field": "smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "smoke2", "type": "ParticleEmitterInfoPointer" }
     ],
     "Orb": [
-      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "timer", "type": "UnsignedByte" }
     ],
     "EggSac": [{ "field": "timer", "type": "UnsignedByte" }],
@@ -9068,7 +9068,7 @@
         "comment": "get's updated every time animation_frame is changes by the game, setting it to 64 or less disables the effect"
       }
     ],
-    "Coin": [{ "field": "nominal_price?", "type": "UnsignedDword" }],
+    "Coin": [{ "field": "nominal_price", "type": "UnsignedDword" }],
     "RollingItem": [
       {
         "field": "roll_speed",
@@ -9080,7 +9080,7 @@
       {
         "field": "falltime_deploy",
         "type": "UnsignedByte",
-        "comment": "this get's compared with users falling_timer"
+        "comment": "this gets compared with users falling_timer"
       },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedWord" },
@@ -9099,7 +9099,7 @@
     ],
     "TrueCrownPowerup": [{ "field": "timer", "type": "UnsignedWord" }],
     "AnkhPowerup": [
-      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "player", "type": "EntityPointer" },
       { "field": "fx_glow", "type": "EntityPointer" },
       { "field": "unknown1", "type": "Float" },
@@ -9110,13 +9110,13 @@
     ],
     "Teleporter": [
       {
-        "field": "teleport_numer",
+        "field": "teleport_number",
         "type": "UnsignedWord",
         "comment": "max 3, need to stand on the ground to reset"
       }
     ],
     "Boomerang": [
-      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "trail", "type": "ParticleEmitterInfoPointer" },
       { "field": "distance", "type": "Float" },
       { "field": "rotation", "type": "Float" },
@@ -9125,7 +9125,7 @@
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
       {
-        "field": "user",
+        "field": "owner_uid",
         "type": "EntityUID",
         "comment": "entity to return to"
       },
