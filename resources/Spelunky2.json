@@ -68,7 +68,6 @@
     "ApepPart": "Monster",
     "ApepHead": "ApepPart",
     "ApepBody": "ApepPart",
-    "AnubisTwo": "Monster",
     "OsirisHead": "Monster",
     "OsirisHand": "Monster",
     "Yeti": "Monster",
@@ -155,14 +154,14 @@
     "MainExit": "ExitDoor",
     "EggShipDoor": "Door",
     "TotemTrap": "Floor",
-    "BigSpear": "Floor",
+    "BigSpearTrap": "Floor",
     "LaserTrap": "Floor",
     "SparkTrap": "Floor",
     "TransferFloor": "Floor",
     "ConveyorBelt": "TransferFloor",
     "QuickSand": "Floor",
     "Pipe": "TransferFloor",
-    "Mother": "Floor",
+    "MotherStatue": "Floor",
     "Tentacle": "Floor",
     "Flame": "Movable",
     "FlameSize": "Flame",
@@ -269,9 +268,9 @@
     "FLOOR_SLIDINGWALL_CEILING": "SlidingWallCeiling",
     "FLOOR_QUICKSAND": "QuickSand",
     "FLOOR_PIPE": "Pipe",
-    "FLOOR_BIGSPEAR_TRAP": "BigSpear",
+    "FLOOR_BIGSPEAR_TRAP": "BigSpearTrap",
     "FLOOR_STICKYTRAP_CEILING": "StickyTrap",
-    "FLOOR_MOTHER_STATUE": "Mother",
+    "FLOOR_MOTHER_STATUE": "MotherStatue",
     "FLOOR_TELEPORTINGBORDER": "TeleportingFloor",
     "FLOOR_HORIZONTAL_FORCEFIELD": "HorizontalFF",
     "FLOOR_TIMED_FORCEFIELD": "TimedForceField",
@@ -318,7 +317,7 @@
     "MONS_APEP_TAIL": "ApepPart",
     "MONS_OSIRIS_HEAD": "OsirisHead",
     "MONS_OSIRIS_HAND": "OsirisHand",
-    "MONS_ANUBIS2": "AnubisTwo",
+    "MONS_ANUBIS2": "Anubis",
     "MONS_JIANGSHI": "Jiangshi",
     "MONS_FEMALE_JIANGSHI": "Jiangshi",
     "MONS_FISH": "Fish",
@@ -7473,19 +7472,6 @@
       { "field": "sine_angle", "type": "Float" }
     ],
     "ApepBody": [{ "field": "sync?", "type": "UnsignedByte" }],
-    "AnubisTwo": [
-      { "field": "spawn_x", "type": "Float" },
-      { "field": "spawn_y", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      {
-        "field": "attack_proximity_y",
-        "type": "Float",
-        "comment": "how close you have to be to be attacked; set both to 0 for a pet anubis"
-      },
-      { "field": "attack_proximity_x", "type": "Float" },
-      { "field": "ai_timer?", "type": "UnsignedByte" },
-      { "field": "next_attack_timer", "type": "UnsignedByte" }
-    ],
     "OsirisHead": [
       {
         "field": "right_hand_uid",
@@ -8310,8 +8296,8 @@
       { "field": "unknown_uid1", "type": "EntityUIDPointer" }, //same as UnknownPointerGroup
       { "field": "unknown_uid2", "type": "EntityUIDPointer" },
       { "field": "unknown_uid3", "type": "EntityUIDPointer" },
-      { "field": "attached_piece", "type": "EntityUID" },
-      { "field": "ball", "type": "EntityUID" },
+      { "field": "attached_piece_uid", "type": "EntityUID" },
+      { "field": "ball_uid", "type": "EntityUID" },
       {
         "field": "state",
         "type": "State8",
@@ -8333,7 +8319,7 @@
     "SpikeballTrap": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "chain", "type": "EntityPointer" },
-      { "field": "end_pice", "type": "EntityPointer" },
+      { "field": "end_piece", "type": "EntityPointer" },
       {
         "field": "state",
         "type": "State8",
@@ -8359,7 +8345,7 @@
     ],
     "SlidingWallCeiling": [
       { "field": "attached_piece", "type": "EntityPointer" },
-      { "field": "active_floor_part", "type": "EntityUID" },
+      { "field": "active_floor_part_uid", "type": "EntityUID" },
       {
         "field": "state",
         "type": "Flags8",
@@ -8581,13 +8567,17 @@
     ],
     "TotemTrap": [
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "spawn_item", "type": "EntityDBID" },
+      {
+        "field": "unknown2",
+        "type": "Float",
+        "comment": "might be sound delay related, cannot reproduce anymore"
+      },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "spawn_entity_type", "type": "EntityDBID" },
       { "field": "first_sound_id", "type": "UnsignedDword" },
       {
         "field": "counter",
-        "type": "UnsignedDword",
+        "type": "Dword",
         "comment": "adds some value depending on trap and with side is triggered, setting to low value pauses it?"
       },
       { "field": "unknown4", "type": "UnsignedByte", "comment": "forced to 1" },
@@ -8596,27 +8586,27 @@
       { "field": "unused3", "type": "UnsignedDword" },
       { "field": "timer?", "type": "UnsignedByte" }
     ],
-    "BigSpear": [
-      { "field": "the_spear", "type": "EntityUID" },
+    "BigSpearTrap": [
+      { "field": "spear_uid", "type": "EntityUID" },
       { "field": "active?", "type": "UnsignedByte", "comment": "forced to 1" },
       {
         "field": "left_part",
         "type": "Bool",
-        "comment": "setting the laft part to 0 or right part to 1 destroys the trap"
+        "comment": "setting the left part to 0 or right part to 1 destroys the trap"
       }
     ],
     "LaserTrap": [
-      { "field": "illumination_info", "type": "IlluminationPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
       {
         "field": "reset_timer",
         "type": "UnsignedByte",
-        "comment": "after triggering counts from 0 to 255, changes the 'faze_2' then counts from 0 to 104"
+        "comment": "after triggering counts from 0 to 255, changes the 'phase_2' then counts from 0 to 104"
       },
-      { "field": "faze_2", "type": "Bool" }
+      { "field": "phase_2", "type": "Bool" }
     ],
     "SparkTrap": [
-      { "field": "illumination_info", "type": "IlluminationPointer" },
-      { "field": "the_spark", "type": "EntityUID" }
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "spark_uid", "type": "EntityUID" }
     ],
     "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
     "ConveyorBelt": [
@@ -8644,22 +8634,22 @@
       },
       { "field": "end_pipe", "type": "Bool" }
     ],
-    "Mother": [
+    "MotherStatue": [
       { "field": "player1_standing", "type": "Bool" },
       { "field": "player2_standing", "type": "Bool" },
       { "field": "player3_standing", "type": "Bool" },
       { "field": "player4_standing", "type": "Bool" },
-      { "field": "player1_health_got ", "type": "Bool" },
-      { "field": "player2_health_got ", "type": "Bool" },
-      { "field": "player3_health_got ", "type": "Bool" },
-      { "field": "player4_health_got ", "type": "Bool" },
-      { "field": "health_p1_timer", "type": "UnsignedWord" },
-      { "field": "health_p2_timer", "type": "UnsignedWord" },
-      { "field": "health_p3_timer", "type": "UnsignedWord" },
-      { "field": "health_p4_timer", "type": "UnsignedWord" },
+      { "field": "player1_health_received", "type": "Bool" },
+      { "field": "player2_health_received", "type": "Bool" },
+      { "field": "player3_health_received", "type": "Bool" },
+      { "field": "player4_health_received", "type": "Bool" },
+      { "field": "player1_health_timer", "type": "UnsignedWord" },
+      { "field": "player2_health_timer", "type": "UnsignedWord" },
+      { "field": "player3_health_timer", "type": "UnsignedWord" },
+      { "field": "player4_health_timer", "type": "UnsignedWord" },
       { "field": "eggplantchild_timer", "type": "UnsignedByte" },
       { "field": "unknown", "type": "UnsignedByte" },
-      { "field": "eggplantchild_detect", "type": "Bool" }
+      { "field": "eggplantchild_detected", "type": "Bool" }
     ],
     "Tentacle": [
       { "field": "unknown_uid1", "type": "EntityUIDPointer" }, //same as UnknownPointerGroup
