@@ -132,7 +132,7 @@
     "UdjatSocket": "Movable",
     "PushBlock": "Movable",
     "TeleportingBorder": "Floor",
-    "Woodenlog": "Movable",
+    "WoodenlogTrap": "Movable",
     "BoneBlock": "Movable",
     "TimedPowderkeg": "PushBlock",
     "ChainedPushBlock": "PushBlock",
@@ -140,7 +140,7 @@
     "FallingPlatform": "Movable",
     "TrapPart": "Movable",
     "UnchainedSpikeBall": "Movable",
-    "Thinice": "Movable",
+    "ThinIce": "Movable",
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
     "GiantClamTop": "Movable",
@@ -509,7 +509,7 @@
     "ITEM_CLONEGUN": "Gun",
     "ITEM_WOODEN_SHIELD": "Shield",
     "ITEM_METAL_SHIELD": "Shield",
-    "ACTIVEFLOOR_WOODENLOG_TRAP": "Woodenlog",
+    "ACTIVEFLOOR_WOODENLOG_TRAP": "WoodenlogTrap",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
     "ACTIVEFLOOR_BONEBLOCK": "BoneBlock",
@@ -524,7 +524,7 @@
     "ACTIVEFLOOR_OLMEC": "Olmec",
     "ACTIVEFLOOR_TIMEDPOWDERKEG": "TimedPowderkeg",
     "ACTIVEFLOOR_SLIDINGWALL": "TrapPart",
-    "ACTIVEFLOOR_THINICE": "Thinice",
+    "ACTIVEFLOOR_THINICE": "ThinIce",
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
@@ -8413,9 +8413,9 @@
         }
       }
     ],
-    "Woodenlog": [
-      { "field": "ceiling_1", "type": "EntityUID" },
-      { "field": "ceiling_2", "type": "EntityUID" },
+    "WoodenlogTrap": [
+      { "field": "ceiling_1_uid", "type": "EntityUID" },
+      { "field": "ceiling_2_uid", "type": "EntityUID" },
       { "field": "falling_speed", "type": "Float" },
       {
         "field": "unknown1",
@@ -8451,7 +8451,7 @@
       { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
     "FallingPlatform": [
-      { "field": "timer", "type": "UnsignedDword" },
+      { "field": "timer", "type": "Dword" },
       { "field": "shaking_factor", "type": "Float" },
       { "field": "y_pos", "type": "Float" }
     ],
@@ -8463,7 +8463,7 @@
         "comment": "if false it bounces when hitting the ground, it's also forced to true when moving sideways or rolling, can be changed to true in the air for weird effect"
       }
     ],
-    "Thinice": [
+    "ThinIce": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       {
         "field": "strength",
@@ -8480,7 +8480,7 @@
       },
       { "field": "treasure_x_pos", "type": "Float" },
       { "field": "treasure_y_pos", "type": "Float" },
-      { "field": "top_part", "type": "EntityUID" }
+      { "field": "top_part_uid", "type": "EntityUID" }
     ],
     "RegenBlock": [{ "field": "on_breaking", "type": "Bool" }],
     "GiantClamTop": [
@@ -9125,7 +9125,7 @@
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
       {
-        "field": "owner_uid",
+        "field": "returns_to_uid",
         "type": "EntityUID",
         "comment": "entity to return to"
       },
