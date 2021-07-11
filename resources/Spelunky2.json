@@ -95,7 +95,6 @@
     "Hermitcrab": "Monster",
     "Necromancer": "WalkingMonster",
     "ProtoShopkeeper": "Monster",
-    "Sparrow": "Monster",
     "Beg": "NPC",
     "Critter": "Monster",
     "CritterButterfly": "Critter",
@@ -6972,7 +6971,7 @@
     ],
     "Pet": [
       { "field": "fx_button", "type": "EntityPointer" },
-      { "field": "petting", "type": "EntityUID" },
+      { "field": "petting_by_uid", "type": "EntityUID" },
       {
         "field": "yell_counter",
         "type": "Word",
@@ -7228,19 +7227,19 @@
     ],
     "NPC": [
       { "field": "climb_direction", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown_timer", "type": "UnsignedByte" },
       { "field": "target_in_sight_timer", "type": "UnsignedByte" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "ai_state", "type": "UnsignedByte" },
       {
         "field": "aggro",
         "type": "Bool",
         "comment": "for bodyguard and shopkeeperclone it spawn a weapon as well"
       },
+      { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedDword" }
+      { "field": "padding3", "type": "UnsignedDword" }
     ],
     "VanHorsing": [
       {
@@ -7324,7 +7323,7 @@
     ],
     "Bodyguard": [
       {
-        "field": "type",
+        "field": "position_state",
         "type": "State8",
         "states": {
           "0": "none",
@@ -7420,7 +7419,7 @@
         "comment": "how close you have to be to be attacked; set both to 0 for a pet anubis"
       },
       { "field": "attack_proximity_x", "type": "Float" },
-      { "field": "ai_timer?", "type": "UnsignedByte" },
+      { "field": "ai_timer", "type": "UnsignedByte" },
       { "field": "next_attack_timer", "type": "UnsignedByte" },
       { "field": "psychic_orbs_counter", "type": "UnsignedByte" },
       { "field": "awake", "type": "Bool" }
@@ -7438,8 +7437,8 @@
       }
     ],
     "CatMummy": [
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "attack_timer?", "type": "UnsignedByte" }
+      { "field": "ai_state", "type": "UnsignedByte" },
+      { "field": "attack_timer", "type": "UnsignedByte" }
     ],
     "Sorceress": [
       { "field": "inbetween_attack_timer", "type": "UnsignedDword" },
@@ -7479,7 +7478,7 @@
         "type": "UnsignedWord",
         "comment": "alternates between hanging/sitting on the wall and flying every time it reaches zero"
       },
-      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "ai_state", "type": "UnsignedByte" },
       {
         "field": "targeting_timer?",
         "type": "UnsignedByte",
@@ -7495,18 +7494,18 @@
         "type": "UnsignedByte",
         "comment": "looks to be a random number being put in here, something related to other bees in a level?"
       },
-      { "field": "unknown11", "type": "UnsignedByte", "comment": "padding?" },
+      { "field": "padding4", "type": "UnsignedByte", "comment": "padding?" },
       {
-        "field": "unknown12",
+        "field": "padding5",
         "type": "UnsignedByte",
         "comment": "padding? quite a lot of unused memory in this entity, maybe this is more the one type?"
       },
       {
-        "field": "wobble_x?",
+        "field": "wobble_x",
         "type": "Float",
         "comment": "maybe the positional offset to make it look like it's buzzing"
       },
-      { "field": "wobble_y?", "type": "Float" }
+      { "field": "wobble_y", "type": "Float" }
     ],
     "Ammit": [
       {
@@ -7514,7 +7513,7 @@
         "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
-      { "field": "padding?", "type": "UnsignedDword" },
+      { "field": "padding", "type": "UnsignedDword" },
       { "field": "particle_trail", "type": "ParticleEmitterInfoPointer" }
     ],
     "ApepHead": [
@@ -7811,11 +7810,11 @@
         "comment": "disables the attack, stun, lock's looking left flag between stack"
       },
       {
-        "field": "unknown_in_stack",
+        "field": "in_stack2",
         "type": "Bool",
         "comment": "is set to false couple frame after being detached from stack"
       },
-      { "field": "unknown1", "type": "Byte", "comment": "padding?" },
+      { "field": "padding1", "type": "Byte" },
       { "field": "on_top_uid", "type": "EntityUID" },
       {
         "field": "y_offset",
@@ -7828,17 +7827,17 @@
         "comment": "jump attacks can start when 0, used also by the bottom one in stack"
       },
       { "field": "unknown_countdown", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedWord", "comment": "padding?" }
+      { "field": "padding2", "type": "UnsignedWord" }
     ],
     "Tiamat": [
       {
-        "field": "sound_info",
+        "field": "sound_pos",
         "type": "SoundPositionPointer",
         "comment": "Turning into stone sound"
       },
-      { "field": "fx_tiamat_head", "type": "EntityUID" },
-      { "field": "fx_tiamat_arm_right1", "type": "EntityUID" },
-      { "field": "fx_tiamat_arm_right2", "type": "EntityUID" },
+      { "field": "fx_tiamat_head_uid", "type": "EntityUID" },
+      { "field": "fx_tiamat_arm_right1_uid", "type": "EntityUID" },
+      { "field": "fx_tiamat_arm_right2_uid", "type": "EntityUID" },
       {
         "field": "invincibility_timer",
         "type": "UnsignedByte"
@@ -7859,7 +7858,7 @@
       {
         "field": "tail_radian",
         "type": "Float",
-        "comment": "Counts from 0 to 2 radians, Used to calculate tail angle"
+        "comment": "Counts from 0 to 2*pi, Used to calculate tail angle"
       },
       { "field": "tail_move_speed", "type": "Float" },
       { "field": "right_arm_angle", "type": "Float" }
@@ -7897,7 +7896,7 @@
     "FireFrog": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
     "Grub": [
       {
-        "field": "rotation_delta?",
+        "field": "rotation_delta",
         "type": "Float",
         "comment": "is it? i seen it in the code compared as a bit with 1, but not sure when it happens"
       },
@@ -7908,7 +7907,7 @@
         "type": "UnsignedByte",
         "comment": "used when he touches floor/wall/ceiling"
       },
-      { "field": "padding?", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
       {
         "field": "unknown6_timer",
         "type": "UnsignedWord",
@@ -7920,9 +7919,9 @@
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
       { "field": "turn_into_fly_timer", "type": "Word" },
-      { "field": "padding?", "type": "UnsignedWord" },
-      { "field": "grub_trail", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound_info", "type": "SoundPositionPointer" }
+      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
     ],
     "Tadpole": [
       {
@@ -8108,7 +8107,7 @@
     "ProtoShopkeeper": [
       { "field": "unknown1", "type": "UnsignedQword" },
       {
-        "field": "movement_state?",
+        "field": "movement_state",
         "type": "Flags8",
         "flags": {
           "1": "Headpulse/explosion related",
@@ -8124,7 +8123,7 @@
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "blowup_related", "type": "UnsignedByte" },
-      { "field": "animation_timer?", "type": "UnsignedDword" },
+      { "field": "animation_timer", "type": "UnsignedDword" },
       {
         "field": "walk_pause_explode_timer",
         "type": "UnsignedWord",
@@ -8151,11 +8150,11 @@
       { "field": "disappear_timer", "type": "UnsignedWord" }
     ],
     "Critter": [
-      { "field": "last_picked_up_by", "type": "EntityUID" },
+      { "field": "last_picked_up_by_uid", "type": "EntityUID" },
       { "field": "state", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" }
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
     ],
     "CritterBeetle": [
       {
