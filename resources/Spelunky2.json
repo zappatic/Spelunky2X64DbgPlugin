@@ -11,7 +11,7 @@
     "Mattock": "Movable",
     "Bomb": "Movable",
     "Olmec": "Movable",
-    "Olmec_Floater": "Movable",
+    "OlmecFloater": "Movable",
     "Cape": "Movable",
     "YellowCape": "Cape",
     "VladsCape": "Cape",
@@ -528,7 +528,7 @@
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
-    "FX_OLMECPART_FLOATER": "Olmec_Floater",
+    "FX_OLMECPART_FLOATER": "OlmecFloater",
     "FX_LAVA_GLOW": "LavaGlow",
     "FX_TELEPORTSHADOW": "LightEmitter",
     "FX_SMALLFLAME": "Flame",
@@ -6672,7 +6672,7 @@
       { "field": "phase1_amount_of_bomb_salvos", "type": "UnsignedByte" },
       { "field": "unknown_attack_state", "type": "UnsignedByte" }
     ],
-    "Olmec_Floater": [{ "field": "both_floaters_intact", "type": "Bool" }],
+    "OlmecFloater": [{ "field": "both_floaters_intact", "type": "Bool" }],
     "Cape": [
       { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
