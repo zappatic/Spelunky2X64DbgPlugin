@@ -7174,7 +7174,7 @@
       }
     ],
     "HornedLizard": [
-      { "field": "dungbeetle_being_eaten", "type": "EntityUID" },
+      { "field": "eaten_uid", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedByte",
