@@ -7884,7 +7884,7 @@
       { "field": "padding2", "type": "UnsignedByte" }
     ],
     "Frog": [
-      { "field": "grub_being_eaten", "type": "EntityUID" },
+      { "field": "grub_being_eaten_uid", "type": "EntityUID" },
       {
         "field": "jump_timer",
         "type": "UnsignedByte",
