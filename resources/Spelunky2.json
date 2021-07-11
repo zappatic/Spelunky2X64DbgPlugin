@@ -8260,7 +8260,7 @@
         "type": "UnsignedWord",
         "comment": "As opposite to the vertical one, this one counts for the on and the for the off state"
       },
-      { "field": "on_off", "type": "Bool" }
+      { "field": "is_on", "type": "Bool" }
     ],
     "ForceField": [
       {
@@ -8277,7 +8277,7 @@
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "bounce_force?", "type": "Float", "comment": "max 1.0 ?" },
       {
-        "field": "on_off",
+        "field": "is_on",
         "type": "Bool",
         "comment": "starts the sound + first_item_beam but not fx for some reason"
       }
