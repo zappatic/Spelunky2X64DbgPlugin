@@ -23,37 +23,37 @@
     "Mole": "Monster",
     "Spider": "Monster",
     "HangSpider": "Monster",
-    "Shopkeeper": "Monster",
-    "GhistShopkeeper": "Shopkeeper",
-    "Yang": "Shopkeeper",
+    "RoomOwner": "Monster",
+    "Shopkeeper": "RoomOwner",
+    "Yang": "RoomOwner",
     "Pet": "Monster",
-    "Caveman": "Monster",
-    "CavemanShopkeeper": "Monster",
+    "WalkingMonster": "Monster",
+    "CavemanShopkeeper": "WalkingMonster",
     "HornedLizard": "Monster",
     "Mosquito": "Monster",
     "Mantrap": "Monster",
     "Skeleton": "Monster",
     "Scarab": "Monster",
-    "Tun": "Shopkeeper",
+    "Tun": "RoomOwner",
     "Imp": "Monster",
     "Lavamander": "Monster",
     "Firebug": "Monster",
     "FirebugUnchained": "Monster",
-    "Robot": "Monster",
-    "Quillback": "Monster",
-    "Leprechaun": "Monster",
-    "Crocman": "Monster",
+    "Robot": "WalkingMonster",
+    "Quillback": "WalkingMonster",
+    "Leprechaun": "WalkingMonster",
+    "Crocman": "WalkingMonster",
     "Mummy": "Monster",
-    "VanHorsing": "Monster",
-    "WitchDoctor": "Monster",
+    "NPC": "Monster",
+    "VanHorsing": "NPC",
+    "WitchDoctor": "WalkingMonster",
     "WitchDoctorSkull": "Monster",
-    "ForestSister": "Monster",
+    "ForestSister": "NPC",
     "Vampire": "Monster",
     "Vlad": "Vampire",
-    "Waddler": "Monster",
-    "Octopus": "Monster",
-    "Bodyguard": "Monster",
-    "MadameTusk": "Monster",
+    "Waddler": "RoomOwner",
+    "Octopus": "WalkingMonster",
+    "Bodyguard": "NPC",
     "Fish": "Monster",
     "GiantFish": "Monster",
     "Crabman": "Monster",
@@ -61,7 +61,7 @@
     "Anubis": "Monster",
     "Cobra": "Monster",
     "CatMummy": "Monster",
-    "Sorceress": "Monster",
+    "Sorceress": "WalkingMonster",
     "MagmaMan": "Monster",
     "Bee": "Monster",
     "Ammit": "Monster",
@@ -70,14 +70,13 @@
     "ApepBody": "ApepPart",
     "OsirisHead": "Monster",
     "OsirisHand": "Monster",
-    "Yeti": "Monster",
     "Alien": "Monster",
     "UFO": "Monster",
     "Lahamu": "Monster",
     "YetiQueen": "Monster",
     "YetiKing": "Monster",
     "Lamassu": "Monster",
-    "Olmite": "Monster",
+    "Olmite": "WalkingMonster",
     "Tiamat": "Monster",
     "GiantFrog": "Monster",
     "Frog": "Monster",
@@ -94,11 +93,9 @@
     "MegaJellyfish": "Monster",
     "Scorpion": "Monster",
     "Hermitcrab": "Monster",
-    "Necromancer": "Monster",
+    "Necromancer": "WalkingMonster",
     "ProtoShopkeeper": "Monster",
-    "ShopkeeperClone": "Monster",
-    "Sparrow": "Monster",
-    "Beg": "Monster",
+    "Beg": "NPC",
     "Critter": "Monster",
     "CritterButterfly": "Critter",
     "CritterCrab": "Critter",
@@ -242,7 +239,8 @@
     "Shield": "Movable",
     "Bat": "Monster",
     "Terra": "Monster",
-    "CritterBeetle": "Critter"
+    "CritterBeetle": "Critter",
+    "Caveman": "WalkingMonster"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -292,7 +290,7 @@
     "MONS_MOLE": "Mole",
     "MONS_CAVEMAN_BOSS": "Quillback",
     "MONS_MANTRAP": "Mantrap",
-    "MONS_TIKIMAN": "Caveman",
+    "MONS_TIKIMAN": "WalkingMonster",
     "MONS_WITCHDOCTOR": "WitchDoctor",
     "MONS_WITCHDOCTORSKULL": "WitchDoctorSkull",
     "MONS_MOSQUITO": "Mosquito",
@@ -313,7 +311,7 @@
     "MONS_NECROMANCER": "Necromancer",
     "MONS_ANUBIS": "Anubis",
     "MONS_APEP_HEAD": "ApepHead",
-    "MONS_APEP_BODY": "ApepBody",
+    "MONS_APEP_BODY": "ApepPart",
     "MONS_APEP_TAIL": "ApepPart",
     "MONS_OSIRIS_HEAD": "OsirisHead",
     "MONS_OSIRIS_HAND": "OsirisHand",
@@ -326,12 +324,12 @@
     "MONS_GIANTFISH": "GiantFish",
     "MONS_UFO": "UFO",
     "MONS_ALIEN": "Alien",
-    "MONS_YETI": "Yeti",
+    "MONS_YETI": "WalkingMonster",
     "MONS_YETIKING": "YetiKing",
     "MONS_YETIQUEEN": "YetiQueen",
     "MONS_ALIENQUEEN": "Lahamu",
     "MONS_PROTOSHOPKEEPER": "ProtoShopkeeper",
-    "MONS_SHOPKEEPERCLONE": "ShopkeeperClone",
+    "MONS_SHOPKEEPERCLONE": "NPC",
     "MONS_LAMASSU": "Lamassu",
     "MONS_OLMITE_.*": "Olmite",
     "MONS_BEE": "Bee",
@@ -358,8 +356,8 @@
     "MONS_MARLA_TUNNEL": "Terra",
     "MONS_SISTER_.*": "ForestSister",
     "MONS_OLD_HUNTER": "VanHorsing",
-    "MONS_THIEF": "Sparrow",
-    "MONS_MADAMETUSK": "MadameTusk",
+    "MONS_THIEF": "NPC",
+    "MONS_MADAMETUSK": "RoomOwner",
     "MONS_BODYGUARD": "Bodyguard",
     "MONS_HUNDUNS_SERVANT": "Beg",
     "MONS_STORAGEGUY": "Waddler",
@@ -369,7 +367,7 @@
     "MONS_MEGAJELLYFISH": "MegaJellyfish",
     "MONS_MEGAJELLYFISH_BACKGROUND": "MegaJellyfish",
     "MONS_GHIST": "Ghist",
-    "MONS_GHIST_SHOPKEEPER": "GhistShopkeeper",
+    "MONS_GHIST_SHOPKEEPER": "Ghist",
     "MONS_GHOST.*": "Ghost",
     "MONS_PET_.*": "Pet",
     "MONS_CRITTERDUNGBEETLE": "CritterBeetle",
@@ -4524,7 +4522,8 @@
           "5": "Tusk idol stolen",
           "6": "Second hideout spawned (Neo Babylon)",
           "7": "Second encounter (meet me at Tusk's basement)",
-          "8": "Meeting at Tusk's basement (get past lasers)"
+          "8": "Meeting at Tusk's basement (get past lasers)",
+          "9": "After stealing half of the treasure, she says 'Great work team'"
         }
       },
       {
@@ -6653,12 +6652,16 @@
     ],
     "Bomb": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "scale_hor", "type": "Float" },
+      {
+        "field": "scale_hor",
+        "type": "Float",
+        "comment": "1.25 = default regular bomb ; 1.875 = default giant bomb ; > 1.25 generates ENT_TYPE_FX_POWEREDEXPLOSION"
+      },
       { "field": "scale_ver", "type": "Float" },
       {
         "field": "is_big_bomb",
         "type": "Bool",
-        "comment": "makes the explosion radius bigger"
+        "comment": "is bomb from powerpack"
       }
     ],
     "Olmec": [
@@ -6693,15 +6696,25 @@
         "type": "UnsignedWord",
         "comment": "for SMALL_HAPPY this is also the sequence timer of its various states"
       },
-      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown1_timer", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "velocity_multiplier", "type": "Float" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
       {
-        "field": "ghost_behaviour",
-        "type": "UnsignedByte",
-        "comment": "0 = SMALL_ANGRY; 1 = SMALL_SURPRISED; 2 = SMALL_SAD; 3 = SMALL_HAPPY"
+        "field": "unknown3",
+        "type": "UnsignedWord",
+        "comment": "layer change related"
+      },
+      {
+        "field": "state",
+        "type": "State8",
+        "states": {
+          "0": "standard, chasing",
+          "1": "SMALL_SURPRISED",
+          "2": "SMALL_SAD",
+          "3": "SMALL_HAPPY",
+          "4": "will move up and down, moving slightly more in one direction"
+        },
+        "comment": "everything above 4 seams to be the same as 4"
       },
       { "field": "unknown6", "type": "UnsignedByte" },
       { "field": "unknown7", "type": "Bool" },
@@ -6757,7 +6770,8 @@
       { "field": "unknown9", "type": "Float" }
     ],
     "GoldMonkey": [
-      { "field": "jump_timer", "type": "UnsignedWord" },
+      { "field": "jump_timer", "type": "UnsignedByte" },
+      { "field": "padding", "type": "UnsignedByte" },
       { "field": "poop_timer", "type": "UnsignedWord" },
       { "field": "poop_count", "type": "UnsignedByte" }
     ],
@@ -6767,11 +6781,24 @@
       { "field": "burrowing_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "burrow_dir_x", "type": "Float" },
       { "field": "burrow_dir_y", "type": "Float" },
-      { "field": "burrowing_in_uid", "type": "EntityUID" },
+      {
+        "field": "burrowing_in_uid",
+        "type": "EntityUID",
+        "comment": "stores the last uid as well"
+      },
       { "field": "counter_burrowing", "type": "UnsignedByte" },
       { "field": "counter_nonburrowing", "type": "UnsignedByte" },
       { "field": "countdown_for_appearing", "type": "UnsignedByte" },
-      { "field": "unknown_two_while_burrowed", "type": "UnsignedByte" }
+      { "field": "unknown_two_while_burrowed", "type": "UnsignedByte" },
+      {
+        "field": "state",
+        "type": "State8",
+        "states": {
+          "0": "non_borrowed",
+          "2": "borrowed",
+          "3": "state_change"
+        }
+      }
     ],
     "Spider": [
       { "field": "ceiling_pos_x", "type": "Float" },
@@ -6795,41 +6822,125 @@
       { "field": "ceiling_pos_x", "type": "Float" },
       { "field": "ceiling_pos_y", "type": "Float" }
     ],
-    "Shopkeeper": [
-      {
-        "field": "related_entity_uid",
-        "type": "EntityUID",
-        "comment": "for ghist shopkeeper, the UID of the dead caveman"
-      },
+    "RoomOwner": [
+      { "field": "room_index", "type": "UnsignedDword" },
       {
         "field": "climb_y_direction",
         "type": "Float",
         "comment": "when on a rope or ladder"
       },
-      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "ai_state", "type": "UnsignedByte" },
       { "field": "patrol_timer", "type": "UnsignedByte" },
       {
         "field": "lose_interest_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedByte",
         "comment": "delay in-between attacks"
       },
+      { "field": "unknown_timer1", "type": "UnsignedByte" },
       {
         "field": "countdown_timer",
-        "type": "UnsignedByte",
-        "comment": "counts down to 0 when a value is forced"
+        "type": "UnsignedWord",
+        "comment": "counts down to 0 when a value is forced, can't shot when the timer is running"
       },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedByte" },
+      { "field": "unknown1", "type": "UnsignedByte" },
       {
         "field": "is_patrolling",
         "type": "Bool",
-        "comment": "to set off a shopkeeper, combine this with state.shoppie_aggro_levels > 0"
-      }
+        "comment": "used to make shopkeeper walk, for other can sometimes be used as is_active"
+      },
+      {
+        "field": "aggro",
+        "type": "Bool",
+        "comment": "setting this makes him angry, if it's shopkeeper you get 2 agrro points"
+      },
+      {
+        "field": "was_hurt",
+        "type": "Bool",
+        "comment": "also is set true if you set aggro to true, get's trigger even when whiping"
+      },
+      { "field": "padding1", "type": "UnsignedByte" }, // some of this is padding probably
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "Dword" }
     ],
-    "GhistShopkeeper": [
+    "Shopkeeper": [
+      {
+        "field": "name",
+        "type": "State8",
+        "states": {
+          "0": "Ali",
+          "1": "Bob",
+          "2": "Cosmo",
+          "3": "Darwin",
+          "4": "Ear",
+          "5": "Earl",
+          "6": "Frank",
+          "7": "Garth",
+          "8": "Hakim",
+          "9": "Iggy",
+          "10": "Ivan",
+          "11": "Jimbo",
+          "12": "Kinni",
+          "13": "Lou",
+          "14": "Micky",
+          "15": "Nacho",
+          "16": "Omar",
+          "17": "Pancho",
+          "18": "Quincy",
+          "19": "Ron",
+          "20": "Sparky",
+          "21": "Tarn",
+          "22": "Ulf",
+          "23": "Vern",
+          "24": "Wang",
+          "25": "Willy",
+          "26": "Xander",
+          "27": "Yoshi",
+          "28": "Ziggy"
+          //29 - "No"
+          //30 - 31 - game crash
+          //32 - 36 - "Yes"
+          //37 - 43 - game crash
+          //not gonna check futher, if someone want's to, go on
+        },
+        "comment": "anything above 28 is just random string, can crash the game"
+      },
+      {
+        "field": "shotgun_attack_delay",
+        "type": "UnsignedByte",
+        "comment": "can't shot when the timer is running"
+      },
+      {
+        "field": "unknown3",
+        "type": "UnsignedByte",
+        "comment": "accessed on stun/dmg? probably bool"
+      },
+      {
+        "field": "shop_owner",
+        "type": "Bool"
+      },
+      {
+        "field": "unknown5a",
+        "type": "Bool",
+        "comment": "sometimes set to true"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
+    ],
+    "Ghist": [
+      { "field": "body_uid", "type": "EntityUID" },
+      {
+        "field": "idle_timer",
+        "type": "UnsignedByte",
+        "comment": "will not chase after you while the timer is running"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "sound_info", "type": "SoundPositionPointer" },
       { "field": "movement_related_timer_1", "type": "UnsignedByte" },
       { "field": "movement_related_timer_2", "type": "UnsignedByte" },
-      { "field": "transparency", "type": "Word" },
+      { "field": "transparency", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
       {
         "field": "fadeout",
         "type": "UnsignedWord",
@@ -6837,13 +6948,7 @@
       }
     ],
     "Yang": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "turkeys_in_pen", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "Map" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
       {
@@ -6856,14 +6961,18 @@
         "type": "Bool",
         "comment": "gets set to false when the quest is over (Yang dead or second turkey delivered)"
       },
-      { "field": "tidepool_message_shown", "type": "Bool" },
+      {
+        "field": "special_message_shown",
+        "type": "Bool",
+        "comment": "tusk palace, black market or one way door message shown"
+      },
       { "field": "padding4", "type": "UnsignedByte" },
       { "field": "padding5", "type": "UnsignedByte" },
       { "field": "padding6", "type": "UnsignedByte" }
     ],
     "Pet": [
       { "field": "fx_button", "type": "EntityPointer" },
-      { "field": "petting", "type": "EntityUID" },
+      { "field": "petting_by_uid", "type": "EntityUID" },
       {
         "field": "yell_counter",
         "type": "Word",
@@ -6882,7 +6991,7 @@
         "comment": "-1 = sitting and yelling; 0 = either running, dead or picked up"
       }
     ],
-    "Caveman": [
+    "WalkingMonster": [
       { "field": "chatting_to_uid", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
@@ -6890,10 +6999,12 @@
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
       {
-        "field": "chatting_timer",
+        "field": "cooldown_timer",
         "type": "Word",
-        "comment": "when greater than 0 it counts down during chatting; when smaller than 0 no chatting will occur until back to 0 ; 0 = ready to chat"
-      },
+        "comment": "used fo chatting with other monsters, attack cooldowns etc."
+      }
+    ],
+    "Caveman": [
       { "field": "wake_up_timer", "type": "UnsignedByte" },
       {
         "field": "can_pick_up_timer",
@@ -6921,15 +7032,14 @@
       },
       { "field": "stuck_rel_pos_y", "type": "Float" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "timer", "type": "UnsignedByte" }
+      { "field": "timer", "type": "UnsignedDword" }
     ],
     "Mantrap": [
       {
         "field": "walk_pause_timer",
-        "type": "Word",
+        "type": "Dword",
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
-      { "field": "padding", "type": "UnsignedWord" },
       {
         "field": "eaten_uid",
         "type": "EntityUID",
@@ -6951,14 +7061,12 @@
         "comment": "set color in sat_vign_0, be sure to make the aperture large enough"
       },
       {
-        "field": "unknown",
-        "type": "UnsignedByte",
-        "comment": "changes when the scarab is pausing"
+        "field": "timer",
+        "type": "UnsignedWord",
+        "comment": "how long to stay in that position"
       }
     ],
     "Tun": [
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "arrows_left", "type": "UnsignedByte" },
       {
         "field": "reload_timer",
@@ -6968,7 +7076,7 @@
       {
         "field": "challenge_fee_paid",
         "type": "Bool",
-        "comment": "can't reset, you can only pay once"
+        "comment": "affect only the speech bubble"
       },
       {
         "field": "congrats_challenge",
@@ -6981,7 +7089,11 @@
         "comment": "when she disappears in a cloud of smoke"
       },
       { "field": "shop_entered", "type": "Bool" },
-      { "field": "tiamat_encounter", "type": "Bool" },
+      {
+        "field": "tiamat_encounter",
+        "type": "Bool",
+        "comment": "if set to false, greets you with 'you've done well to reach this place'"
+      },
       { "field": "padding", "type": "UnsignedByte" }
     ],
     "Imp": [
@@ -6998,14 +7110,22 @@
       { "field": "padding1", "type": "UnsignedByte" },
       {
         "field": "jump_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "jump pause when cool; runs continuously when hot"
       },
-      { "field": "padding2", "type": "UnsignedByte" },
       { "field": "lava_detection_timer?", "type": "UnsignedByte" },
       { "field": "is_hot", "type": "Bool" },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" }
+      {
+        "field": "player_detect_state",
+        "type": "State8",
+        "states": {
+          "0": "didnt_saw_player",
+          "1": "saw_player",
+          "2": "spited_lava"
+        },
+        "comment": "used so he won't spit imminently after seeing the player"
+      },
+      { "field": "padding2", "type": "UnsignedByte" }
     ],
     "Firebug": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7026,48 +7146,36 @@
       },
       {
         "field": "ai_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "when reaches zero, decides whether to walk or fly or pause; doesn't reset when flying"
       },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
       {
         "field": "walking_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "counts down only when walking; can't start flying unless this is at zero"
       }
     ],
     "Robot": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedByte" },
-      {
-        "field": "targeting_timer",
-        "type": "Word",
-        "comment": "When a target is spotted, set to -600 (10 sec), then, when target can't be seen, counts down, but no behavioural change is seen after 10 sec?"
-      },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "emitted_light_explosion", "type": "IlluminationPointer" }
     ],
     "Quillback": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "Word" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      {
+        "field": "unknown_state",
+        "type": "Flags16",
+        "comment": "accessed as byte and word, so, flags?, changed mostly when breaking floors"
+      },
+      { "field": "unknown_timer", "type": "UnsignedByte" },
+      {
+        "field": "unknown3",
+        "type": "UnsignedByte",
+        "comment": "forced to 1 when rolling, otherwise compared with 0"
+      }
     ],
     "HornedLizard": [
-      { "field": "dungbeetle_being_eaten", "type": "EntityUID" },
+      { "field": "eaten_uid", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedByte",
@@ -7084,67 +7192,26 @@
       { "field": "particle", "type": "ParticleEmitterInfoPointer" }
     ],
     "Leprechaun": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "Word" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "hump_timer", "type": "UnsignedByte" },
       { "field": "target_in_sight_timer", "type": "UnsignedByte" },
       {
-        "field": "teleport_related?",
+        "field": "gold",
         "type": "UnsignedWord",
-        "comment": "changes when teleporting"
+        "comment": "ammoung of gold he picked up, will be droped on death"
       },
-      { "field": "timer_after_humping", "type": "UnsignedByte" }
+      { "field": "timer_after_humping", "type": "UnsignedByte" },
+      { "field": "unknown", "type": "UnsignedByte" }
     ],
-    "Crocman": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      {
-        "field": "unknown_timer",
-        "type": "Word",
-        "comment": "counts for 10 sec, after stun/triggering?"
-      }
-    ],
+    "Crocman": [{ "field": "teleport_cooldown", "type": "UnsignedByte" }],
     "Mummy": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing when timer reaches zero"
       }
     ],
-    "VanHorsing": [
-      { "field": "climb_direction", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "target_spotted_timer", "type": "UnsignedByte" },
-      { "field": "attack_state?", "type": "UnsignedByte" },
-      { "field": "aggro", "type": "Bool" }
-    ],
     "WitchDoctor": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedByte" },
-      {
-        "field": "attack_timer",
-        "type": "Word",
-        "comment": "10 sec timer starts counting after attack; won't start again until attack cycle is broken"
-      },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       {
         "field": "skull_regen_timer",
@@ -7159,34 +7226,43 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "rotation_angle", "type": "Float" }
     ],
-    "ForestSister": [
-      { "field": "unknown1", "type": "UnsignedDword" },
+    "NPC": [
+      { "field": "climb_direction", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown_timer", "type": "UnsignedByte" },
       { "field": "target_in_sight_timer", "type": "UnsignedByte" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "aggro", "type": "Bool" },
+      { "field": "ai_state", "type": "UnsignedByte" },
+      {
+        "field": "aggro",
+        "type": "Bool",
+        "comment": "for bodyguard and shopkeeperclone it spawn a weapon as well"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "padding3", "type": "UnsignedDword" }
+    ],
+    "VanHorsing": [
+      {
+        "field": "show_text",
+        "type": "Bool",
+        "comment": "if set to true, he will say 'i've been hunting this fiend a long time!' when on screen"
+      }
+    ],
+    "ForestSister": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing when timer reaches zero"
       }
     ],
     "CavemanShopkeeper": [
-      { "field": "unknown1", "type": "Dword" },
-      { "field": "timer1", "type": "UnsignedWord" },
-      { "field": "timer2", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "Byte" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "timer3", "type": "UnsignedByte" },
       { "field": "timer4", "type": "UnsignedByte" },
       { "field": "tripping", "type": "Bool" },
       { "field": "timer5", "type": "Word" },
-      { "field": "padding?", "type": "Word" },
+      { "field": "padding", "type": "Word" },
       { "field": "shop_entered", "type": "Bool" }
     ],
     "Vampire": [
@@ -7200,41 +7276,20 @@
       { "field": "sleep_pos_y", "type": "Float" },
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing when timer reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" }
+      }
     ],
     "Vlad": [
       { "field": "unknown1", "type": "UnsignedDword" },
       {
-        "field": "teleport_timer",
+        "field": "teleport_cooldown",
         "type": "UnsignedByte",
         "comment": "triggers when Vlad teleports, when timer running he can't teleport and will stun when hit"
       },
-      { "field": "aggro", "type": "Bool" }
+      { "field": "aggro", "type": "Bool", "comment": "or sleeping" }
     ],
     "Waddler": [
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      {
-        "field": "lose_interest_timer?",
-        "type": "UnsignedByte",
-        "comment": "delay in-between attacks"
-      },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "UnsignedByte" },
-      { "field": "unknown8", "type": "UnsignedByte" },
-      { "field": "unknown9", "type": "UnsignedByte" },
-      { "field": "unknown10", "type": "UnsignedQword" },
       {
         "field": "player_detected",
         "type": "Bool",
@@ -7243,50 +7298,48 @@
       { "field": "on_the_ground", "type": "Bool" },
       {
         "field": "air_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedByte",
         "comment": "counts while in the air, jumping"
       }
     ],
-    "Jiangshi": [{ "field": "wait_timer", "type": "UnsignedByte" }],
-    "Octopus": [
-      { "field": "unknown1", "type": "Dword" },
+    "Jiangshi": [
+      { "field": "wait_timer", "type": "UnsignedByte" },
       {
-        "field": "walk_pause_timer",
+        "field": "jump_counter",
         "type": "UnsignedByte",
-        "comment": "alternates between walking and pausing when timer reaches zero"
+        "comment": "only female aka assassin, when 0 will jump up into ceiling"
+      },
+      {
+        "field": "on_ceiling",
+        "type": "Bool",
+        "comment": "only female aka assassin"
+      }
+    ],
+    "Octopus": [
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "something to do with state?"
       }
     ],
     "Bodyguard": [
       {
-        "field": "climb_y_direction",
-        "type": "Float",
-        "comment": "when on a rope or ladder"
+        "field": "position_state",
+        "type": "State8",
+        "states": {
+          "0": "none",
+          "1": "Tusk dice shop",
+          "2": "Entrence to pleasure palace",
+          "3": "Basement entrance to pleasure palace"
+        }
       },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "target_detection_timer?", "type": "UnsignedByte" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "aggro", "type": "Bool" },
-      { "field": "unknown7", "type": "UnsignedByte" },
-      { "field": "unknown8", "type": "UnsignedByte" }
+      {
+        "field": "message_shown",
+        "type": "Bool",
+        "comment": "entrence and basement entrence"
+      }
     ],
-    "MadameTusk": [
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "target_timer?", "type": "UnsignedByte" },
-      { "field": "padding4", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "UnsignedByte" }
-    ],
-    "Fish": [{ "field": "change_direction_timer", "type": "UnsignedByte" }],
+    "Fish": [{ "field": "change_direction_timer", "type": "UnsignedDword" }],
     "GiantFish": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       {
@@ -7299,23 +7352,28 @@
         "type": "UnsignedWord",
         "comment": "delay in-between attacks"
       },
-      { "field": "unknown_timer", "type": "UnsignedWord" },
+      {
+        "field": "unknown_timer",
+        "type": "UnsignedWord",
+        "comment": "at 0 writes random value to unknown2, maybe unknown1 as well?"
+      },
       { "field": "padding1", "type": "UnsignedWord" },
       { "field": "unknown1", "type": "Float" },
-      { "field": "unknown2", "type": "Float" },
+      {
+        "field": "unknown2",
+        "type": "Float",
+        "comment": "increment value for unknown3?"
+      },
       { "field": "unknown3", "type": "Float" }
     ],
     "Crabman": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing when timer reaches zero"
       },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
       {
-        "field": "invincibility_timer?",
+        "field": "invincibility_timer",
         "type": "UnsignedByte",
         "comment": "triggers after being attacked"
       },
@@ -7323,12 +7381,19 @@
       { "field": "padding4", "type": "UnsignedByte" },
       { "field": "padding5", "type": "UnsignedByte" },
       { "field": "attacking_claw_uid", "type": "EntityUID" },
-      { "field": "at_maximum_attack", "type": "Bool" },
-      { "field": "unknown3", "type": "UnsignedByte" }
+      { "field": "at_maximum_attack", "type": "Bool" }
     ],
     "Kingu": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
+      {
+        "field": "sound_info1",
+        "type": "SoundPositionPointer",
+        "comment": "initialized when breaking the shell (sliding down sound maybe?)"
+      },
+      {
+        "field": "sound_info2",
+        "type": "SoundPositionPointer",
+        "comment": "Turning into stone sound"
+      },
       {
         "field": "climb_direction_x",
         "type": "Float",
@@ -7355,7 +7420,7 @@
         "comment": "how close you have to be to be attacked; set both to 0 for a pet anubis"
       },
       { "field": "attack_proximity_x", "type": "Float" },
-      { "field": "ai_timer?", "type": "UnsignedByte" },
+      { "field": "ai_timer", "type": "UnsignedByte" },
       { "field": "next_attack_timer", "type": "UnsignedByte" },
       { "field": "psychic_orbs_counter", "type": "UnsignedByte" },
       { "field": "awake", "type": "Bool" }
@@ -7363,12 +7428,9 @@
     "Cobra": [
       {
         "field": "spit_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between counting to 100 and to 64"
       },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
       {
         "field": "duplicate_move_state",
         "type": "Dword",
@@ -7376,19 +7438,11 @@
       }
     ],
     "CatMummy": [
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "attack_timer?", "type": "UnsignedByte" }
+      { "field": "ai_state", "type": "UnsignedByte" },
+      { "field": "attack_timer", "type": "UnsignedByte" }
     ],
     "Sorceress": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "Word",
-        "comment": "alternates between walking and pausing every time it reaches zero"
-      },
-      { "field": "padding1", "type": "UnsignedWord" },
-      { "field": "inbetween_attack_timer", "type": "UnsignedWord" },
-      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "inbetween_attack_timer", "type": "UnsignedDword" },
       { "field": "airtime", "type": "Float", "comment": "why float?" },
       {
         "field": "halo_emitted_light",
@@ -7405,29 +7459,27 @@
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       {
         "field": "jump_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "when 0 it jumps"
       },
-      { "field": "padding1", "type": "UnsignedWord" },
       {
         "field": "alive_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "when 0, the magmaman disappears"
       }
     ],
     "Bee": [
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "can_rest", "type": "Bool" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "padding3", "type": "UnsignedDword" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       {
         "field": "fly_hang_timer",
         "type": "UnsignedWord",
         "comment": "alternates between hanging/sitting on the wall and flying every time it reaches zero"
       },
-      { "field": "ai_state?", "type": "UnsignedByte" },
+      { "field": "ai_state", "type": "UnsignedByte" },
       {
         "field": "targeting_timer?",
         "type": "UnsignedByte",
@@ -7441,26 +7493,31 @@
       {
         "field": "unknown_rand2",
         "type": "UnsignedByte",
-        "comment": "looks to be a random number being put in here"
+        "comment": "looks to be a random number being put in here, something related to other bees in a level?"
       },
-      { "field": "unknown11", "type": "UnsignedByte" },
-      { "field": "unknown12", "type": "UnsignedByte" },
+      { "field": "padding4", "type": "UnsignedByte", "comment": "padding?" },
       {
-        "field": "wobble_x?",
+        "field": "padding5",
+        "type": "UnsignedByte",
+        "comment": "padding? quite a lot of unused memory in this entity, maybe this is more the one type?"
+      },
+      {
+        "field": "wobble_x",
         "type": "Float",
         "comment": "maybe the positional offset to make it look like it's buzzing"
       },
-      { "field": "wobble_y?", "type": "Float" }
+      { "field": "wobble_y", "type": "Float" }
     ],
     "Ammit": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
-      }
+      },
+      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "particle_trail", "type": "ParticleEmitterInfoPointer" }
     ],
     "ApepHead": [
-      { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "sound_pos1", "type": "SoundPositionPointer" },
       { "field": "sound_pos2", "type": "SoundPositionPointer" },
       { "field": "distance_traveled", "type": "Float" },
@@ -7470,7 +7527,15 @@
     ],
     "ApepPart": [
       { "field": "y_pos", "type": "Float" },
-      { "field": "sine_angle", "type": "Float" }
+      { "field": "sine_angle", "type": "Float" },
+      {
+        "field": "sync_timer",
+        "type": "UnsignedByte",
+        "comment": "or pause timer, used to sync the body parts moving up and down"
+      },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      { "field": "padding3", "type": "Dword" }
     ],
     "ApepBody": [{ "field": "sync?", "type": "UnsignedByte" }],
     "OsirisHead": [
@@ -7487,19 +7552,17 @@
     "OsirisHand": [
       { "field": "attack_cooldown_timer", "type": "UnsignedByte" }
     ],
-    "Yeti": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedWord",
-        "comment": "alternates between walking and pausing every time it reaches zero"
-      }
-    ],
     "Alien": [
       {
         "field": "jump_timer",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "when 0 it jumps"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      {
+        "field": "unknown2",
+        "type": "UnsignedByte",
+        "comment": "seen timer here once maybe? it's accessed right as he jumps from the ufo"
       }
     ],
     "UFO": [
@@ -7509,7 +7572,12 @@
         "type": "Word",
         "comment": "pos = right, neg = left"
       },
-      { "field": "attack_cooldown_timer", "type": "UnsignedByte" }
+      { "field": "attack_cooldown_timer", "type": "UnsignedByte" },
+      {
+        "field": "is_falling",
+        "type": "Bool",
+        "comment": "read only, manually setting this true has no effect"
+      }
     ],
     "Lahamu": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7677,9 +7745,10 @@
     "YetiQueen": [
       {
         "field": "walk_pause_timer",
-        "type": "UnsignedWord",
+        "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
-      }
+      },
+      { "field": "unknown_timer", "type": "UnsignedByte" }
     ],
     "YetiKing": [
       {
@@ -7687,8 +7756,13 @@
         "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "emitted_light", "type": "IlluminationPointer" }
+      { "field": "unknown_timer", "type": "UnsignedByte" },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "particle_fog", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_dust", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_sparkles", "type": "ParticleEmitterInfoPointer" }
     ],
     "Lamassu": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -7711,39 +7785,51 @@
         "comment": "greater than 0 = charging up; 0 = fire ; less than 0 = cooldown"
       },
       { "field": "attack_angle", "type": "Float" },
-      { "field": "unknown_state", "type": "UnsignedByte" }
+      {
+        "field": "unknown_state",
+        "type": "UnsignedByte",
+        "comment": "bool: is flying when attacking?"
+      }
     ],
     "Olmite": [
-      { "field": "unknown1", "type": "Dword" },
+      { "field": "armore_on", "type": "Bool" },
       {
-        "field": "walk_pause_timer",
-        "type": "UnsignedWord",
-        "comment": "alternates between walking and pausing every time it reaches zero"
+        "field": "in_stack",
+        "type": "Bool",
+        "comment": "disables the attack, stun, lock's looking left flag between stack"
       },
       {
-        "field": "unknown2",
-        "type": "Word",
-        "comment": "10 sec timer starts ticking when pounce attack starts"
+        "field": "in_stack2",
+        "type": "Bool",
+        "comment": "is set to false couple frame after being detached from stack"
       },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "Dword" },
-      { "field": "unknown5", "type": "Float" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "on_top_uid", "type": "EntityUID" },
+      {
+        "field": "y_offset",
+        "type": "Float",
+        "comment": "same as y position when stacked"
+      },
       {
         "field": "attack_cooldown_timer",
         "type": "UnsignedByte",
-        "comment": "jump attacks can start when 0"
+        "comment": "jump attacks can start when 0, used also by the bottom one in stack"
       },
-      { "field": "unknown_countdown", "type": "UnsignedByte" }
+      { "field": "unknown_countdown", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedWord" }
     ],
     "Tiamat": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "fx_tiamat_head", "type": "EntityUID" },
-      { "field": "fx_tiamat_arm_right1", "type": "EntityUID" },
-      { "field": "fx_tiamat_arm_right2", "type": "EntityUID" },
       {
-        "field": "frown_timer",
-        "type": "UnsignedByte",
-        "comment": "makes her frown but doesn't seem to be used in cutscene or during attack"
+        "field": "sound_pos",
+        "type": "SoundPositionPointer",
+        "comment": "Turning into stone sound"
+      },
+      { "field": "fx_tiamat_head_uid", "type": "EntityUID" },
+      { "field": "fx_tiamat_arm_right1_uid", "type": "EntityUID" },
+      { "field": "fx_tiamat_arm_right2_uid", "type": "EntityUID" },
+      {
+        "field": "invincibility_timer",
+        "type": "UnsignedByte"
       },
       { "field": "padding1", "type": "UnsignedByte" },
       {
@@ -7757,10 +7843,14 @@
         "comment": "when 0, she attacks"
       },
       { "field": "unknown2", "type": "Float" },
-      { "field": "unknown3", "type": "Float" },
-      { "field": "unknown4", "type": "Float" },
-      { "field": "unknown5", "type": "Float" },
-      { "field": "unknown6", "type": "Float" }
+      { "field": "tail_angle", "type": "Float" },
+      {
+        "field": "tail_radian",
+        "type": "Float",
+        "comment": "Counts from 0 to 2*pi, Used to calculate tail angle"
+      },
+      { "field": "tail_move_speed", "type": "Float" },
+      { "field": "right_arm_angle", "type": "Float" }
     ],
     "GiantFrog": [
       { "field": "door_front_layer", "type": "EntityPointer" },
@@ -7769,31 +7859,58 @@
       { "field": "attack_timer", "type": "UnsignedWord" },
       {
         "field": "frogs_ejected_in_cycle",
-        "type": "UnsignedWord",
-        "comment": "ejects two frogs in quick succession, then waits a longer time"
-      }
+        "type": "UnsignedByte",
+        "comment": "ejects thee frogs in quick succession, then waits a longer time"
+      },
+      { "field": "invincibility_timer", "type": "UnsignedByte" },
+      { "field": "mouth_close_timer", "type": "UnsignedByte" },
+      {
+        "field": "mouth_open_trigger",
+        "type": "Bool",
+        "comment": "opens the mouth and starts mouth_close_timer, used when detecting grub in the mouth area"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" }
     ],
     "Frog": [
-      { "field": "unknown1", "type": "Dword" },
+      { "field": "grub_being_eaten_uid", "type": "EntityUID" },
       {
         "field": "jump_timer",
-        "type": "UnsignedDword",
+        "type": "UnsignedByte",
         "comment": "when 0 it jumps"
-      }
+      },
+      { "field": "pause", "type": "Bool", "comment": "not actually used?" },
+      { "field": "padding", "type": "UnsignedWord" }
     ],
     "FireFrog": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
     "Grub": [
-      { "field": "rotation_delta?", "type": "Float" },
+      {
+        "field": "rotation_delta",
+        "type": "Float",
+        "comment": "is it? i seen it in the code compared as a bit with 1, but not sure when it happens"
+      },
       { "field": "drop", "type": "Bool" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "unknown6", "type": "UnsignedWord" },
+      { "field": "unknown3", "type": "Bool" },
+      {
+        "field": "looking_for_new_direction_timer",
+        "type": "UnsignedByte",
+        "comment": "used when he touches floor/wall/ceiling"
+      },
+      { "field": "padding1", "type": "UnsignedByte" },
+      {
+        "field": "unknown6_timer",
+        "type": "UnsignedWord",
+        "comment": "paused when not moving"
+      },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedWord",
         "comment": "alternates between walking and pausing every time it reaches zero"
-      }
+      },
+      { "field": "turn_into_fly_timer", "type": "Word" },
+      { "field": "padding2", "type": "UnsignedWord" },
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
     ],
     "Tadpole": [
       {
@@ -7817,20 +7934,6 @@
       { "field": "unknown7", "type": "Float" },
       { "field": "unknown8", "type": "Float" },
       { "field": "sine_counter", "type": "UnsignedByte" }
-    ],
-    "Ghist": [
-      { "field": "linked_corpse_entity_uid", "type": "EntityUID" },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "movement_related_timer_1", "type": "UnsignedByte" },
-      { "field": "movement_related_timer_2", "type": "UnsignedByte" },
-      { "field": "transparency", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      {
-        "field": "disappear_timer",
-        "type": "UnsignedWord",
-        "comment": "when 0, it disappears for a bit"
-      }
     ],
     "JumpDog": [
       {
@@ -7899,16 +8002,34 @@
       }
     ],
     "HundunHead": [
-      { "field": "unknown1", "type": "UnsignedQword" },
+      {
+        "field": "attack_position_x",
+        "type": "Float",
+        "comment": "Posiotion where the head will move"
+      },
+      {
+        "field": "attack_position_y",
+        "type": "Float",
+        "comment": "Posiotion where the head will move"
+      },
       { "field": "egg_crack_effect_uid", "type": "EntityUID" },
       { "field": "targeted_player_uid", "type": "EntityUID" },
-      { "field": "unknown_timer", "type": "UnsignedByte" }
+      {
+        "field": "looking_for_target_timer",
+        "type": "UnsignedWord",
+        "comment": "also cooldown before attack"
+      },
+      { "field": "invincibility_timer", "type": "UnsignedByte" }
     ],
     "MegaJellyfish": [
       { "field": "flipper1", "type": "EntityPointer" },
       { "field": "flipper2", "type": "EntityPointer" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "orb_uid", "type": "EntityUID" },
+      {
+        "field": "orb_uid",
+        "type": "EntityUID",
+        "comment": "the closest orb, does not gets updated"
+      },
       { "field": "tail_bg_uid", "type": "EntityUID" },
       { "field": "applied_velocity", "type": "Float" },
       {
@@ -7936,7 +8057,7 @@
       }
     ],
     "Hermitcrab": [
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "carried_entity_type", "type": "EntityDBID" },
       { "field": "carried_entity_uid", "type": "EntityUID" },
       {
         "field": "walk_spit_timer",
@@ -7946,27 +8067,25 @@
       {
         "field": "is_active",
         "type": "Bool",
-        "comment": "whether it is hidden behind the carried block or not"
+        "comment": "whether it is hidden behind the carried block or not, if true you can damage him"
       },
       {
         "field": "is_inactive",
         "type": "Bool",
-        "comment": "must be something else, since we already have is_active (or vice versa)"
+        "comment": "must be something else, since we already have is_active (or vice versa), gets triggered about have a second after is_active, maybe something like, can attack"
       },
       {
         "field": "spawn_new_carried_item",
         "type": "Bool",
         "comment": "defaults to true, when toggled to false, a new carried item spawns"
+      },
+      {
+        "field": "unknown",
+        "type": "UnsignedByte",
+        "comment": "sometimes i see 1 here, didn't get anything with breakpoint"
       }
     ],
     "Necromancer": [
-      { "field": "unknown1", "type": "Dword" },
-      {
-        "field": "walk_pause_timer",
-        "type": "UnsignedWord",
-        "comment": "alternates between walking and pausing every time it reaches zero"
-      },
-      { "field": "unknown_timer_1", "type": "Word" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "red_skeleton_spawn_x", "type": "Float" },
       { "field": "red_skeleton_spawn_y", "type": "Float" },
@@ -7977,7 +8096,7 @@
     "ProtoShopkeeper": [
       { "field": "unknown1", "type": "UnsignedQword" },
       {
-        "field": "movement_state?",
+        "field": "movement_state",
         "type": "Flags8",
         "flags": {
           "1": "Headpulse/explosion related",
@@ -7993,7 +8112,7 @@
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "blowup_related", "type": "UnsignedByte" },
-      { "field": "animation_timer?", "type": "UnsignedDword" },
+      { "field": "animation_timer", "type": "UnsignedDword" },
       {
         "field": "walk_pause_explode_timer",
         "type": "UnsignedWord",
@@ -8011,48 +8130,20 @@
         "comment": "counts down from 10 to 3 in the headpulse phase"
       }
     ],
-    "ShopkeeperClone": [
-      {
-        "field": "climb_y_direction",
-        "type": "Float",
-        "comment": "when on a rope or ladder"
-      },
-      { "field": "unknown_countdown_timer_1", "type": "UnsignedByte" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown_countdown_timer_2", "type": "UnsignedByte" },
-      { "field": "target_spotted_timer", "type": "UnsignedByte" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      {
-        "field": "spawn_gun",
-        "type": "Bool",
-        "comment": "defaults to true, when toggled to false it will spawn a gun"
-      }
-    ],
-    "Sparrow": [
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "target_spotted_timer?", "type": "UnsignedByte" },
-      { "field": "ai_state?", "type": "UnsignedByte" },
-      { "field": "aggro", "type": "Bool" }
-    ],
     "Beg": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
-        "comment": "alternates between walking and pausing every time it reaches zero"
+        "comment": "alternates between walking and pausing when timer reaches zero"
       },
       { "field": "disappear_timer", "type": "UnsignedWord" }
     ],
     "Critter": [
-      { "field": "last_picked_up_by", "type": "EntityUID" },
+      { "field": "last_picked_up_by_uid", "type": "EntityUID" },
       { "field": "state", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" }
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
     ],
     "CritterBeetle": [
       {
@@ -8070,6 +8161,7 @@
       { "field": "walking_left", "type": "Bool" }
     ],
     "CritterButterfly": [
+      { "field": "unknown1a", "type": "Qword" },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "change_direction_timer", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
