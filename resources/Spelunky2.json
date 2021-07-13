@@ -8902,7 +8902,11 @@
       { "field": "unused1", "type": "Byte" },
       { "field": "unused2", "type": "Word" },
       { "field": "spawn_y", "type": "Float" },
-      { "field": "float_timer?", "type": "Float", "comment": "probably distance_traveled, needs to be verified" }
+      {
+        "field": "float_timer?",
+        "type": "Float",
+        "comment": "probably distance_traveled, needs to be verified"
+      }
     ],
     "Spark": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
@@ -9016,7 +9020,11 @@
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "camera_anchor", "type": "EntityPointer" },
       { "field": "looked_through_by_uid", "type": "EntityUID" },
-      { "field": "unknown", "type": "Float", "comment": "seams to be distance between camera_anchor and telescope, but it's off by a little" }
+      {
+        "field": "unknown",
+        "type": "Float",
+        "comment": "seams to be distance between camera_anchor and telescope, but it's off by a little"
+      }
     ],
     "Torch": [
       { "field": "flame_uid", "type": "EntityUID" },
@@ -9259,13 +9267,21 @@
       { "field": "unknown11", "type": "Word" },
       { "field": "unknown11b", "type": "Word" },
       { "field": "timer", "type": "Dword" },
-      { "field": "ai_state", "type": "Byte", "comment": "8 = HH agro, flags maybe?" },
+      {
+        "field": "ai_state",
+        "type": "Byte",
+        "comment": "8 = HH agro, flags maybe?"
+      },
       { "field": "last_ai_state", "type": "Byte" },
       { "field": "unknown13", "type": "Byte" },
       { "field": "unknown14", "type": "Byte" },
       { "field": "unknown15", "type": "Byte" },
       { "field": "unknown16", "type": "Byte" },
-      { "field": "walk_pause_timer", "type": "Word", "comment": "positive: walking, negative: wating/idle" },
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "positive: walking, negative: wating/idle"
+      },
       { "field": "unknown19", "type": "Word" },
       {
         "field": "unknown20",
