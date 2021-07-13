@@ -6600,12 +6600,12 @@
       {
         "field": "timer",
         "type": "UnsignedByte",
-        "comment": "count's from 30 to 0 when detecting player, then moves, when stops moving counts from 60 to 0 before it can be triggered again"
+        "comment": "counts from 30 to 0 when detecting player, then moves, when stops moving counts from 60 to 0 before it can be triggered again"
       },
       {
         "field": "bounce_back_timer",
         "type": "UnsignedByte",
-        "comment": "count's from 7 to 0 when it hits the wall and moves away from the wall, then moves back and count's from 255 until it hits the wall again, if needed it will start the counter again for another bounce"
+        "comment": "counts from 7 to 0 when it hits the wall and moves away from the wall, then moves back and count's from 255 until it hits the wall again, if needed it will start the counter again for another bounce"
       }
     ],
     "Altar": [
@@ -8392,7 +8392,7 @@
       {
         "field": "state",
         "type": "State8",
-        "states": {
+        "state": {
           "0": "none",
           "1": "start",
           "2": "going_down",
@@ -8710,7 +8710,7 @@
     "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
     "Pipe": [
       {
-        "field": "type",
+        "field": "direction_type",
         "type": "State8",
         "states": {
           "3": "straight_horizontal",
@@ -8902,11 +8902,11 @@
       { "field": "unused1", "type": "Byte" },
       { "field": "unused2", "type": "Word" },
       { "field": "spawn_y", "type": "Float" },
-      { "field": "float_timer?", "type": "Float" }
+      { "field": "float_timer?", "type": "Float", "comment": "probably distance_traveled, needs to be verified" }
     ],
     "Spark": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "fx", "type": "EntityPointer" },
+      { "field": "fx_entity", "type": "EntityPointer" },
       { "field": "rotation_center_x", "type": "Float" },
       { "field": "rotation_center_y", "type": "Float" },
       { "field": "angle", "type": "Float" },
@@ -9016,7 +9016,7 @@
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "camera_anchor", "type": "EntityPointer" },
       { "field": "looked_through_by_uid", "type": "EntityUID" },
-      { "field": "unknown", "type": "Float" }
+      { "field": "unknown", "type": "Float", "comment": "seams to be distance between camera_anchor and telescope, but it's off by a little" }
     ],
     "Torch": [
       { "field": "flame_uid", "type": "EntityUID" },
@@ -9026,7 +9026,7 @@
     ],
     "WallTorch": [
       {
-        "field": "no_reward?",
+        "field": "no_reward",
         "type": "Bool",
         "comment": "if false, it will drop gold when lit up"
       }
@@ -9259,13 +9259,13 @@
       { "field": "unknown11", "type": "Word" },
       { "field": "unknown11b", "type": "Word" },
       { "field": "timer", "type": "Dword" },
-      { "field": "ai_state", "type": "Byte", "comment": "8 = HH agro" },
-      { "field": "unknown12", "type": "Byte" },
+      { "field": "ai_state", "type": "Byte", "comment": "8 = HH agro, flags maybe?" },
+      { "field": "last_ai_state", "type": "Byte" },
       { "field": "unknown13", "type": "Byte" },
       { "field": "unknown14", "type": "Byte" },
       { "field": "unknown15", "type": "Byte" },
       { "field": "unknown16", "type": "Byte" },
-      { "field": "unknown17", "type": "Word" },
+      { "field": "walk_pause_timer", "type": "Word", "comment": "positive: walking, negative: wating/idle" },
       { "field": "unknown19", "type": "Word" },
       {
         "field": "unknown20",
