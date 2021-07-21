@@ -243,7 +243,16 @@
     "Caveman": "WalkingMonster",
     "EggshipCenterJetFlame": "Movable",
     "MiniGameShipCenterJetFlame": "Movable",
-    "Button": "Movable"
+    "Button": "Movable",
+    "FxTornJournalPage": "Movable",
+    "FxMainExitDoor": "Movable",
+    "Birdies": "Movable",
+    "Explosion": "Movable",
+    "FxOuroboroOccluder": "Movable",
+    "FxOuroboroDragonPart": "Movable",
+    "Rubble": "Movable",
+    "FxCompass": "Movable",
+    "Portal": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -530,6 +539,16 @@
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
     "FX_EGGSHIP_CENTERJETFLAME": "EggshipCenterJetFlame",
+    "FX_TORNJOURNALPAGE": "FxTornJournalPage",
+    "FX_MAIN_EXIT_DOOR": "FxMainExitDoor",
+    "FX_BIRDIES": "Birdies",
+    "FX_.*EXPLOSION": "Explosion",
+    "FX_OUROBORO_OCCLUDER": "FxOuroboroOccluder",
+    "FX_OUROBORO_HEAD": "FxOuroboroDragonPart",
+    "FX_OUROBORO_TAIL": "FxOuroboroDragonPart",
+    "ITEM_RUBBLE": "Rubble",
+    "FX_COMPASS": "FxCompass",
+    "FX_SPECIALCOMPASS": "FxCompass",
 
     "FX_BUTTON": "Button",
     "FX_MINIGAME_SHIP_CENTERJETFLAME": "MiniGameShipCenterJetFlame",
@@ -537,6 +556,7 @@
     "FX_LAVA_GLOW": "LavaGlow",
     "FX_TELEPORTSHADOW": "LightEmitter",
     "FX_SMALLFLAME": "Flame",
+    "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -6422,7 +6442,11 @@
       { "field": "i120d", "type": "UnsignedByte" },
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "falling_timer", "type": "UnsignedByte" },
-      { "field": "unknown_timer", "type": "UnsignedByte" },
+      {
+        "field": "unknown_timer",
+        "type": "UnsignedByte",
+        "comment": "after layer change?"
+      },
       { "field": "b127", "type": "UnsignedByte" }
     ],
     "Monster": [
@@ -9327,7 +9351,7 @@
       {
         "field": "no_reward",
         "type": "Bool",
-        "comment": "if false, it will drop gold when lit up"
+        "comment": "if false, it will drop gold when light up"
       }
     ],
     "Chain": [
@@ -9674,10 +9698,95 @@
       { "field": "unknown1", "type": "Qword" },
       { "field": "sound_id", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "Dword" },
-      { "field": "sound_name", "type": "DataPointer" },
+      { "field": "sound_name", "type": "ConstCharPointer" },
       { "field": "unknown3", "type": "Qword" },
       { "field": "unknown4", "type": "Qword" },
       { "field": "unknown5", "type": "Qword" }
+    ],
+    "FxTornJournalPage": [
+      { "field": "page_number", "type": "Dword", "comment": "only in tutorial" }
+    ],
+    "FxMainExitDoor": [
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      {
+        "field": "timer",
+        "type": "Dword",
+        "comment": "when breaking open in tutorial"
+      },
+      { "field": "unknown", "type": "Float", "comment": "increments by 0.15" }
+    ],
+    "Birdies": [
+      {
+        "field": "unknown",
+        "type": "UnsignedByte",
+        "comment": "animation_frame offset? , 0 for monsters, 160 for character"
+      }
+    ],
+    "Explosion": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
+    "FxOuroboroOccluder": [
+      {
+        "field": "unknown",
+        "type": "Float",
+        "comment": "counts from 0.0 to 10.0"
+      }
+    ],
+    "FxOuroboroDragonPart": [
+      { "field": "unknown1", "type": "Float", "comment": "angle?" },
+      { "field": "unknown2", "type": "Float", "comment": "fade in/fade out?" },
+      { "field": "unknown3", "type": "Float" },
+      {
+        "field": "speed?",
+        "type": "Float",
+        "comment": "increment value for unknown1"
+      },
+      {
+        "field": "timer?",
+        "type": "Word",
+        "comment": "affects the speed and fade away"
+      },
+      { "field": "padding1?", "type": "Word" },
+      { "field": "padding2?", "type": "Dword" },
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "Rubble": [
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "is different depending of the block source"
+      },
+      { "field": "unknown2", "type": "Byte" },
+      { "field": "unknown3", "type": "Word" },
+      { "field": "unknown4", "type": "Dword" },
+      { "field": "unknown5", "type": "Float" },
+      {
+        "field": "unknown6",
+        "type": "Bool",
+        "comment": "shrinks it down to nothing?"
+      }
+    ],
+    "FxCompass": [
+      { "field": "unknown1", "type": "Float", "comment": "moving distance" },
+      {
+        "field": "angle?",
+        "type": "Float",
+        "comment": "counts form 0 to 2*pi, responsible for moving back and forth"
+      },
+      { "field": "visibility", "type": "Float" },
+      { "field": "is_active", "type": "Bool", "comment": "player has compass" }
+    ],
+    "Portal": [
+      { "field": "UnknownPointerGroup", "type": "UnknownPointerGroup" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "DataPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "transition_timer", "type": "UnsignedByte" },
+      { "field": "level", "type": "UnsignedByte" },
+      { "field": "world", "type": "UnsignedByte" },
+      { "field": "theme", "type": "UnsignedByte" },
+      { "field": "timer", "type": "Dword" }
     ]
   }
 }
