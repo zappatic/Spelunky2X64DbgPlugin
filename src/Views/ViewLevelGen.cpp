@@ -16,6 +16,7 @@ S2Plugin::ViewLevelGen::ViewLevelGen(ViewToolbar* toolbar, QWidget* parent) : QW
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
@@ -121,9 +122,11 @@ void S2Plugin::ViewLevelGen::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewLevelGen::refreshLevelGen()
 {
     mToolbar->levelGen()->refreshOffsets();
+    auto& offsets = mToolbar->levelGen()->offsets();
+    auto deltaReference = offsets.at("LevelGen.data");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
     {
-        mMainTreeView->updateValueForField(field, "LevelGen." + field.name, mToolbar->levelGen()->offsets());
+        mMainTreeView->updateValueForField(field, "LevelGen." + field.name, offsets, deltaReference);
         if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer))
         {
             auto pointerOffset = mToolbar->levelGen()->offsetForField(field.name);

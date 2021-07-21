@@ -571,7 +571,7 @@
     "RenderInfoPointer",
     "ParticleEmitterInfoPointer",
     "DoorCoordsPointer",
-    "MysteryPointer2",
+    "ScreenPointer",
     "TransitionScreenPointer",
     "VictoryWalkScreenPointer",
     "CreditsScreenPointer",
@@ -587,7 +587,7 @@
     "PlayerInputs",
     "InputMappingPointer",
     "QuestsInfoPointer",
-    "MysteryPointer3",
+    "QuestHandlerPointer",
     "MysteryPointer4",
     "LogicPointer",
     "DiceShopPointer",
@@ -646,7 +646,10 @@
     "MusicTrackPointer",
     "Ai_func",
     "SoundInfoPointer",
-    "PointerToString"
+    "SpeechBubblePointer",
+    "SpeechBubbleTimerPointer",
+    "SpeechBubbleLayoutPointer",
+    "SpeechBubbleLayoutDataPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -1110,7 +1113,7 @@
       { "field": "sound_killed_by_other", "type": "Dword" },
       { "field": "field_a8", "type": "Float" },
       { "field": "field_AC", "type": "Dword" },
-      { "field": "-", "type": "Skip", "offset": 64 }, // 0x40
+      { "field": "-", "type": "Skip", "offset": 64 }, // 0x40 (AnimationMap)
       { "field": "attachOffsetX", "type": "Float" },
       { "field": "attachOffsetY", "type": "Float" },
       { "field": "init", "type": "UnsignedByte" },
@@ -1317,12 +1320,12 @@
       { "field": "unknown6", "type": "DataPointer" },
       {
         "field": "unknown_during_basecamp",
-        "type": "MysteryPointer2",
+        "type": "ScreenPointer",
         "comment": "in state there is also unknown8_during_basecamp"
       },
       {
         "field": "unknown_during_level",
-        "type": "MysteryPointer2",
+        "type": "ScreenPointer",
         "comment": "in state there is also unknown9_during_level"
       },
       { "field": "unknown8", "type": "DataPointer" },
@@ -2688,7 +2691,7 @@
       { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
       { "field": "waddler_floor_storage", "type": "EntityUID" },
       { "field": "toast", "type": "DataPointer" },
-      { "field": "speechbubble", "type": "DataPointer" },
+      { "field": "speechbubble", "type": "SpeechBubblePointer" },
       { "field": "speechbubble_timer", "type": "UnsignedDword" },
       { "field": "toast_timer", "type": "UnsignedDword" },
       { "field": "speechbubble_owner", "type": "EntityUID" },
@@ -2697,10 +2700,10 @@
         "field": "arena_choose_teams_screen",
         "type": "ArenaChooseTeamsScreenPointer"
       },
-      { "field": "unknown8_during_basecamp", "type": "MysteryPointer2" },
-      { "field": "unknown9_during_level", "type": "MysteryPointer2" },
+      { "field": "unknown8_during_basecamp", "type": "ScreenPointer" },
+      { "field": "unknown9_during_level", "type": "ScreenPointer" },
       { "field": "level_transition_screen", "type": "TransitionScreenPointer" },
-      { "field": "unknown11", "type": "MysteryPointer2" },
+      { "field": "unknown11", "type": "ScreenPointer" },
       { "field": "unknown12", "type": "UnsignedQword" },
       { "field": "victory_walk_screen", "type": "VictoryWalkScreenPointer" },
       {
@@ -2817,6 +2820,57 @@
       { "field": "unknown43", "type": "UnsignedByte" },
       { "field": "unknown44", "type": "UnsignedDword" },
       { "field": "unknown45", "type": "UnsignedQword" }
+    ],
+    "SpeechBubblePointer": [
+      { "field": "timer", "type": "SpeechBubbleTimerPointer" },
+      { "field": "layout", "type": "SpeechBubbleLayoutPointer" },
+      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" }
+    ],
+    "SpeechBubbleTimerPointer": [
+      {
+        "field": "value",
+        "type": "UnsignedDword",
+        "comment": "touch this and the game freezes"
+      }
+    ],
+    "SpeechBubbleLayoutPointer": [
+      { "field": "data", "type": "SpeechBubbleLayoutDataPointer" }
+    ],
+    "SpeechBubbleLayoutDataPointer": [
+      { "field": "text_center_x", "type": "Float" },
+      { "field": "text_y", "type": "Float" },
+      { "field": "text_length", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "Float" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "UnsignedWord" },
+      { "field": "unknown5", "type": "UnsignedWord" },
+      { "field": "unknown6", "type": "DataPointer" },
+      {
+        "field": "letter_textures",
+        "type": "DataPointer",
+        "comment": "a bunch of float representing the matrix transformations (?) of the individual letters of the text"
+      },
+      { "field": "alphabet_mapping?", "type": "DataPointer" },
+      { "field": "unknown7", "type": "UnsignedWord" },
+      { "field": "unknown8", "type": "UnsignedWord" },
+      { "field": "unknown9", "type": "Dword" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown11", "type": "UnsignedWord" },
+      { "field": "unknown12", "type": "Dword" },
+      { "field": "font", "type": "TextureDBPointer" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "UnsignedWord" },
+      { "field": "unknown15", "type": "UnsignedWord" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "UnsignedDword" },
+      { "field": "unknown19", "type": "Float" },
+      { "field": "unknown20", "type": "Float" }
     ],
     "Dialogue": [
       { "field": "base_dialogue", "type": "DialogueDetailsGroup" },
@@ -3912,7 +3966,7 @@
     ],
     "MysteryPointer4": [
       { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "DataPointer" },
       { "field": "unknown3", "type": "UnsignedQword" },
       { "field": "unknown4", "type": "Vector" },
       { "field": "unknown5", "type": "Vector" },
@@ -4185,6 +4239,11 @@
         "functions": {
           "0": {
             "name": "~DiceShopPointer",
+            "params": "",
+            "return": ""
+          },
+          "1": {
+            "name": "handle_state",
             "params": "",
             "return": ""
           }
@@ -4470,12 +4529,12 @@
       { "field": "unknown1", "type": "UnsignedDword" }
     ],
     "QuestsInfoPointer": [
-      { "field": "unknown1", "type": "MysteryPointer3" },
-      { "field": "unknown2", "type": "MysteryPointer3" },
-      { "field": "unknown3", "type": "MysteryPointer3" },
-      { "field": "unknown4", "type": "MysteryPointer3" },
-      { "field": "unknown5", "type": "MysteryPointer3" },
-      { "field": "unknown6", "type": "MysteryPointer3" },
+      { "field": "yang", "type": "QuestHandlerPointer" },
+      { "field": "jungle_sisters", "type": "QuestHandlerPointer" },
+      { "field": "van_horsing", "type": "QuestHandlerPointer" },
+      { "field": "sparrow", "type": "QuestHandlerPointer" },
+      { "field": "madame_tusk", "type": "QuestHandlerPointer" },
+      { "field": "beg", "type": "QuestHandlerPointer" },
       {
         "field": "yang_state",
         "type": "State8",
@@ -4564,15 +4623,35 @@
       { "field": "unknown15", "type": "UnsignedDword" },
       { "field": "unknown16", "type": "UnsignedDword" }
     ],
-    "MysteryPointer3": [
+    "QuestHandlerPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~MysteryPointer3",
+            "name": "~QuestHandlerPointer",
             "params": "",
             "return": ""
+          },
+          "1": {
+            "name": "initialize",
+            "params": "",
+            "return": "",
+            "comment": [
+              "Gets called on every non-CO level. Function checks whether the quest needs to be initialized.",
+              "Yang: checks whether his quest status = 1 -> makes his pen work",
+              "Sisters: make them appear on Olmec",
+              "Horsing: makes him appear in Vlad's castle",
+              "Sparrow: nop",
+              "Tusk: populates pleasure palace with other characters depending on their quest state",
+              "Beg: nop"
+            ]
+          },
+          "2": {
+            "name": "handle_beg_appearances",
+            "params": "",
+            "return": "",
+            "comment": ["Only implemented for Beg quest"]
           }
         }
       },
@@ -4583,15 +4662,21 @@
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "MysteryPointer2": [
+    "ScreenPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~MysteryPointer2",
+            "name": "~ScreenPointer",
             "params": "",
             "return": ""
+          },
+          "1": {
+            "name": "handle_camera_zoom_level",
+            "params": "",
+            "return": "",
+            "comment": ["May do more than this"]
           }
         }
       },
@@ -5873,23 +5958,84 @@
             "return": "void"
           },
           "3": { "name": "v2", "params": "Entity*", "return": "void" },
+          "5": {
+            "name": "apply_texture",
+            "params": "Texture*",
+            "return": "void"
+          },
           "6": {
             "name": "hiredhand_description",
             "params": "char*",
             "return": "void"
           },
+          "7": {
+            "name": "generate_stomp_damage_particles",
+            "params": "Entity* victim",
+            "return": "void",
+            "comment": "particles when jumping on top of enemy"
+          },
+          "8": {
+            "name": "get_type_field_a8",
+            "params": "",
+            "return": "float"
+          },
+          "9": {
+            "name": "block_pushing_related",
+            "params": "",
+            "return": "bool",
+            "comment": "does a bittest for the 14 entities starting at pushblock, function hits when player pushes entity"
+          },
+          "11": {
+            "name": "handle_jump_run_stompcollision_physics",
+            "params": "",
+            "return": "",
+            "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
+          },
+          "12": {
+            "name": "check_type_properties_flags_19",
+            "params": "",
+            "return": "bool",
+            "comment": "checks (properties_flags >> 0x12) & 1; can't get it to trigger"
+          },
+          "13": {
+            "name": "get_type_field_60",
+            "params": "",
+            "return": "uint32_t"
+          },
           "14": { "name": "set_invisible", "params": "bool", "return": "void" },
-          "15": { "name": "v14", "params": "bool", "return": "void" },
+          "15": {
+            "name": "set_initial_facing_left",
+            "params": "bool apply",
+            "return": "void",
+            "comment": "called during levelgen, apply must be true or nothing happens"
+          },
           "16": {
             "name": "v15",
             "params": "uint8_t a, uint_8t b",
             "return": "void"
+          },
+          "17": {
+            "name": "resume_ai",
+            "params": "",
+            "return": "",
+            "comment": "works on entities with ai_func != 0; runs when companions are let go from being held"
           },
           "18": { "name": "friction", "params": "", "return": "float" },
           "20": {
             "name": "remove_item_ptr",
             "params": "Entity*",
             "return": "void"
+          },
+          "25": {
+            "name": "handle_collision",
+            "params": "Entity* other_entity",
+            "return": ""
+          },
+          "32": {
+            "name": "toggle_backlayer_illumination",
+            "params": "",
+            "return": "",
+            "comment": "for the player: when going to the backlayer, turns on player emitted light"
           },
           "35": { "name": "apply_db", "params": "", "return": "void" }
         }
@@ -6048,7 +6194,140 @@
     "Movable": [
       {
         "vftablefunctions": {
-          "39": { "name": "sprint_factor", "params": "", "return": "float" }
+          "37": {
+            "name": "can_jump",
+            "params": "bool",
+            "return": "",
+            "comment": "disable to allow unlimited multijump; checks jump flags"
+          },
+          "39": { "name": "sprint_factor", "params": "", "return": "float" },
+          "40": {
+            "name": "calculate_jump_height",
+            "params": "",
+            "return": "",
+            "comment": "when disabled, jump height is very high"
+          },
+          "41": {
+            "name": "get_animation_map",
+            "params": "",
+            "return": "std::unordered_map<uint8_t, Animation>&"
+          },
+          "42": {
+            "name": "apply_velocity",
+            "params": "float* velocities",
+            "return": "",
+            "comment": "param is pointer to an array of two floats: velocity x and y"
+          },
+          "46": {
+            "name": "check_dark_shadow_timer",
+            "params": "",
+            "return": ""
+          },
+          "52": {
+            "name": "stun",
+            "params": "uint32_t framecount",
+            "return": ""
+          },
+          "64": {
+            "name": "get_type_id",
+            "params": "",
+            "return": "uint32_t"
+          },
+          "67": {
+            "name": "pick_up",
+            "params": "Entity* entity_to_pick_up",
+            "return": ""
+          },
+          "68": {
+            "name": "picked_up_by",
+            "params": "Entity* entity_picking_up",
+            "return": ""
+          },
+          "69": {
+            "name": "drop",
+            "params": "Entity* entity",
+            "return": "",
+            "comment": "also used when throwing"
+          },
+          "70": {
+            "name": "collect_treasure",
+            "params": "uint32_t treasure_value",
+            "return": ""
+          },
+          "71": {
+            "name": "apply_movement",
+            "params": "",
+            "return": "",
+            "comment": "disable this function and things can't move, some spin in place"
+          },
+          "72": {
+            "name": "damage_entity",
+            "params": "Entity* victim",
+            "return": "",
+            "comment": "can't trigger, maybe extra params are needed"
+          },
+          "73": {
+            "name": "is_monster_or_char",
+            "params": "",
+            "return": "bool"
+          },
+          "74": {
+            "name": "initialize",
+            "params": "",
+            "return": "",
+            "comment": "e.g. cobra: set random spit_timer; bat: set random stand_counter; emerald: set price"
+          },
+          "77": {
+            "name": "process_input",
+            "params": "",
+            "return": ""
+          },
+          "78": {
+            "name": "post_collision_damage_related",
+            "params": "",
+            "return": "",
+            "comment": "seems to start processing invincibility timer in victim, not *this"
+          },
+          "79": {
+            "name": "holding_related",
+            "params": "",
+            "return": ""
+          },
+          "80": {
+            "name": "hired_hand_related",
+            "params": "",
+            "return": "",
+            "comment": "checks ai_func, gets triggered just after throwing hired hand"
+          },
+          "81": {
+            "name": "generate_fall_poof_particles",
+            "params": "",
+            "return": "",
+            "comment": "entity.velocityy must be < 0.015 to generate a poof"
+          },
+          "82": {
+            "name": "handle_fall_logic",
+            "params": "",
+            "return": "",
+            "comment": "adjusts entity.velocityy when falling"
+          },
+          "83": {
+            "name": "apply_friction",
+            "params": "",
+            "return": "",
+            "comment": "applies entity.type.friction to entity.velocityx"
+          },
+          "84": {
+            "name": "boss_related",
+            "params": "",
+            "return": "",
+            "comment": "when disabled, quillback keeps stomping through the level, including border tiles"
+          },
+          "86": {
+            "name": "gravity_related",
+            "params": "",
+            "return": ""
+          }
         }
       },
       { "field": "pa0", "type": "Map" },

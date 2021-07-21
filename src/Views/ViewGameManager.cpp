@@ -14,6 +14,7 @@ S2Plugin::ViewGameManager::ViewGameManager(ViewToolbar* toolbar, QWidget* parent
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
     toggleAutoRefresh(Qt::Checked);
 }
@@ -76,9 +77,11 @@ void S2Plugin::ViewGameManager::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewGameManager::refreshGameManager()
 {
     mToolbar->gameManager()->refreshOffsets();
+    auto& offsets = mToolbar->gameManager()->offsets();
+    auto deltaReference = offsets.at("GameManager.backgroundmusic");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::GameManager))
     {
-        mMainTreeView->updateValueForField(field, "GameManager." + field.name, mToolbar->gameManager()->offsets());
+        mMainTreeView->updateValueForField(field, "GameManager." + field.name, offsets, deltaReference);
     }
 }
 

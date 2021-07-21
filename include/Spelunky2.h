@@ -18,8 +18,9 @@ namespace S2Plugin
     static constexpr uint8_t gsColComparisonValue = 3;
     static constexpr uint8_t gsColComparisonValueHex = 4;
     static constexpr uint8_t gsColMemoryOffset = 5;
-    static constexpr uint8_t gsColType = 6;
-    static constexpr uint8_t gsColComment = 7;
+    static constexpr uint8_t gsColMemoryOffsetDelta = 6;
+    static constexpr uint8_t gsColType = 7;
+    static constexpr uint8_t gsColComment = 8;
 
     static const uint16_t gsRoleField = Qt::UserRole + gsColField;
     static const uint16_t gsRoleValue = Qt::UserRole + gsColValue;
@@ -91,6 +92,7 @@ namespace S2Plugin
         TextureDBID,
         TextureDBPointer,
         Vector,
+        ConstCharPointer,
         ConstCharPointerPointer,
         EntitySubclass,               // a subclass of an entity defined in json
         PointerType,                  // a pointer defined in json
@@ -149,6 +151,7 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBPointer, "TextureDB pointer"},
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
+        {MemoryFieldType::ConstCharPointer, "Const char*"},
         {MemoryFieldType::PointerType, "Pointer"},
         {MemoryFieldType::InlineStructType, "Inline struct"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
@@ -197,6 +200,7 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBPointer, "Texture*"},
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::ConstCharPointerPointer, "const char**"},
+        {MemoryFieldType::ConstCharPointer, "const char*"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "ThemeInfo*"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRooms*"},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMeta*"},
@@ -250,6 +254,7 @@ namespace S2Plugin
         {"TextureDBPointer", MemoryFieldType::TextureDBPointer},
         {"Vector", MemoryFieldType::Vector},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
+        {"ConstCharPointer", MemoryFieldType::ConstCharPointer},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
         {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},

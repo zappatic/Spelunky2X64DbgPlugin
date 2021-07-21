@@ -80,13 +80,14 @@ void S2Plugin::Entity::refreshValues()
     }
 
     // now update all the values in the treeview
+    auto deltaReference = mMemoryOffsets.at("Entity.__vftable");
     for (const auto& c : hierarchy)
     {
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
         headerField.jsonName = c;
-        mTree->updateValueForField(headerField, c, mMemoryOffsets);
+        mTree->updateValueForField(headerField, c, mMemoryOffsets, deltaReference);
     }
 }
 
@@ -185,6 +186,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::VirtualFunctionTable:
             fieldSize = 8;
             break;
@@ -279,6 +281,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::ConstCharPointer:
             isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 8;
             break;

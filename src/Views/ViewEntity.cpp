@@ -31,6 +31,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     mMainTreeView->setColumnWidth(gsColField, 175);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
 
     mEntity->populateMemoryView();

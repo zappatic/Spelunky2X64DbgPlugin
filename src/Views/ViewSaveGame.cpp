@@ -14,6 +14,7 @@ S2Plugin::ViewSaveGame::ViewSaveGame(ViewToolbar* toolbar, QWidget* parent) : QW
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
     toggleAutoRefresh(Qt::Checked);
 }
@@ -76,9 +77,11 @@ void S2Plugin::ViewSaveGame::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewSaveGame::refreshSaveGame()
 {
     mToolbar->savegame()->refreshOffsets();
+    auto& offsets = mToolbar->savegame()->offsets();
+    auto deltaReference = offsets.at("SaveGame.places");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::SaveGame))
     {
-        mMainTreeView->updateValueForField(field, "SaveGame." + field.name, mToolbar->savegame()->offsets());
+        mMainTreeView->updateValueForField(field, "SaveGame." + field.name, offsets, deltaReference);
     }
 }
 
