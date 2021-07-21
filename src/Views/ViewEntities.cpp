@@ -22,11 +22,6 @@ S2Plugin::ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QW
     mMainTreeView->setVisible(true);
 
     refreshEntities();
-    mMainTreeView->setColumnWidth(gsColField, 125);
-    mMainTreeView->setColumnWidth(gsColValueHex, 125);
-    mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
-    mMainTreeView->setColumnHidden(gsColMemoryOffsetDelta, true);
-    mMainTreeView->setColumnWidth(gsColType, 100);
     mFilterLineEdit->setFocus();
 }
 
@@ -36,8 +31,6 @@ void S2Plugin::ViewEntities::initializeTreeView()
     mMainTreeView->setEnableChangeHighlighting(false);
 
     mMainLayout->addWidget(mMainTreeView);
-
-    mMainTreeView->setColumnWidth(gsColValue, 250);
 }
 
 void S2Plugin::ViewEntities::initializeRefreshAndFilter()
@@ -52,6 +45,7 @@ void S2Plugin::ViewEntities::initializeRefreshAndFilter()
     filterLayout->addWidget(label, 0, 1);
 
     mFilterLineEdit = new QLineEdit(this);
+    mFilterLineEdit->setPlaceholderText("Search for UID (dec or hex starting with 0x) or (part of) the entity name");
     QObject::connect(mFilterLineEdit, &QLineEdit::textChanged, this, &ViewEntities::refreshEntities);
     filterLayout->addWidget(mFilterLineEdit, 0, 2, 1, 6);
 
@@ -151,6 +145,26 @@ void S2Plugin::ViewEntities::refreshEntities()
             auto entityName = QString::fromStdString(mToolbar->configuration()->spelunky2()->getEntityName(entity, mToolbar->entityDB()));
 
             auto matchesFilter = false;
+            bool performEntityNameMatch = true;
+
+            if (!mFilterLineEdit->text().isEmpty())
+            {
+                bool isUIDlookupSuccess = false;
+                auto enteredUID = mFilterLineEdit->text().toUInt(&isUIDlookupSuccess, 0);
+                if (isUIDlookupSuccess)
+                {
+                    if (enteredUID == entityUid)
+                    {
+                        matchesFilter = true;
+                        performEntityNameMatch = false;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+
             if (mCheckboxFLOOR->checkState() == Qt::Checked && entityName.startsWith("FLOOR_"))
             {
                 matchesFilter = true;
@@ -207,7 +221,7 @@ void S2Plugin::ViewEntities::refreshEntities()
             {
                 matchesFilter = true;
             }
-            if (matchesFilter && !mFilterLineEdit->text().isEmpty())
+            if (matchesFilter && !mFilterLineEdit->text().isEmpty() && performEntityNameMatch)
             {
                 if (!entityName.contains(mFilterLineEdit->text(), Qt::CaseInsensitive))
                 {
@@ -250,6 +264,12 @@ void S2Plugin::ViewEntities::refreshEntities()
     mMainTreeView->updateTableHeader();
     mMainTreeView->setColumnHidden(gsColComparisonValue, true);
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
+    mMainTreeView->setColumnHidden(gsColMemoryOffsetDelta, true);
+    mMainTreeView->setColumnWidth(gsColField, 145);
+    mMainTreeView->setColumnWidth(gsColValueHex, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColType, 100);
+    mMainTreeView->setColumnWidth(gsColValue, 300);
 }
 
 QSize S2Plugin::ViewEntities::sizeHint() const
