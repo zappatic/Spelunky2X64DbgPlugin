@@ -155,6 +155,7 @@ void S2Plugin::ViewTextureDB::initializeUI()
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
@@ -203,9 +204,11 @@ void S2Plugin::ViewTextureDB::showID(size_t id)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
     mLookupID = id;
+    auto& offsets = mToolbar->textureDB()->offsetsForTextureID(mLookupID);
+    auto deltaReference = offsets.at("TextureDB.id");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::TextureDB))
     {
-        mMainTreeView->updateValueForField(field, "TextureDB." + field.name, mToolbar->textureDB()->offsetsForTextureID(mLookupID));
+        mMainTreeView->updateValueForField(field, "TextureDB." + field.name, offsets, deltaReference);
     }
 }
 
@@ -230,9 +233,11 @@ void S2Plugin::ViewTextureDB::fieldExpanded(const QModelIndex& index)
 
 void S2Plugin::ViewTextureDB::updateFieldValues()
 {
+    auto& offsets = mToolbar->textureDB()->offsetsForTextureID(mLookupID);
+    auto deltaReference = offsets.at("TextureDB.id");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::TextureDB))
     {
-        mMainTreeView->updateValueForField(field, "TextureDB." + field.name, mToolbar->textureDB()->offsetsForTextureID(mLookupID));
+        mMainTreeView->updateValueForField(field, "TextureDB." + field.name, offsets, deltaReference);
     }
 }
 

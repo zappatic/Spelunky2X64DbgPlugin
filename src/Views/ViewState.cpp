@@ -15,6 +15,7 @@ S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
     toggleAutoRefresh(Qt::Checked);
 }
@@ -77,9 +78,11 @@ void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewState::refreshState()
 {
     mToolbar->state()->refreshOffsets();
+    auto& offsets = mToolbar->state()->offsets();
+    auto deltaReference = offsets.at("State.p00");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
     {
-        mMainTreeView->updateValueForField(field, "State." + field.name, mToolbar->state()->offsets());
+        mMainTreeView->updateValueForField(field, "State." + field.name, offsets, deltaReference);
     }
 }
 

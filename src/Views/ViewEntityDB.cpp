@@ -176,13 +176,16 @@ void S2Plugin::ViewEntityDB::showIndex(size_t index)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
     mLookupIndex = index;
+    auto& offsets = mToolbar->entityDB()->offsetsForIndex(index);
+    auto deltaReference = offsets.at("EntityDB.create_func");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
     {
-        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(index));
+        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, offsets, deltaReference);
     }
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
@@ -208,9 +211,11 @@ void S2Plugin::ViewEntityDB::fieldExpanded(const QModelIndex& index)
 
 void S2Plugin::ViewEntityDB::updateFieldValues()
 {
+    auto& offsets = mToolbar->entityDB()->offsetsForIndex(mLookupIndex);
+    auto deltaReference = offsets.at("EntityDB.create_func");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
     {
-        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, mToolbar->entityDB()->offsetsForIndex(mLookupIndex));
+        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, offsets, deltaReference);
     }
 }
 

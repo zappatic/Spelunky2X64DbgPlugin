@@ -155,6 +155,7 @@ void S2Plugin::ViewParticleDB::initializeUI()
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
@@ -201,9 +202,11 @@ void S2Plugin::ViewParticleDB::showIndex(size_t index)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
     mLookupIndex = index;
+    auto& offsets = mToolbar->particleDB()->offsetsForIndex(mLookupIndex);
+    auto deltaReference = offsets.at("ParticleDB.id");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
     {
-        mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, mToolbar->particleDB()->offsetsForIndex(mLookupIndex));
+        mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, offsets, deltaReference);
     }
 }
 
@@ -228,9 +231,11 @@ void S2Plugin::ViewParticleDB::fieldExpanded(const QModelIndex& index)
 
 void S2Plugin::ViewParticleDB::updateFieldValues()
 {
+    auto& offsets = mToolbar->particleDB()->offsetsForIndex(mLookupIndex);
+    auto deltaReference = offsets.at("ParticleDB.id");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
     {
-        mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, mToolbar->particleDB()->offsetsForIndex(mLookupIndex));
+        mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, offsets, deltaReference);
     }
 }
 

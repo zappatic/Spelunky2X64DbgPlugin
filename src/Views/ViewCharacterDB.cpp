@@ -155,6 +155,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
+    mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
 }
 
@@ -203,9 +204,11 @@ void S2Plugin::ViewCharacterDB::showIndex(size_t index)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
     mLookupIndex = index;
+    auto& offsets = mToolbar->characterDB()->offsetsForIndex(mLookupIndex);
+    auto deltaReference = offsets.at("CharacterDB.is_female");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::CharacterDB))
     {
-        mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, mToolbar->characterDB()->offsetsForIndex(mLookupIndex));
+        mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, offsets, deltaReference);
     }
 }
 
@@ -230,9 +233,11 @@ void S2Plugin::ViewCharacterDB::fieldExpanded(const QModelIndex& index)
 
 void S2Plugin::ViewCharacterDB::updateFieldValues()
 {
+    auto& offsets = mToolbar->characterDB()->offsetsForIndex(mLookupIndex);
+    auto deltaReference = offsets.at("CharacterDB.is_female");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::CharacterDB))
     {
-        mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, mToolbar->characterDB()->offsetsForIndex(mLookupIndex));
+        mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, offsets, deltaReference);
     }
 }
 

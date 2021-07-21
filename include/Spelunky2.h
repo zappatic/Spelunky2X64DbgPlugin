@@ -18,8 +18,9 @@ namespace S2Plugin
     static constexpr uint8_t gsColComparisonValue = 3;
     static constexpr uint8_t gsColComparisonValueHex = 4;
     static constexpr uint8_t gsColMemoryOffset = 5;
-    static constexpr uint8_t gsColType = 6;
-    static constexpr uint8_t gsColComment = 7;
+    static constexpr uint8_t gsColMemoryOffsetDelta = 6;
+    static constexpr uint8_t gsColType = 7;
+    static constexpr uint8_t gsColComment = 8;
 
     static const uint16_t gsRoleField = Qt::UserRole + gsColField;
     static const uint16_t gsRoleValue = Qt::UserRole + gsColValue;
