@@ -185,6 +185,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::VirtualFunctionTable:
             fieldSize = 8;
             break;
@@ -279,6 +280,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::ConstCharPointer:
             isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 8;
             break;

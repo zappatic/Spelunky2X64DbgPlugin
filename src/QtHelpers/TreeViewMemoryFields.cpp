@@ -147,6 +147,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::LevelGenPointer:
         case MemoryFieldType::ParticleDBPointer:
         case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::LevelGenRoomsPointer:
         case MemoryFieldType::LevelGenRoomsMetaPointer:
         case MemoryFieldType::ThemeInfoName:
@@ -1453,6 +1454,52 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             break;
         }
+        case MemoryFieldType::ConstCharPointer:
+        {
+            constexpr uint16_t bufferSize = 1024;
+            char buffer[bufferSize] = {0};
+
+            size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
+            if (value != 0)
+            {
+                size_t chararray = value;
+                char c = 0;
+                uint16_t counter = 0;
+                do
+                {
+                    c = Script::Memory::ReadByte(chararray + counter);
+                    buffer[counter++] = c;
+                } while (c != 0 && counter < bufferSize);
+            }
+
+            itemValue->setData(QString(buffer), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            char comparisonBuffer[bufferSize] = {0};
+            size_t comparisonValue = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(comparisonMemoryOffset));
+            if (comparisonValue != 0)
+            {
+                size_t chararray = comparisonValue;
+                char c = 0;
+                uint16_t counter = 0;
+                do
+                {
+                    c = Script::Memory::ReadByte(chararray + counter);
+                    comparisonBuffer[counter++] = c;
+                } while (c != 0 && counter < bufferSize);
+            }
+            itemComparisonValue->setData(QString(comparisonBuffer), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+
+            break;
+        }
         case MemoryFieldType::UndeterminedThemeInfoPointer:
         {
             if (memoryOffset == 0)
@@ -1587,6 +1634,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     break;
                 }
                 case MemoryFieldType::ConstCharPointerPointer:
+                case MemoryFieldType::ConstCharPointer:
                 case MemoryFieldType::DataPointer:
                 {
                     GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
