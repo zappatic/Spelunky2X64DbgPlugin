@@ -1067,16 +1067,32 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::TextureDBID:
         {
-            uint32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
-            itemValue->setData(QString::asprintf("<font color='blue'><u>%lu (%s)</u></font>", value, mToolbar->textureDB()->nameForID(value).c_str()), Qt::DisplayRole);
+            int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
+            if (value < 0)
+            {
+                itemValue->setData(QString::asprintf("<font color='blue'><u>%ld (dynamically applied in ThemeInfo->get_dynamic_floor_texture_id())</u></font>", value), Qt::DisplayRole);
+            }
+            else
+            {
+                itemValue->setData(QString::asprintf("<font color='blue'><u>%ld (%s)</u></font>", value, mToolbar->textureDB()->nameForID(value).c_str()), Qt::DisplayRole);
+            }
             auto newHexValue = QString::asprintf("0x%08lX", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
             itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
 
-            uint32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
-            itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>%lu (%s)</u></font>", comparisonValue, mToolbar->textureDB()->nameForID(comparisonValue).c_str()), Qt::DisplayRole);
+            int32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
+            if (value < 0)
+            {
+                itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>%ld (dynamically applied in ThemeInfo->get_dynamic_floor_texture_id())</u></font>", comparisonValue),
+                                             Qt::DisplayRole);
+            }
+            else
+            {
+                itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>%ld (%s)</u></font>", comparisonValue, mToolbar->textureDB()->nameForID(comparisonValue).c_str()),
+                                             Qt::DisplayRole);
+            }
             auto hexComparisonValue = QString::asprintf("0x%08lX", comparisonValue);
             itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -1709,7 +1725,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::TextureDBID:
                 {
                     auto id = clickedItem->data(gsRoleRawValue).toUInt();
-                    if (id != -1)
+                    if (id >= 0)
                     {
                         auto view = mToolbar->showTextureDB();
                         if (view != nullptr)

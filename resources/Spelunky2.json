@@ -9079,7 +9079,39 @@
             "comment": "returns a value that appears to affect room generation and is based on current world,level"
           },
           "47": {
-            "name": "unknown_v47",
+            "name": "post_process_decoration1",
+            "params": "",
+            "return": "",
+            "comment": [
+              "used e.g. in Vlad's castle to insert the big banner in the center with the two demon statues",
+              "also implemented for neobab (i think in the zoos)",
+              "might do other things as well"
+            ]
+          },
+          "48": {
+            "name": "post_process_decoration2",
+            "params": "",
+            "return": "",
+            "comment": [
+              "dwelling: adds the decal above the udjat chest",
+              "jungle: adds the colorful jungle flowers on top of the blocks",
+              "does lots of other things as well, not sure about difference between this and post_process_decoration1"
+            ]
+          },
+          "49": {
+            "name": "populate_extra_random_entities",
+            "params": "",
+            "return": "",
+            "comment": [
+              "dwelling udjat level: adds the key in random place",
+              "vlad's castle: adds decorative banners",
+              "tidepool: adds hanging seaweed, red lanterns, ...",
+              "temple: adds temple sand deco, ...",
+              "neobab: adds neon signs, hanging wires, ..."
+            ]
+          },
+          "50": {
+            "name": "do_procedural_spawn",
             "params": "",
             "return": "",
             "comment": ""

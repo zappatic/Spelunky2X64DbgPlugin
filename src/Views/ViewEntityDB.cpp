@@ -414,13 +414,13 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const std::st
         }
         case MemoryFieldType::Dword:
         case MemoryFieldType::State32:
+        case MemoryFieldType::TextureDBID:
         {
             int32_t value = Script::Memory::ReadDword(offset);
             return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
         }
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
-        case MemoryFieldType::TextureDBID:
         case MemoryFieldType::StringsTableID:
         case MemoryFieldType::UnsignedDword:
         case MemoryFieldType::Flags32:
