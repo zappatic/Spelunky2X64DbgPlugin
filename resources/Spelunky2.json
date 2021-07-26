@@ -240,7 +240,19 @@
     "Bat": "Monster",
     "Terra": "Monster",
     "CritterBeetle": "Critter",
-    "Caveman": "WalkingMonster"
+    "Caveman": "WalkingMonster",
+    "EggshipCenterJetFlame": "Movable",
+    "MiniGameShipCenterJetFlame": "Movable",
+    "Button": "Movable",
+    "FxTornJournalPage": "Movable",
+    "FxMainExitDoor": "Movable",
+    "Birdies": "Movable",
+    "Explosion": "Movable",
+    "FxOuroboroOccluder": "Movable",
+    "FxOuroboroDragonPart": "Movable",
+    "Rubble": "Movable",
+    "FxCompass": "Movable",
+    "Portal": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -526,10 +538,25 @@
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
+    "FX_EGGSHIP_CENTERJETFLAME": "EggshipCenterJetFlame",
+    "FX_TORNJOURNALPAGE": "FxTornJournalPage",
+    "FX_MAIN_EXIT_DOOR": "FxMainExitDoor",
+    "FX_BIRDIES": "Birdies",
+    "FX_.*EXPLOSION": "Explosion",
+    "FX_OUROBORO_OCCLUDER": "FxOuroboroOccluder",
+    "FX_OUROBORO_HEAD": "FxOuroboroDragonPart",
+    "FX_OUROBORO_TAIL": "FxOuroboroDragonPart",
+    "ITEM_RUBBLE": "Rubble",
+    "FX_COMPASS": "FxCompass",
+    "FX_SPECIALCOMPASS": "FxCompass",
+
+    "FX_BUTTON": "Button",
+    "FX_MINIGAME_SHIP_CENTERJETFLAME": "MiniGameShipCenterJetFlame",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
     "FX_LAVA_GLOW": "LavaGlow",
     "FX_TELEPORTSHADOW": "LightEmitter",
     "FX_SMALLFLAME": "Flame",
+    "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -638,6 +665,7 @@
     "BackgroundMusicManagerPointer",
     "MusicTrackPointer",
     "Ai_func",
+    "SoundInfoPointer",
     "SpeechBubblePointer",
     "SpeechBubbleTimerPointer",
     "SpeechBubbleLayoutPointer",
@@ -6621,7 +6649,11 @@
       { "field": "i120d", "type": "UnsignedByte" },
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "falling_timer", "type": "UnsignedByte" },
-      { "field": "unknown_timer", "type": "UnsignedByte" },
+      {
+        "field": "unknown_timer",
+        "type": "UnsignedByte",
+        "comment": "after layer change?"
+      },
       { "field": "b127", "type": "UnsignedByte" }
     ],
     "Monster": [
@@ -7022,7 +7054,7 @@
           "1": "Disable light1",
           "2": "Enable light2",
           "3": "Enable light3",
-          "4": "",
+          "4": "Light the surrounding",
           "5": "",
           "6": "",
           "7": "Modulate brightness_multiplier",
@@ -7052,8 +7084,7 @@
           "31": "",
           "32": ""
         }
-      },
-      { "field": "flags2?", "type": "Qword" }
+      }
     ],
     "Rect": [
       { "field": "masks", "type": "UnsignedDword" },
@@ -7087,12 +7118,12 @@
       {
         "field": "timer",
         "type": "UnsignedByte",
-        "comment": "count's from 30 to 0 when detecting player, then moves, when stops moving counts from 60 to 0 before it can be triggered again"
+        "comment": "counts from 30 to 0 when detecting player, then moves, when stops moving counts from 60 to 0 before it can be triggered again"
       },
       {
         "field": "bounce_back_timer",
         "type": "UnsignedByte",
-        "comment": "count's from 7 to 0 when it hits the wall and moves away from the wall, then moves back and count's from 255 until it hits the wall again, if needed it will start the counter again for another bounce"
+        "comment": "counts from 7 to 0 when it hits the wall and moves away from the wall, then moves back and count's from 255 until it hits the wall again, if needed it will start the counter again for another bounce"
       }
     ],
     "Altar": [
@@ -7232,8 +7263,8 @@
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       {
-        "field": "sound_effect_pointer?",
-        "type": "DataPointer",
+        "field": "sound_effect_info",
+        "type": "SoundInfoPointer",
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30); soundeffect doesn't seem to change when you pick a similar object around it"
       },
       {
@@ -9225,7 +9256,7 @@
       {
         "field": "state",
         "type": "State8",
-        "states": {
+        "state": {
           "0": "none",
           "1": "start",
           "2": "going_down",
@@ -9543,7 +9574,7 @@
     "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
     "Pipe": [
       {
-        "field": "type",
+        "field": "direction_type",
         "type": "State8",
         "states": {
           "3": "straight_horizontal",
@@ -9735,16 +9766,20 @@
       { "field": "unused1", "type": "Byte" },
       { "field": "unused2", "type": "Word" },
       { "field": "spawn_y", "type": "Float" },
-      { "field": "float_timer?", "type": "Float" }
+      {
+        "field": "float_timer?",
+        "type": "Float",
+        "comment": "probably distance_traveled, needs to be verified"
+      }
     ],
     "Spark": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "fx", "type": "EntityPointer" },
+      { "field": "fx_entity", "type": "EntityPointer" },
       { "field": "rotation_center_x", "type": "Float" },
       { "field": "rotation_center_y", "type": "Float" },
       { "field": "angle", "type": "Float" },
       {
-        "field": "particle_size?",
+        "field": "size",
         "type": "Float",
         "comment": "slowly goes down to default 1.0, is 0.0 when not on screen"
       },
@@ -9758,7 +9793,11 @@
         "type": "Float",
         "comment": "width and height will be set to this value * size_multiply next frame"
       },
-      { "field": "state?", "type": "UnsignedByte" }
+      {
+        "field": "size_change_timer",
+        "type": "UnsignedByte",
+        "comment": "very short timer before next size change, giving a pulsing effect"
+      }
     ],
     "TiamatShot": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
     "Fireball": [{ "field": "particle", "type": "ParticleEmitterInfoPointer" }],
@@ -9797,7 +9836,7 @@
       {
         "field": "state?",
         "type": "UnsignedByte",
-        "comment": "only punish chain"
+        "comment": "only punish chain, (chain_length - i) * 2"
       },
       {
         "field": "unknown_timer",
@@ -9849,7 +9888,11 @@
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "camera_anchor", "type": "EntityPointer" },
       { "field": "looked_through_by_uid", "type": "EntityUID" },
-      { "field": "unknown", "type": "Float" }
+      {
+        "field": "unknown",
+        "type": "Float",
+        "comment": "seams to be distance between camera_anchor and telescope, but it's off by a little"
+      }
     ],
     "Torch": [
       { "field": "flame_uid", "type": "EntityUID" },
@@ -9859,9 +9902,9 @@
     ],
     "WallTorch": [
       {
-        "field": "no_reward?",
+        "field": "no_reward",
         "type": "Bool",
-        "comment": "if false, it will drop gold when lit up"
+        "comment": "if false, it will drop gold when light up"
       }
     ],
     "Chain": [
@@ -10092,13 +10135,21 @@
       { "field": "unknown11", "type": "Word" },
       { "field": "unknown11b", "type": "Word" },
       { "field": "timer", "type": "Dword" },
-      { "field": "ai_state", "type": "Byte", "comment": "8 = HH agro" },
-      { "field": "unknown12", "type": "Byte" },
+      {
+        "field": "ai_state",
+        "type": "Byte",
+        "comment": "8 = HH agro, flags maybe?"
+      },
+      { "field": "last_ai_state", "type": "Byte" },
       { "field": "unknown13", "type": "Byte" },
       { "field": "unknown14", "type": "Byte" },
       { "field": "unknown15", "type": "Byte" },
       { "field": "unknown16", "type": "Byte" },
-      { "field": "unknown17", "type": "Word" },
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "positive: walking, negative: wating/idle"
+      },
       { "field": "unknown19", "type": "Word" },
       {
         "field": "unknown20",
@@ -10112,6 +10163,183 @@
       { "field": "unknown25", "type": "Byte" },
       { "field": "unknown26", "type": "Dword" },
       { "field": "unknown27", "type": "Map" } //added map for now, it's list of 3 pointers
+    ],
+    "EggshipCenterJetFlame": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "unknown2", "type": "Qword" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "smoke_on", "type": "Bool" }
+    ],
+    "MiniGameShipCenterJetFlame": [
+      { "field": "unknown1", "type": "Dword" },
+      {
+        "field": "position_offset",
+        "type": "Float",
+        "comment": " = y but also pushblock_offsety"
+      },
+      { "field": "unknown2", "type": "Dword" },
+      {
+        "field": "normal_offset",
+        "type": "Float",
+        "comment": "is added to position_offset"
+      }
+    ],
+    "Button": [
+      {
+        "field": "button_sprite",
+        "type": "Flags8",
+        "flags": {
+          "1": "pad: A, key: Z",
+          "2": "pad: X, key: X",
+          "3": "pad: B, key: C",
+          "4": "pad: Y, key: D",
+          "5": "pad: LB, key: L Shift",
+          "6": "pad: RB, key: A",
+          "7": "pad: menu?, key: (none)",
+          "8": "pad: copy?, key: Tab"
+        },
+        "comment": "changes the button shown, setting more then one defaults to the first"
+      },
+      { "field": "unknown2", "type": "Byte" },
+      { "field": "padding1", "type": "Word" },
+      { "field": "visibility", "type": "Float" },
+      {
+        "field": "is_visible2?",
+        "type": "Bool",
+        "comment": "it's false for selldialog used in shops"
+      },
+      {
+        "field": "player_trigger?",
+        "type": "Bool",
+        "comment": "it's set true even if player does not see the button, like the drill or COG door"
+      },
+      { "field": "unknown4", "type": "Bool" },
+      { "field": "padding2", "type": "Byte" },
+      {
+        "field": "player1_on_screen_timer?",
+        "type": "Dword",
+        "comment": "a weird one, does not start at 0, sometimes accessed as byte, similar to the jetpack fly_counter, that is not per button, also some buttons use it, some not"
+      },
+      {
+        "field": "player2_on_screen_timer?",
+        "type": "Dword",
+        "comment": "they all are not even per player, as they run in sync"
+      },
+      {
+        "field": "player3_on_screen_timer?",
+        "type": "Dword",
+        "comment": "timers sometimes stay, sometimes are set back to -1"
+      },
+      { "field": "player4_on_screen_timer?", "type": "Dword" },
+      {
+        "field": "seen",
+        "type": "State8",
+        "states": {
+          "-1": "hasn't been seen",
+          "0": "last seen by player 1",
+          "1": "last seen by player 2",
+          "2": "last seen by player 3",
+          "3": "last seen by player 4"
+        }
+      },
+      { "field": "unknown11", "type": "Byte" },
+      { "field": "padding3", "type": "Word" },
+      { "field": "unknown12", "type": "Qword" }
+    ],
+    "SoundInfoPointer": [
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "sound_id", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "Dword" },
+      { "field": "sound_name", "type": "ConstCharPointer" },
+      { "field": "unknown3", "type": "Qword" },
+      { "field": "unknown4", "type": "Qword" },
+      { "field": "unknown5", "type": "Qword" }
+    ],
+    "FxTornJournalPage": [
+      { "field": "page_number", "type": "Dword", "comment": "only in tutorial" }
+    ],
+    "FxMainExitDoor": [
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      {
+        "field": "timer",
+        "type": "Dword",
+        "comment": "when breaking open in tutorial"
+      },
+      { "field": "unknown", "type": "Float", "comment": "increments by 0.15" }
+    ],
+    "Birdies": [
+      {
+        "field": "unknown",
+        "type": "UnsignedByte",
+        "comment": "animation_frame offset? , 0 for monsters, 160 for character"
+      }
+    ],
+    "Explosion": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
+    "FxOuroboroOccluder": [
+      {
+        "field": "unknown",
+        "type": "Float",
+        "comment": "counts from 0.0 to 10.0"
+      }
+    ],
+    "FxOuroboroDragonPart": [
+      { "field": "unknown1", "type": "Float", "comment": "angle?" },
+      { "field": "unknown2", "type": "Float", "comment": "fade in/fade out?" },
+      { "field": "unknown3", "type": "Float" },
+      {
+        "field": "speed?",
+        "type": "Float",
+        "comment": "increment value for unknown1"
+      },
+      {
+        "field": "timer?",
+        "type": "Word",
+        "comment": "affects the speed and fade away"
+      },
+      { "field": "padding1?", "type": "Word" },
+      { "field": "padding2?", "type": "Dword" },
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "Rubble": [
+      {
+        "field": "unknown1",
+        "type": "UnsignedByte",
+        "comment": "is different depending of the block source"
+      },
+      { "field": "unknown2", "type": "Byte" },
+      { "field": "unknown3", "type": "Word" },
+      { "field": "unknown4", "type": "Dword" },
+      { "field": "unknown5", "type": "Float" },
+      {
+        "field": "unknown6",
+        "type": "Bool",
+        "comment": "shrinks it down to nothing?"
+      }
+    ],
+    "FxCompass": [
+      { "field": "unknown1", "type": "Float", "comment": "moving distance" },
+      {
+        "field": "angle?",
+        "type": "Float",
+        "comment": "counts form 0 to 2*pi, responsible for moving back and forth"
+      },
+      { "field": "visibility", "type": "Float" },
+      { "field": "is_active", "type": "Bool", "comment": "player has compass" }
+    ],
+    "Portal": [
+      { "field": "UnknownPointerGroup", "type": "UnknownPointerGroup" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "DataPointer" },
+      { "field": "emitted_light", "type": "IlluminationPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "transition_timer", "type": "UnsignedByte" },
+      { "field": "level", "type": "UnsignedByte" },
+      { "field": "world", "type": "UnsignedByte" },
+      { "field": "theme", "type": "UnsignedByte" },
+      { "field": "timer", "type": "Dword" }
     ]
   }
 }
