@@ -5794,7 +5794,7 @@
       { "field": "unknown38", "type": "DataPointer" },
       {
         "field": "flags",
-        "type": "Flags16",
+        "type": "Flags32",
         "flags": {
           "1": "",
           "2": "",
@@ -5811,11 +5811,25 @@
           "13": "",
           "14": "",
           "15": "",
-          "16": ""
+          "16": "",
+          "17": "",
+          "18": "",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
         }
       },
-      { "field": "unknown40", "type": "Byte" },
-      { "field": "unknown41", "type": "UnsignedByte" },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
@@ -5949,7 +5963,12 @@
             "params": "bool, Entity* frm",
             "return": "void"
           },
-          "3": { "name": "v2", "params": "Entity*", "return": "void" },
+          "3": {
+            "name": "on_collision1",
+            "params": "Entity* other_entity",
+            "return": "void",
+            "comment": "needs investigating, difference between this and on_collision2"
+          },
           "5": {
             "name": "apply_texture",
             "params": "Texture*",
@@ -5978,7 +5997,7 @@
             "comment": "does a bittest for the 14 entities starting at pushblock, function hits when player pushes entity"
           },
           "11": {
-            "name": "handle_jump_run_stompcollision_physics",
+            "name": "v10",
             "params": "",
             "return": "",
             "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
@@ -5996,14 +6015,14 @@
           },
           "14": { "name": "set_invisible", "params": "bool", "return": "void" },
           "15": {
-            "name": "set_initial_facing_left",
+            "name": "handle_turning_left",
             "params": "bool apply",
             "return": "void",
-            "comment": "called during levelgen, apply must be true or nothing happens"
+            "comment": "if disabled, monsters don't turn left and keep walking in the wall (and other right-left issues)"
           },
           "16": {
-            "name": "v15",
-            "params": "uint8_t a, uint_8t b",
+            "name": "set_draw_depth",
+            "params": "uint8_t draw_depth",
             "return": "void"
           },
           "17": {
@@ -6018,16 +6037,79 @@
             "params": "Entity*",
             "return": "void"
           },
+          "21": {
+            "name": "get_held_entity",
+            "params": "Entity*",
+            "return": "void"
+          },
+          "23": {
+            "name": "on_check_is_looking_up_while_thrown",
+            "params": "Entity* thrower",
+            "return": "bool",
+            "comment": "used for crates and presents: checks whether looking up to open rather than throw"
+          },
+          "24": {
+            "name": "on_attempt_shop_purchase",
+            "params": "Entity* buyer",
+            "return": "void",
+            "comment": "checks if you have sufficient money, performs the sale if so"
+          },
           "25": {
-            "name": "handle_collision",
+            "name": "on_collision2",
             "params": "Entity* other_entity",
+            "return": "",
+            "comment": "needs investigating, difference between this and on_collision1"
+          },
+          "26": {
+            "name": "on_save_level_transition_data",
+            "params": "",
+            "return": "uint64_t",
+            "comment": "e.g. for turkey: stores health, poison/curse state, for mattock: remaining swings (returned value is transferred)"
+          },
+          "27": {
+            "name": "on_restore_level_transition_data",
+            "params": "uint64_t data",
+            "return": "void"
+          },
+          "28": {
+            "name": "on_walked_on_by",
+            "params": "Entity* walker",
+            "return": "void",
+            "comment": "hits when monster/player walks on a floor, does something when walker.velocityy<-0.21 (falling onto) and walker.hitboxy * hitboxx > 0.09"
+          },
+          "29": {
+            "name": "on_walked_off_by",
+            "params": "Entity* walker",
+            "return": "void",
+            "comment": "hits when monster/player walks off a floor, it checks whether the walker has floor as overlay, and if so, removes walker from floor's items by calling virtual 20 (remove_item_ptr)"
+          },
+          "30": {
+            "name": "unknown30",
+            "params": "",
             "return": ""
+          },
+          "31": {
+            "name": "on_stood_on_by",
+            "params": "Entity* entity",
+            "return": "",
+            "comment": "e.g. pots, skulls, pushblocks, ... standing on floors"
           },
           "32": {
             "name": "toggle_backlayer_illumination",
             "params": "",
             "return": "",
             "comment": "for the player: when going to the backlayer, turns on player emitted light"
+          },
+          "33": {
+            "name": "unknown33",
+            "params": "",
+            "return": ""
+          },
+          "34": {
+            "name": "liberate_from_shop",
+            "params": "",
+            "return": "",
+            "comment": "can also be seen as event: when you anger the shopkeeper, this function gets called for each item; can be called on shopitems individually as well and they become 'purchased'"
           },
           "35": { "name": "apply_db", "params": "", "return": "void" }
         }
@@ -6210,20 +6292,127 @@
             "return": "",
             "comment": "param is pointer to an array of two floats: velocity x and y"
           },
+          "43": {
+            "name": "stomp_damage",
+            "params": "",
+            "return": "int8_t",
+            "comment": "calculates the amount of stomp damage applied (checks spike shoes, movable.state and stand_counter resulting in different damage values)"
+          },
+          "44": {
+            "name": "stomp_damage_trampoline",
+            "params": "",
+            "return": "int8_t",
+            "comment": "simply jumps to the 43rd virtual function, aka stomp_damage..."
+          },
+          "45": {
+            "name": "adjust_health",
+            "params": "int8_t amount",
+            "return": "void",
+            "comment": "called for dealing damage (neg amount) by the game, but not for gaining health (turkey, motherstatue), even though that works too (and there is even a max health check of 0x63)"
+          },
           "46": {
             "name": "check_dark_shadow_timer",
             "params": "",
             "return": ""
           },
+          "48": {
+            "name": "on_flying_object_collision",
+            "params": "Entity* victim",
+            "return": "",
+            "comment": "stuff like flying rocks, broken arrows hitting the player"
+          },
+          "49": {
+            "name": "on_regular_damage",
+            "params": "Entity* damage_dealer, int8_t damage_amount, uint8_t unknown = 1",
+            "return": "",
+            "comment": "disable for regular damage invincibility; does not handle crush deaths (boulder, quillback, ghost); unknown param = 2 when hired hand gets hit by player"
+          },
+          "50": {
+            "name": "on_stun_damage",
+            "params": "Entity* damage_dealer",
+            "return": "",
+            "comment": "triggers for broken arrow hit, calls handle_regular_damage with 0 damage; unsure about functionality and name"
+          },
           "52": {
             "name": "stun",
-            "params": "uint32_t framecount",
+            "params": "uint16_t framecount",
+            "return": "void"
+          },
+          "53": {
+            "name": "freeze",
+            "params": "uint8_t framecount",
+            "return": "void"
+          },
+          "54": {
+            "name": "light_on_fire",
+            "params": "",
+            "return": "void"
+          },
+          "55": {
+            "name": "set_cursed",
+            "params": "bool b",
+            "return": "void"
+          },
+          "56": {
+            "name": "on_spiderweb_collision",
+            "params": "",
             "return": ""
+          },
+          "57": {
+            "name": "set_last_owner_uid_b127",
+            "params": "Entity* owner",
+            "return": "",
+            "comment": "assigns player as last_owner_uid and also manipulates movable.b127"
+          },
+          "58": {
+            "name": "get_last_owner_uid",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "for players, it checks !stunned && !frozen && !cursed && !has_overlay; for others: just returns last_owner_uid"
+          },
+          "59": {
+            "name": "check_out_of_bounds",
+            "params": "",
+            "return": "",
+            "comment": "kills with the 'still falling' death cause"
+          },
+          "60": {
+            "name": "standing_on",
+            "params": "",
+            "return": "Entity*",
+            "comment": "looks up movable.standing_on_uid in state.instance_id_to_pointer"
+          },
+          "61": {
+            "name": "on_stomped_on_by",
+            "params": "Entity* stomper",
+            "return": ""
+          },
+          "62": {
+            "name": "on_thrown_by",
+            "params": "Entity* thrower",
+            "return": "",
+            "comment": "implemented for special cases like hired hand (player with ai_func), horned lizard..."
+          },
+          "63": {
+            "name": "on_clonegunshot_hit",
+            "params": "Entity* clone",
+            "return": "",
+            "comment": "implemented for player/hired hand: copies health to clone etc"
           },
           "64": {
             "name": "get_type_id",
             "params": "",
             "return": "uint32_t"
+          },
+          "65": {
+            "name": "doesnt_have_spikeshoes",
+            "params": "",
+            "return": "bool"
+          },
+          "66": {
+            "name": "is_player_mount_or_monster",
+            "params": "",
+            "return": "bool"
           },
           "67": {
             "name": "pick_up",
@@ -6259,7 +6448,7 @@
             "comment": "can't trigger, maybe extra params are needed"
           },
           "73": {
-            "name": "is_monster_or_char",
+            "name": "is_monster_or_player",
             "params": "",
             "return": "bool"
           },
@@ -6268,6 +6457,17 @@
             "params": "",
             "return": "",
             "comment": "e.g. cobra: set random spit_timer; bat: set random stand_counter; emerald: set price"
+          },
+          "75": {
+            "name": "check_is_falling",
+            "params": "",
+            "return": "",
+            "comment": "sets more_flags.falling by comparing velocityy to 0"
+          },
+          "76": {
+            "name": "handle_stun_transition_animation",
+            "params": "",
+            "return": "e.g. the wiggle the dog does when waking up from being stunned"
           },
           "77": {
             "name": "process_input",
@@ -6281,9 +6481,10 @@
             "comment": "seems to start processing invincibility timer in victim, not *this"
           },
           "79": {
-            "name": "holding_related",
+            "name": "picked_up",
             "params": "",
-            "return": ""
+            "return": "",
+            "comment": "gets called after picked_up_by"
           },
           "80": {
             "name": "hired_hand_related",
@@ -6295,7 +6496,7 @@
             "name": "generate_fall_poof_particles",
             "params": "",
             "return": "",
-            "comment": "entity.velocityy must be < 0.015 to generate a poof"
+            "comment": "entity.velocityy must be < -0.12 to generate a poof, might to other stuff regarding falling/landing"
           },
           "82": {
             "name": "handle_fall_logic",
@@ -6314,6 +6515,12 @@
             "params": "",
             "return": "",
             "comment": "when disabled, quillback keeps stomping through the level, including border tiles"
+          },
+          "85": {
+            "name": "tusk_last_owner_uid_related",
+            "params": "",
+            "return": "",
+            "comment": "triggers when tusk is angered, calls get_last_owner_uid"
           },
           "86": {
             "name": "gravity_related",
@@ -8530,7 +8737,353 @@
         "type": "VirtualFunctionTable",
         "functions": {
           "0": { "name": "~ThemeInfoPointer", "params": "", "return": "" },
-          "38": { "name": "backlayer_lut", "params": "", "return": "uint32_t" }
+          "1": { "name": "get_unknown1", "params": "", "return": "bool" },
+          "2": {
+            "name": "initialize_flags",
+            "params": "",
+            "return": "",
+            "comment": [
+              "dwelling,tidepool: unset levelgen.flags.flag12",
+              "jungle,volcana.olmec,icecaves,neobab,cog,duat,abzu,tiamat,eggplant,hundun,basecamp,arena: nop",
+              "temple: unset levelgen.flags.flag10 + calculate chance of grasshopper critter spawn",
+              "sunken: unset levelgen.flags.flag9, 10, 17, 18 + if state.level == 1 -> unset flag 11",
+              "cosmic: calls same virtual on its sub_theme"
+            ]
+          },
+          "3": {
+            "name": "initialize_levelgen",
+            "params": "",
+            "return": "",
+            "comment": "does random calculations and calls function to determine the start room in most themes"
+          },
+          "4": {
+            "name": "unknown_v4",
+            "params": "",
+            "return": "",
+            "comment": "most themes call the same function, some check whether they are in CO"
+          },
+          "5": { "name": "unknown_v5", "params": "", "return": "" },
+          "6": {
+            "name": "handle_level_specialities",
+            "params": "",
+            "return": "",
+            "comment": [
+              "dwelling: does stuff when level == 4 or udjat present",
+              "jungle: when black market present",
+              "volcana: when drill present",
+              "touches the rooms and sometimes the meta info about the rooms"
+            ]
+          },
+          "7": {
+            "name": "unknown_v7",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger, dwelling (quillback) and abzu do something special (arena just returns)"
+          },
+          "8": {
+            "name": "unknown_v8",
+            "params": "",
+            "return": "",
+            "comment": "does something depending on levelgen.data.unknown7"
+          },
+          "9": {
+            "name": "insert_shopkeeper_vault",
+            "params": "",
+            "return": ""
+          },
+          "10": { "name": "insert_coffin", "params": "", "return": "" },
+          "11": {
+            "name": "set_theme_specific_level_feeling",
+            "params": "",
+            "return": "",
+            "comment": "metal clanking and air of oppression"
+          },
+          "12": {
+            "name": "populate_level",
+            "params": "",
+            "return": "",
+            "comment": "disable this and only the player is spawned in the level"
+          },
+          "13": { "name": "add_level_bordertiles", "params": "", "return": "" },
+          "14": {
+            "name": "post_process_level",
+            "params": "",
+            "return": "",
+            "comment": [
+              "volcana: checks if state.coffin_contents = cocovondiamonds -> chooses one of the four coffins in vlad's castle at random to put her in",
+              "tidepool: spawns impostor lake, some door and a litwalltorch, ...",
+              "neobab: assigns the correct animation_frame to all the ushabtis",
+              "co, arena: forwards to the same virtual of the sub_theme",
+              "abzu, tiamat: spawns impostor lake"
+            ]
+          },
+          "15": {
+            "name": "post_process_exitdoors",
+            "params": "",
+            "return": "",
+            "comment": [
+              "quillback: adds butterflies and snails + configures the door to go to the correct theme/level",
+              "olmec: same thing but crabs and grasshoppers",
+              "temple: spawns COG door",
+              "co, arena: forwards to the same virtual of the sub_theme",
+              "other themes also do stuff, but nothing seemingly important"
+            ]
+          },
+          "16": {
+            "name": "post_process_entities",
+            "params": "",
+            "return": "",
+            "comment": [
+              "pleasure palace: applies correct texture to ladders and ladder platforms",
+              "sunken city: randomly adds ENT_TYPE_DECORATION_SUNKEN_BRIDGE between entities (the slimy bridges)",
+              "co: does nothing, so no slimy bridges in CO sunken city levels! (forgotten/bug?)"
+            ]
+          },
+          "17": {
+            "name": "populate_background",
+            "params": "",
+            "return": "",
+            "comment": "adds the background, but also the compass indicator at the door"
+          },
+          "18": {
+            "name": "populate_background_beautification",
+            "params": "",
+            "return": "",
+            "comment": "adds random beautification to the background, e.g. the chalk drawings of the three people in dwelling"
+          },
+          "19": {
+            "name": "populate_extra_lighting",
+            "params": "",
+            "return": "",
+            "comment": "adds extra light where needed, e.g. in the udjat chest room, or the top layer of the black market: spawns ENT_TYPE_LOGICAL_ROOM_LIGHT"
+          },
+          "20": {
+            "name": "populate_level_transition",
+            "params": "",
+            "return": ""
+          },
+          "21": {
+            "name": "on_level_transition",
+            "params": "",
+            "return": "",
+            "comment": [
+              "unsets flag 1 (Reset) of state.quest_flags",
+              "sets the correct state.screen (0xC)",
+              "sets state.ingame to true, adjust fade values and starts loading"
+            ]
+          },
+          "22": {
+            "name": "populate_players",
+            "params": "",
+            "return": "",
+            "comment": "spawns the player(s?) in the world, along with what they were holding"
+          },
+          "23": {
+            "name": "handle_multiplayer",
+            "params": "",
+            "return": "",
+            "comment": "when disabled, during multiplayer the camera is not focused; also responsible for spawning the leader flag; not looked at in detail"
+          },
+          "24": {
+            "name": "level_file_to_load",
+            "params": "",
+            "return": "const char*",
+            "comment": "the .lvl file to load (e.g. dwelling = dwellingarea.lvl except when level == 4 (cavebossarea.lvl))"
+          },
+          "25": {
+            "name": "theme_id",
+            "params": "",
+            "return": "uint8_t",
+            "comment": "for co: returns sub_theme->theme_id()"
+          },
+          "26": {
+            "name": "theme_base_id",
+            "params": "",
+            "return": "uint8_t",
+            "comment": [
+              "whereas theme_id() returns a unique id for all ThemeInfo's, this function returns the id of the theme it logically belongs to",
+              "e.g. theme_abzu->theme_base_id() = 5 (tide_pool) as opposed to theme_abzu->theme_id() = 13 (abzu)"
+            ]
+          },
+          "27": {
+            "name": "random_block_floorstyle",
+            "params": "",
+            "return": "uint32_t",
+            "comment": [
+              "all themes return 4 (ENT_TYPE_FLOOR_GENERIC), except:",
+              "temple: 104 (ENT_TYPE_FLOORSTYLED_TEMPLE)",
+              "neobab: 106 (ENT_TYPE_FLOORSTYLED_BABYLON)",
+              "sunken: 107 (ENT_TYPE_FLOORSTYLED_SUNKEN)",
+              "cog: 110 (ENT_TYPE_FLOORSTYLED_COG)",
+              "duat: 112 (ENT_TYPE_FLOORSTYLED_DUAT)",
+              "hundun: 107 (ENT_TYPE_FLOORSTYLED_SUNKEN)",
+              "strangely, it's only applied to an odd block here and there"
+            ]
+          },
+          "28": {
+            "name": "random_block_floorstyle_2",
+            "params": "",
+            "return": "uint32_t",
+            "comment": [
+              "similar to random_block_floorstyle(), except now the default = 103 (ENT_TYPE_FLOORSTYLED_STONE)"
+            ]
+          },
+          "29": {
+            "name": "unknown_v29",
+            "params": "",
+            "return": "bool",
+            "comment": "all return false, except olmec, temple, neobab, cog, duat"
+          },
+          "30": {
+            "name": "transition_tunnel_block_modifier",
+            "params": "",
+            "return": "uint32_t",
+            "comment": [
+              "determines the types of FLOOR_TUNNEL_NEXT/CURRENT (depending on where you are transitioning from/to) for this theme",
+              "returns 85 by default, except for: olmec: 15, cog: 23"
+            ]
+          },
+          "31": {
+            "name": "unknown_v31",
+            "params": "",
+            "return": "uint32_t",
+            "comment": ""
+          },
+          "32": {
+            "name": "backwall_entity_id",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "always returns 778 ENT_TYPE_BG_LEVEL_BACKWALL"
+          },
+          "33": {
+            "name": "bordertile_entity_id",
+            "params": "",
+            "return": "uint32_t",
+            "comment": [
+              "returns ENT_TYPE_FLOOR_BORDERTILE by default, except:",
+              "neobab ENT_TYPE_FLOOR_BORDERTILE_METAL",
+              "sunken ENT_TYPE_FLOOR_BORDERTILE_OCTOPUS",
+              "duat ENT_TYPE_FLOOR_DUSTWALL",
+              "tiamat ENT_TYPE_FLOOR_BORDERTILE_METAL",
+              "hundun ENT_TYPE_FLOOR_BORDERTILE_OCTOPUS"
+            ]
+          },
+          "34": {
+            "name": "transition_tunnel_critter_entity_id",
+            "params": "",
+            "return": "uint32_t",
+            "comment": ""
+          },
+          "35": {
+            "name": "liquid_gravity_direction",
+            "params": "",
+            "return": "float",
+            "comment": "returns -1.0 (downwards) by default, except for sunken/hundun; applies both to lava and water"
+          },
+          "36": {
+            "name": "are_players_vulnerable",
+            "params": "",
+            "return": "bool",
+            "comment": [
+              "used to make the player invincible in basecamp (but does an OOB check)",
+              "if you return false in other themes you are invincible except for crushing deaths, and you do still experience knockback and stun"
+            ]
+          },
+          "37": {
+            "name": "unknown_v37",
+            "params": "",
+            "return": "bool",
+            "comment": "returns true by default, except CO, duat"
+          },
+          "38": {
+            "name": "backlayer_lut",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns the texture ID for the LUT to be applied to the special back layer, e.g. vlad's castle for the volcana theme"
+          },
+          "39": {
+            "name": "backlayer_global_illumination_level",
+            "params": "",
+            "return": "float",
+            "comment": [
+              "a value between 0.0 (default) and 1.0 used to illuminate (backlayer) locations",
+              "depending on camera level (thus player y-level), the brightness is increased gradually",
+              "used in black market, vlad's castle, ice caves backlayer, pleasure palace",
+              "for tiamat: the value is always 1.0 for full backlayer global illumination (ship)"
+            ]
+          },
+          "40": {
+            "name": "enable_camera_loop",
+            "params": "",
+            "return": "bool",
+            "comment": [
+              "this is used for CO (checks that player is in the level, not in the transition)",
+              "if enabled in another theme, it adds an extra border and if you zoom out, you see the level loop if you move to the side"
+            ]
+          },
+          "41": {
+            "name": "max_level_for_vault",
+            "params": "",
+            "return": "uint8_t",
+            "comment": [
+              "not 100% sure, this is used in a random calculation that determines whether a vault spawns",
+              "looks to be the highest level a vault can spawn; it's mostly 3 or 4, but for neobab it's 1, which makes sense"
+            ]
+          },
+          "42": {
+            "name": "get_unknown_1_or_2",
+            "params": "uint index",
+            "return": "bool",
+            "comment": "index == 0 ? return unknown1 : return unknown2"
+          },
+          "43": {
+            "name": "get_dynamic_floor_texture_id",
+            "params": "int8_t texture_id",
+            "return": "uint32_t",
+            "comment": [
+              "e.g. for dwelling:",
+              "texture_id == -4 -> returns 122 BG_CAVE_0",
+              "texture_id == -5 -> returns 115 FLOOR_CAVE_0",
+              "texture_id == -6 -> returns 117 FLOOR_CAVE_2",
+              "texture_id == -7 -> returns 118 FLOOR_CAVE_3",
+              "texture_id == -8 -> returns 120 DECO_CAVE_0",
+              "texture_id == -10 -> returns 369 COFFINS_0",
+              "the texture_id parameter comes from the entitydb.texture field, for some entities the texture is not a valid texture ID but a negative number",
+              "that number is passed here and mapped into this dynamic per-theme list (see entitydb[4].texture)"
+            ]
+          },
+          "44": {
+            "name": "set_next_world_level_theme",
+            "params": "",
+            "return": "",
+            "comment": [
+              "manipulates state.level_next, world_next and theme_next; triggers when exiting a level",
+              "for dwelling, it just increments level_next because the world/theme choice is made by which door you pick",
+              "for jungle/volcana, it checks whether it's on the fourth level, if so, sets theme_next (4), world_next (3) and level_next (1) correctly for olmec",
+              "for CO it checks whether the next level is 99, and set state.win_state to 3 to finish the game"
+            ]
+          },
+          "45": {
+            "name": "get_zero_based_level_height",
+            "params": "",
+            "return": "uint32_t",
+            "comment": [
+              "default = return state.h - 1",
+              "for special levels (black market, vlad, ...) fixed heights are returned"
+            ]
+          },
+          "46": {
+            "name": "unknown_v46",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns a value that appears to affect room generation and is based on current world,level"
+          },
+          "47": {
+            "name": "unknown_v47",
+            "params": "",
+            "return": "",
+            "comment": ""
+          }
         }
       },
       {
