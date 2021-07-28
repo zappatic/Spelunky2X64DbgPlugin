@@ -2,8 +2,9 @@
   // a mapping of entity type to its parent type
   "entity_class_hierarchy": {
     "Movable": "Entity",
-    "Monster": "Movable",
-    "Player": "Movable",
+    "PowerupCapable": "Movable",
+    "Monster": "PowerupCapable",
+    "Player": "PowerupCapable",
     "Arrowtrap": "Floor",
     "Container": "Movable",
     "Gun": "Movable",
@@ -2445,7 +2446,7 @@
           "9": "Caveman Shopkeeper aggroed",
           "10": "Waddler aggroed",
           "11": "",
-          "12": "",
+          "12": "Eggplant crown picked up",
           "13": "",
           "14": "",
           "15": "",
@@ -6658,13 +6659,18 @@
       },
       { "field": "b127", "type": "UnsignedByte" }
     ],
+    "PowerupCapable": [
+      {
+        "field": "powerups",
+        "type": "Map",
+        "comment": "std::map<uint32_t, Entity*>"
+      }
+    ],
     "Monster": [
-      { "field": "inside", "type": "Map" },
       { "field": "chased_target_uid", "type": "EntityUID" },
       { "field": "target_selection_timer", "type": "UnsignedDword" }
     ],
     "Player": [
-      { "field": "inside", "type": "Map" },
       { "field": "inventory_ptr", "type": "PlayerInventoryPointer" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "linked_companion_child", "type": "EntityUID" },
