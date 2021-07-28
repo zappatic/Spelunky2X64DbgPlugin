@@ -15,7 +15,8 @@
     "Cape": "Movable",
     "YellowCape": "Cape",
     "VladsCape": "Cape",
-    "KapalaPowerup": "Movable",
+    "Powerup": "Movable",
+    "KapalaPowerup": "Powerup",
     "Jiangshi": "Monster",
     "Ghost": "Monster",
     "Monkey": "Monster",
@@ -229,9 +230,9 @@
     "Goldbar": "Movable",
     "Coin": "Movable",
     "RollingItem": "Movable",
-    "ParachutePowerup": "Movable",
-    "TrueCrownPowerup": "Movable",
-    "AnkhPowerup": "Movable",
+    "ParachutePowerup": "Powerup",
+    "TrueCrownPowerup": "Powerup",
+    "AnkhPowerup": "Powerup",
     "Teleporter": "Movable",
     "Boomerang": "Movable",
     "Excalibur": "Movable",
@@ -500,6 +501,7 @@
     "ITEM_POWERUP_PARACHUTE": "ParachutePowerup",
     "ITEM_POWERUP_TRUECROWN": "TrueCrownPowerup",
     "ITEM_POWERUP_ANKH": "AnkhPowerup",
+    "ITEM_POWERUP_.*": "Powerup",
     "ITEM_CAPE": "YellowCape",
     "ITEM_VLADS_CAPE": "VladsCape",
     "ITEM_JETPACK.*": "Jetpack",
@@ -6702,7 +6704,7 @@
         "type": "Bool",
         "comment": "Used in level transition to transfer to new player entity"
       },
-      { "field": "unknown_state", "type": "UnsignedByte" },
+      { "field": "health", "type": "UnsignedByte" },
       {
         "field": "kapala_blood_amount",
         "type": "UnsignedByte",
@@ -10372,6 +10374,28 @@
       { "field": "world", "type": "UnsignedByte" },
       { "field": "theme", "type": "UnsignedByte" },
       { "field": "timer", "type": "Dword" }
+    ],
+    "Powerup": [
+      {
+        "vftablefunctions": {
+          "87": { "name": "unknown_v87", "params": "", "return": "" },
+          "88": { "name": "unknown_v89", "params": "", "return": "" },
+          "89": { "name": "unknown_v89", "params": "", "return": "" },
+          "90": { "name": "unknown_v90", "params": "", "return": "" },
+          "91": { "name": "unknown_v91", "params": "", "return": "" },
+          "92": { "name": "unknown_v92", "params": "", "return": "" },
+          "93": {
+            "name": "apply_to_player",
+            "params": "Player* player",
+            "return": ""
+          },
+          "94": {
+            "name": "remove_from_player",
+            "params": "Player* player",
+            "return": ""
+          }
+        }
+      }
     ]
   }
 }
