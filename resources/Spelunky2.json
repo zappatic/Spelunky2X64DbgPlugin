@@ -124,6 +124,7 @@
     "SlidingWallCeiling": "Floor",
     "Backpack": "Movable",
     "Jetpack": "Backpack",
+    "TeleporterBackpack": "Backpack",
     "Hoverpack": "Backpack",
     "Elevator": "Movable",
     "Boulder": "Movable",
@@ -506,7 +507,7 @@
     "ITEM_CAPE": "YellowCape",
     "ITEM_VLADS_CAPE": "VladsCape",
     "ITEM_JETPACK.*": "Jetpack",
-    "ITEM_TELEPORTER_BACKPACK": "Backpack",
+    "ITEM_TELEPORTER_BACKPACK": "TeleporterBackpack",
     "ITEM_HOVERPACK": "Hoverpack",
     "ITEM_POWERPACK": "Backpack",
     "ITEM_WEBGUN": "WebGun",
@@ -7171,6 +7172,12 @@
         "comment": "it's per level, not per jetpack, it also adds at when it explodes"
       },
       { "field": "fuel", "type": "UnsignedWord" }
+    ],
+    "TeleporterBackpack": [
+      {
+        "field": "teleport_number",
+        "type": "UnsignedWord"
+      }
     ],
     "Hoverpack": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
