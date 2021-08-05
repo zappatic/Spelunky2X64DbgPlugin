@@ -5826,7 +5826,7 @@
       { "field": "unknown38", "type": "DataPointer" },
       {
         "field": "flags",
-        "type": "Flags32",
+        "type": "Flags8",
         "flags": {
           "1": "",
           "2": "",
@@ -5835,34 +5835,24 @@
           "5": "",
           "6": "Apply ambient occlusion",
           "7": "",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "",
-          "18": "",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
+          "8": ""
         }
       },
-      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "unknown39", "type": "UnsignedByte" },
+      { "field": "unknown40", "type": "UnsignedByte" },
+      {
+        "field": "shop_type",
+        "type": "State8",
+        "states": {
+          "0": "General store",
+          "1": "Clothing shop",
+          "2": "Weapon shop",
+          "3": "Specialty shop",
+          "4": "Hired hand shop",
+          "5": "Pet shop",
+          "6": "Dice shop"
+        }
+      },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
       { "field": "unknown44", "type": "UnsignedByte" },
@@ -5870,9 +5860,10 @@
       { "field": "unknown46", "type": "UnsignedByte" },
       { "field": "unknown47", "type": "UnsignedByte" },
       { "field": "unknown48", "type": "UnsignedByte" },
-      { "field": "unknown49", "type": "UnsignedDword" },
+      { "field": "unknown49", "type": "UnsignedByte" },
       { "field": "unknown50", "type": "UnsignedDword" },
-      { "field": "unknown51", "type": "UnsignedDword" }
+      { "field": "unknown51", "type": "UnsignedDword" },
+      { "field": "unknown52", "type": "UnsignedDword" }
     ],
     "LevelGenDataPointer": [
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -6558,6 +6549,24 @@
             "name": "gravity_related",
             "params": "",
             "return": ""
+          },
+          "87": { "name": "unknown_v87", "params": "", "return": "" },
+          "88": {
+            "name": "stack_plus_28_is_0",
+            "params": "",
+            "return": "",
+            "comment": "triggers on item_rubble"
+          },
+          "89": {
+            "name": "on_crushed_by",
+            "params": "Entity*",
+            "return": "",
+            "comment": "e.g. crushed by elevator, punishball, pushblock, crushtrap (not quillback or boulder)"
+          },
+          "90": {
+            "name": "on_fall_onto",
+            "params": "uint32_t unknown, Entity* fell_on_entity",
+            "return": ""
           }
         }
       },
@@ -6661,6 +6670,28 @@
       { "field": "b127", "type": "UnsignedByte" }
     ],
     "PowerupCapable": [
+      {
+        "vftablefunctions": {
+          "91": {
+            "name": "on_instakill_death",
+            "params": "",
+            "return": "",
+            "comment": "seems to only trigger for enemies that die in one hit"
+          },
+          "92": {
+            "name": "on_blood_collision",
+            "params": "",
+            "return": "",
+            "comment": "only triggers when player has kapala"
+          },
+          "93": {
+            "name": "unknown_v93",
+            "params": "",
+            "return": "",
+            "comment": ""
+          }
+        }
+      },
       {
         "field": "powerups",
         "type": "Map",
@@ -7356,6 +7387,121 @@
       { "field": "ceiling_pos_y", "type": "Float" }
     ],
     "RoomOwner": [
+      {
+        "vftablefunctions": {
+          "94": {
+            "name": "increase_killcount",
+            "params": "",
+            "return": "",
+            "comment": "increases state.kills_npc"
+          },
+          "95": {
+            "name": "on_aggro",
+            "params": "",
+            "return": "",
+            "comment": ["updates state.quests in case of npc"]
+          },
+          "96": {
+            "name": "unknown_v96",
+            "params": "",
+            "return": "",
+            "comment": [""]
+          },
+          "97": {
+            "name": "on_shop_entered",
+            "params": "",
+            "return": "",
+            "comment": ["shows welcome message"]
+          },
+          "98": {
+            "name": "on_player_picked_up_shopitem",
+            "params": "",
+            "return": "",
+            "comment": [
+              "shopkeeper will walk towards you (doesn't work for Yang, even though he has the same virtual)"
+            ]
+          },
+          "99": {
+            "name": "on_fire_weapon",
+            "params": "",
+            "return": "",
+            "comment": [
+              "if deactivated, they can pick up weapons but won't shoot them"
+            ]
+          },
+          "100": {
+            "name": "on_criminal_act_committed",
+            "params": "",
+            "return": "",
+            "comment": ["shows the appropriate message (vandal, cheater, ...)"]
+          },
+          "101": {
+            "name": "should_attack_on_sight",
+            "params": "",
+            "return": "bool",
+            "comment": [
+              "for shopkeepers: checks state.shoppie_aggro_levels",
+              "if you return false, but you have attacked them before, they will be patrolling but won't attack you on sight"
+            ]
+          },
+          "102": {
+            "name": "is_angry_flag_set",
+            "params": "",
+            "return": "bool",
+            "comment": [
+              "checks state.level_flags 10-16 depending on the monster"
+            ]
+          },
+          "103": {
+            "name": "set_initial_attack_delay",
+            "params": "",
+            "return": "",
+            "comment": [
+              "for shopkeeper: sets shopkeeper.shotgun_attack_delay to 6",
+              "triggers only at the start when aggroed",
+              "does nothing for yang, waddler, tun"
+            ]
+          },
+          "104": {
+            "name": "on_spawn_weapon",
+            "params": "",
+            "return": "Entity*",
+            "comment": [
+              "return the weapon entity that will be used to attack the player"
+            ]
+          },
+          "105": {
+            "name": "weapon_type",
+            "params": "",
+            "return": "uint32_t",
+            "comment": [
+              "the entity type of the weapon that will be spawned to attack the player"
+            ]
+          },
+          "106": {
+            "name": "unknown_v106_attack_weapon_related",
+            "params": "",
+            "return": "",
+            "comment": [""]
+          },
+          "107": {
+            "name": "unknown_v107",
+            "params": "",
+            "return": "",
+            "comment": [
+              "for shopkeepers, it loops over (some of) the items for sale"
+            ]
+          },
+          "108": {
+            "name": "on_death_treasure_drop",
+            "params": "",
+            "return": "",
+            "comment": [
+              "random number calc, e.g. whether the shopkeeper drops gold bars on death"
+            ]
+          }
+        }
+      },
       { "field": "room_index", "type": "UnsignedDword" },
       {
         "field": "climb_y_direction",
