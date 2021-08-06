@@ -11,22 +11,14 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
 
-      - name: Prepare Qt download
+      - name: Download Qt
         run: |
           mkdir C:\Qt
-
-      - uses: suisei-cn/actions-download-file@v1
-        name: Download Qt
-        id: qt563download
-        with:
-          url: 'https://osdn.net/projects/x64dbg/storage/qt/Qt5.6.3-msvc2013-installed.7z'
-          target: C:\Qt\
-
-      - name: Extract Qt
-        run: |
+          python resources\qt_download_helper.py
           cd C:\Qt
-          7z x ${{ steps.qt563download.outputs.filename }}
+          7z x qt563.7z
 
       - name: Build
         run: |
