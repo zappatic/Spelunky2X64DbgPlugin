@@ -1,0 +1,39 @@
+name: Autobuild
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build:
+    name: Autobuild
+
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v2
+        with:
+          version: '5.6.3'
+
+      - name: Build
+        run: |
+          mkdir build
+          mkdir build/spelunky2-x64dbg-plugin-autobuild
+          cd build
+          cmake .. -DX64DBG_PLUGINS_ROOT=spelunky2-x64dbg-plugin-autobuild
+          cmake --build . --config Release --target ALL_BUILD
+          7z a spelunky2-x64dbg-plugin-autobuild.zip spelunky2-x64dbg-plugin-autobuild\
+
+      - name: Create release
+        uses: marvinpinto/action-automatic-releases@v1.1.0
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "autobuild"
+          prerelease: true
+          title: "Autobuild"
+          files: |
+            spelunky2-x64dbg-plugin-autobuild.zip          
