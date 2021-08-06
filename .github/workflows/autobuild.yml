@@ -12,19 +12,30 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v2
+      - name: Prepare Qt download
+        run: |
+          mkdir C:\Qt
+
+      - uses: suisei-cn/actions-download-file@v1
+        name: Download Qt
+        id: qt563download
         with:
-          version: '5.6.3'
+          url: 'https://osdn.net/projects/x64dbg/storage/qt/Qt5.6.3-msvc2013-installed.7z'
+          target: C:\Qt\
+
+      - name: Extract Qt
+        run: |
+          cd C:\Qt
+          7z x ${{ steps.qt563download.outputs.filename }}
 
       - name: Build
         run: |
+          mkdir C:\spelunky2-x64dbg-plugin-autobuild
           mkdir build
-          mkdir build/spelunky2-x64dbg-plugin-autobuild
           cd build
-          cmake .. -DX64DBG_PLUGINS_ROOT=spelunky2-x64dbg-plugin-autobuild
+          cmake .. -DX64DBG_PLUGINS_ROOT=C:\spelunky2-x64dbg-plugin-autobuild -DQt5ROOT=C:\Qt\5.6.3\msvc2013_64\
           cmake --build . --config Release --target ALL_BUILD
-          7z a spelunky2-x64dbg-plugin-autobuild.zip spelunky2-x64dbg-plugin-autobuild\
+          7z a spelunky2-x64dbg-plugin-autobuild.zip C:\spelunky2-x64dbg-plugin-autobuild\
 
       - name: Create release
         uses: marvinpinto/action-automatic-releases@v1.1.0
