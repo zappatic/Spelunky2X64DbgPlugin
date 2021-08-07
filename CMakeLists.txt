@@ -39,10 +39,6 @@ endif()
 
 # Create a plugin
 configure_file(config/pluginconfig.h.in include/pluginconfig.h ESCAPE_QUOTES)
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
-	${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
-)
 
 qt5_add_resources(SOURCES resources/spelunky2.qrc)
 
