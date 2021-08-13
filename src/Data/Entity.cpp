@@ -409,12 +409,12 @@ uint32_t S2Plugin::Entity::comparisonUid() const noexcept
 
 uint8_t S2Plugin::Entity::cameraLayer() const noexcept
 {
-    return Script::Memory::ReadByte(mMemoryOffsets.at("Entity.camera_layer"));
+    return Script::Memory::ReadByte(mMemoryOffsets.at("Entity.layer"));
 }
 
 uint8_t S2Plugin::Entity::comparisonCameraLayer() const noexcept
 {
-    return Script::Memory::ReadByte(mMemoryOffsets.at("comparison.Entity.camera_layer"));
+    return Script::Memory::ReadByte(mMemoryOffsets.at("comparison.Entity.layer"));
 }
 
 void S2Plugin::Entity::label() const
