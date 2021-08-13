@@ -170,7 +170,7 @@
     "PoleDeco": "Floor",
     "PunishBall": "Movable",
     "Chest": "Movable",
-    "LavaGlow": "Movable",
+    "LiquidSurface": "Movable",
     "Liquid": "Entity",
     "Lava": "Liquid",
     "ClimbableRope": "Movable",
@@ -255,7 +255,8 @@
     "FxOuroboroDragonPart": "Movable",
     "Rubble": "Movable",
     "FxCompass": "Movable",
-    "Portal": "Entity"
+    "Portal": "Entity",
+    "SleepBubble": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -292,6 +293,8 @@
     "FLOOR_TENTACLE_BOTTOM": "TentacleBottom",
     "FLOORSTYLED_MINEWOOD": "PoleDeco",
     "FLOORSTYLED_PAGODA": "PoleDeco",
+    "DECORATION_CHAINANDBLOCKS_CHAINDECORATION": "Movable",
+    "DECORATION_SLIDINGWALL_CHAINDECORATION": "Movable",
     "MONS_SPIDER": "Spider",
     "MONS_HANGSPIDER": "HangSpider",
     "MONS_GIANTSPIDER": "Spider",
@@ -555,9 +558,11 @@
     "FX_SPECIALCOMPASS": "FxCompass",
 
     "FX_BUTTON": "Button",
+    "FX_SLEEP_BUBBLE": "SleepBubble",
     "FX_MINIGAME_SHIP_CENTERJETFLAME": "MiniGameShipCenterJetFlame",
     "FX_OLMECPART_FLOATER": "OlmecFloater",
-    "FX_LAVA_GLOW": "LavaGlow",
+    "FX_LAVA_GLOW": "LiquidSurface",
+    "FX_WATER_SURFACE": "LiquidSurface",
     "FX_TELEPORTSHADOW": "LightEmitter",
     "FX_SMALLFLAME": "Flame",
     "LOGICAL_PORTAL": "Portal",
@@ -9843,11 +9848,11 @@
       { "field": "unused", "type": "UnsignedDword" },
       { "field": "unknown", "type": "UnsignedQword" }
     ],
-    "LavaGlow": [
+    "LiquidSurface": [
       { "field": "glow_radius", "type": "Float" },
-      { "field": "unknown_float", "type": "Float" }, //??
+      { "field": "sine_pos", "type": "Float", "comment": "x position to calculate sine wave, it moves the glow back and forth" },
       {
-        "field": "increment",
+        "field": "sine_pos_increment",
         "type": "Float",
         "comment": "just an on frame increment for the value above"
       }
@@ -10005,16 +10010,16 @@
     ],
     "StretchChain": [
       { "field": "at_end_of_chain_uid", "type": "EntityUID" },
-      { "field": "stretch?", "type": "Float" },
+      { "field": "dot_offset", "type": "Float" },
       {
         "field": "position_in_chain",
         "type": "UnsignedByte",
         "comment": "0 closest to the end, so if the chain has 15 segments the last one will be 14"
       },
       {
-        "field": "state?",
+        "field": "inverse_doubled_position_in_chain",
         "type": "UnsignedByte",
-        "comment": "only punish chain, (chain_length - i) * 2"
+        "comment": "only punish chain, (chain_length - position_in_chain) * 2"
       },
       {
         "field": "unknown_timer",
@@ -10022,7 +10027,7 @@
         "comment": "only punish chain"
       },
       {
-        "field": "is_chain_overlapping_ball",
+        "field": "is_dot_hidden",
         "type": "Bool",
         "comment": "only punish chain"
       }
@@ -10518,6 +10523,9 @@
       { "field": "world", "type": "UnsignedByte" },
       { "field": "theme", "type": "UnsignedByte" },
       { "field": "timer", "type": "Dword" }
+    ],
+    "SleepBubble": [
+      { "field": "show_hide_timer", "type": "UnsignedByte" }
     ],
     "Powerup": [
       {
