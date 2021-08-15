@@ -5986,7 +5986,11 @@
         "type": "VirtualFunctionTable",
         "functions": {
           "0": { "name": "~Entity", "params": "", "return": "" },
-          "1": { "name": "created", "params": "", "return": "void" },
+          "1": {
+            "name": "create_rendering_info",
+            "params": "",
+            "return": "void"
+          },
           "2": {
             "name": "kill",
             "params": "bool, Entity* frm",
@@ -8409,7 +8413,39 @@
       { "field": "animation_frame", "type": "UnsignedDword" },
       { "field": "unknown38", "type": "UnsignedDword" },
       { "field": "texture", "type": "TextureDBPointer" },
-      { "field": "texture_name", "type": "ConstCharPointerPointer" }
+      { "field": "texture_name", "type": "ConstCharPointerPointer" },
+      { "field": "unknown39", "type": "UnsignedQword" },
+      { "field": "unknown40", "type": "UnsignedQword" },
+      { "field": "unknown41", "type": "UnsignedQword" },
+      { "field": "unknown42", "type": "UnsignedQword" },
+      { "field": "unknown43", "type": "UnsignedQword" },
+      { "field": "unknown44", "type": "UnsignedQword" },
+      { "field": "unknown45", "type": "UnsignedQword" },
+      {
+        "field": "render_as_non_liquid",
+        "type": "Bool",
+        "comment": "for liquids, forced to false, for non-liquids: sprite goes crazy when moving about"
+      },
+      { "field": "unknown47", "type": "UnsignedByte" },
+      { "field": "unknown48", "type": "UnsignedByte" },
+      { "field": "unknown49", "type": "UnsignedByte" },
+      { "field": "unknown50", "type": "UnsignedDword" },
+      {
+        "field": "entity_offset",
+        "type": "UnsignedQword",
+        "comment": "the offset of the associated entity in memory, starting from the memory segment that State resides in"
+      },
+      { "field": "flip_horizontal", "type": "Bool", "comment": "facing left" },
+      { "field": "unknown52", "type": "UnsignedByte" },
+      { "field": "unknown53", "type": "UnsignedByte" },
+      { "field": "unknown54", "type": "UnsignedByte" },
+      { "field": "unknown55", "type": "UnsignedDword" },
+      {
+        "field": "darkness",
+        "type": "Float",
+        "comment": "0.0 = completely black ; 1.0 = normal (dark effect like when on fire)"
+      },
+      { "field": "unknown56", "type": "UnsignedDword" }
     ],
     "YetiQueen": [
       {
@@ -9850,7 +9886,11 @@
     ],
     "LiquidSurface": [
       { "field": "glow_radius", "type": "Float" },
-      { "field": "sine_pos", "type": "Float", "comment": "x position to calculate sine wave, it moves the glow back and forth" },
+      {
+        "field": "sine_pos",
+        "type": "Float",
+        "comment": "x position to calculate sine wave, it moves the glow back and forth"
+      },
       {
         "field": "sine_pos_increment",
         "type": "Float",
@@ -10524,9 +10564,7 @@
       { "field": "theme", "type": "UnsignedByte" },
       { "field": "timer", "type": "Dword" }
     ],
-    "SleepBubble": [
-      { "field": "show_hide_timer", "type": "UnsignedByte" }
-    ],
+    "SleepBubble": [{ "field": "show_hide_timer", "type": "UnsignedByte" }],
     "Powerup": [
       {
         "vftablefunctions": {
