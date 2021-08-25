@@ -256,7 +256,13 @@
     "Rubble": "Movable",
     "FxCompass": "Movable",
     "Portal": "Entity",
-    "SleepBubble": "Movable"
+    "SleepBubble": "Movable",
+    "FxSaleIcon": "Movable",
+    "FxSaleContainer": "Movable",
+    "FxPickupEffect": "Movable",
+    "FxShotgunBlast": "Movable",
+    "FxJetpackFlame": "Movable",
+    "FxPlayerIndicator": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -556,6 +562,12 @@
     "ITEM_RUBBLE": "Rubble",
     "FX_COMPASS": "FxCompass",
     "FX_SPECIALCOMPASS": "FxCompass",
+    "FX_SALEICON": "FxSaleIcon",
+    "FX_SALEDIALOG_CONTAINER": "FxSaleContainer",
+    "FX_PICKUPEFFECT": "FxPickupEffect",
+    "FX_SHOTGUNBLAST": "FxShotgunBlast",
+    "FX_JETPACKFLAME": "FxJetpackFlame",
+    "FX_PLAYERINDICATOR": "FxPlayerIndicator",
 
     "FX_BUTTON": "Button",
     "FX_SLEEP_BUBBLE": "SleepBubble",
@@ -10586,6 +10598,52 @@
           }
         }
       }
+    ],
+    "FxSaleIcon": [
+      {
+        "field": "movement_timer",
+        "type": "UnsignedByte",
+        "comment": "used to move it up and down"
+      }
+    ],
+    "FxSaleContainer": [
+      { "field": "fx_value", "type": "EntityPointer" },
+      { "field": "fx_icon", "type": "EntityPointer" },
+      { "field": "fx_button", "type": "EntityPointer" },
+      {
+        "field": "shake_amplitude",
+        "type": "Float",
+        "comment": "for effect when you don't have enough money"
+      },
+      {
+        "field": "sound_trigger",
+        "type": "Bool",
+        "comment": "also sound_played, keeps re-triggering from time to time"
+      },
+      { "field": "pop_in_out_procentage", "type": "UnsignedByte" }
+    ],
+    "FxPickupEffect": [
+      { "field": "spawn_y", "type": "Float" },
+      {
+        "field": "visibility",
+        "type": "Float",
+        "comment": "or the disappearing animation progression"
+      }
+    ],
+    "FxShotgunBlast": [
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "FxJetpackFlame": [
+      { "field": "particle_smoke", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_flame", "type": "ParticleEmitterInfoPointer" },
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "FxPlayerIndicator": [
+      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "pos_x", "type": "Float" },
+      { "field": "pos_y", "type": "Float" },
+      { "field": "unknown", "type": "Dword" }
     ]
   }
 }
