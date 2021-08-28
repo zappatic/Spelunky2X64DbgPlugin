@@ -262,7 +262,19 @@
     "FxPickupEffect": "Movable",
     "FxShotgunBlast": "Movable",
     "FxJetpackFlame": "Movable",
-    "FxPlayerIndicator": "Movable"
+    "FxPlayerIndicator": "Movable",
+    "FxSpringtrapRing": "Movable",
+    "FxWitchdoctorHint": "Movable",
+    "FxNecromancerANKH": "Movable",
+    "FxWebbedEffect": "Movable",
+    "FxUnderwaterBubble": "Movable",
+    "FxWaterDrop": "Movable",
+    "FxKinguSliding": "Movable",
+    "FxAlienBlast": "Movable",
+    "FxSparkSmall": "Movable",
+    "FxTiamatHead": "Movable",
+    "FxTiamatTorso": "Movable",
+    "FxTiamatTail": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -568,6 +580,19 @@
     "FX_SHOTGUNBLAST": "FxShotgunBlast",
     "FX_JETPACKFLAME": "FxJetpackFlame",
     "FX_PLAYERINDICATOR": "FxPlayerIndicator",
+    "FX_SMALLFLAME": "Flame",
+    "FX_SPRINGTRAP_RING": "FxSpringtrapRing",
+    "FX_WITCHDOCTOR_HINT": "FxWitchdoctorHint",
+    "FX_NECROMANCER_ANKH": "FxNecromancerANKH",
+    "FX_WEBBEDEFFECT": "FxWebbedEffect",
+    "FX_UNDERWATER_BUBBLE": "FxUnderwaterBubble",
+    "FX_WATER_DROP": "FxWaterDrop",
+    "FX_KINGU_SLIDING": "FxKinguSliding",
+    "FX_ALIENBLAST.*": "FxAlienBlastReticule",
+    "FX_SPARK_SMALL": "FxSparkSmall",
+    "FX_TIAMAT_HEAD": "FxTiamatHead",
+    "FX_TIAMAT_TORSO": "FxTiamatTorso",
+    "FX_TIAMAT_TAIL.*": "FxTiamatTail",
 
     "FX_BUTTON": "Button",
     "FX_SLEEP_BUBBLE": "SleepBubble",
@@ -576,7 +601,6 @@
     "FX_LAVA_GLOW": "LiquidSurface",
     "FX_WATER_SURFACE": "LiquidSurface",
     "FX_TELEPORTSHADOW": "LightEmitter",
-    "FX_SMALLFLAME": "Flame",
     "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
@@ -2637,7 +2661,7 @@
         "type": "Flags32",
         "flags": {
           "1": "Upbeat dwelling intro music played",
-          "2": "",
+          "2": "", //once on, it stays on
           "3": "Running tutorial speedrun",
           "4": "",
           "5": "Level has Tun/shop?",
@@ -2659,7 +2683,7 @@
           "21": "Hide hud, transition",
           "22": "Hide hud, camp",
           "23": "Have clover",
-          "24": "",
+          "24": "", //ice caves and drill level, but only the first time?
           "25": "",
           "26": "",
           "27": "",
@@ -7261,7 +7285,10 @@
       { "field": "phase1_amount_of_bomb_salvos", "type": "UnsignedByte" },
       { "field": "unknown_attack_state", "type": "UnsignedByte" }
     ],
-    "OlmecFloater": [{ "field": "both_floaters_intact", "type": "Bool" }],
+    "OlmecFloater": [
+      { "field": "both_floaters_intact", "type": "Bool" },
+      { "field": "on_breaking", "type": "Bool" }
+    ],
     "Cape": [
       { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
@@ -10644,6 +10671,74 @@
       { "field": "pos_x", "type": "Float" },
       { "field": "pos_y", "type": "Float" },
       { "field": "unknown", "type": "Dword" }
+    ],
+    "FxSpringtrapRing": [
+      { "field": "timer", "type": "Dword" },
+      { "field": "padding", "type": "Dword" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "FxWitchdoctorHint": [{ "field": "unknown", "type": "Map" }],
+    "FxNecromancerANKH": [{ "field": "unknown", "type": "Float" }],
+    "FxWebbedEffect": [{ "field": "visible", "type": "Bool" }],
+    "FxUnderwaterBubble": [
+      { "field": "unknown1", "type": "Float" },
+      { "field": "bubble_source", "type": "EntityUID" },
+      { "field": "direction", "type": "Byte" },
+      {
+        "field": "pop",
+        "type": "Bool",
+        "comment": "setting it true makes it disappear/fade away"
+      },
+      {
+        "field": "invert",
+        "type": "Bool",
+        "comment": "goes down instead of up"
+      }
+    ],
+    "FxWaterDrop": [
+      {
+        "field": "invert",
+        "type": "Bool",
+        "comment": "floats up instead of drooping down"
+      },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Byte" },
+      { "field": "unknown3", "type": "Byte" },
+      { "field": "unknown4", "type": "Dword" },
+      { "field": "droplet_source", "type": "EntityUID" }
+    ],
+    "FxKinguSliding": [
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "FxAlienBlast": [{ "field": "unknown", "type": "Byte" }],
+    "FxSparkSmall": [
+      { "field": "unknown1", "type": "Float" },
+      {
+        "field": "step",
+        "type": "Float",
+        "comment": "per frame increment for variable above"
+      },
+      { "field": "unknown3", "type": "Float" },
+      {
+        "field": "timer",
+        "type": "Byte",
+        "comment": "all values gets randomized when timer = 0"
+      }
+    ],
+    "FxTiamatHead": [{ "field": "timer", "type": "Word" }],
+    "FxTiamatTorso": [
+      { "field": "timer", "type": "Word" },
+      { "field": "padding", "type": "Word" },
+      {
+        "field": "torso_target_size",
+        "type": "Float",
+        "comment": "slowly increases/decreases to the given value"
+      }
+    ],
+    "FxTiamatTail": [
+      { "field": "angle", "type": "Float" },
+      { "field": "x_pos", "type": "Float" },
+      { "field": "y_pos", "type": "Float" }
     ]
   }
 }
