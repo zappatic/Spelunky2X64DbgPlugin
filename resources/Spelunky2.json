@@ -245,7 +245,7 @@
     "CritterBeetle": "Critter",
     "Caveman": "WalkingMonster",
     "EggshipCenterJetFlame": "Movable",
-    "MiniGameShipCenterJetFlame": "Movable",
+    "MiniGameShipOffset": "Movable",
     "Button": "Movable",
     "FxTornJournalPage": "Movable",
     "FxMainExitDoor": "Movable",
@@ -256,7 +256,35 @@
     "Rubble": "Movable",
     "FxCompass": "Movable",
     "Portal": "Entity",
-    "SleepBubble": "Movable"
+    "SleepBubble": "Movable",
+    "MovingIcon": "Movable",
+    "FxSaleContainer": "Movable",
+    "FxPickupEffect": "Movable",
+    "FxShotgunBlast": "Movable",
+    "FxJetpackFlame": "Movable",
+    "FxPlayerIndicator": "Movable",
+    "FxSpringtrapRing": "Movable",
+    "FxWitchdoctorHint": "Movable",
+    "FxNecromancerANKH": "Movable",
+    "FxWebbedEffect": "Movable",
+    "FxUnderwaterBubble": "Movable",
+    "FxWaterDrop": "Movable",
+    "FxKinguSliding": "Movable",
+    "FxAlienBlast": "Movable",
+    "FxSparkSmall": "Movable",
+    "FxTiamatHead": "Movable",
+    "FxTiamatTorso": "Movable",
+    "FxTiamatTail": "Movable",
+    "FxVatBubble": "Movable",
+    "FxHundunNeckPiece": "Movable",
+    "FxJellyfishStar": "Movable",
+    "FxQuickSand": "Movable",
+    "FxSorceressAttack": "Movable",
+    "FxLamassuAttack": "Movable",
+    "FxFireflyLight": "Movable",
+    "FxEmpress": "Movable",
+    "FxAnkhRotatingSpark": "Movable",
+    "FxAnkhBrokenPiece": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -545,7 +573,6 @@
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
-    "FX_EGGSHIP_CENTERJETFLAME": "EggshipCenterJetFlame",
     "FX_TORNJOURNALPAGE": "FxTornJournalPage",
     "FX_MAIN_EXIT_DOOR": "FxMainExitDoor",
     "FX_BIRDIES": "Birdies",
@@ -556,15 +583,47 @@
     "ITEM_RUBBLE": "Rubble",
     "FX_COMPASS": "FxCompass",
     "FX_SPECIALCOMPASS": "FxCompass",
-
+    "FX_SALEICON": "MovingIcon",
+    "FX_SALEDIALOG_CONTAINER": "FxSaleContainer",
+    "FX_PICKUPEFFECT": "FxPickupEffect",
+    "FX_SHOTGUNBLAST": "FxShotgunBlast",
+    "FX_JETPACKFLAME": "FxJetpackFlame",
+    "FX_PLAYERINDICATOR": "FxPlayerIndicator",
+    "FX_SMALLFLAME": "Flame",
+    "FX_SPRINGTRAP_RING": "FxSpringtrapRing",
+    "FX_WITCHDOCTOR_HINT": "FxWitchdoctorHint",
+    "FX_NECROMANCER_ANKH": "FxNecromancerANKH",
+    "FX_TELEPORTSHADOW": "LightEmitter",
+    "FX_OLMECPART_FLOATER": "OlmecFloater",
+    "FX_WEBBEDEFFECT": "FxWebbedEffect",
     "FX_BUTTON": "Button",
     "FX_SLEEP_BUBBLE": "SleepBubble",
-    "FX_MINIGAME_SHIP_CENTERJETFLAME": "MiniGameShipCenterJetFlame",
-    "FX_OLMECPART_FLOATER": "OlmecFloater",
     "FX_LAVA_GLOW": "LiquidSurface",
+    "FX_UNDERWATER_BUBBLE": "FxUnderwaterBubble",
+    "FX_WATER_DROP": "FxWaterDrop",
     "FX_WATER_SURFACE": "LiquidSurface",
-    "FX_TELEPORTSHADOW": "LightEmitter",
-    "FX_SMALLFLAME": "Flame",
+    "FX_KINGU_SLIDING": "FxKinguSliding",
+    "FX_ALIENBLAST.*": "FxAlienBlastReticule",
+    "FX_SPARK_SMALL": "FxSparkSmall",
+    "FX_TIAMAT_HEAD": "FxTiamatHead",
+    "FX_TIAMAT_TORSO": "FxTiamatTorso",
+    "FX_TIAMAT_TAIL.*": "FxTiamatTail",
+    "FX_DIEINDICATOR": "MovingIcon",
+    "FX_STORAGE_INDICATOR": "MovingIcon",
+    "FX_VAT_BUBBLE": "FxVatBubble",
+    "FX_HUNDUN_NECK_PIECE": "FxHundunNeckPiece",
+    "FX_MEGAJELLYFISH_STAR": "FxJellyfishStar",
+    "FX_QUICKSAND_DUST": "FxQuickSand",
+    "FX_QUICKSAND_RUBBLE": "FxQuickSand",
+    "FX_SORCERESS_ATTACK": "FxSorceressAttack",
+    "FX_LAMASSU_ATTACK": "FxLamassuAttack",
+    "FX_CRITTERFIREFLY_LIGHT": "FxFireflyLight",
+    "FX_EMPRESS": "FxEmpress",
+    "FX_MINIGAME_SHIP_DOOR": "MiniGameShipOffset",
+    "FX_MINIGAME_SHIP_CENTERJETFLAME": "MiniGameShipOffset",
+    "FX_MINIGAME_SHIP_JETFLAME": "MiniGameShipOffset",
+    "FX_ANKH_ROTATINGSPARK": "FxAnkhRotatingSpark",
+    "FX_ANKH_BROKENPIECE": "FxAnkhBrokenPiece",
     "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
@@ -2625,7 +2684,7 @@
         "type": "Flags32",
         "flags": {
           "1": "Upbeat dwelling intro music played",
-          "2": "",
+          "2": "", //once on, it stays on
           "3": "Running tutorial speedrun",
           "4": "",
           "5": "Level has Tun/shop?",
@@ -2647,7 +2706,7 @@
           "21": "Hide hud, transition",
           "22": "Hide hud, camp",
           "23": "Have clover",
-          "24": "",
+          "24": "", //ice caves and drill level, but only the first time?
           "25": "",
           "26": "",
           "27": "",
@@ -6238,8 +6297,8 @@
       { "field": "y", "type": "Float" },
       { "field": "w", "type": "Float" },
       { "field": "h", "type": "Float" },
-      { "field": "pushblock_offsetx", "type": "Float" },
-      { "field": "pushblock_offsety", "type": "Float" },
+      { "field": "special_offsetx", "type": "Float" },
+      { "field": "special_offsety", "type": "Float" },
       { "field": "color", "type": "Color" },
       { "field": "offsetx", "type": "Float" },
       { "field": "offsety", "type": "Float" },
@@ -6666,9 +6725,13 @@
       { "field": "frozen_timer", "type": "UnsignedByte" },
       { "field": "unknown_damage_counter_a", "type": "UnsignedByte" },
       { "field": "unknown_damage_counter_b", "type": "UnsignedByte" },
-      { "field": "i120a", "type": "UnsignedByte", "comment": "damage related" },
-      { "field": "i120b", "type": "UnsignedByte" },
-      { "field": "i120c", "type": "UnsignedByte" },
+      {
+        "field": "i120a",
+        "type": "UnsignedByte",
+        "comment": "timer, damage related"
+      },
+      { "field": "i120b", "type": "UnsignedByte", "comment": "timer" },
+      { "field": "i120c", "type": "UnsignedByte", "comment": "timer" },
       { "field": "i120d", "type": "UnsignedByte" },
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "falling_timer", "type": "UnsignedByte" },
@@ -7249,7 +7312,10 @@
       { "field": "phase1_amount_of_bomb_salvos", "type": "UnsignedByte" },
       { "field": "unknown_attack_state", "type": "UnsignedByte" }
     ],
-    "OlmecFloater": [{ "field": "both_floaters_intact", "type": "Bool" }],
+    "OlmecFloater": [
+      { "field": "both_floaters_intact", "type": "Bool" },
+      { "field": "on_breaking", "type": "Bool" }
+    ],
     "Cape": [
       { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
@@ -10394,18 +10460,18 @@
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "smoke_on", "type": "Bool" }
     ],
-    "MiniGameShipCenterJetFlame": [
-      { "field": "unknown1", "type": "Dword" },
+    "MiniGameShipOffset": [
+      { "field": "offset_x", "type": "Float" },
       {
-        "field": "position_offset",
+        "field": "offset_y",
         "type": "Float",
-        "comment": " = y but also pushblock_offsety"
+        "comment": " = y but also special_offsety"
       },
-      { "field": "unknown2", "type": "Dword" },
+      { "field": "unknown2", "type": "Float" },
       {
-        "field": "normal_offset",
+        "field": "normal_y_offset",
         "type": "Float",
-        "comment": "is added to position_offset"
+        "comment": "is added to offset_y"
       }
     ],
     "Button": [
@@ -10586,6 +10652,175 @@
           }
         }
       }
-    ]
+    ],
+    "MovingIcon": [
+      {
+        "field": "movement_timer",
+        "type": "UnsignedByte",
+        "comment": "used to move it up and down"
+      }
+    ],
+    "FxSaleContainer": [
+      { "field": "fx_value", "type": "EntityPointer" },
+      { "field": "fx_icon", "type": "EntityPointer" },
+      { "field": "fx_button", "type": "EntityPointer" },
+      {
+        "field": "shake_amplitude",
+        "type": "Float",
+        "comment": "for effect when you don't have enough money"
+      },
+      {
+        "field": "sound_trigger",
+        "type": "Bool",
+        "comment": "also sound_played, keeps re-triggering from time to time"
+      },
+      { "field": "pop_in_out_procentage", "type": "UnsignedByte" }
+    ],
+    "FxPickupEffect": [
+      { "field": "spawn_y", "type": "Float" },
+      {
+        "field": "visibility",
+        "type": "Float",
+        "comment": "or the disappearing animation progression"
+      }
+    ],
+    "FxShotgunBlast": [
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "FxJetpackFlame": [
+      { "field": "particle_smoke", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_flame", "type": "ParticleEmitterInfoPointer" },
+      { "field": "sound_info", "type": "SoundPositionPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "FxPlayerIndicator": [
+      { "field": "attached_to", "type": "EntityUID" },
+      { "field": "pos_x", "type": "Float" },
+      { "field": "pos_y", "type": "Float" },
+      { "field": "unknown", "type": "Dword" }
+    ],
+    "FxSpringtrapRing": [
+      { "field": "timer", "type": "Dword" },
+      { "field": "padding", "type": "Dword" },
+      { "field": "illumination", "type": "IlluminationPointer" }
+    ],
+    "FxWitchdoctorHint": [{ "field": "unknown", "type": "Map" }],
+    "FxNecromancerANKH": [{ "field": "unknown", "type": "Float" }],
+    "FxWebbedEffect": [{ "field": "visible", "type": "Bool" }],
+    "FxUnderwaterBubble": [
+      { "field": "unknown1", "type": "Float" },
+      { "field": "bubble_source", "type": "EntityUID" },
+      { "field": "direction", "type": "Byte" },
+      {
+        "field": "pop",
+        "type": "Bool",
+        "comment": "setting it true makes it disappear/fade away"
+      },
+      {
+        "field": "invert",
+        "type": "Bool",
+        "comment": "goes down instead of up"
+      }
+    ],
+    "FxWaterDrop": [
+      {
+        "field": "invert",
+        "type": "Bool",
+        "comment": "floats up instead of drooping down"
+      },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Byte" },
+      { "field": "unknown3", "type": "Byte" },
+      { "field": "unknown4", "type": "Dword" },
+      { "field": "droplet_source", "type": "EntityUID" }
+    ],
+    "FxKinguSliding": [
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "FxAlienBlast": [{ "field": "unknown", "type": "Byte" }],
+    "FxSparkSmall": [
+      { "field": "unknown1", "type": "Float" },
+      {
+        "field": "step",
+        "type": "Float",
+        "comment": "per frame increment for variable above"
+      },
+      { "field": "unknown3", "type": "Float" },
+      {
+        "field": "timer",
+        "type": "Byte",
+        "comment": "all values gets randomized when timer = 0"
+      }
+    ],
+    "FxTiamatHead": [{ "field": "timer", "type": "Word" }],
+    "FxTiamatTorso": [
+      { "field": "timer", "type": "Word" },
+      { "field": "padding", "type": "Word" },
+      {
+        "field": "torso_target_size",
+        "type": "Float",
+        "comment": "slowly increases/decreases to the given value"
+      }
+    ],
+    "FxTiamatTail": [
+      {
+        "field": "angle_two",
+        "type": "Float",
+        "comment": "added _two just to not shadow angle in entity"
+      },
+      { "field": "x_pos", "type": "Float" },
+      { "field": "y_pos", "type": "Float" }
+    ],
+    "FxVatBubble": [{ "field": "max_y", "type": "Float" }],
+    "FxHundunNeckPiece": [
+      {
+        "field": "kill_timer",
+        "type": "Word",
+        "comment": "short timer after the head is dead"
+      }
+    ],
+    "FxJellyfishStar": [
+      { "field": "rotation_angle", "type": "Float" },
+      { "field": "radius", "type": "Float" },
+      { "field": "speed", "type": "Float" }
+    ],
+    "FxQuickSand": [{ "field": "unknown", "type": "Float" }],
+    "FxSorceressAttack": [
+      { "field": "size", "type": "Float" },
+      { "field": "unknown2", "type": "Float", "comment": "pulsing related" },
+      { "field": "unknown3", "type": "Bool", "comment": "pulsing related" }
+    ],
+    "FxLamassuAttack": [
+      { "field": "attack_angle", "type": "Float" },
+      {
+        "field": "attack_angle2",
+        "type": "Float",
+        "comment": "seams to be exactly the same as above"
+      },
+      { "field": "unknown", "type": "Bool" }
+    ],
+    "FxFireflyLight": [
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "light_timer", "type": "UnsignedByte" },
+      { "field": "padding", "type": "Byte" },
+      {
+        "field": "cooldown_timer",
+        "type": "UnsignedWord",
+        "comment": "timer between light flashes"
+      }
+    ],
+    "FxEmpress": [{ "field": "sine_angle", "type": "Float" }],
+    "FxAnkhRotatingSpark": [
+      { "field": "radius", "type": "Float" },
+      { "field": "inclination", "type": "Float" },
+      {
+        "field": "speed",
+        "type": "Float",
+        "comment": "a weird one, it gets values lower then 1.0, if you set 1.0 or bigger it will stop"
+      },
+      { "field": "sine_angle?", "type": "Float" },
+      { "field": "size", "type": "Float" }
+    ],
+    "FxAnkhBrokenPiece": [{ "field": "unknown", "type": "Float" }]
   }
 }
