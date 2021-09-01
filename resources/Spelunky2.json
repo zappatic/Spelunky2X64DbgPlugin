@@ -4780,8 +4780,8 @@
           "4": "Rope",
           "5": "Run",
           "6": "Use door/buy",
-          "7": "-",
-          "8": "-"
+          "7": "Pause",
+          "8": "Journal"
         }
       },
       { "field": "unknown2", "type": "UnsignedByte" },
@@ -4812,7 +4812,7 @@
           "4": "Rope",
           "5": "Run",
           "6": "Use door/buy",
-          "7": "Pause?",
+          "7": "Pause",
           "8": "Journal",
           "9": "Left",
           "10": "Right",
@@ -6647,7 +6647,7 @@
       { "field": "movey", "type": "Float" },
       {
         "field": "buttons",
-        "type": "Flags32",
+        "type": "Flags8",
         "flags": {
           "1": "Jump",
           "2": "Attack",
@@ -6656,33 +6656,24 @@
           "5": "Run",
           "6": "Use door/buy",
           "7": "-",
-          "8": "-",
-          "9": "Jump",
-          "10": "Attack",
-          "11": "Bomb",
-          "12": "Rope",
-          "13": "Run",
-          "14": "Use door/buy",
-          "15": "-",
-          "16": "-",
-          "17": "-",
-          "18": "-",
-          "19": "-",
-          "20": "-",
-          "21": "-",
-          "22": "-",
-          "23": "-",
-          "24": "-",
-          "25": "-",
-          "26": "-",
-          "27": "-",
-          "28": "-",
-          "29": "-",
-          "30": "-",
-          "31": "-",
-          "32": "-"
+          "8": "-"
         }
       },
+      {
+        "field": "buttons_previous",
+        "type": "Flags8",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "-",
+          "8": "-"
+        }
+      },
+      { "field": "unknown_padding", "type": "Word", "comment": "garbage?" },
       { "field": "stand_counter", "type": "UnsignedDword" },
       {
         "field": "jump_height_multiplier",
