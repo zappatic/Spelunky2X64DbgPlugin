@@ -601,18 +601,18 @@
     "ParticleEmitterInfoPointer",
     "DoorCoordsPointer",
     "ScreenPointer",
-    "TransitionScreenPointer",
-    "VictoryWalkScreenPointer",
-    "CreditsScreenPointer",
+    "ScreenTransitionPointer",
+    "ScreenWinPointer",
+    "ScreenCreditsPointer",
     "ScrollingCreditsProgressionPointer",
-    "FinalScoreScreenPointer",
-    "CosmicOceanWinScreenPointer",
-    "DearJournalScreenPointer",
-    "ArenaChooseTeamsScreenPointer",
-    "ArenaLineupScreenPointer",
-    "UnknownScreenPointer", // state.unknown14_screen and state.unknown16_screen
-    "ArenaGameplayScreenPointer",
-    "ArenaScorePillarsScreenPointer",
+    "ScreenScoresPointer",
+    "ScreenConstellationPointer",
+    "ScreenRecapPointer",
+    "ScreenTeamSelectPointer",
+    "ScreenArenaIntroPointer",
+    "ScreenArenaStagesSelectPointer",
+    "ScreenArenaLevelPointer",
+    "ScreenArenaScorePointer",
     "PlayerInputs",
     "InputMappingPointer",
     "QuestsInfoPointer",
@@ -655,21 +655,21 @@
     "ShopRestrictedItemPointer4",
     "ShopRestrictedItemPointer5",
     "SaveGameHeapOffsetPointer",
-    "IntroLogoScreenPointer",
-    "IntroAnimationScreenPointer",
-    "IntroTextScreenPointer",
-    "SpelunkyTitleScreenPointer",
-    "MainMenuScreenPointer",
-    "OptionsScreenPointer",
-    "PlayerProfileScreenPointer",
-    "LeaderboardsScreenPointer",
-    "EnterSeedScreenPointer",
-    "CharacterSelectionScreenPointer",
-    "ArenaRulesScreenPointer",
+    "ScreenLogoPointer",
+    "ScreenIntroPointer",
+    "ScreenProloguePointer",
+    "ScreenTitlePointer",
+    "ScreenMenuPointer",
+    "ScreenOptionsPointer",
+    "ScreenPlayerProfilePointer",
+    "ScreenLeaderboardsPointer",
+    "ScreenSeedInputPointer",
+    "ScreenCharacterSelectPointer",
+    "ScreenArenaPointer",
     "ArenaRulesStringsPointer",
-    "ArenaItemsScreenPointer",
-    "OnlineScreenPointer",
-    "ShiftingWallsScreenPointer",
+    "ScreenArenaItemsPointer",
+    "ScreenOnlineLobbyPointer",
+    "ScreenOnlineLoadingPointer",
     "PauseScreenPointer",
     "BackgroundMusicManagerPointer",
     "MusicTrackPointer",
@@ -689,7 +689,7 @@
     "Color",
     "Map",
     "UnorderedMap",
-    "NodeSet",
+    "TextureRenderingInfo",
     "PlayerSlot",
     "PlayerSlotSettings",
     "LiquidPhysicsParams",
@@ -738,6 +738,7 @@
       "3": "Title",
       "4": "Menu",
       "5": "Options",
+      "6": "Player profile",
       "7": "Leaderboard",
       "8": "Seed input",
       "9": "Character select",
@@ -753,10 +754,14 @@
       "19": "Constellation",
       "20": "Recap",
       "21": "Arena menu",
+      "22": "Arena stages",
+      "23": "Arena items",
+      "24": "Arena select",
       "25": "Arena intro",
-      "26": "Arena score",
-      "27": "Online loading",
-      "28": "Online lobby"
+      "26": "Arena level",
+      "27": "Arena score",
+      "28": "Online loading",
+      "29": "Online lobby"
     },
     "theme_progression_themes": {
       "0": "Unset",
@@ -1320,65 +1325,121 @@
         "ref": "buttons_flags_movement"
       },
       { "field": "more_button_states", "type": "DataPointer" },
-      { "field": "intro_logos_screen", "type": "IntroLogoScreenPointer" },
+      { "field": "screen_logo", "type": "ScreenLogoPointer" },
       {
-        "field": "intro_animation_screen",
-        "type": "IntroAnimationScreenPointer"
+        "field": "screen_intro",
+        "type": "ScreenIntroPointer"
       },
-      { "field": "intro_text_screen", "type": "IntroTextScreenPointer" },
+      { "field": "screen_prologue", "type": "ScreenProloguePointer" },
       {
-        "field": "spelunky_title_screen",
-        "type": "SpelunkyTitleScreenPointer"
+        "field": "screen_title",
+        "type": "ScreenTitlePointer"
       },
-      { "field": "main_menu_screen", "type": "MainMenuScreenPointer" },
-      { "field": "options_screen", "type": "OptionsScreenPointer" },
+      { "field": "screen_menu", "type": "ScreenMenuPointer" },
+      { "field": "screen_options", "type": "ScreenOptionsPointer" },
       {
-        "field": "player_profile_screen",
-        "type": "PlayerProfileScreenPointer"
+        "field": "screen_player_profile",
+        "type": "ScreenPlayerProfilePointer"
       },
       {
-        "field": "leaderboards_screen",
-        "type": "LeaderboardsScreenPointer",
+        "field": "screen_leaderboards",
+        "type": "ScreenLeaderboardsPointer",
         "comment": "INCOMPLETE"
       },
-      { "field": "enter_seed_screen", "type": "EnterSeedScreenPointer" },
+      { "field": "screen_seed_input", "type": "ScreenSeedInputPointer" },
       {
-        "field": "character_selection_screen",
-        "type": "CharacterSelectionScreenPointer"
+        "field": "screen_character_select",
+        "type": "ScreenCharacterSelectPointer"
       },
-      { "field": "unknown6", "type": "DataPointer" },
       {
-        "field": "unknown_during_basecamp",
+        "field": "unknown_screen_team_select?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "screen_camp",
         "type": "ScreenPointer",
-        "comment": "in state there is also unknown8_during_basecamp"
+        "comment": "in state there is also screen_camp"
       },
       {
-        "field": "unknown_during_level",
+        "field": "screen_level",
         "type": "ScreenPointer",
-        "comment": "in state there is also unknown9_during_level"
-      },
-      { "field": "unknown8", "type": "DataPointer" },
-      { "field": "unknown9", "type": "DataPointer" },
-      { "field": "unknown10", "type": "DataPointer" },
-      { "field": "unknown11", "type": "DataPointer" },
-      { "field": "unknown12", "type": "DataPointer" },
-      { "field": "unknown13", "type": "DataPointer" },
-      { "field": "unknown14", "type": "DataPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "arena_rules_screen", "type": "ArenaRulesScreenPointer" },
-      { "field": "unknown17", "type": "DataPointer" },
-      { "field": "arena_items_screen", "type": "ArenaItemsScreenPointer" },
-      { "field": "unknown19", "type": "DataPointer" },
-      { "field": "unknown20", "type": "DataPointer" },
-      { "field": "unknown21", "type": "DataPointer" },
-      { "field": "unknown22", "type": "DataPointer" },
-      {
-        "field": "online_leaderboards_shifting_walls",
-        "type": "ShiftingWallsScreenPointer"
+        "comment": "in state there is also screen_level"
       },
       {
-        "field": "online_screen",
-        "type": "OnlineScreenPointer",
+        "field": "unknown_screen_transition?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_death?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_spaceship?",
+        "type": "DataPointer",
+        "comment": "(also not!) available in State"
+      },
+      {
+        "field": "unknown_screen_win?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_credits?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_scores?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_constellation?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_recap?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      { "field": "screen_arena_menu", "type": "ScreenArenaPointer" },
+      {
+        "field": "unknown_screen_arena_stages?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      { "field": "screen_arena_items", "type": "ScreenArenaItemsPointer" },
+      {
+        "field": "unknown_screen_arena_select?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "unknown_screen_arena_intro?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "screen_arena_level",
+        "type": "ScreenArenaLevelPointer",
+        "comment": "also available in State, but it's a different object! this one only has a render_timer, no UI parts"
+      },
+      {
+        "field": "unknown_screen_arena_score?",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
+      {
+        "field": "screen_online_loading",
+        "type": "ScreenOnlineLoadingPointer"
+      },
+      {
+        "field": "screen_online_lobby",
+        "type": "ScreenOnlineLobbyPointer",
         "comment": "INCOMPLETE"
       },
       { "field": "pause_screen", "type": "PauseScreenPointer" },
@@ -1470,15 +1531,15 @@
     ],
     "PauseScreenPointer": [
       { "field": "menu_slidein_progress", "type": "Float" },
-      { "field": "blurred_background", "type": "NodeSet" },
-      { "field": "woodpanel_left", "type": "NodeSet" },
-      { "field": "woodpanel_middle", "type": "NodeSet" },
-      { "field": "woodpanel_right", "type": "NodeSet" },
-      { "field": "woodpanel_top", "type": "NodeSet" },
-      { "field": "scroll", "type": "NodeSet" },
+      { "field": "blurred_background", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_left", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_middle", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_right", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_top", "type": "TextureRenderingInfo" },
+      { "field": "scroll", "type": "TextureRenderingInfo" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "DataPointer" },
-      { "field": "confirmation_panel", "type": "NodeSet" },
+      { "field": "confirmation_panel", "type": "TextureRenderingInfo" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "DataPointer" },
@@ -1503,30 +1564,30 @@
     "SaveGameHeapOffsetPointer": [
       { "field": "heap_offset", "type": "UnsignedQword" }
     ],
-    "IntroLogoScreenPointer": [
+    "ScreenLogoPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": { "name": "~IntroLogoScreenPointer", "params": "", "return": "" }
+          "0": { "name": "~ScreenLogoPointer", "params": "", "return": "" }
         }
       },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "logo_mossmouth", "type": "NodeSet" },
-      { "field": "logo_blitworks", "type": "NodeSet" },
-      { "field": "logo_fmod", "type": "NodeSet" },
+      { "field": "logo_mossmouth", "type": "TextureRenderingInfo" },
+      { "field": "logo_blitworks", "type": "TextureRenderingInfo" },
+      { "field": "logo_fmod", "type": "TextureRenderingInfo" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "unknown5", "type": "UnsignedDword" }
     ],
-    "IntroAnimationScreenPointer": [
+    "ScreenIntroPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~IntroAnimationScreenPointer",
+            "name": "~ScreenIntroPointer",
             "params": "",
             "return": ""
           }
@@ -1535,14 +1596,14 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "NodeSet" }
+      { "field": "unknown4", "type": "TextureRenderingInfo" }
     ],
-    "IntroTextScreenPointer": [
+    "ScreenProloguePointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": { "name": "~IntroTextScreenPointer", "params": "", "return": "" }
+          "0": { "name": "~ScreenProloguePointer", "params": "", "return": "" }
         }
       },
       { "field": "render_timer", "type": "Float" },
@@ -1552,13 +1613,13 @@
       { "field": "line2", "type": "StringsTableID" },
       { "field": "line3", "type": "StringsTableID" }
     ],
-    "SpelunkyTitleScreenPointer": [
+    "ScreenTitlePointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~SpelunkyTitleScreenPointer",
+            "name": "~ScreenTitlePointer",
             "params": "",
             "return": ""
           }
@@ -1567,81 +1628,117 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "spelunky2_logo", "type": "NodeSet" },
-      { "field": "ana", "type": "NodeSet" },
+      { "field": "logo_spelunky2", "type": "TextureRenderingInfo" },
+      { "field": "ana", "type": "TextureRenderingInfo" },
       {
         "field": "ana_right_eyeball_torch_reflection",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "right from her perspective"
       },
       {
         "field": "ana_left_eyeball_torch_reflection",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "left from her perspective"
       },
-      { "field": "unknown4", "type": "NodeSet" }
+      {
+        "field": "particle_torchflame_smoke",
+        "type": "ParticleEmitterInfoPointer"
+      },
+      {
+        "field": "particle_torchflame_backflames",
+        "type": "ParticleEmitterInfoPointer"
+      },
+      {
+        "field": "particle_torchflame_flames",
+        "type": "ParticleEmitterInfoPointer"
+      },
+      {
+        "field": "particle_torchflame_backflames_animated",
+        "type": "ParticleEmitterInfoPointer"
+      },
+      {
+        "field": "particle_torchflame_flames_animated",
+        "type": "ParticleEmitterInfoPointer"
+      },
+      {
+        "field": "particle_torchflame_ash",
+        "type": "ParticleEmitterInfoPointer"
+      },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "DataPointer" },
+      { "field": "unknown10", "type": "DataPointer" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
+      { "field": "unknown19", "type": "Float" }
     ],
-    "MainMenuScreenPointer": [
+    "ScreenMenuPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": { "name": "~MainMenuScreenPointer", "params": "", "return": "" }
+          "0": { "name": "~ScreenMenuPointer", "params": "", "return": "" }
         }
       },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "tunnel_foreground", "type": "NodeSet" },
-      { "field": "tunnel_background", "type": "NodeSet" },
-      { "field": "cthulhu_head", "type": "NodeSet" },
-      { "field": "tunnel_ring_darkbrown", "type": "NodeSet" },
-      { "field": "cthulhu_body", "type": "NodeSet" },
-      { "field": "tunnel_ring_lightbrown", "type": "NodeSet" },
-      { "field": "vine_left", "type": "NodeSet" },
-      { "field": "vine_right", "type": "NodeSet" },
-      { "field": "skull_left", "type": "NodeSet" },
-      { "field": "salamander_right", "type": "NodeSet" },
-      { "field": "left_spear", "type": "NodeSet" },
-      { "field": "right_spear", "type": "NodeSet" },
-      { "field": "unknown4", "type": "NodeSet" },
-      { "field": "play_scroll", "type": "NodeSet" },
-      { "field": "infotoast_node1_x", "type": "Float" },
-      { "field": "infotoast_node1_y", "type": "Float" },
-      { "field": "infotoast_node2_x", "type": "Float" },
-      { "field": "infotoast_node2_y", "type": "Float" },
-      { "field": "infotoast_node3_x", "type": "Float" },
-      { "field": "infotoast_node3_y", "type": "Float" },
-      { "field": "infotoast_node4_x", "type": "Float" },
-      { "field": "infotoast_node4_y", "type": "Float" },
-      { "field": "infotoast_node5_x", "type": "Float" },
-      { "field": "infotoast_node5_y", "type": "Float" },
+      { "field": "unknown4", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "tunnel_background", "type": "TextureRenderingInfo" },
+      { "field": "cthulhu_disc", "type": "TextureRenderingInfo" },
+      { "field": "tunnel_ring_darkbrown", "type": "TextureRenderingInfo" },
+      { "field": "cthulhu_body", "type": "TextureRenderingInfo" },
+      { "field": "tunnel_ring_lightbrown", "type": "TextureRenderingInfo" },
+      { "field": "vine_left", "type": "TextureRenderingInfo" },
+      { "field": "vine_right", "type": "TextureRenderingInfo" },
+      { "field": "skull_left", "type": "TextureRenderingInfo" },
+      { "field": "salamander_right", "type": "TextureRenderingInfo" },
+      { "field": "left_spear", "type": "TextureRenderingInfo" },
+      { "field": "right_spear", "type": "TextureRenderingInfo" },
+      { "field": "spear_dangler", "type": "TextureRenderingInfo" },
+      { "field": "play_scroll", "type": "TextureRenderingInfo" },
+      { "field": "info_toast", "type": "TextureRenderingInfo" },
       { "field": "cthulhu_animation", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
-      { "field": "cthulhu_disc_angle", "type": "Float" },
-      { "field": "cthulhu_animation1", "type": "Float" },
-      { "field": "cthulhu_animation2", "type": "Float" },
-      { "field": "cthulhu_animation3", "type": "Float" },
-      { "field": "unknown11", "type": "CodePointer" },
-      { "field": "unknown13", "type": "DataPointer" },
-      { "field": "unknown14", "type": "DataPointer" },
       { "field": "unknown15", "type": "DataPointer" },
       { "field": "unknown16", "type": "DataPointer" },
-      { "field": "unknown17", "type": "DataPointer" },
+      { "field": "cthulhu_disc_ring_angle", "type": "Float" },
+      { "field": "cthulhu_disc_split_progress", "type": "Float" },
+      { "field": "cthulhu_disc_y", "type": "Float" },
+      { "field": "cthulhu_timer", "type": "Float" },
+      { "field": "unknown17", "type": "CodePointer" },
       { "field": "unknown18", "type": "DataPointer" },
+      { "field": "unknown19", "type": "DataPointer" },
+      { "field": "unknown20", "type": "DataPointer" },
+      { "field": "unknown21", "type": "DataPointer" },
+      { "field": "unknown22", "type": "DataPointer" },
+      { "field": "unknown23", "type": "DataPointer" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
-      { "field": "unknown20", "type": "UnsignedDword" },
-      { "field": "unknown21", "type": "UnsignedDword" },
-      { "field": "unknown22", "type": "UnsignedByte" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "UnsignedByte" },
+      { "field": "unknown24", "type": "UnsignedDword" },
+      { "field": "unknown25", "type": "UnsignedDword" },
+      { "field": "unknown26", "type": "UnsignedByte" },
+      { "field": "unknown27", "type": "UnsignedByte" },
+      { "field": "unknown28", "type": "UnsignedByte" },
+      { "field": "unknown29", "type": "UnsignedByte" },
       { "field": "show_toast_text", "type": "Bool" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown27", "type": "Bool" },
+      { "field": "unknown30", "type": "Bool" },
       { "field": "padding4", "type": "UnsignedByte" },
       { "field": "padding5", "type": "UnsignedByte" },
       { "field": "padding6", "type": "UnsignedByte" },
@@ -1679,12 +1776,12 @@
       { "field": "play_scroll_descend_timer", "type": "Float" },
       { "field": "scroll_text", "type": "StringsTableID" }
     ],
-    "OptionsScreenPointer": [
+    "ScreenOptionsPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": { "name": "~OptionsScreenPointer", "params": "", "return": "" }
+          "0": { "name": "~ScreenOptionsPointer", "params": "", "return": "" }
         }
       },
       { "field": "render_timer", "type": "Float" },
@@ -1697,14 +1794,21 @@
       { "field": "unknown8", "type": "DataPointer" },
       { "field": "unknown9", "type": "DataPointer" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
-      { "field": "unknown11", "type": "UnsignedWord" },
+      {
+        "field": "key_press_timer",
+        "type": "UnsignedWord",
+        "comment": "might be two separate values"
+      },
       { "field": "unknown12", "type": "UnsignedWord" },
-      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "moved_left", "type": "Bool" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
       { "field": "unknown14", "type": "UnsignedByte" },
       { "field": "unknown15", "type": "UnsignedByte" },
       { "field": "unknown16", "type": "UnsignedByte" },
       { "field": "unknown17", "type": "UnsignedByte" },
-      { "field": "brick_border", "type": "NodeSet" },
+      { "field": "brick_border", "type": "TextureRenderingInfo" },
       { "field": "top_bottom_woodpanels_velocity", "type": "Float" },
       {
         "field": "top_bottom_woodpanels_progress",
@@ -1720,15 +1824,21 @@
       { "field": "bottom_woodpanel_y", "type": "Float" },
       { "field": "unknown23", "type": "Float" },
       { "field": "top_bottom_woodpanels_slide_in_related", "type": "Float" },
-      { "field": "bottom_woodpanel", "type": "NodeSet" },
-      { "field": "top_woodpanel", "type": "NodeSet" },
+      { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
+      { "field": "top_woodpanel", "type": "TextureRenderingInfo" },
       {
         "field": "unknown27",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "all forced, changes when going a level deeper or higher in the options"
       },
-      { "field": "top_woodpanel_left_scrollhandle", "type": "NodeSet" },
-      { "field": "top_woodpanel_right_scrollhandle", "type": "NodeSet" },
+      {
+        "field": "top_woodpanel_left_scrollhandle",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "top_woodpanel_right_scrollhandle",
+        "type": "TextureRenderingInfo"
+      },
       { "field": "button_right_caption", "type": "StringsTableID" },
       { "field": "button_middle_caption", "type": "StringsTableID" },
       { "field": "top_woodpanel_visible", "type": "Bool" },
@@ -1746,45 +1856,47 @@
       { "field": "unknown36", "type": "UnsignedDword" },
       { "field": "unknown37", "type": "UnsignedDword" },
       { "field": "unknown38", "type": "UnsignedDword" },
-      { "field": "topleft_woodpanel_esc", "type": "NodeSet" },
-      { "field": "brick_background", "type": "NodeSet" },
-      { "field": "brick_middlelayer", "type": "NodeSet" },
-      { "field": "brick_foreground", "type": "NodeSet" },
-      { "field": "selected_item_rounded_rect", "type": "NodeSet" },
-      { "field": "selected_item_scarab", "type": "NodeSet" },
-      { "field": "item_option_arrow_left", "type": "NodeSet" },
-      { "field": "item_option_arrow_right", "type": "NodeSet" },
-      { "field": "tooltip_background", "type": "NodeSet" },
+      { "field": "topleft_woodpanel_esc", "type": "TextureRenderingInfo" },
+      { "field": "brick_background", "type": "TextureRenderingInfo" },
+      { "field": "brick_middlelayer", "type": "TextureRenderingInfo" },
+      { "field": "brick_foreground", "type": "TextureRenderingInfo" },
+      { "field": "selected_item_rounded_rect", "type": "TextureRenderingInfo" },
+      { "field": "selected_item_scarab", "type": "TextureRenderingInfo" },
+      { "field": "item_option_arrow_left", "type": "TextureRenderingInfo" },
+      { "field": "item_option_arrow_right", "type": "TextureRenderingInfo" },
+      { "field": "tooltip_background", "type": "TextureRenderingInfo" },
       {
         "field": "progressbar_background",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "brightness 'progressbar' background texture"
       },
-      { "field": "unknown40", "type": "NodeSet" },
-      { "field": "progressbar_foreground", "type": "NodeSet" },
-      { "field": "progressbar_position_indicator", "type": "NodeSet" },
+      { "field": "unknown40", "type": "TextureRenderingInfo" },
+      { "field": "progressbar_foreground", "type": "TextureRenderingInfo" },
+      {
+        "field": "progressbar_position_indicator",
+        "type": "TextureRenderingInfo"
+      },
       {
         "field": "sectionheader_background",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "behind 'GRAPHICS' and 'AUDIO' "
       },
-      { "field": "unknown44", "type": "NodeSet" },
-      { "field": "unknown45", "type": "NodeSet" },
+      { "field": "unknown44", "type": "TextureRenderingInfo" },
+      { "field": "unknown45", "type": "TextureRenderingInfo" },
       { "field": "topleft_woodpanel_esc_slidein_timer", "type": "Float" },
       { "field": "text_fadein_timer", "type": "Float" },
       { "field": "vertical_scroll_effect_timer", "type": "Float" },
       { "field": "unknown49", "type": "UnsignedByte" },
       { "field": "unknown50", "type": "UnsignedByte" },
-      { "field": "unknown51", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" }
+      { "field": "unknown51", "type": "UnsignedByte" }
     ],
-    "LeaderboardsScreenPointer": [
+    "ScreenLeaderboardsPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~LeaderboardsScreenPointer",
+            "name": "~ScreenLeaderboardsPointer",
             "params": "",
             "return": ""
           }
@@ -1793,24 +1905,28 @@
       { "field": "render_timer", "type": "Float" }
       // INCOMPLETE
     ],
-    "OnlineScreenPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~OnlineScreenPointer", "params": "", "return": "" }
-        }
-      },
-      { "field": "render_timer", "type": "Float" }
-      // INCOMPLETE
-    ],
-    "ShiftingWallsScreenPointer": [
+    "ScreenOnlineLobbyPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ShiftingWallsScreenPointer",
+            "name": "~ScreenOnlineLobbyPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
+      { "field": "render_timer", "type": "Float" }
+      // INCOMPLETE
+    ],
+    "ScreenOnlineLoadingPointer": [
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ScreenOnlineLoadingPointer",
             "params": "",
             "return": ""
           }
@@ -1819,17 +1935,16 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "ouroboros_x", "type": "Float" },
-      { "field": "ouroboros_y", "type": "Float" },
-      { "field": "ouroboros", "type": "NodeSet" }
+      { "field": "ouroboros", "type": "TextureRenderingInfo" },
+      { "field": "ouroboros_angle", "type": "Float" }
     ],
-    "PlayerProfileScreenPointer": [
+    "ScreenPlayerProfilePointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~PlayerProfileScreenPointer",
+            "name": "~ScreenPlayerProfilePointer",
             "params": "",
             "return": ""
           }
@@ -1837,12 +1952,12 @@
       },
       { "field": "render_timer", "type": "Float" }
     ],
-    "EnterSeedScreenPointer": [
+    "ScreenSeedInputPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": { "name": "~EnterSeedScreenPointer", "params": "", "return": "" }
+          "0": { "name": "~ScreenSeedInputPointer", "params": "", "return": "" }
         }
       },
       { "field": "render_timer", "type": "Float" },
@@ -1854,11 +1969,11 @@
       { "field": "unknown_timer", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "bottom_woodpanel_y", "type": "Float" },
-      { "field": "bottom_woodpanel", "type": "NodeSet" },
-      { "field": "unknown8", "type": "NodeSet" },
-      { "field": "unknown9", "type": "NodeSet" },
-      { "field": "unknown10", "type": "NodeSet" },
-      { "field": "unknown11", "type": "NodeSet" },
+      { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
+      { "field": "unknown8", "type": "TextureRenderingInfo" },
+      { "field": "unknown9", "type": "TextureRenderingInfo" },
+      { "field": "unknown10", "type": "TextureRenderingInfo" },
+      { "field": "unknown11", "type": "TextureRenderingInfo" },
       { "field": "unknown12", "type": "StringsTableID" },
       { "field": "unknown13", "type": "StringsTableID" },
       { "field": "buttons_text_id", "type": "StringsTableID" },
@@ -1887,24 +2002,27 @@
       { "field": "topleft_woodpanel_esc_slidein_timer", "type": "Float" },
       { "field": "scroll_text_id", "type": "StringsTableID" },
       { "field": "start_text_id", "type": "StringsTableID" },
-      { "field": "main_woodpanel_left_border", "type": "NodeSet" },
-      { "field": "main_woodpanel_center", "type": "NodeSet" },
-      { "field": "main_woodpanel_right_border", "type": "NodeSet" },
-      { "field": "top_scroll", "type": "NodeSet" },
-      { "field": "seed_letter_cutouts", "type": "NodeSet" },
-      { "field": "unknown40", "type": "NodeSet" },
-      { "field": "unknown41", "type": "NodeSet" },
-      { "field": "topleft_woodpanel_esc", "type": "NodeSet" },
-      { "field": "start_sidepanel", "type": "NodeSet" },
+      { "field": "main_woodpanel_left_border", "type": "TextureRenderingInfo" },
+      { "field": "main_woodpanel_center", "type": "TextureRenderingInfo" },
+      {
+        "field": "main_woodpanel_right_border",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "top_scroll", "type": "TextureRenderingInfo" },
+      { "field": "seed_letter_cutouts", "type": "TextureRenderingInfo" },
+      { "field": "unknown40", "type": "TextureRenderingInfo" },
+      { "field": "unknown41", "type": "TextureRenderingInfo" },
+      { "field": "topleft_woodpanel_esc", "type": "TextureRenderingInfo" },
+      { "field": "start_sidepanel", "type": "TextureRenderingInfo" },
       { "field": "start_sidepanel_slidein_timer", "type": "Float" }
     ],
-    "CharacterSelectionScreenPointer": [
+    "ScreenCharacterSelectPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~CharacterSelectionScreenPointer",
+            "name": "~ScreenCharacterSelectPointer",
             "params": "",
             "return": ""
           }
@@ -1917,8 +2035,8 @@
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "main_background_zoom_related?", "type": "UnsignedDword" },
+      { "field": "main_background_zoom_related1", "type": "Float" },
+      { "field": "main_background_zoom_related2", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "UnsignedDword" },
       { "field": "main_background_zoom_timer", "type": "Float" },
       { "field": "main_background_zoom_target", "type": "Float" },
@@ -1940,11 +2058,11 @@
       { "field": "unknown28", "type": "Float" },
       { "field": "unknown29", "type": "UnsignedDword" },
       { "field": "unknown30", "type": "UnsignedDword" },
-      { "field": "bottom_woodpanel", "type": "NodeSet" },
-      { "field": "top_woodpanel", "type": "NodeSet" },
-      { "field": "unknown32", "type": "NodeSet" },
-      { "field": "left_scroll_handle", "type": "NodeSet" },
-      { "field": "right_scroll_handle", "type": "NodeSet" },
+      { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
+      { "field": "top_woodpanel", "type": "TextureRenderingInfo" },
+      { "field": "unknown32", "type": "TextureRenderingInfo" },
+      { "field": "left_scroll_handle", "type": "TextureRenderingInfo" },
+      { "field": "right_scroll_handle", "type": "TextureRenderingInfo" },
       { "field": "left_button_text", "type": "StringsTableID" },
       { "field": "right_button_text", "type": "StringsTableID" },
       { "field": "middle_button_text", "type": "StringsTableID" },
@@ -1952,25 +2070,28 @@
       { "field": "bottom_woodpanel_visible", "type": "Bool" },
       { "field": "toggle_woodpanel_slidein_animation", "type": "Bool" },
       { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "mine_entrance_background", "type": "NodeSet" },
-      { "field": "character", "type": "NodeSet" },
-      { "field": "character_shadow", "type": "NodeSet" },
-      { "field": "character_flag", "type": "NodeSet" },
-      { "field": "character_left_arrow", "type": "NodeSet" },
-      { "field": "character_right_arrow", "type": "NodeSet" },
-      { "field": "unknown45", "type": "NodeSet" },
-      { "field": "mine_entrance_border", "type": "NodeSet" },
-      { "field": "mine_entrance_shutter", "type": "NodeSet" },
-      { "field": "unknown47", "type": "NodeSet" },
-      { "field": "background", "type": "NodeSet" },
-      { "field": "blurred_border", "type": "NodeSet" },
-      { "field": "blurred_border2", "type": "NodeSet" },
-      { "field": "unknown51", "type": "NodeSet" },
-      { "field": "topleft_woodpanel_esc", "type": "NodeSet" },
-      { "field": "start_sidepanel", "type": "NodeSet" },
-      { "field": "quick_select_panel", "type": "NodeSet" },
-      { "field": "quick_select_selected_char_background", "type": "NodeSet" },
-      { "field": "quick_select_panel_related", "type": "NodeSet" },
+      { "field": "mine_entrance_background", "type": "TextureRenderingInfo" },
+      { "field": "character", "type": "TextureRenderingInfo" },
+      { "field": "character_shadow", "type": "TextureRenderingInfo" },
+      { "field": "character_flag", "type": "TextureRenderingInfo" },
+      { "field": "character_left_arrow", "type": "TextureRenderingInfo" },
+      { "field": "character_right_arrow", "type": "TextureRenderingInfo" },
+      { "field": "unknown45", "type": "TextureRenderingInfo" },
+      { "field": "mine_entrance_border", "type": "TextureRenderingInfo" },
+      { "field": "mine_entrance_shutter", "type": "TextureRenderingInfo" },
+      { "field": "unknown47", "type": "TextureRenderingInfo" },
+      { "field": "background", "type": "TextureRenderingInfo" },
+      { "field": "blurred_border", "type": "TextureRenderingInfo" },
+      { "field": "blurred_border2", "type": "TextureRenderingInfo" },
+      { "field": "unknown51", "type": "TextureRenderingInfo" },
+      { "field": "topleft_woodpanel_esc", "type": "TextureRenderingInfo" },
+      { "field": "start_sidepanel", "type": "TextureRenderingInfo" },
+      { "field": "quick_select_panel", "type": "TextureRenderingInfo" },
+      {
+        "field": "quick_select_selected_char_background",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "quick_select_panel_related", "type": "TextureRenderingInfo" },
       { "field": "player_1_shutter_timer", "type": "Float" },
       { "field": "player_2_shutter_timer", "type": "Float" },
       { "field": "player_3_shutter_timer", "type": "Float" },
@@ -2080,7 +2201,7 @@
           "32": "-"
         }
       },
-      { "field": "unknown69", "type": "NodeSet" },
+      { "field": "unknown69", "type": "TextureRenderingInfo" },
       { "field": "opacity", "type": "Float" },
       { "field": "start_pressed", "type": "Bool" },
       { "field": "transition_to_game_started", "type": "Bool" },
@@ -2144,7 +2265,7 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" }
     ],
     "FlyingThing": [
-      { "field": "nodes", "type": "NodeSet" },
+      { "field": "nodes", "type": "TextureRenderingInfo" },
       { "field": "entity_type", "type": "EntityDBID" },
       { "field": "unknown1", "type": "Bool" },
       { "field": "padding1", "type": "UnsignedByte" },
@@ -2155,7 +2276,7 @@
     "FlyingThingParams": [
       { "field": "unknown1", "type": "Float" },
       { "field": "unknown2", "type": "Float" },
-      { "field": "spritsheet_column", "type": "Float" },
+      { "field": "spritesheet_column", "type": "Float" },
       { "field": "spritesheet_row", "type": "Float" },
       {
         "field": "spritesheet_animation_length",
@@ -2180,13 +2301,13 @@
       { "field": "unknown21", "type": "UnsignedDword" },
       { "field": "unknown22", "type": "UnsignedDword" }
     ],
-    "ArenaRulesScreenPointer": [
+    "ScreenArenaPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ArenaRulesScreenPointer",
+            "name": "~ScreenArenaPointer",
             "params": "",
             "return": ""
           }
@@ -2202,11 +2323,11 @@
       { "field": "top_scroll_unfurl_timer", "type": "Float" },
       { "field": "unknown11", "type": "Float" },
       { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "NodeSet" },
-      { "field": "woodpanel_top", "type": "NodeSet" },
-      { "field": "unknown15", "type": "NodeSet" },
-      { "field": "left_scroll_handle", "type": "NodeSet" },
-      { "field": "right_scroll_handle", "type": "NodeSet" },
+      { "field": "unknown13", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_top", "type": "TextureRenderingInfo" },
+      { "field": "unknown15", "type": "TextureRenderingInfo" },
+      { "field": "left_scroll_handle", "type": "TextureRenderingInfo" },
+      { "field": "right_scroll_handle", "type": "TextureRenderingInfo" },
       { "field": "scroll_text", "type": "StringsTableID" },
       { "field": "unknown17", "type": "StringsTableID" },
       { "field": "unknown18", "type": "StringsTableID" },
@@ -2215,31 +2336,40 @@
       { "field": "bottom_woodpanel_visible", "type": "Bool" },
       { "field": "woodpanels_toggle", "type": "Bool" },
       { "field": "unknown20d", "type": "Bool" },
-      { "field": "brick_background", "type": "NodeSet" },
-      { "field": "blurry_border", "type": "NodeSet" },
-      { "field": "blurry_border2", "type": "NodeSet" },
-      { "field": "characters_drawing", "type": "NodeSet" },
-      { "field": "info_black_background", "type": "NodeSet" },
-      { "field": "main_panel_top_left_corner", "type": "NodeSet" },
-      { "field": "main_panel_top", "type": "NodeSet" },
-      { "field": "main_panel_top_right_corner", "type": "NodeSet" },
-      { "field": "main_panel_left", "type": "NodeSet" },
-      { "field": "main_panel_center", "type": "NodeSet" },
-      { "field": "main_panel_right", "type": "NodeSet" },
-      { "field": "main_panel_bottom_left_corner", "type": "NodeSet" },
-      { "field": "main_panel_bottom", "type": "NodeSet" },
-      { "field": "main_panel_bottom_right_corner", "type": "NodeSet" },
-      { "field": "rules_scroll", "type": "NodeSet" },
-      { "field": "black_option_boxes_left", "type": "NodeSet" },
-      { "field": "black_option_boxes_center", "type": "NodeSet" },
-      { "field": "black_option_boxes_right", "type": "NodeSet" },
-      { "field": "gold_option_outline", "type": "NodeSet" },
-      { "field": "option_icons", "type": "NodeSet" },
-      { "field": "option_left_arrow", "type": "NodeSet" },
-      { "field": "option_right_arrow", "type": "NodeSet" },
-      { "field": "bottom_left_bricks", "type": "NodeSet" },
-      { "field": "top_left_esc_panel", "type": "NodeSet" },
-      { "field": "next_panel", "type": "NodeSet" },
+      { "field": "brick_background", "type": "TextureRenderingInfo" },
+      { "field": "blurry_border", "type": "TextureRenderingInfo" },
+      { "field": "blurry_border2", "type": "TextureRenderingInfo" },
+      { "field": "characters_drawing", "type": "TextureRenderingInfo" },
+      { "field": "info_black_background", "type": "TextureRenderingInfo" },
+      { "field": "main_panel_top_left_corner", "type": "TextureRenderingInfo" },
+      { "field": "main_panel_top", "type": "TextureRenderingInfo" },
+      {
+        "field": "main_panel_top_right_corner",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "main_panel_left", "type": "TextureRenderingInfo" },
+      { "field": "main_panel_center", "type": "TextureRenderingInfo" },
+      { "field": "main_panel_right", "type": "TextureRenderingInfo" },
+      {
+        "field": "main_panel_bottom_left_corner",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "main_panel_bottom", "type": "TextureRenderingInfo" },
+      {
+        "field": "main_panel_bottom_right_corner",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "rules_scroll", "type": "TextureRenderingInfo" },
+      { "field": "black_option_boxes_left", "type": "TextureRenderingInfo" },
+      { "field": "black_option_boxes_center", "type": "TextureRenderingInfo" },
+      { "field": "black_option_boxes_right", "type": "TextureRenderingInfo" },
+      { "field": "gold_option_outline", "type": "TextureRenderingInfo" },
+      { "field": "option_icons", "type": "TextureRenderingInfo" },
+      { "field": "option_left_arrow", "type": "TextureRenderingInfo" },
+      { "field": "option_right_arrow", "type": "TextureRenderingInfo" },
+      { "field": "bottom_left_bricks", "type": "TextureRenderingInfo" },
+      { "field": "top_left_esc_panel", "type": "TextureRenderingInfo" },
+      { "field": "next_panel", "type": "TextureRenderingInfo" },
       { "field": "option_captions", "type": "ArenaRulesStringsPointer" },
       { "field": "unknown46", "type": "DataPointer" },
       { "field": "unknown47", "type": "DataPointer" },
@@ -2295,13 +2425,13 @@
       { "field": "zoom_timer", "type": "Float" },
       { "field": "zoom_target", "type": "Float" }
     ],
-    "ArenaItemsScreenPointer": [
+    "ScreenArenaItemsPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ArenaItemsScreenPointer",
+            "name": "~ScreenArenaItemsPointer",
             "params": "",
             "return": ""
           }
@@ -2311,45 +2441,51 @@
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "unknown4", "type": "Float" },
-      { "field": "top_woodpanel_slidein_timer", "type": "Float" },
-      { "field": "unknown6", "type": "Float" },
+      { "field": "woodpanel_top_slidein_timer", "type": "Float" },
+      { "field": "woodpanel_top_scroll_unfurl_timer", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
       { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "NodeSet" },
-      { "field": "top_woodpanel", "type": "NodeSet" },
-      { "field": "unknown11", "type": "NodeSet" },
-      { "field": "top_scroll_left_handle", "type": "NodeSet" },
-      { "field": "top_scroll_right_handle", "type": "NodeSet" },
-      { "field": "scroll_text", "type": "StringsTableID" },
-      { "field": "text_2", "type": "StringsTableID" },
-      { "field": "text_3", "type": "StringsTableID" },
-      { "field": "text_4", "type": "StringsTableID" },
-      { "field": "top_woodpanel_visible", "type": "Bool" },
-      { "field": "bottom_woodpanel_visible", "type": "Bool" },
+      { "field": "unknown9", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_top", "type": "TextureRenderingInfo" },
+      { "field": "unknown11", "type": "TextureRenderingInfo" },
+      { "field": "top_scroll_left_handle", "type": "TextureRenderingInfo" },
+      { "field": "top_scroll_right_handle", "type": "TextureRenderingInfo" },
+      { "field": "scroll_text_id", "type": "StringsTableID" },
+      { "field": "text_id_2", "type": "StringsTableID" },
+      { "field": "text_id_3", "type": "StringsTableID" },
+      { "field": "text_id_4", "type": "StringsTableID" },
+      { "field": "woodpanel_top_visible", "type": "Bool" },
+      { "field": "woodpanel_bottom_visible", "type": "Bool" },
       { "field": "woodpanels_toggle", "type": "Bool" },
       { "field": "unknown15", "type": "Bool" },
-      { "field": "brick_background", "type": "NodeSet" },
-      { "field": "black_background_bottom_right", "type": "NodeSet" },
-      { "field": "bottom_woodpanel", "type": "NodeSet" },
-      { "field": "bottom_scroll", "type": "NodeSet" },
-      { "field": "bottom_scroll_right_handle", "type": "NodeSet" },
-      { "field": "held_item_crate_on_scroll", "type": "NodeSet" },
-      { "field": "held_item_on_scroll", "type": "NodeSet" },
-      { "field": "item_background", "type": "NodeSet" },
-      { "field": "toggles_background", "type": "NodeSet" },
-      { "field": "item_selection_gold_outline", "type": "NodeSet" },
-      { "field": "item_icons", "type": "NodeSet" },
-      { "field": "item_held_badge", "type": "NodeSet" },
-      { "field": "item_equipped_badge", "type": "NodeSet" },
-      { "field": "item_off_gray_overlay", "type": "NodeSet" },
-      { "field": "esc_woodpanel", "type": "NodeSet" },
+      { "field": "brick_background", "type": "TextureRenderingInfo" },
+      {
+        "field": "black_background_bottom_right",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "woodpanel_bottom", "type": "TextureRenderingInfo" },
+      { "field": "scroll_bottom", "type": "TextureRenderingInfo" },
+      { "field": "scroll_right_handle_bottom", "type": "TextureRenderingInfo" },
+      { "field": "held_item_crate_on_scroll", "type": "TextureRenderingInfo" },
+      { "field": "held_item_on_scroll", "type": "TextureRenderingInfo" },
+      { "field": "item_background", "type": "TextureRenderingInfo" },
+      { "field": "toggles_background", "type": "TextureRenderingInfo" },
+      {
+        "field": "item_selection_gold_outline",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "item_icons", "type": "TextureRenderingInfo" },
+      { "field": "item_held_badge", "type": "TextureRenderingInfo" },
+      { "field": "item_equipped_badge", "type": "TextureRenderingInfo" },
+      { "field": "item_off_gray_overlay", "type": "TextureRenderingInfo" },
+      { "field": "esc_woodpanel", "type": "TextureRenderingInfo" },
       { "field": "unknown22", "type": "Float" },
       { "field": "unknown23", "type": "Float" },
       { "field": "powerup_deactivation_related", "type": "DataPointer" },
       { "field": "powerup_deactivation_counter?", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedWord" },
-      { "field": "padding3", "type": "UnsignedDword" },
+      { "field": "unknown25", "type": "UnsignedDword" },
       { "field": "unknown26", "type": "DataPointer" },
       { "field": "unknown27", "type": "DataPointer" },
       { "field": "unknown28", "type": "DataPointer" },
@@ -2726,41 +2862,64 @@
       { "field": "speechbubble_owner", "type": "EntityUID" },
       { "field": "basecamp_dialogue", "type": "Dialogue" },
       {
-        "field": "arena_choose_teams_screen",
-        "type": "ArenaChooseTeamsScreenPointer"
+        "field": "screen_team_select",
+        "type": "ScreenTeamSelectPointer"
       },
-      { "field": "unknown8_during_basecamp", "type": "ScreenPointer" },
-      { "field": "unknown9_during_level", "type": "ScreenPointer" },
-      { "field": "level_transition_screen", "type": "TransitionScreenPointer" },
-      { "field": "unknown11", "type": "ScreenPointer" },
-      { "field": "unknown12", "type": "UnsignedQword" },
-      { "field": "victory_walk_screen", "type": "VictoryWalkScreenPointer" },
+      { "field": "screen_camp", "type": "ScreenPointer" },
+      { "field": "screen_level", "type": "ScreenPointer" },
+      { "field": "screen_transition", "type": "ScreenTransitionPointer" },
+      { "field": "screen_death", "type": "ScreenPointer" },
       {
-        "field": "credits_screen",
-        "type": "CreditsScreenPointer",
+        "field": "unknown_screen_spaceship?",
+        "type": "UnsignedQword",
+        "comment": "potentially ScreenSpaceship, but is nullptr (there is no UI rendering on spaceship anyway)"
+      },
+      { "field": "screen_win", "type": "ScreenWinPointer" },
+      {
+        "field": "screen_credits",
+        "type": "ScreenCreditsPointer",
         "comment": "where you can fly the spaceship"
       },
-      { "field": "final_score_screen", "type": "FinalScoreScreenPointer" },
+      { "field": "screen_scores", "type": "ScreenScoresPointer" },
+      { "field": "screen_constellation", "type": "ScreenConstellationPointer" },
+      { "field": "screen_recap", "type": "ScreenRecapPointer" },
       {
-        "field": "cosmic_ocean_win_screen",
-        "type": "CosmicOceanWinScreenPointer"
-      },
-      { "field": "dear_journal_screen", "type": "DearJournalScreenPointer" },
-      { "field": "unknown13", "type": "UnsignedQword" },
-      { "field": "unknown14_screen", "type": "UnknownScreenPointer" },
-      { "field": "unknown15", "type": "UnsignedQword" },
-      { "field": "unknown16_screen", "type": "UnknownScreenPointer" },
-      { "field": "arena_lineup_screen", "type": "ArenaLineupScreenPointer" },
-      {
-        "field": "arena_gameplay_screen",
-        "type": "ArenaGameplayScreenPointer"
+        "field": "unknown_screen_arena_menu?",
+        "type": "UnsignedQword",
+        "comment": "potentially ScreenArenaMenu, but this was moved to GameManager"
       },
       {
-        "field": "arena_scorepillars_screen",
-        "type": "ArenaScorePillarsScreenPointer"
+        "field": "screen_arena_stages_select1",
+        "type": "ScreenArenaStagesSelectPointer"
       },
-      { "field": "unknown17", "type": "UnsignedQword" },
-      { "field": "unknown18", "type": "UnsignedQword" },
+      {
+        "field": "unknown_screen_arena_intro?",
+        "type": "UnsignedQword",
+        "comment": "potentially ScreenArenaIntro, but this was moved to GameManager"
+      },
+      {
+        "field": "screen_arena_stages_select2",
+        "type": "ScreenArenaStagesSelectPointer"
+      },
+      { "field": "screen_arena_intro", "type": "ScreenArenaIntroPointer" },
+      {
+        "field": "screen_arena_level",
+        "type": "ScreenArenaLevelPointer"
+      },
+      {
+        "field": "screen_arena_score",
+        "type": "ScreenArenaScorePointer"
+      },
+      {
+        "field": "unknown_screen_online_loading?",
+        "type": "UnsignedQword",
+        "comment": "potentially ScreenOnlineLoading, but this was moved to GameManager"
+      },
+      {
+        "field": "unknown_screen_online_lobby?",
+        "type": "UnsignedQword",
+        "comment": "potentially ScreenOnlineLobby, but this was moved to GameManager"
+      },
       { "field": "next_entity_uid", "type": "UnsignedDword" },
       { "field": "unknown20", "type": "UnsignedWord" },
       {
@@ -4817,13 +4976,13 @@
       { "field": "up", "type": "Byte" },
       { "field": "down", "type": "Byte" }
     ],
-    "ArenaLineupScreenPointer": [
+    "ScreenArenaIntroPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ArenaLineupScreenPointer",
+            "name": "~ScreenArenaIntroPointer",
             "params": "",
             "return": ""
           }
@@ -4831,13 +4990,16 @@
       },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "players", "type": "NodeSet" },
-      { "field": "background_colors", "type": "NodeSet" },
-      { "field": "vertical_lines", "type": "NodeSet" },
-      { "field": "vertical_line_electricity_effect", "type": "NodeSet" },
-      { "field": "all_forced", "type": "NodeSet" },
-      { "field": "left_scroll", "type": "NodeSet" },
-      { "field": "right_scroll", "type": "NodeSet" },
+      { "field": "players", "type": "TextureRenderingInfo" },
+      { "field": "background_colors", "type": "TextureRenderingInfo" },
+      { "field": "vertical_lines", "type": "TextureRenderingInfo" },
+      {
+        "field": "vertical_line_electricity_effect",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "all_forced", "type": "TextureRenderingInfo" },
+      { "field": "left_scroll", "type": "TextureRenderingInfo" },
+      { "field": "right_scroll", "type": "TextureRenderingInfo" },
       { "field": "scroll_unfurl_timer", "type": "Float" },
       {
         "field": "waiting",
@@ -4866,13 +5028,13 @@
       },
       { "field": "unknown16", "type": "UnsignedDword" }
     ],
-    "ArenaChooseTeamsScreenPointer": [
+    "ScreenTeamSelectPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ArenaChooseTeamsScreenPointer",
+            "name": "~ScreenTeamSelectPointer",
             "params": "",
             "return": ""
           }
@@ -4880,19 +5042,19 @@
       },
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "ana_carrying_torch", "type": "NodeSet" },
-      { "field": "scroll_bottom_left", "type": "NodeSet" },
-      { "field": "scrollend_bottom_left", "type": "NodeSet" },
-      { "field": "four_ropes", "type": "NodeSet" },
-      { "field": "all_forced", "type": "NodeSet" },
+      { "field": "ana_carrying_torch", "type": "TextureRenderingInfo" },
+      { "field": "scroll_bottom_left", "type": "TextureRenderingInfo" },
+      { "field": "scrollend_bottom_left", "type": "TextureRenderingInfo" },
+      { "field": "four_ropes", "type": "TextureRenderingInfo" },
+      { "field": "all_forced", "type": "TextureRenderingInfo" },
       {
         "field": "four_characters",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "the chosen characters climbing the ropes"
       },
-      { "field": "left_arrow", "type": "NodeSet" },
-      { "field": "right_arrow", "type": "NodeSet" },
-      { "field": "start_panel", "type": "NodeSet" },
+      { "field": "left_arrow", "type": "TextureRenderingInfo" },
+      { "field": "right_arrow", "type": "TextureRenderingInfo" },
+      { "field": "start_panel", "type": "TextureRenderingInfo" },
       { "field": "start_panel_slide_timer", "type": "Float" },
       { "field": "pulsating_arrows_timer", "type": "Float" },
       { "field": "selected_player", "type": "UnsignedByte" },
@@ -4916,13 +5078,13 @@
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" }
     ],
-    "ArenaScorePillarsScreenPointer": [
+    "ScreenArenaScorePointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ArenaScorePillarsScreenPointer",
+            "name": "~ScreenArenaScorePointer",
             "params": "",
             "return": ""
           }
@@ -4937,14 +5099,14 @@
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
-      { "field": "unknown10", "type": "NodeSet" },
-      { "field": "woodpanel", "type": "NodeSet" },
-      { "field": "all_forced", "type": "NodeSet" },
-      { "field": "woodpanel_left_scroll", "type": "NodeSet" },
-      { "field": "woodpanel_right_scroll", "type": "NodeSet" },
-      { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel", "type": "TextureRenderingInfo" },
+      { "field": "unknown_all_forced", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_left_scroll", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_right_scroll", "type": "TextureRenderingInfo" },
+      { "field": "text_id_1", "type": "StringsTableID" },
+      { "field": "text_id_2", "type": "StringsTableID" },
       { "field": "woodpanel_visible", "type": "Bool" },
       { "field": "unknown13b", "type": "UnsignedByte" },
       { "field": "woodpanel_slide_toggle", "type": "Bool" },
@@ -4954,15 +5116,64 @@
         "type": "UnsignedDword",
         "comment": "confetti, ..."
       },
-      { "field": "unknown15", "type": "UnsignedDword" }
+      { "field": "background", "type": "TextureRenderingInfo" },
+      { "field": "ok_panel", "type": "TextureRenderingInfo" },
+      { "field": "ready_panel", "type": "TextureRenderingInfo" },
+      {
+        "field": "ready_speechbubble_indicator",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "pillars", "type": "TextureRenderingInfo" },
+      { "field": "bottom_lava", "type": "TextureRenderingInfo" },
+      { "field": "players", "type": "TextureRenderingInfo" },
+      { "field": "player_shadows", "type": "TextureRenderingInfo" },
+      { "field": "unknown24", "type": "TextureRenderingInfo" },
+      { "field": "unknown25", "type": "TextureRenderingInfo" },
+      { "field": "score_counter", "type": "TextureRenderingInfo" },
+      { "field": "unknown27", "type": "TextureRenderingInfo" },
+      { "field": "lava_bubbles?", "type": "TextureRenderingInfo" },
+      { "field": "player_1_won", "type": "Bool" },
+      { "field": "player_2_won", "type": "Bool" },
+      { "field": "player_3_won", "type": "Bool" },
+      { "field": "player_4_won", "type": "Bool" },
+      { "field": "victory_jump_y_pos", "type": "Float" },
+      { "field": "victory_jump_velocity", "type": "Float" },
+      { "field": "unknown35", "type": "Float" },
+      { "field": "animation_frame?", "type": "UnsignedDword" },
+      { "field": "unknown37", "type": "Bool" },
+      { "field": "squash_and_celebrate", "type": "Bool" },
+      { "field": "player_1_ready", "type": "Bool" },
+      { "field": "player_2_ready", "type": "Bool" },
+      { "field": "player_3_ready", "type": "Bool" },
+      { "field": "player_4_ready", "type": "Bool" },
+      { "field": "unknown43", "type": "Bool" },
+      { "field": "unknown44", "type": "Bool" },
+      { "field": "next_transition_timer", "type": "UnsignedDword" },
+      {
+        "field": "player_1_bottom_pillar_offset",
+        "type": "Float",
+        "comment": "0.0 = target, depending on score"
+      },
+      { "field": "player_2_bottom_pillar_offset", "type": "Float" },
+      { "field": "player_3_bottom_pillar_offset", "type": "Float" },
+      { "field": "player_4_bottom_pillar_offset", "type": "Float" },
+      { "field": "player_1_crushing_pillar_height", "type": "Float" },
+      { "field": "player_2_crushing_pillar_height", "type": "Float" },
+      { "field": "player_3_crushing_pillar_height", "type": "Float" },
+      { "field": "player_4_crushing_pillar_height", "type": "Float" },
+      { "field": "player_1_create_giblets", "type": "Bool" },
+      { "field": "player_2_create_giblets", "type": "Bool" },
+      { "field": "player_3_create_giblets", "type": "Bool" },
+      { "field": "player_4_create_giblets", "type": "Bool" },
+      { "field": "next_sidepanel_slidein_timer", "type": "Float" }
     ],
-    "UnknownScreenPointer": [
+    "ScreenArenaStagesSelectPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~UnknownScreenPointer",
+            "name": "~ScreenArenaStagesSelectPointer",
             "params": "",
             "return": ""
           }
@@ -4972,21 +5183,97 @@
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3a", "type": "UnsignedWord" },
       { "field": "unknown3b", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "Float" },
-      { "field": "unknown5", "type": "Float" },
+      { "field": "woodenpanel_top_slidein_timer", "type": "Float" },
+      { "field": "woodenpanel_top_scroll_unfurl_timer", "type": "Float" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
-      { "field": "unknown10", "type": "NodeSet" }
+      { "field": "unknown8", "type": "TextureRenderingInfo" },
+      { "field": "woodenpanel_top", "type": "TextureRenderingInfo" },
+      { "field": "unknown10", "type": "TextureRenderingInfo" },
+      {
+        "field": "woodenpanel_top_left_scroll",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "woodenpanel_top_right_scroll",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "text_id_1", "type": "StringsTableID" },
+      { "field": "text_id_2", "type": "StringsTableID" },
+      { "field": "text_id_3", "type": "StringsTableID" },
+      { "field": "text_id_4", "type": "StringsTableID" },
+      { "field": "woodenpanel_top_visible", "type": "Bool" },
+      { "field": "woodenpanel_bottom_visible", "type": "Bool" },
+      { "field": "woodenpanels_toggle", "type": "Bool" },
+      { "field": "unknown11d", "type": "Bool" },
+      {
+        "field": "buttons",
+        "type": "Flags16",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "Pause?",
+          "8": "Journal",
+          "9": "Left",
+          "10": "Right",
+          "11": "Up",
+          "12": "Down",
+          "13": "-",
+          "14": "-",
+          "15": "-",
+          "16": "-"
+        }
+      },
+      { "field": "padding1", "type": "UnsignedWord" },
+      { "field": "brick_background", "type": "TextureRenderingInfo" },
+      { "field": "info_black_background", "type": "TextureRenderingInfo" },
+      { "field": "woodenpanel_center", "type": "TextureRenderingInfo" },
+      {
+        "field": "blocky_level_representation",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "theme_indicator", "type": "TextureRenderingInfo" },
+      { "field": "bricks_bottom_left", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_0", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_1", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_2", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_3", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_4", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_5", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_6", "type": "TextureRenderingInfo" },
+      { "field": "grid_background_row_7", "type": "TextureRenderingInfo" },
+      {
+        "field": "grid_background_disabled_cross",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "grid_background_manipulators",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "unknown21", "type": "TextureRenderingInfo" },
+      { "field": "grid_disabled_cross", "type": "TextureRenderingInfo" },
+      { "field": "grid_yellow_highlighter", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_esc", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_fight", "type": "TextureRenderingInfo" },
+      { "field": "big_player_drawing", "type": "TextureRenderingInfo" },
+      { "field": "players_turn_scroll", "type": "TextureRenderingInfo" },
+      { "field": "players_turn_scroll_handle", "type": "TextureRenderingInfo" },
+      { "field": "grid_player_icon", "type": "TextureRenderingInfo" },
+      { "field": "unknown30", "type": "Float" },
+      { "field": "unknown31", "type": "Float" },
+      { "field": "unknown32", "type": "Float" }
     ],
-    "ArenaGameplayScreenPointer": [
+    "ScreenArenaLevelPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ArenaGameplayScreenPointer",
+            "name": "~ScreenArenaLevelPointer",
             "params": "",
             "return": ""
           }
@@ -4996,69 +5283,69 @@
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "get_ready", "type": "NodeSet" },
+      { "field": "get_ready", "type": "TextureRenderingInfo" },
       {
         "field": "get_ready_backdrop?",
-        "type": "NodeSet",
+        "type": "TextureRenderingInfo",
         "comment": "flies by too fast to see..."
       },
-      { "field": "get_ready_gray_background", "type": "NodeSet" },
-      { "field": "get_ready_outline", "type": "NodeSet" },
-      { "field": "unknown7", "type": "NodeSet" },
-      { "field": "unknown8", "type": "NodeSet" },
-      { "field": "unknown9", "type": "NodeSet" },
-      { "field": "unknown10", "type": "NodeSet" },
-      { "field": "unknown11", "type": "NodeSet" },
-      { "field": "unknown12", "type": "NodeSet" },
-      { "field": "unknown13", "type": "NodeSet" },
-      { "field": "unknown14", "type": "NodeSet" },
-      { "field": "unknown15", "type": "NodeSet" },
-      { "field": "unknown16", "type": "NodeSet" },
-      { "field": "unknown17", "type": "NodeSet" },
-      { "field": "unknown18", "type": "NodeSet" },
-      { "field": "unknown19", "type": "NodeSet" },
-      { "field": "unknown20", "type": "NodeSet" },
-      { "field": "unknown21", "type": "NodeSet" },
-      { "field": "unknown22", "type": "NodeSet" },
-      { "field": "unknown23", "type": "NodeSet" },
-      { "field": "unknown24", "type": "NodeSet" },
-      { "field": "unknown25", "type": "NodeSet" },
-      { "field": "unknown26", "type": "NodeSet" },
-      { "field": "unknown27", "type": "NodeSet" },
-      { "field": "unknown28", "type": "NodeSet" },
-      { "field": "unknown29", "type": "NodeSet" },
-      { "field": "unknown30", "type": "NodeSet" },
-      { "field": "unknown31", "type": "NodeSet" },
-      { "field": "unknown32", "type": "NodeSet" },
-      { "field": "unknown33", "type": "NodeSet" },
-      { "field": "unknown34", "type": "NodeSet" },
-      { "field": "unknown35", "type": "NodeSet" },
-      { "field": "unknown36", "type": "NodeSet" },
-      { "field": "unknown37", "type": "NodeSet" },
-      { "field": "unknown38", "type": "NodeSet" },
-      { "field": "unknown39", "type": "NodeSet" },
-      { "field": "unknown40", "type": "NodeSet" },
-      { "field": "unknown41", "type": "NodeSet" },
-      { "field": "unknown42", "type": "NodeSet" },
-      { "field": "unknown43", "type": "NodeSet" },
-      { "field": "unknown44", "type": "NodeSet" },
-      { "field": "unknown45", "type": "NodeSet" },
-      { "field": "unknown46", "type": "NodeSet" },
-      { "field": "unknown47", "type": "NodeSet" },
-      { "field": "unknown48", "type": "NodeSet" },
-      { "field": "unknown49", "type": "NodeSet" },
-      { "field": "unknown50", "type": "NodeSet" },
-      { "field": "unknown51", "type": "NodeSet" },
-      { "field": "unknown52", "type": "NodeSet" },
-      { "field": "unknown53", "type": "NodeSet" }
+      { "field": "get_ready_gray_background", "type": "TextureRenderingInfo" },
+      { "field": "get_ready_outline", "type": "TextureRenderingInfo" },
+      { "field": "unknown7", "type": "TextureRenderingInfo" },
+      { "field": "unknown8", "type": "TextureRenderingInfo" },
+      { "field": "unknown9", "type": "TextureRenderingInfo" },
+      { "field": "unknown10", "type": "TextureRenderingInfo" },
+      { "field": "unknown11", "type": "TextureRenderingInfo" },
+      { "field": "unknown12", "type": "TextureRenderingInfo" },
+      { "field": "unknown13", "type": "TextureRenderingInfo" },
+      { "field": "unknown14", "type": "TextureRenderingInfo" },
+      { "field": "unknown15", "type": "TextureRenderingInfo" },
+      { "field": "unknown16", "type": "TextureRenderingInfo" },
+      { "field": "unknown17", "type": "TextureRenderingInfo" },
+      { "field": "unknown18", "type": "TextureRenderingInfo" },
+      { "field": "unknown19", "type": "TextureRenderingInfo" },
+      { "field": "unknown20", "type": "TextureRenderingInfo" },
+      { "field": "unknown21", "type": "TextureRenderingInfo" },
+      { "field": "unknown22", "type": "TextureRenderingInfo" },
+      { "field": "unknown23", "type": "TextureRenderingInfo" },
+      { "field": "unknown24", "type": "TextureRenderingInfo" },
+      { "field": "unknown25", "type": "TextureRenderingInfo" },
+      { "field": "unknown26", "type": "TextureRenderingInfo" },
+      { "field": "unknown27", "type": "TextureRenderingInfo" },
+      { "field": "unknown28", "type": "TextureRenderingInfo" },
+      { "field": "unknown29", "type": "TextureRenderingInfo" },
+      { "field": "unknown30", "type": "TextureRenderingInfo" },
+      { "field": "unknown31", "type": "TextureRenderingInfo" },
+      { "field": "unknown32", "type": "TextureRenderingInfo" },
+      { "field": "unknown33", "type": "TextureRenderingInfo" },
+      { "field": "unknown34", "type": "TextureRenderingInfo" },
+      { "field": "unknown35", "type": "TextureRenderingInfo" },
+      { "field": "unknown36", "type": "TextureRenderingInfo" },
+      { "field": "unknown37", "type": "TextureRenderingInfo" },
+      { "field": "unknown38", "type": "TextureRenderingInfo" },
+      { "field": "unknown39", "type": "TextureRenderingInfo" },
+      { "field": "unknown40", "type": "TextureRenderingInfo" },
+      { "field": "unknown41", "type": "TextureRenderingInfo" },
+      { "field": "unknown42", "type": "TextureRenderingInfo" },
+      { "field": "unknown43", "type": "TextureRenderingInfo" },
+      { "field": "unknown44", "type": "TextureRenderingInfo" },
+      { "field": "unknown45", "type": "TextureRenderingInfo" },
+      { "field": "unknown46", "type": "TextureRenderingInfo" },
+      { "field": "unknown47", "type": "TextureRenderingInfo" },
+      { "field": "unknown48", "type": "TextureRenderingInfo" },
+      { "field": "unknown49", "type": "TextureRenderingInfo" },
+      { "field": "unknown50", "type": "TextureRenderingInfo" },
+      { "field": "unknown51", "type": "TextureRenderingInfo" },
+      { "field": "unknown52", "type": "TextureRenderingInfo" },
+      { "field": "unknown53", "type": "TextureRenderingInfo" }
     ],
-    "TransitionScreenPointer": [
+    "ScreenTransitionPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~TransitionScreenPointer",
+            "name": "~ScreenTransitionPointer",
             "params": "",
             "return": ""
           }
@@ -5067,75 +5354,185 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown1", "type": "Float" },
       {
-        "field": "woodpanel_slide_in_timer",
+        "field": "woodpanel_pos",
         "type": "Float",
         "comment": "from 1.3 (invisible) to 0 (in its place)"
       },
       {
-        "field": "scroll_slide_in_horizontal_timer",
+        "field": "stats_scroll_horizontal_pos",
         "type": "Float",
         "comment": "from 1 (invisible) to 0 (in its place)"
       },
       {
-        "field": "scroll_slide_in_vertical_timer",
+        "field": "stats_scroll_vertical_pos",
         "type": "Float",
         "comment": "from about 1.30 (invisible) to 0 (in its place)"
       },
       {
-        "field": "level_completed_timer",
+        "field": "level_completed_pos",
         "type": "Float",
         "comment": "top left thing on the chains that slides in, showing e.g. 1-2 COMPLETED! from 0.5 to 0"
       },
-      {
-        "field": "mama_tunnel_scroll_timer",
-        "type": "Float",
-        "comment": "counts down to 1.0 while showing the bottom part of the scroll"
-      },
-      {
-        "field": "scroll_unfurl_timer",
-        "type": "Float",
-        "comment": "0 = curled up, 1 = uncurled, 2 = farther uncurled to reveal tunnel mama"
-      },
-      { "field": "woodpanel1", "type": "NodeSet" },
-      { "field": "woodpanel2", "type": "NodeSet" },
-      { "field": "woodpanel3", "type": "NodeSet" },
-      { "field": "woodpanel_cutout1", "type": "NodeSet" },
-      { "field": "woodpanel_cutout2", "type": "NodeSet" },
-      { "field": "woodpanel_cutout3", "type": "NodeSet" },
-      { "field": "woodplank", "type": "NodeSet" },
-      { "field": "woodpanel_bottomcutout1", "type": "NodeSet" },
-      { "field": "woodpanel_bottomcutout2", "type": "NodeSet" },
-      { "field": "woodpanel_bottomcutout3", "type": "NodeSet" },
-      { "field": "all_forced", "type": "NodeSet" },
-      { "field": "scroll_top_bottom", "type": "NodeSet" },
-      { "field": "killcount_rounded_rect", "type": "NodeSet" },
-      { "field": "level_completed_panel", "type": "NodeSet" },
-      { "field": "unknown2", "type": "NodeSet" },
-      { "field": "unknown3", "type": "NodeSet" },
-      { "field": "unknown4", "type": "NodeSet" },
+      { "field": "stats_scroll_unfurl_actualvalue", "type": "Float" },
+      { "field": "stats_scroll_unfurl_targetvalue", "type": "Float" },
+      { "field": "woodpanel1", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel2", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel3", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_cutout1", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_cutout2", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_cutout3", "type": "TextureRenderingInfo" },
+      { "field": "woodplank", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_bottomcutout1", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_bottomcutout2", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_bottomcutout3", "type": "TextureRenderingInfo" },
+      { "field": "all_forced", "type": "TextureRenderingInfo" },
+      { "field": "stats_scroll_top_bottom", "type": "TextureRenderingInfo" },
+      { "field": "killcount_rounded_rect", "type": "TextureRenderingInfo" },
+      { "field": "level_completed_panel", "type": "TextureRenderingInfo" },
+      { "field": "stats_scroll_state_1", "type": "UnsignedDword" },
+      { "field": "stats_scroll_state_2", "type": "UnsignedDword" },
+      { "field": "hide_press_to_go_next_level", "type": "Bool" },
+      { "field": "unknown2b", "type": "Bool" },
+      { "field": "unknown2c", "type": "Bool" },
+      { "field": "unknown2d", "type": "Bool" },
+      { "field": "mama_tunnel", "type": "TextureRenderingInfo" },
+      { "field": "speechbubble", "type": "TextureRenderingInfo" },
+      { "field": "speechbubble_arrow", "type": "TextureRenderingInfo" },
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
       { "field": "mama_tunnel_fade_actualvalue", "type": "Float" },
       {
         "field": "mama_tunnel_fade_targetvalue",
         "type": "Float",
         "comment": "0 = hidden; 1 = fully shown"
       },
-      { "field": "unknown13", "type": "UnsignedDword" },
-      { "field": "unknown14", "type": "UnsignedWord" },
-      { "field": "unknown15", "type": "UnsignedWord" }
+      { "field": "mama_tunnel_text_id", "type": "StringsTableID" },
+      {
+        "field": "mama_tunnel_text_buffer",
+        "type": "UTF16StringFixedSize",
+        "offset": 512
+      },
+      { "field": "mama_tunnel_choice_visible", "type": "Bool" },
+      { "field": "mama_tunnel_agree_with_gift", "type": "Bool" },
+      { "field": "mama_tunnel_face_invisible", "type": "Bool" },
+      {
+        "field": "unknown18",
+        "type": "UnsignedByte",
+        "comment": "probably padding"
+      },
+      { "field": "mama_tunnel_face_transparency", "type": "Float" },
+      { "field": "mama_tunnel_agree_panel", "type": "TextureRenderingInfo" },
+      {
+        "field": "mama_tunnel_agree_panel_indicator",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "woodpanel_cutout_big_money1",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "woodpanel_cutout_big_money2",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "woodpanel_cutout_big_money3",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "big_dollar_sign", "type": "TextureRenderingInfo" },
+      { "field": "unknown26", "type": "TextureRenderingInfo" },
+      {
+        "field": "string_buffer",
+        "type": "UTF16StringFixedSize",
+        "offset": 260
+      },
+      {
+        "field": "stats_scroll_unfurl_sequence_timer",
+        "type": "UnsignedDword"
+      },
+      { "field": "unknown30", "type": "UnsignedDword" },
+      { "field": "unknown31", "type": "UnsignedDword" },
+      { "field": "player1_stats_scroll_numeric_value", "type": "Dword" },
+      { "field": "player2_stats_scroll_numeric_value", "type": "Dword" },
+      { "field": "player3_stats_scroll_numeric_value", "type": "Dword" },
+      { "field": "player4_stats_scroll_numeric_value", "type": "Dword" },
+      { "field": "player_1_secondary_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_2_secondary_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_3_secondary_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_4_secondary_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_1_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_2_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_3_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_4_icon", "type": "TextureRenderingInfo" },
+      {
+        "field": "player1_secondary_icon_type",
+        "type": "Dword",
+        "comment": "something strange going on here: same nr for diff players yields diff sprite"
+      },
+      { "field": "player2_secondary_icon_type", "type": "Dword" },
+      { "field": "player3_secondary_icon_type", "type": "Dword" },
+      { "field": "player4_secondary_icon_type", "type": "Dword" },
+      { "field": "player1_icon_index", "type": "Dword" },
+      { "field": "player2_icon_index", "type": "Dword" },
+      { "field": "player3_icon_index", "type": "Dword" },
+      { "field": "player4_icon_index", "type": "Dword" },
+      { "field": "unknown32", "type": "TextureRenderingInfo" },
+      { "field": "unknown33", "type": "TextureRenderingInfo" },
+      { "field": "unknown34", "type": "TextureRenderingInfo" },
+      { "field": "unknown35", "type": "TextureRenderingInfo" },
+      { "field": "hourglasses", "type": "TextureRenderingInfo" },
+      { "field": "small_dollar_signs", "type": "TextureRenderingInfo" },
+      {
+        "field": "string_buffer_this_level_time",
+        "type": "UTF16StringFixedSize",
+        "offset": 20
+      },
+      {
+        "field": "string_buffer_total_time",
+        "type": "UTF16StringFixedSize",
+        "offset": 20
+      },
+      {
+        "field": "string_buffer_this_level_milliseconds",
+        "type": "UTF16StringFixedSize",
+        "offset": 10
+      },
+      {
+        "field": "string_buffer_total_milliseconds",
+        "type": "UTF16StringFixedSize",
+        "offset": 10
+      },
+      {
+        "field": "string_buffer_this_level_money",
+        "type": "UTF16StringFixedSize",
+        "offset": 20
+      },
+      {
+        "field": "string_buffer_total_money",
+        "type": "UTF16StringFixedSize",
+        "offset": 20
+      },
+      { "field": "this_level_money_color_red", "type": "Float" },
+      { "field": "this_level_money_color_green", "type": "Float" },
+      { "field": "this_level_money_color_blue", "type": "Float" },
+      { "field": "this_level_money_color_alpha", "type": "Float" },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "unknown43", "type": "UnsignedByte" },
+      { "field": "unknown44", "type": "UnsignedByte" },
+      { "field": "unknown45", "type": "UnsignedDword" },
+      { "field": "unknown46", "type": "UnsignedDword" },
+      { "field": "unknown47", "type": "UnsignedDword" },
+      { "field": "unknown48", "type": "UnsignedDword" },
+      { "field": "unknown49", "type": "UnsignedDword" }
     ],
-    "DearJournalScreenPointer": [
+    "ScreenRecapPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~DearJournalScreenPointer",
+            "name": "~ScreenRecapPointer",
             "params": "",
             "return": ""
           }
@@ -5148,13 +5545,13 @@
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "CosmicOceanWinScreenPointer": [
+    "ScreenConstellationPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~CosmicOceanWinScreenPointer",
+            "name": "~ScreenConstellationPointer",
             "params": "",
             "return": ""
           }
@@ -5168,39 +5565,12 @@
         "comment": "0 = spinning; 1 = stars appear ; 2 = text starts fading in ; 3 = text finished fading ; 4 = text fades out ; 5 = text is gone, credits rolling ;  6 - 7 - 8 = final score shown"
       },
       { "field": "animation_timer", "type": "UnsignedWord" },
-      { "field": "constellation_text_fadein_out_timer", "type": "Float" },
-      { "field": "constellation_char_1", "type": "UTF16Char" },
-      { "field": "constellation_char_2", "type": "UTF16Char" },
-      { "field": "constellation_char_3", "type": "UTF16Char" },
-      { "field": "constellation_char_4", "type": "UTF16Char" },
-      { "field": "constellation_char_5", "type": "UTF16Char" },
-      { "field": "constellation_char_6", "type": "UTF16Char" },
-      { "field": "constellation_char_7", "type": "UTF16Char" },
-      { "field": "constellation_char_8", "type": "UTF16Char" },
-      { "field": "constellation_char_9", "type": "UTF16Char" },
-      { "field": "constellation_char_10", "type": "UTF16Char" },
-      { "field": "constellation_char_11", "type": "UTF16Char" },
-      { "field": "constellation_char_12", "type": "UTF16Char" },
-      { "field": "constellation_char_13", "type": "UTF16Char" },
-      { "field": "constellation_char_14", "type": "UTF16Char" },
-      { "field": "constellation_char_15", "type": "UTF16Char" },
-      { "field": "constellation_char_16", "type": "UTF16Char" },
-      { "field": "constellation_char_17", "type": "UTF16Char" },
-      { "field": "constellation_char_18", "type": "UTF16Char" },
-      { "field": "constellation_char_19", "type": "UTF16Char" },
-      { "field": "constellation_char_20", "type": "UTF16Char" },
-      { "field": "constellation_char_21", "type": "UTF16Char" },
-      { "field": "constellation_char_22", "type": "UTF16Char" },
-      { "field": "constellation_char_23", "type": "UTF16Char" },
-      { "field": "constellation_char_24", "type": "UTF16Char" },
-      { "field": "constellation_char_25", "type": "UTF16Char" },
-      { "field": "constellation_char_26", "type": "UTF16Char" },
-      { "field": "constellation_char_27", "type": "UTF16Char" },
-      { "field": "constellation_char_28", "type": "UTF16Char" },
-      { "field": "constellation_char_29", "type": "UTF16Char" },
-      { "field": "constellation_char_30", "type": "UTF16Char" },
-      { "field": "constellation_char_31", "type": "UTF16Char" },
-      { "field": "constellation_char_32", "type": "UTF16Char" },
+      { "field": "constellation_text_opacity", "type": "Float" },
+      {
+        "field": "constellation_text",
+        "type": "UTF16StringFixedSize",
+        "offset": 64
+      },
       {
         "field": "credits_progression",
         "type": "ScrollingCreditsProgressionPointer",
@@ -5216,13 +5586,13 @@
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" }
     ],
-    "VictoryWalkScreenPointer": [
+    "ScreenWinPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~VictoryWalkScreenPointer",
+            "name": "~ScreenWinPointer",
             "params": "",
             "return": ""
           }
@@ -5246,13 +5616,13 @@
       { "field": "unknown9", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "UnsignedDword" }
     ],
-    "CreditsScreenPointer": [
+    "ScreenCreditsPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~CreditsScreenPointer",
+            "name": "~ScreenCreditsPointer",
             "params": "",
             "return": ""
           }
@@ -5277,13 +5647,13 @@
     "ScrollingCreditsProgressionPointer": [
       { "field": "timer", "type": "Float" }
     ],
-    "FinalScoreScreenPointer": [
+    "ScreenScoresPointer": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~FinalScoreScreenPointer",
+            "name": "~ScreenScoresPointer",
             "params": "",
             "return": ""
           }
@@ -5296,12 +5666,12 @@
         "type": "UnsignedDword",
         "comment": "states indicating whether money, time is shown, and to drop the treasure"
       },
-      { "field": "woodpanel1", "type": "NodeSet" },
-      { "field": "woodpanel2", "type": "NodeSet" },
-      { "field": "woodpanel3", "type": "NodeSet" },
-      { "field": "woodpanel_cutout", "type": "NodeSet" },
-      { "field": "dollarsign", "type": "NodeSet" },
-      { "field": "hourglass", "type": "NodeSet" },
+      { "field": "woodpanel1", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel2", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel3", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_cutout", "type": "TextureRenderingInfo" },
+      { "field": "dollarsign", "type": "TextureRenderingInfo" },
+      { "field": "hourglass", "type": "TextureRenderingInfo" },
       {
         "field": "animation_timer",
         "type": "UnsignedDword",
@@ -5314,33 +5684,25 @@
       { "field": "unknown8", "type": "UnsignedDword" },
       { "field": "unknown9", "type": "UnsignedDword" }
     ],
-    "NodeSet": [
-      {
-        "field": "forced_x",
-        "type": "Float",
-        "comment": "forced value"
-      },
-      { "field": "forced_y", "type": "Float", "comment": "forced value" },
-      {
-        "field": "node1_x",
-        "type": "Float",
-        "comment": "these are either path nodes, or transformation matrices"
-      },
-      { "field": "node1_y", "type": "Float" },
-      { "field": "node2_x", "type": "Float" },
-      { "field": "node2_y", "type": "Float" },
-      { "field": "node3_x", "type": "Float" },
-      { "field": "node3_y", "type": "Float" },
-      { "field": "node4_x", "type": "Float" },
-      { "field": "node4_y", "type": "Float" },
-      { "field": "node5_x", "type": "Float" },
-      { "field": "node5_y", "type": "Float" },
-      { "field": "node6_x", "type": "Float" },
-      { "field": "node6_y", "type": "Float" },
-      { "field": "node7_x", "type": "Float" },
-      { "field": "node7_y", "type": "Float" },
-      { "field": "node8_x", "type": "Float" },
-      { "field": "node8_y", "type": "Float" }
+    "TextureRenderingInfo": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "destination_top_left_x", "type": "Float" },
+      { "field": "destination_top_left_y", "type": "Float" },
+      { "field": "destination_top_right_x", "type": "Float" },
+      { "field": "destination_top_right_y", "type": "Float" },
+      { "field": "destination_bottom_left_x", "type": "Float" },
+      { "field": "destination_bottom_left_y", "type": "Float" },
+      { "field": "destination_bottom_right_x", "type": "Float" },
+      { "field": "destination_bottom_right_y", "type": "Float" },
+      { "field": "source_top_left_x", "type": "Float" },
+      { "field": "source_top_left_y", "type": "Float" },
+      { "field": "source_top_right_x", "type": "Float" },
+      { "field": "source_top_right_y", "type": "Float" },
+      { "field": "source_bottom_left_x", "type": "Float" },
+      { "field": "source_bottom_left_y", "type": "Float" },
+      { "field": "source_bottom_right_x", "type": "Float" },
+      { "field": "source_bottom_right_y", "type": "Float" }
     ],
     "SaveGame": [
       { "field": "places", "type": "SaveGamePlaces" },
@@ -8372,7 +8734,7 @@
       { "field": "unknown17", "type": "Bool" },
       { "field": "unknown18", "type": "Bool" },
       { "field": "unknown19", "type": "UnsignedDword" },
-      { "field": "unknown20", "type": "UnsignedDword" },
+      { "field": "shader", "type": "UnsignedDword" },
       {
         "field": "destination_bottom_left_x",
         "type": "Float",
