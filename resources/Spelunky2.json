@@ -3015,7 +3015,10 @@
       { "field": "backlayer_player_related2", "type": "DataPointer" },
       { "field": "unknown30", "type": "DataPointer" },
       { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
-      { "field": "camera_layer", "type": "UnsignedDword" },
+      { "field": "camera_layer", "type": "UnsignedByte" },
+      { "field": "unknown31a", "type": "UnsignedByte" },
+      { "field": "unknown31b", "type": "UnsignedByte" },
+      { "field": "unknown31c", "type": "UnsignedByte" },
       { "field": "shops", "type": "ShopsInfo" },
       { "field": "time_startup", "type": "UnsignedDword" },
       {
