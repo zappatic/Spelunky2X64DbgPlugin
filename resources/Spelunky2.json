@@ -287,7 +287,16 @@
     "FxAnkhBrokenPiece": "Movable",
     "BGBackLayerDoor": "Entity",
     "BGSurfaceStar": "Entity",
-    "BGSurfaceLayer": "Entity"
+    "BGRelativeElement": "Entity",
+    "BGSurfaceLayer": "BGRelativeElement",
+    "BGEggshipRoom": "Entity",
+    "BGMovingStar": "BGSurfaceStar",
+    "BGTutorialSign": "Entity",
+    "ShootingStarSpawner": "Entity",
+    "BGShootingStar": "BGRelativeElement",
+    "BGShopEntrence": "Entity",
+    "BGFloatingDebris": "BGSurfaceLayer",
+    "BGShopKeeperPrime": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -628,11 +637,29 @@
     "FX_ANKH_ROTATINGSPARK": "FxAnkhRotatingSpark",
     "FX_ANKH_BROKENPIECE": "FxAnkhBrokenPiece",
     "BG_SURFACE_STAR": "BGSurfaceStar",
+    "BG_SURFACE_SHOOTING_STAR": "BGShootingStar",
+    "BG_SURFACE_SHOOTING_STAR_TRAIL": "BGRelativeElement",
+    "BG_SURFACE_SHOOTING_STAR_TRAIL_PARTICLE": "BGRelativeElement",
+    "BG_SURFACE_MOVING_STAR": "BGMovingStar",
+    "BG_SURFACE_NEBULA": "BGRelativeElement",
     "BG_SURFACE_LAYER": "BGSurfaceLayer",
+    "BG_SURFACE_ENTITY": "BGSurfaceLayer",
+    "BG_SURFACE_OLMEC_LAYER": "BGSurfaceLayer",
     "BG_CONSTELLATION_STAR": "BGSurfaceStar",
     "BG_CONSTELLATION_CONNECTION": "BGSurfaceStar",
+    "BG_EGGSHIP_ROOM": "BGEggshipRoom",
     "BG_DOOR_BACK_LAYER": "BGBackLayerDoor",
+    "BG_TUTORIAL_SIGN_.*": "BGTutorialSign",
+    "BG_SHOP_ENTRANCEDOOR": "BGShopEntrence",
+    "BG_DUAT_LAYER": "BGSurfaceLayer",
+    "BG_DUAT_PYRAMID_LAYER": "BGSurfaceLayer",
+    "BG_DUAT_FLOATINGDEBRIS": "BGFloatingDebris",
+    "BG_DUAT_FARFLOATINGDEBRIS": "BGFloatingDebris",
+    "BG_VAT_SHOPKEEPER_PRIME": "BGShopKeeperPrime",
+    "BG_COSMIC_FLOATINGDEBRIS": "BGFloatingDebris",
+    "BG_COSMIC_FARFLOATINGDEBRIS": "BGFloatingDebris",
 
+    "LOGICAL_SHOOTING_STARS_SPAWNER": "ShootingStarSpawner",
     "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
@@ -7784,7 +7811,11 @@
         "comment": "sometimes similar as coord_1, sometimes inverted, sometimes different"
       },
       { "field": "unknown5", "type": "Float" },
-      { "field": "unknown6", "type": "Float" },
+      {
+        "field": "unknown6",
+        "type": "Float",
+        "comment": "changing layer related"
+      },
       { "field": "unknown7", "type": "Float" },
       { "field": "unknown8", "type": "Float" },
       { "field": "unknown9", "type": "Float" }
@@ -11209,13 +11240,72 @@
     "BGSurfaceStar": [
       { "field": "blink_timer?", "type": "Dword", "comment": "why negative?" },
       { "field": "relative_x", "type": "Float" },
+      { "field": "relative_y", "type": "Float" },
+      { "field": "unknown_padding?", "type": "Dword" }
+    ],
+    "BGRelativeElement": [
+      { "field": "relative_x", "type": "Float" },
       { "field": "relative_y", "type": "Float" }
     ],
     "BGSurfaceLayer": [
-      { "field": "relative_x", "type": "Float" },
-      { "field": "relative_y", "type": "Float" },
       { "field": "relative_offset_x", "type": "Float" },
       { "field": "relative_offset_y", "type": "Float" }
+    ],
+    "BGEggshipRoom": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "fx_shell", "type": "EntityPointer" },
+      { "field": "fx_door", "type": "EntityPointer" },
+      { "field": "platform_left", "type": "EntityPointer" },
+      { "field": "platform_middle", "type": "EntityPointer" },
+      { "field": "platform_right", "type": "EntityPointer" },
+      { "field": "player_in", "type": "Bool" }
+    ],
+    "BGMovingStar": [
+      {
+        "field": "falling_speed",
+        "type": "Float",
+        "comment": "can make it rise if you set it to negative"
+      }
+    ],
+    "BGTutorialSign": [{ "field": "is_shown", "type": "Bool" }],
+    "ShootingStarSpawner": [{ "field": "timer", "type": "UnsignedWord" }],
+    "BGShootingStar": [
+      { "field": "x_increment", "type": "Float" },
+      { "field": "y_increment", "type": "Float" },
+      { "field": "timer", "type": "Word" },
+      { "field": "max_timer", "type": "Word" },
+      {
+        "field": "size",
+        "type": "Float",
+        "comment": "gets smaller as the timer gets close to the max_timer"
+      },
+      {
+        "field": "light_size?",
+        "type": "Float",
+        "comment": "if you make it the same as size it starts to flicker, making this bigger increases the size as well"
+      }
+    ],
+    "BGShopEntrence": [{ "field": "on_entering", "type": "Bool" }],
+    "BGFloatingDebris": [
+      {
+        "field": "distance",
+        "type": "Float",
+        "comment": "distance it travels up and down from spawn position"
+      },
+      { "field": "speed", "type": "Float" },
+      { "field": "sine_angle", "type": "Float" }
+    ],
+    "BGShopKeeperPrime": [
+      { "field": "normal_y", "type": "Float" },
+      { "field": "sine_pos", "type": "Float" },
+      { "field": "bubbles_timer", "type": "Word" },
+      { "field": "bubble_spawn_trigger", "type": "Bool" },
+      { "field": "unknown_padding", "type": "Byte" },
+      {
+        "field": "bubble_spawn_delay",
+        "type": "Word",
+        "comment": "normally it's just 0, 1 or 2, but you can set it to some value and then when using bubble_spawn_trigger it will count down and then spawn bubbles"
+      }
     ]
   }
 }
