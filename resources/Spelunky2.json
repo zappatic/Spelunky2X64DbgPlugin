@@ -284,7 +284,10 @@
     "FxFireflyLight": "Movable",
     "FxEmpress": "Movable",
     "FxAnkhRotatingSpark": "Movable",
-    "FxAnkhBrokenPiece": "Movable"
+    "FxAnkhBrokenPiece": "Movable",
+    "BGBackLayerDoor": "Entity",
+    "BGSurfaceStar": "Entity",
+    "BGSurfaceLayer": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -624,6 +627,12 @@
     "FX_MINIGAME_SHIP_JETFLAME": "MiniGameShipOffset",
     "FX_ANKH_ROTATINGSPARK": "FxAnkhRotatingSpark",
     "FX_ANKH_BROKENPIECE": "FxAnkhBrokenPiece",
+    "BG_SURFACE_STAR": "BGSurfaceStar",
+    "BG_SURFACE_LAYER": "BGSurfaceLayer",
+    "BG_CONSTELLATION_STAR": "BGSurfaceStar",
+    "BG_CONSTELLATION_CONNECTION": "BGSurfaceStar",
+    "BG_DOOR_BACK_LAYER": "BGBackLayerDoor",
+
     "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
@@ -637,12 +646,17 @@
     //
     "FLOOR_.*": "Floor",
     "FLOORSTYLED_.*": "Floor",
+    "DECORATION_.*": "Entity",
     "EMBED_.*": "Floor",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
     "ACTIVEFLOOR_.*": "Movable",
     "FX_.*": "Movable",
+    "BG_.*": "Entity",
+    "MIDBG.*": "Entity",
+    //"LOGICAL_.*": "Entity",
+    "MOUNT_.*": "Mount", //just for the completeness
     "LIQUID_.*": "Liquid"
   },
   // all the types that are pointers
@@ -7508,7 +7522,11 @@
       { "field": "light1", "type": "LightParams" },
       { "field": "light2", "type": "LightParams" },
       { "field": "light3", "type": "LightParams" },
-      { "field": "light4", "type": "LightParams" },
+      {
+        "field": "light4",
+        "type": "LightParams",
+        "comment": "It's rendered on objects around, not as an actual bright spot"
+      },
       { "field": "brightness", "type": "Float" },
       { "field": "brightness_multiplier", "type": "Float" },
       { "field": "light_pos_x", "type": "Float" },
@@ -7529,7 +7547,7 @@
           "1": "Disable light1",
           "2": "Enable light2",
           "3": "Enable light3",
-          "4": "Light the surrounding",
+          "4": "Enable light4",
           "5": "",
           "6": "",
           "7": "Modulate brightness_multiplier",
@@ -11183,6 +11201,21 @@
       { "field": "sine_angle?", "type": "Float" },
       { "field": "size", "type": "Float" }
     ],
-    "FxAnkhBrokenPiece": [{ "field": "unknown", "type": "Float" }]
+    "FxAnkhBrokenPiece": [{ "field": "unknown", "type": "Float" }],
+    "BGBackLayerDoor": [
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "illumination2", "type": "IlluminationPointer" }
+    ],
+    "BGSurfaceStar": [
+      { "field": "blink_timer?", "type": "Dword", "comment": "why negative?" },
+      { "field": "relative_x", "type": "Float" },
+      { "field": "relative_y", "type": "Float" }
+    ],
+    "BGSurfaceLayer": [
+      { "field": "relative_x", "type": "Float" },
+      { "field": "relative_y", "type": "Float" },
+      { "field": "relative_offset_x", "type": "Float" },
+      { "field": "relative_offset_y", "type": "Float" }
+    ]
   }
 }
