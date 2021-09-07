@@ -296,7 +296,11 @@
     "BGShootingStar": "BGRelativeElement",
     "BGShopEntrence": "Entity",
     "BGFloatingDebris": "BGSurfaceLayer",
-    "BGShopKeeperPrime": "Entity"
+    "BGShopKeeperPrime": "Entity",
+    "LogicalDoor": "Entity",
+    "LogicalLiquidSound": "Entity",
+    "LogicalLiquidStreamSound": "LogicalLiquidSound",
+    "LogicalDoorSound": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -658,8 +662,15 @@
     "BG_VAT_SHOPKEEPER_PRIME": "BGShopKeeperPrime",
     "BG_COSMIC_FLOATINGDEBRIS": "BGFloatingDebris",
     "BG_COSMIC_FARFLOATINGDEBRIS": "BGFloatingDebris",
-
     "LOGICAL_SHOOTING_STARS_SPAWNER": "ShootingStarSpawner",
+    "LOGICAL_DOOR": "LogicalDoor",
+    "LOGICAL_DOOR_AMBIENT_SOUND": "LogicalDoorSound",
+
+    "LOGICAL_BLACKMARKET_DOOR": "LogicalDoor",
+    "LOGICAL_STATICLAVA_SOUND_SOURCE": "LogicalLiquidSound",
+    "LOGICAL_STREAMLAVA_SOUND_SOURCE": "LogicalLiquidStreamSound",
+    "LOGICAL_STREAMWATER_SOUND_SOURCE": "LogicalLiquidStreamSound",
+
     "LOGICAL_PORTAL": "Portal",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
@@ -7802,23 +7813,64 @@
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID"
       },
       {
-        "field": "sound_x_coord_1?",
-        "type": "Float"
-      },
-      {
-        "field": "sound_x_coord_2",
+        "field": "DIST_CENTER_X*POS_SCREEN_X",
         "type": "Float",
-        "comment": "sometimes similar as coord_1, sometimes inverted, sometimes different"
+        "comment": "ANILLA_SOUND_PARAM names, for now"
       },
-      { "field": "unknown5", "type": "Float" },
+      { "field": "DIST_CENTER_X", "type": "Float" },
+      { "field": "DIST_CENTER_Y", "type": "Float" },
+      { "field": "DIST_Z?", "type": "Float" },
       {
-        "field": "unknown6",
+        "field": "distance",
         "type": "Float",
-        "comment": "changing layer related"
+        "comment": "calculated from DIST_CENTER_X/DIST_CENTER_Y to 0.0/0.0"
       },
-      { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "Float" }
+      { "field": "SUBMERGED", "type": "Float" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "VALUE", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
+      { "field": "unknown19", "type": "Float" },
+      { "field": "unknown20", "type": "Float" },
+      { "field": "unknown21", "type": "Float" },
+      { "field": "unknown22", "type": "Float" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "Float" },
+      { "field": "unknown25", "type": "Float" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "unknown27", "type": "Float" },
+      { "field": "unknown28", "type": "Float" },
+      { "field": "unknown29", "type": "Float" },
+      { "field": "unknown30", "type": "Float" },
+      { "field": "unknown31", "type": "Float" },
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "Float" },
+      { "field": "unknown34", "type": "Float" },
+      { "field": "unknown35", "type": "Float" },
+      { "field": "unknown36", "type": "Float" },
+      { "field": "unknown37", "type": "Float" },
+      { "field": "unknown38", "type": "Float" },
+      { "field": "unknown39", "type": "Float" },
+      { "field": "unknown40", "type": "Float" },
+      {
+        "field": "repeat?",
+        "type": "Float",
+        "comment": "even if it's something else, it's probably good to mark the size, which fits with my predition of up to unknown38"
+      },
+      { "field": "unknown42", "type": "Float" },
+      { "field": "unknown43", "type": "Float" },
+      { "field": "unknown44", "type": "Float" },
+      { "field": "unknown45", "type": "Float" },
+      { "field": "unknown46", "type": "Float" },
+      { "field": "unknown47", "type": "Float" },
+      { "field": "unknown48", "type": "Float" },
+      { "field": "unknown49", "type": "Float" }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedByte" },
@@ -11306,6 +11358,27 @@
         "type": "Word",
         "comment": "normally it's just 0, 1 or 2, but you can set it to some value and then when using bubble_spawn_trigger it will count down and then spawn bubbles"
       }
+    ],
+    "LogicalDoor": [
+      { "field": "connected_door_type", "type": "EntityDBID" },
+      { "field": "unk2", "type": "Dword", "comment": "always 37?" },
+      { "field": "not_hidden", "type": "Bool" },
+      {
+        "field": "platform_spawned",
+        "type": "Bool",
+        "comment": "is set true when you bomb the door, no matter what door, can't be reset"
+      },
+      { "field": "unk5", "type": "Bool" },
+      { "field": "unk6", "type": "Bool" }
+    ],
+    "LogicalLiquidSound": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "x_pos", "type": "Float" },
+      { "field": "y_pos", "type": "Float" }
+    ],
+    "LogicalLiquidStreamSound": [{ "field": "unknown", "type": "Float" }],
+    "LogicalDoorSound": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
     ]
   }
 }
