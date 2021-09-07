@@ -2,12 +2,22 @@
 #include "pluginmain.h"
 #include <QPainter>
 
+struct PostponedEntity
+{
+    float x;
+    float y;
+    QColor color;
+    PostponedEntity(float x_, float y_, const QColor& color_) : x(x_), y(y_), color(color_) {}
+};
+
 S2Plugin::WidgetSpelunkyLevel::WidgetSpelunkyLevel(QWidget* parent) : QWidget(parent) {}
 
 void S2Plugin::WidgetSpelunkyLevel::paintEvent(QPaintEvent* event)
 {
     auto painter = QPainter(this);
     painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
+
+    std::vector<PostponedEntity> postponedEntities;
 
     // DRAW ENTITY BLOCKS
     painter.save();
@@ -46,14 +56,22 @@ void S2Plugin::WidgetSpelunkyLevel::paintEvent(QPaintEvent* event)
             if (foundInIDs && !foundInUIDs)
             {
                 colorToUse = mEntityIDsToPaint.at(entityType);
+                postponedEntities.emplace_back(entityX, entityY, colorToUse);
             }
             else if (foundInUIDs)
             {
                 colorToUse = mEntityUIDsToPaint.at(entityUID);
+                postponedEntities.emplace_back(entityX, entityY, colorToUse);
             }
             painter.setBrush(colorToUse);
             painter.drawRect(QRectF(msMarginHor + entityX, msMarginVer + msLevelMaxHeight - entityY, 1.0, 1.0));
         }
+    }
+
+    for (const auto& e : postponedEntities)
+    {
+        painter.setBrush(e.color);
+        painter.drawRect(QRectF(msMarginHor + e.x, msMarginVer + msLevelMaxHeight - e.y, 1.0, 1.0));
     }
     painter.restore();
 
