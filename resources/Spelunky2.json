@@ -729,7 +729,8 @@
     "ScreenArenaItemsPointer",
     "ScreenOnlineLobbyPointer",
     "ScreenOnlineLoadingPointer",
-    "PauseScreenPointer",
+    "PauseUIPointer",
+    "JournalUIPointer",
     "BackgroundMusicManagerPointer",
     "MusicTrackPointer",
     "Ai_func",
@@ -1501,8 +1502,8 @@
         "type": "ScreenOnlineLobbyPointer",
         "comment": "INCOMPLETE"
       },
-      { "field": "pause_screen", "type": "PauseScreenPointer" },
-      { "field": "unknown26", "type": "DataPointer" },
+      { "field": "pause_ui", "type": "PauseUIPointer" },
+      { "field": "journal_ui", "type": "JournalUIPointer" },
       { "field": "unknown27", "type": "DataPointer" },
       { "field": "unknown28", "type": "Float" },
       { "field": "unknown29", "type": "Float" }
@@ -1588,7 +1589,7 @@
       { "field": "unknown24", "type": "Float" },
       { "field": "unknown25", "type": "UnsignedDword" }
     ],
-    "PauseScreenPointer": [
+    "PauseUIPointer": [
       { "field": "menu_slidein_progress", "type": "Float" },
       { "field": "blurred_background", "type": "TextureRenderingInfo" },
       { "field": "woodpanel_left", "type": "TextureRenderingInfo" },
@@ -1610,7 +1611,7 @@
       { "field": "unknown11b", "type": "Byte" },
       { "field": "unknown12", "type": "UnsignedWord" },
       {
-        "field": "unknown13",
+        "field": "visibility",
         "type": "State32",
         "states": {
           "0": "Invisible",
@@ -1619,6 +1620,76 @@
           "3": "Sliding up"
         }
       }
+    ],
+    "JournalUIPointer": [
+      {
+        "field": "state",
+        "type": "State32",
+        "states": {
+          "0": "Invisible",
+          "1": "Fading in",
+          "2": "Stable",
+          "3": "Flipping left",
+          "4": "Flipping right",
+          "5": "Fading out"
+        }
+      },
+      {
+        "field": "page_shown",
+        "type": "State8",
+        "states": {
+          "1": "Player profile",
+          "2": "Journal",
+          "3": "Places",
+          "4": "People",
+          "5": "Bestiary",
+          "6": "Items",
+          "7": "Traps",
+          "8": "Story",
+          "9": "Recap",
+          "10": "Death"
+        }
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      {
+        "field": "unknown3",
+        "type": "DataPointer",
+        "comment": "this and below: pointer list of Page objects/contents of the pages"
+      },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "DataPointer" },
+      { "field": "unknown7", "type": "DataPointer" },
+      { "field": "unknown8", "type": "DataPointer" },
+      { "field": "current_page", "type": "UnsignedDword" },
+      { "field": "flipping_to_page", "type": "UnsignedDword" },
+      { "field": "unknown10", "type": "UnsignedDword" },
+      {
+        "field": "max_page_count",
+        "type": "Dword",
+        "comment": "influences the right arrow shown and being able to move to the next page"
+      },
+      { "field": "unknown12", "type": "UnsignedQword" },
+      { "field": "unknown13", "type": "UnsignedQword" },
+      { "field": "unknown14", "type": "UnsignedQword" },
+      { "field": "unknown15", "type": "DataPointer" },
+      { "field": "unknown16", "type": "UnsignedQword" },
+      { "field": "unknown17", "type": "UnsignedQword" },
+      { "field": "unknown18", "type": "UnsignedQword" },
+      { "field": "unknown19", "type": "DataPointer" },
+      { "field": "book_background", "type": "TextureRenderingInfo" },
+      { "field": "arrow_left", "type": "TextureRenderingInfo" },
+      { "field": "arrow_right", "type": "TextureRenderingInfo" },
+      { "field": "unknown23", "type": "TextureRenderingInfo" },
+      { "field": "entire_book", "type": "TextureRenderingInfo" },
+      { "field": "unknown25", "type": "Float" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "page_timer", "type": "UnsignedDword" },
+      { "field": "unknown28", "type": "UnsignedDword" },
+      { "field": "unknown29", "type": "DataPointer" },
+      { "field": "unknown31", "type": "Float" },
+      { "field": "unknown30", "type": "UnsignedDword" }
     ],
     "SaveGameHeapOffsetPointer": [
       { "field": "heap_offset", "type": "UnsignedQword" }
