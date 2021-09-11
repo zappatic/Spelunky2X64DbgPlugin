@@ -7306,7 +7306,7 @@
       { "field": "unknown5a", "type": "UnsignedByte" },
       { "field": "unknown5b", "type": "UnsignedByte" },
       { "field": "unknown5c", "type": "UnsignedByte" },
-      { "field": "player_slot", "type": "UnsignedByte" },
+      { "field": "player_slot", "type": "Byte" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
       {
