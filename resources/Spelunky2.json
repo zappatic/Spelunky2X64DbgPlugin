@@ -7870,7 +7870,7 @@
       {
         "field": "sound_effect_info",
         "type": "SoundInfoPointer",
-        "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30); soundeffect doesn't seem to change when you pick a similar object around it"
+        "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30)"
       },
       {
         "field": "fmod_param_id?",
@@ -7880,7 +7880,7 @@
       {
         "field": "DIST_CENTER_X*POS_SCREEN_X",
         "type": "Float",
-        "comment": "VANILLA_SOUND_PARAM names, for now"
+        "comment": "sometimes a little off, like when X and Y below are 0; VANILLA_SOUND_PARAM names, for now"
       },
       { "field": "DIST_CENTER_X", "type": "Float" },
       { "field": "DIST_CENTER_Y", "type": "Float" },
@@ -7912,8 +7912,8 @@
       { "field": "unknown27", "type": "Float" },
       { "field": "unknown28", "type": "Float" },
       { "field": "unknown29", "type": "Float" },
-      { "field": "unknown30", "type": "Float" },
-      { "field": "unknown31", "type": "Float" },
+      { "field": "POISONED", "type": "Float" },
+      { "field": "CURSED", "type": "Float" },
       { "field": "unknown32", "type": "Float" },
       { "field": "unknown33", "type": "Float" },
       { "field": "unknown34", "type": "Float" },
