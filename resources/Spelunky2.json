@@ -284,7 +284,52 @@
     "FxFireflyLight": "Movable",
     "FxEmpress": "Movable",
     "FxAnkhRotatingSpark": "Movable",
-    "FxAnkhBrokenPiece": "Movable"
+    "FxAnkhBrokenPiece": "Movable",
+    "BGBackLayerDoor": "Entity",
+    "BGSurfaceStar": "Entity",
+    "BGRelativeElement": "Entity",
+    "BGSurfaceLayer": "BGRelativeElement",
+    "BGEggshipRoom": "Entity",
+    "BGMovingStar": "BGSurfaceStar",
+    "BGTutorialSign": "Entity",
+    "ShootingStarSpawner": "Entity",
+    "BGShootingStar": "BGRelativeElement",
+    "BGShopEntrence": "Entity",
+    "BGFloatingDebris": "BGSurfaceLayer",
+    "BGShopKeeperPrime": "Entity",
+    "LogicalDoor": "Entity",
+    "LogicalStaticSound": "LogicalSound",
+    "LogicalLiquidStreamSound": "LogicalStaticSound",
+    "LogicalSound": "Entity",
+    "LogicalTrapTrigger": "Entity",
+    "JungleTrapTrigger": "LogicalTrapTrigger",
+    "WetEffect": "Entity",
+    "OnFireEffect": "Entity",
+    "PoisonedEffect": "Entity",
+    "CursedEffect": "Entity",
+    "OuroboroCameraAnchor": "Entity",
+    "OuroboroCameraZoomin": "Entity",
+    "CinematicAnchor": "Entity",
+    "BurningRopeEffect": "Entity",
+    "DustWallApep": "Entity",
+    "CameraFlash": "Entity",
+    "RoomLight": "Entity",
+    "LimbAnchor": "Entity",
+    "LogicalConveyorbeltSound": "LogicalSound",
+    "LogicalAnchovyFlock": "Entity",
+    "MummyFliesSound": "LogicalSound",
+    "QuickSandSound": "LogicalSound",
+    "IceSlidingSound": "LogicalSound",
+    "FrostBreathEffect": "Entity",
+    "BoulderSpawner": "Entity",
+    "PipeTravelerSound": "LogicalSound",
+    "LogicalDrain": "Entity",
+    "LogicalRegeneratingBlock": "Entity",
+    "SplashBubbleGenerator": "Entity",
+    "EggplantThrower": "Entity",
+    "LogicalMiniGame": "Entity",
+    "DMSpawning": "Entity",
+    "DMAlienBlast": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -624,7 +669,74 @@
     "FX_MINIGAME_SHIP_JETFLAME": "MiniGameShipOffset",
     "FX_ANKH_ROTATINGSPARK": "FxAnkhRotatingSpark",
     "FX_ANKH_BROKENPIECE": "FxAnkhBrokenPiece",
+    "BG_SURFACE_STAR": "BGSurfaceStar",
+    "BG_SURFACE_SHOOTING_STAR": "BGShootingStar",
+    "BG_SURFACE_SHOOTING_STAR_TRAIL": "BGRelativeElement",
+    "BG_SURFACE_SHOOTING_STAR_TRAIL_PARTICLE": "BGRelativeElement",
+    "BG_SURFACE_MOVING_STAR": "BGMovingStar",
+    "BG_SURFACE_NEBULA": "BGRelativeElement",
+    "BG_SURFACE_LAYER": "BGSurfaceLayer",
+    "BG_SURFACE_ENTITY": "BGSurfaceLayer",
+    "BG_SURFACE_OLMEC_LAYER": "BGSurfaceLayer",
+    "BG_CONSTELLATION_STAR": "BGSurfaceStar",
+    "BG_CONSTELLATION_CONNECTION": "BGSurfaceStar",
+    "BG_EGGSHIP_ROOM": "BGEggshipRoom",
+    "BG_DOOR_BACK_LAYER": "BGBackLayerDoor",
+    "BG_TUTORIAL_SIGN_.*": "BGTutorialSign",
+    "BG_SHOP_ENTRANCEDOOR": "BGShopEntrence",
+    "BG_DUAT_LAYER": "BGSurfaceLayer",
+    "BG_DUAT_PYRAMID_LAYER": "BGSurfaceLayer",
+    "BG_DUAT_FLOATINGDEBRIS": "BGFloatingDebris",
+    "BG_DUAT_FARFLOATINGDEBRIS": "BGFloatingDebris",
+    "BG_VAT_SHOPKEEPER_PRIME": "BGShopKeeperPrime",
+    "BG_COSMIC_FLOATINGDEBRIS": "BGFloatingDebris",
+    "BG_COSMIC_FARFLOATINGDEBRIS": "BGFloatingDebris",
+    "LOGICAL_SHOOTING_STARS_SPAWNER": "ShootingStarSpawner",
+    "LOGICAL_DOOR": "LogicalDoor",
+    "LOGICAL_DOOR_AMBIENT_SOUND": "LogicalSound",
+    "LOGICAL_BLACKMARKET_DOOR": "LogicalDoor",
+    "LOGICAL_ARROW_TRAP_TRIGGER": "LogicalTrapTrigger",
+    "LOGICAL_TOTEM_TRAP_TRIGGER": "LogicalTrapTrigger",
+    "LOGICAL_JUNGLESPEAR_TRAP_TRIGGER": "JungleTrapTrigger",
+    "LOGICAL_SPIKEBALL_TRIGGER": "LogicalTrapTrigger",
+    "LOGICAL_TENTACLE_TRIGGER": "LogicalTrapTrigger",
+    "LOGICAL_WET_EFFECT": "WetEffect",
+    "LOGICAL_ONFIRE_EFFECT": "OnFireEffect",
+    "LOGICAL_POISONED_EFFECT": "PoisonedEffect",
+    "LOGICAL_CURSED_EFFECT": "CursedEffect",
+    "LOGICAL_OUROBORO_CAMERA_ANCHOR": "OuroboroCameraAnchor",
+    "LOGICAL_OUROBORO_CAMERA_ANCHOR_ZOOMIN": "OuroboroCameraZoomin",
+    "LOGICAL_CINEMATIC_ANCHOR": "CinematicAnchor",
+    "LOGICAL_BURNING_ROPE_EFFECT": "BurningRopeEffect",
+    "LOGICAL_DUSTWALL_APEP": "DustWallApep",
+    "LOGICAL_CAMERA_FLASH": "CameraFlash",
+    "LOGICAL_ROOM_LIGHT": "RoomLight",
+    "LOGICAL_LIMB_ANCHOR": "LimbAnchor",
     "LOGICAL_PORTAL": "Portal",
+    "LOGICAL_STATICLAVA_SOUND_SOURCE": "LogicalStaticSound",
+    "LOGICAL_STREAMLAVA_SOUND_SOURCE": "LogicalLiquidStreamSound",
+    "LOGICAL_STREAMWATER_SOUND_SOURCE": "LogicalLiquidStreamSound",
+    "LOGICAL_CONVEYORBELT_SOUND_SOURCE": "LogicalConveyorbeltSound",
+    "LOGICAL_ANCHOVY_FLOCK": "LogicalAnchovyFlock",
+    "LOGICAL_MUMMYFLIES_SOUND_SOURCE": "MummyFliesSound",
+    "LOGICAL_QUICKSAND_AMBIENT_SOUND_SOURCE": "LogicalStaticSound",
+    "LOGICAL_QUICKSAND_SOUND_SOURCE": "QuickSandSound",
+    "LOGICAL_DUSTWALL_SOUND_SOURCE": "LogicalSound",
+    "LOGICAL_ICESLIDING_SOUND_SOURCE": "IceSlidingSound",
+    "LOGICAL_PIPE_TRAVELER_SOUND_SOURCE": "PipeTravelerSound",
+    "LOGICAL_BOULDERSPAWNER": "BoulderSpawner",
+    "LOGICAL_WATER_DRAIN": "LogicalDrain",
+    "LOGICAL_LAVA_DRAIN": "LogicalDrain",
+    "LOGICAL_REGENERATING_BLOCK": "LogicalRegeneratingBlock",
+    "LOGICAL_BIGSPEAR_TRAP_TRIGGER": "LogicalTrapTrigger",
+
+    "LOGICAL_DM_ALIEN_BLAST": "DMAlienBlast",
+    "LOGICAL_DM_CRATE_SPAWNING": "DMSpawning",
+    "LOGICAL_DM_IDOL_SPAWNING": "DMSpawning",
+    "LOGICAL_SPLASH_BUBBLE_GENERATOR": "SplashBubbleGenerator",
+    "LOGICAL_FROST_BREATH": "FrostBreathEffect",
+    "LOGICAL_EGGPLANT_THROWER": "EggplantThrower",
+    "LOGICAL_MINIGAME": "LogicalMiniGame",
     "MOUNT_TURKEY": "Mount",
     "MOUNT_ROCKDOG": "Rockdog",
     "MOUNT_AXOLOTL": "Axolotl",
@@ -637,12 +749,17 @@
     //
     "FLOOR_.*": "Floor",
     "FLOORSTYLED_.*": "Floor",
+    "DECORATION_.*": "Entity",
     "EMBED_.*": "Floor",
     "CHAR_.*": "Player",
     "MONS_.*": "Monster",
     "ITEM_.*": "Movable",
     "ACTIVEFLOOR_.*": "Movable",
     "FX_.*": "Movable",
+    "BG_.*": "Entity",
+    "MIDBG.*": "Entity",
+    "LOGICAL_.*": "Entity",
+    "MOUNT_.*": "Mount", //just for the completeness
     "LIQUID_.*": "Liquid"
   },
   // all the types that are pointers
@@ -7254,7 +7371,7 @@
       { "field": "unknown5a", "type": "UnsignedByte" },
       { "field": "unknown5b", "type": "UnsignedByte" },
       { "field": "unknown5c", "type": "UnsignedByte" },
-      { "field": "player_slot", "type": "UnsignedByte" },
+      { "field": "player_slot", "type": "Byte" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
       {
@@ -7330,14 +7447,18 @@
       { "field": "companion7_trust", "type": "UnsignedByte" },
       { "field": "companion8_trust", "type": "UnsignedByte" },
       { "field": "companion_count", "type": "UnsignedByte" },
-      { "field": "companion1_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion2_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion3_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion4_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion5_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion6_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion7_unknown_state", "type": "UnsignedByte" },
-      { "field": "companion8_unknown_state", "type": "UnsignedByte" },
+      {
+        "field": "companion1_health",
+        "type": "UnsignedByte",
+        "comment": "only when exiting the level"
+      },
+      { "field": "companion2_health", "type": "UnsignedByte" },
+      { "field": "companion3_health", "type": "UnsignedByte" },
+      { "field": "companion4_health", "type": "UnsignedByte" },
+      { "field": "companion5_health", "type": "UnsignedByte" },
+      { "field": "companion6_health", "type": "UnsignedByte" },
+      { "field": "companion7_health", "type": "UnsignedByte" },
+      { "field": "companion8_health", "type": "UnsignedByte" },
       { "field": "unknown35", "type": "UnsignedByte" },
       { "field": "unknown36", "type": "UnsignedByte" },
       { "field": "unknown37", "type": "UnsignedByte" },
@@ -7573,7 +7694,11 @@
       { "field": "light1", "type": "LightParams" },
       { "field": "light2", "type": "LightParams" },
       { "field": "light3", "type": "LightParams" },
-      { "field": "light4", "type": "LightParams" },
+      {
+        "field": "light4",
+        "type": "LightParams",
+        "comment": "It's rendered on objects around, not as an actual bright spot"
+      },
       { "field": "brightness", "type": "Float" },
       { "field": "brightness_multiplier", "type": "Float" },
       { "field": "light_pos_x", "type": "Float" },
@@ -7594,7 +7719,7 @@
           "1": "Disable light1",
           "2": "Enable light2",
           "3": "Enable light3",
-          "4": "Light the surrounding",
+          "4": "Enable light4",
           "5": "",
           "6": "",
           "7": "Modulate brightness_multiplier",
@@ -7814,7 +7939,7 @@
       {
         "field": "sound_effect_info",
         "type": "SoundInfoPointer",
-        "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30); soundeffect doesn't seem to change when you pick a similar object around it"
+        "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30)"
       },
       {
         "field": "fmod_param_id?",
@@ -7822,19 +7947,64 @@
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID"
       },
       {
-        "field": "sound_x_coord_1?",
-        "type": "Float"
-      },
-      {
-        "field": "sound_x_coord_2",
+        "field": "DIST_CENTER_X*POS_SCREEN_X",
         "type": "Float",
-        "comment": "sometimes similar as coord_1, sometimes inverted, sometimes different"
+        "comment": "sometimes a little off, like when X and Y below are 0; VANILLA_SOUND_PARAM names, for now"
       },
-      { "field": "unknown5", "type": "Float" },
-      { "field": "unknown6", "type": "Float" },
-      { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "Float" }
+      { "field": "DIST_CENTER_X", "type": "Float" },
+      { "field": "DIST_CENTER_Y", "type": "Float" },
+      { "field": "DIST_Z?", "type": "Float" },
+      {
+        "field": "distance",
+        "type": "Float",
+        "comment": "calculated from DIST_CENTER_X/DIST_CENTER_Y to 0.0/0.0"
+      },
+      { "field": "SUBMERGED", "type": "Float" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "VALUE", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
+      { "field": "unknown19", "type": "Float" },
+      { "field": "unknown20", "type": "Float" },
+      { "field": "unknown21", "type": "Float" },
+      { "field": "unknown22", "type": "Float" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "Float" },
+      { "field": "unknown25", "type": "Float" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "unknown27", "type": "Float" },
+      { "field": "unknown28", "type": "Float" },
+      { "field": "unknown29", "type": "Float" },
+      { "field": "POISONED", "type": "Float" },
+      { "field": "CURSED", "type": "Float" },
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "Float" },
+      { "field": "unknown34", "type": "Float" },
+      { "field": "unknown35", "type": "Float" },
+      { "field": "unknown36", "type": "Float" },
+      { "field": "unknown37", "type": "Float" },
+      { "field": "unknown38", "type": "Float" },
+      { "field": "unknown39", "type": "Float" },
+      { "field": "unknown40", "type": "Float" },
+      {
+        "field": "repeat?",
+        "type": "Float",
+        "comment": "even if it's something else, it's probably good to mark the size, which fits with my predition of up to unknown38"
+      },
+      { "field": "unknown42", "type": "Float" },
+      { "field": "unknown43", "type": "Float" },
+      { "field": "unknown44", "type": "Float" },
+      { "field": "unknown45", "type": "Float" },
+      { "field": "unknown46", "type": "Float" },
+      { "field": "unknown47", "type": "Float" },
+      { "field": "unknown48", "type": "Float" },
+      { "field": "unknown49", "type": "Float" }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedByte" },
@@ -11248,6 +11418,303 @@
       { "field": "sine_angle?", "type": "Float" },
       { "field": "size", "type": "Float" }
     ],
-    "FxAnkhBrokenPiece": [{ "field": "unknown", "type": "Float" }]
+    "FxAnkhBrokenPiece": [{ "field": "unknown", "type": "Float" }],
+    "BGBackLayerDoor": [
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "illumination2", "type": "IlluminationPointer" }
+    ],
+    "BGSurfaceStar": [
+      { "field": "blink_timer?", "type": "Dword", "comment": "why negative?" },
+      { "field": "relative_x", "type": "Float" },
+      { "field": "relative_y", "type": "Float" },
+      { "field": "unknown_padding?", "type": "Dword" }
+    ],
+    "BGRelativeElement": [
+      { "field": "relative_x", "type": "Float" },
+      { "field": "relative_y", "type": "Float" }
+    ],
+    "BGSurfaceLayer": [
+      { "field": "relative_offset_x", "type": "Float" },
+      { "field": "relative_offset_y", "type": "Float" }
+    ],
+    "BGEggshipRoom": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "fx_shell", "type": "EntityPointer" },
+      { "field": "fx_door", "type": "EntityPointer" },
+      { "field": "platform_left", "type": "EntityPointer" },
+      { "field": "platform_middle", "type": "EntityPointer" },
+      { "field": "platform_right", "type": "EntityPointer" },
+      { "field": "player_in", "type": "Bool" }
+    ],
+    "BGMovingStar": [
+      {
+        "field": "falling_speed",
+        "type": "Float",
+        "comment": "can make it rise if you set it to negative"
+      }
+    ],
+    "BGTutorialSign": [{ "field": "is_shown", "type": "Bool" }],
+    "ShootingStarSpawner": [{ "field": "timer", "type": "UnsignedWord" }],
+    "BGShootingStar": [
+      { "field": "x_increment", "type": "Float" },
+      { "field": "y_increment", "type": "Float" },
+      { "field": "timer", "type": "Word" },
+      { "field": "max_timer", "type": "Word" },
+      {
+        "field": "size",
+        "type": "Float",
+        "comment": "gets smaller as the timer gets close to the max_timer"
+      },
+      {
+        "field": "light_size?",
+        "type": "Float",
+        "comment": "if you make it the same as size it starts to flicker, making this bigger increases the size as well"
+      }
+    ],
+    "BGShopEntrence": [{ "field": "on_entering", "type": "Bool" }],
+    "BGFloatingDebris": [
+      {
+        "field": "distance",
+        "type": "Float",
+        "comment": "distance it travels up and down from spawn position"
+      },
+      { "field": "speed", "type": "Float" },
+      { "field": "sine_angle", "type": "Float" }
+    ],
+    "BGShopKeeperPrime": [
+      { "field": "normal_y", "type": "Float" },
+      { "field": "sine_pos", "type": "Float" },
+      { "field": "bubbles_timer", "type": "Word" },
+      { "field": "bubble_spawn_trigger", "type": "Bool" },
+      { "field": "unknown_padding", "type": "Byte" },
+      {
+        "field": "bubble_spawn_delay",
+        "type": "Word",
+        "comment": "normally it's just 0, 1 or 2, but you can set it to some value and then when using bubble_spawn_trigger it will count down and then spawn bubbles"
+      }
+    ],
+    "LogicalDoor": [
+      { "field": "connected_door_type", "type": "EntityDBID" },
+      { "field": "unk2", "type": "Dword", "comment": "always 37?" },
+      { "field": "not_hidden", "type": "Bool" },
+      {
+        "field": "platform_spawned",
+        "type": "Bool",
+        "comment": "is set true when you bomb the door, no matter what door, can't be reset"
+      },
+      { "field": "unk5", "type": "Bool" },
+      { "field": "unk6", "type": "Bool" }
+    ],
+    "LogicalStaticSound": [
+      { "field": "x_pos?", "type": "Float" },
+      { "field": "y_pos?", "type": "Float" }
+    ],
+    "LogicalLiquidStreamSound": [
+      {
+        "field": "unknown",
+        "type": "Float",
+        "comment": "soundpositionpointer unknown10"
+      }
+    ],
+    "LogicalSound": [{ "field": "sound_pos", "type": "SoundPositionPointer" }],
+    "LogicalTrapTrigger": [
+      {
+        "field": "min_empty_distance",
+        "type": "Dword",
+        "comment": "used in bigspeartrap when it has to have minimum 2 free spaces to be able to trigger"
+      },
+      { "field": "trigger_distance", "type": "Dword", "comment": "in blocks" },
+      { "field": "vertical", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      { "field": "padding3", "type": "Dword" }
+    ],
+    "JungleTrapTrigger": [
+      {
+        "field": "counter1?",
+        "type": "Dword",
+        "comment": "one of those wierd counters that counts all the traps, not only this single one"
+      },
+      {
+        "field": "counter2?",
+        "type": "Dword",
+        "comment": "also there are 3 of them?"
+      },
+      { "field": "counter3?", "type": "Dword" }
+    ],
+    "WetEffect": [
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "OnFireEffect": [
+      { "field": "particle_smoke", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_flame", "type": "ParticleEmitterInfoPointer" },
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "unknown", "type": "Bool" }
+    ],
+    "PoisonedEffect": [
+      { "field": "particle_burst", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_base", "type": "ParticleEmitterInfoPointer" },
+      { "field": "sound_timer", "type": "UnsignedWord" },
+      {
+        "field": "sound_active",
+        "type": "Bool",
+        "comment": "if set to false, it will not play the sound or spawn particles"
+      }
+    ],
+    "CursedEffect": [
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
+    ],
+    "OuroboroCameraAnchor": [
+      { "field": "target_x", "type": "Float" },
+      { "field": "target_y", "type": "Float" },
+      { "field": "velocity_x", "type": "Float" },
+      { "field": "velocity_Y", "type": "Float" }
+    ],
+    "OuroboroCameraZoomin": [
+      {
+        "field": "zoomin_level",
+        "type": "Float",
+        "comment": "can be set to negaative, seams to trigger the warp at some value"
+      }
+    ],
+    "CinematicAnchor": [
+      { "field": "blackbar_top", "type": "EntityPointer" },
+      { "field": "blackbar_bottom", "type": "EntityPointer" },
+      { "field": "roll_in", "type": "Float", "comment": "0 to 1.0" }
+    ],
+    "BurningRopeEffect": [
+      { "field": "illumination", "type": "IlluminationPointer" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
+    ],
+    "DustWallApep": [
+      { "field": "particle", "type": "ParticleEmitterInfoPointer" }
+    ],
+    "CameraFlash": [
+      { "field": "illumination1", "type": "IlluminationPointer" },
+      { "field": "illumination2", "type": "IlluminationPointer" },
+      { "field": "unknown", "type": "Qword" },
+      { "field": "timer", "type": "UnsignedByte" }
+    ],
+    "RoomLight": [{ "field": "illumination", "type": "IlluminationPointer" }],
+    "LimbAnchor": [
+      { "field": "x_pos", "type": "Float" },
+      { "field": "y_pos", "type": "Float" },
+      { "field": "hand/feet_x_offset", "type": "Float" },
+      { "field": "hand/feet_y_offset", "type": "Float" },
+      {
+        "field": "x_unk5",
+        "type": "Float",
+        "comment": "all of those are offsets/positions of different joints, i'm too lazy to document thme all"
+      },
+      { "field": "y_unk6", "type": "Float" },
+      { "field": "x_unk7", "type": "Float" },
+      { "field": "y_unk8", "type": "Float" },
+      { "field": "x_unk9", "type": "Float" },
+      { "field": "y_unk10", "type": "Float" },
+      { "field": "unk11", "type": "Float" },
+      { "field": "unk12", "type": "Float" },
+      { "field": "unk13", "type": "Float" },
+      { "field": "move_timer", "type": "UnsignedWord" },
+      { "field": "flip_vertical", "type": "Bool" }
+    ],
+    "LogicalConveyorbeltSound": [
+      { "field": "unknown", "type": "UnknownPointerGroup", "comment": "why?" }
+    ],
+    "LogicalAnchovyFlock": [
+      {
+        "field": "current_speed",
+        "type": "Float",
+        "comment": "increases until max_speed reached"
+      },
+      { "field": "max_speed", "type": "Float" },
+      { "field": "timer", "type": "UnsignedWord" }
+    ],
+    "MummyFliesSound": [
+      { "field": "mummy_uid", "type": "EntityUID" },
+      {
+        "field": "flies?",
+        "type": "UnsignedByte",
+        "comment": "numbers of flies spawned? need to take another look, very cool"
+      },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      {
+        "field": "unknown",
+        "type": "UnknownPointerGroup",
+        "comment": "why? because of this this entity falls into the larger bucket"
+      }
+    ],
+    "QuickSandSound": [
+      { "field": "counter?", "type": "Dword", "comment": "probably unsigned?" }
+    ],
+    "IceSlidingSound": [
+      { "field": "counter?", "type": "Dword", "comment": "probably unsigned?" }
+    ],
+    "FrostBreathEffect": [{ "field": "timer", "type": "UnsignedWord" }],
+    "BoulderSpawner": [
+      {
+        "field": "timer",
+        "type": "Dword",
+        "comment": "can be set negative for longer time period, spawns boulder at 150, setting it higher with count to overflow"
+      },
+      { "field": "padding?", "type": "Dword" },
+      { "field": "sound_pos", "type": "SoundPositionPointer" }
+    ],
+    "PipeTravelerSound": [
+      {
+        "field": "sound_speed?",
+        "type": "Float",
+        "comment": "soundpositionpointer -> VALUE"
+      },
+      { "field": "counter?", "type": "Dword", "comment": "probably unsigned?" },
+      {
+        "field": "unknown1",
+        "type": "Byte",
+        "comment": "enter/exit sound time duration?"
+      },
+      {
+        "field": "unknown2",
+        "type": "Byte",
+        "comment": "enter/exit sound time duration?"
+      },
+      { "field": "enter_exit", "type": "Bool" }
+    ],
+    "LogicalDrain": [
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "little delay between pulling blob of liquid thru"
+      }
+    ],
+    "LogicalRegeneratingBlock": [{ "field": "timer", "type": "UnsignedByte" }],
+    "SplashBubbleGenerator": [{ "field": "timer", "type": "UnsignedByte" }],
+    "EggplantThrower": [
+      {
+        "field": "unknown",
+        "type": "Bool",
+        "comment": "allow throw again when it's false? hard to test"
+      }
+    ],
+    "LogicalMiniGame": [
+      {
+        "field": "timer",
+        "type": "UnsignedWord",
+        "comment": "delay between spwning ufo"
+      }
+    ],
+    "DMSpawning": [
+      { "field": "spawn_x", "type": "Float" },
+      { "field": "spawn_y", "type": "Float" },
+      { "field": "sine_pos", "type": "Float" },
+      { "field": "timer", "type": "UnsignedByte" }
+    ],
+    "DMAlienBlast": [
+      {
+        "field": "unknown",
+        "type": "Dword",
+        "comment": "EntityUID? it's always -1"
+      }
+    ]
   }
 }
