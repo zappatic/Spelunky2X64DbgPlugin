@@ -5201,7 +5201,7 @@
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "input_mapping_keyboard", "type": "InputMappingPointer" },
       { "field": "input_mapping_controller", "type": "InputMappingPointer" },
-      { "field": "player_id", "type": "UnsignedByte" },
+      { "field": "player_slot", "type": "UnsignedByte" },
       { "field": "is_participating", "type": "Bool" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
@@ -7248,8 +7248,16 @@
       { "field": "health", "type": "UnsignedByte" },
       { "field": "stun_timer", "type": "UnsignedWord" },
       { "field": "stun_state", "type": "UnsignedWord" },
-      { "field": "after_dmg_airtime_timer?", "type": "UnsignedWord" },
-      { "field": "unknown", "type": "UnsignedWord" },
+      {
+        "field": "lock_input_timer",
+        "type": "UnsignedWord",
+        "comment": "Related to taking damage, also drops you from ladder/rope, can't be set while on the ground unless you'r on a mount"
+      },
+      {
+        "field": "unknown",
+        "type": "UnsignedWord",
+        "comment": "fading the entity to black, similar to dark_shadow_timer"
+      },
       { "field": "poison_tick_timer", "type": "Word" },
       {
         "field": "dark_shadow_timer",
@@ -7280,9 +7288,9 @@
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "falling_timer", "type": "UnsignedByte" },
       {
-        "field": "unknown_timer",
+        "field": "b126",
         "type": "UnsignedByte",
-        "comment": "after layer change?"
+        "comment": "timer, after layer change?"
       },
       { "field": "b127", "type": "UnsignedByte" }
     ],
