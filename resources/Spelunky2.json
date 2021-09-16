@@ -329,7 +329,11 @@
     "EggplantThrower": "Entity",
     "LogicalMiniGame": "Entity",
     "DMSpawning": "Entity",
-    "DMAlienBlast": "Entity"
+    "DMAlienBlast": "Entity",
+    "CrossBeam": "Entity",
+    "PalaceSign": "Entity",
+    "DecoRegeneratingBlock": "Entity",
+    "DestructibleBG": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -366,8 +370,13 @@
     "FLOOR_TENTACLE_BOTTOM": "TentacleBottom",
     "FLOORSTYLED_MINEWOOD": "PoleDeco",
     "FLOORSTYLED_PAGODA": "PoleDeco",
+    "DECORATION_CROSS_BEAM": "CrossBeam",
     "DECORATION_CHAINANDBLOCKS_CHAINDECORATION": "Movable",
     "DECORATION_SLIDINGWALL_CHAINDECORATION": "Movable",
+    "DECORATION_DUAT_DESTRUCTIBLE_BG": "DestructibleBG",
+    "DECORATION_PALACE_SIGN": "PalaceSign",
+    "DECORATION_REGENERATING_SMALL_BLOCK": "DecoRegeneratingBlock",
+    "DECORATION_REGENERATING_BORDER": "DecoRegeneratingBlock",
     "MONS_SPIDER": "Spider",
     "MONS_HANGSPIDER": "HangSpider",
     "MONS_GIANTSPIDER": "Spider",
@@ -729,7 +738,6 @@
     "LOGICAL_LAVA_DRAIN": "LogicalDrain",
     "LOGICAL_REGENERATING_BLOCK": "LogicalRegeneratingBlock",
     "LOGICAL_BIGSPEAR_TRAP_TRIGGER": "LogicalTrapTrigger",
-
     "LOGICAL_DM_ALIEN_BLAST": "DMAlienBlast",
     "LOGICAL_DM_CRATE_SPAWNING": "DMSpawning",
     "LOGICAL_DM_IDOL_SPAWNING": "DMSpawning",
@@ -8232,7 +8240,7 @@
         "type": "Bool",
         "comment": "also is set true if you set aggro to true, get's trigger even when whiping"
       },
-      { "field": "padding1", "type": "UnsignedByte" }, // some of this is padding probably
+      { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "Dword" }
     ],
@@ -10896,7 +10904,11 @@
       }
     ],
     "FrozenLiquid": [
-      { "field": "unknown1", "type": "Dword" }, //have problem cheeking those, looks like unused memory, but then, it's always zeros on spawn
+      {
+        "field": "unknown1",
+        "type": "Dword",
+        "comment": "have problem cheeking those, looks like unused memory, but then, it's always zeros on spawn, changing it can crash the game"
+      },
       { "field": "unknown2", "type": "Dword" }
     ],
     "Switch": [
@@ -10920,7 +10932,7 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "velocity_x", "type": "Float" },
       { "field": "velocity_y", "type": "Float" },
-      { "field": "swing", "type": "Float" }, //angle change?
+      { "field": "swing", "type": "Float", "comment": "angle change?" },
       {
         "field": "up_down_normal",
         "type": "Float",
@@ -11070,7 +11082,11 @@
       { "field": "unknown24", "type": "Byte" },
       { "field": "unknown25", "type": "Byte" },
       { "field": "unknown26", "type": "Dword" },
-      { "field": "unknown27", "type": "Map" } //added map for now, it's list of 3 pointers
+      {
+        "field": "unknown27",
+        "type": "Map",
+        "comment": "added map for now, it's list of 3 pointers"
+      }
     ],
     "EggshipCenterJetFlame": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -11737,6 +11753,39 @@
         "type": "Dword",
         "comment": "EntityUID? it's always -1"
       }
+    ],
+    "CrossBeam": [
+      { "field": "attached_to_side", "type": "EntityUID" },
+      { "field": "attached_to_top", "type": "EntityUID" }
+    ],
+    "PalaceSign": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      {
+        "field": "illumination",
+        "type": "IlluminationPointer",
+        "comment": "illumination1/2 used only in dark level, no pointer in normal level"
+      },
+      { "field": "arrow_illumination", "type": "IlluminationPointer" },
+      { "field": "arrow_change_timer", "type": "UnsignedByte" }
+    ],
+    "DecoRegeneratingBlock": [
+      { "field": "unknown1", "type": "Byte" },
+      {
+        "field": "unknown2",
+        "type": "UnsignedByte",
+        "comment": "timer after self_destruct is triggered, modifies the size depending of the unknown1"
+      },
+      {
+        "field": "self_destruct?",
+        "type": "Bool",
+        "comment": "have reverse effect of spawning in after the broke is blocken, unsued in the game?"
+      }
+    ],
+    "DestructibleBG": [
+      { "field": "attached_to_1?", "type": "EntityUID" },
+      { "field": "attached_to_2?", "type": "EntityUID" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" }
     ]
   }
 }
