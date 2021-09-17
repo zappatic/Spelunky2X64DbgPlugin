@@ -7977,21 +7977,25 @@
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID"
       },
       {
-        "field": "DIST_CENTER_X*POS_SCREEN_X",
+        "field": "POS_SCREEN_X",
         "type": "Float",
-        "comment": "sometimes a little off, like when X and Y below are 0; VANILLA_SOUND_PARAM names, for now"
+        "comment": "VANILLA_SOUND_PARAM names, for now"
       },
       { "field": "DIST_CENTER_X", "type": "Float" },
       { "field": "DIST_CENTER_Y", "type": "Float" },
-      { "field": "DIST_Z?", "type": "Float" },
+      { "field": "DIST_Z", "type": "Float" },
       {
-        "field": "distance",
+        "field": "DIST_PLAYER",
         "type": "Float",
-        "comment": "calculated from DIST_CENTER_X/DIST_CENTER_Y to 0.0/0.0"
+        "comment": "seams to be always here, even you you get nil in lua"
       },
       { "field": "SUBMERGED", "type": "Float" },
-      { "field": "unknown9", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
+      { "field": "LIQUID_STREAM", "type": "Float" },
+      {
+        "field": "unknown10",
+        "type": "Float",
+        "comment": "LIQUID_STREAM related? , maybe LIQUID_INTENSITY?"
+      },
       { "field": "VALUE", "type": "Float" },
       { "field": "unknown12", "type": "Float" },
       { "field": "unknown13", "type": "Float" },
