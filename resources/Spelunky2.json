@@ -863,7 +863,9 @@
     "SpeechBubblePointer",
     "SpeechBubbleTimerPointer",
     "SpeechBubbleLayoutPointer",
-    "SpeechBubbleLayoutDataPointer"
+    "SpeechBubbleLayoutDataPointer",
+    "MysteryLiquidPointer1",
+    "MysteryLiquidPointer2"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4339,24 +4341,29 @@
     ],
     "LiquidPhysicsPointer": [
       { "field": "unknown1", "type": "DataPointer" },
-      { "field": "liquidpool1", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool2", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool3", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool4", "type": "LiquidPhysicsParams" }
+      { "field": "water_physics", "type": "LiquidPhysicsParams" },
+      { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
+      { "field": "lava_physics", "type": "LiquidPhysicsParams" },
+      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" }
     ],
     "LiquidPhysicsParams": [
       {
-        "field": "unknown1",
+        "field": "shader_type?",
+        "type": "State32",
+        "states": {
+          "1": "water",
+          "2": "lava"
+        },
+        "comment": "can also be flags, as for water, any value with bit one is fine"
+      },
+      {
+        "field": "unknown2",
         "type": "UnsignedByte",
-        "comment": "anything other than 1 and standing water doesn't visually generate"
+        "comment": "shader related, shader id maybe?"
       },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "padding4", "type": "UnsignedByte" },
-      { "field": "padding5", "type": "UnsignedByte" },
-      { "field": "padding6", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "Float" },
       {
         "field": "cohesion?",
@@ -4370,11 +4377,15 @@
       },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
-      { "field": "agitation", "type": "Float" },
+      {
+        "field": "agitation",
+        "type": "Float",
+        "comment": "is agitation the right word? for me is just how bouncy the liquid is"
+      },
       {
         "field": "unknown9",
         "type": "Float",
-        "comment": "starts going nuts at around 2.70"
+        "comment": "starts going nuts at around 2.70, pressure force? it seam to only matter at spawn, when there is a lot of liquid in one place"
       },
       { "field": "unknown10", "type": "Float" },
       { "field": "unknown11", "type": "Float" },
@@ -4393,19 +4404,21 @@
       { "field": "unknown24", "type": "UnsignedDword" },
       { "field": "unknown25", "type": "DataPointer" },
       { "field": "unknown26", "type": "Float" },
-      { "field": "x_right", "type": "Float" },
-      { "field": "y_top", "type": "Float" },
-      { "field": "unknown29", "type": "Float" },
-      { "field": "unknown30", "type": "UnsignedDword" },
+      { "field": "last_spawn_x", "type": "Float" },
+      { "field": "last_spawn_y", "type": "Float" },
+      { "field": "spawn_velocity_x", "type": "Float" },
+      { "field": "spawn_velocity_y", "type": "Float" },
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" },
       { "field": "unknown33", "type": "UnsignedDword" },
-      { "field": "unknown34", "type": "DataPointer" },
-      { "field": "unknown35", "type": "UnsignedDword" },
-      { "field": "unknown36", "type": "UnsignedDword" },
-      { "field": "unknown37", "type": "UnsignedDword" },
-      { "field": "unknown38", "type": "Float" },
-      { "field": "unknown39", "type": "EntityUID" },
+      { "field": "unknown34", "type": "Map", "comment": "liquidpools?" },
+      {
+        "field": "liquidtile_liquid_amount?",
+        "type": "UnsignedDword",
+        "comment": "how much liquid will be spawned from tilecode, 1=1x2, 2=2x3, 3=3x4 etc."
+      },
+      { "field": "distance_between_spawned_droplets", "type": "Float" },
+      { "field": "unknown39", "type": "Dword" },
       { "field": "unknown40", "type": "Float" },
       { "field": "unknown41", "type": "Float" },
       { "field": "unknown42", "type": "UnsignedDword" }
@@ -10597,7 +10610,7 @@
     "Lava": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "Liquid": [
       { "field": "fx_surface", "type": "EntityPointer" },
-      { "field": "unknown", "type": "DataPointer" },
+      { "field": "unknown", "type": "MysteryLiquidPointer1" },
       { "field": "unknown_readonly1", "type": "UnsignedWord" },
       { "field": "unknown_readonly2", "type": "UnsignedWord" },
       { "field": "unknown_timer1", "type": "UnsignedWord" },
@@ -11790,6 +11803,35 @@
       { "field": "attached_to_2?", "type": "EntityUID" },
       { "field": "unknown1", "type": "Bool" },
       { "field": "unknown2", "type": "Bool" }
+    ],
+    "MysteryLiquidPointer1": [
+      {
+        "field": "prev",
+        "type": "DataPointer",
+        "comment": "points to the previos element in this ... array?"
+      },
+      { "field": "unknown", "type": "MysteryLiquidPointer2" },
+      { "field": "liquid_id?", "type": "Dword" },
+      { "field": "unknown4", "type": "Dword", "comment": "garbage?" }
+    ],
+    "MysteryLiquidPointer2": [
+      {
+        "field": "back_pointer",
+        "type": "DataPointer",
+        "comment": "points at the MysteryLiquidPointer1"
+      },
+      { "field": "begin", "type": "DataPointer" },
+      { "field": "end", "type": "DataPointer" },
+      {
+        "field": "next?",
+        "type": "DataPointer",
+        "comment": "pointer to next MysteryLiquidPointer1?"
+      },
+      {
+        "field": "list",
+        "type": "DataPointer",
+        "comment": "lists of all pointers to MysteryLiquidPointer1"
+      }
     ]
   }
 }
