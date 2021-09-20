@@ -4000,7 +4000,11 @@
       { "field": "player2_won", "type": "Bool" },
       { "field": "player3_won", "type": "Bool" },
       { "field": "player4_won", "type": "Bool" },
-      { "field": "unknown14", "type": "UnsignedByte" },
+      { "field": "unknown14a", "type": "UnsignedByte" },
+      { "field": "unknown14b", "type": "UnsignedByte" },
+      { "field": "unknown14c", "type": "UnsignedByte" },
+      { "field": "unknown14d", "type": "UnsignedByte" },
+      { "field": "unknown14e", "type": "UnsignedByte" },
       {
         "field": "timer",
         "type": "State8",
@@ -4036,7 +4040,8 @@
           "1": "Death Mist",
           "2": "Alien Blast",
           "3": "Loose Bombs",
-          "4": "Random"
+          "4": "Ghost",
+          "5": "Random"
         }
       },
       { "field": "wins", "type": "UnsignedByte" },
@@ -4103,25 +4108,34 @@
           "0": "None",
           "1": "Low",
           "2": "Medium",
-          "3": "High"
+          "3": "High",
+          "4": "Very High"
         }
       },
-      { "field": "items", "type": "ArenaConfigItems" },
+      { "field": "items_enabled", "type": "ArenaConfigItems" },
+      { "field": "items_in_crate", "type": "ArenaConfigItems" },
       {
         "field": "held_item",
         "type": "State8",
         "states": {
           "-1": "Nothing",
-          "7": "Machete",
-          "8": "Mattock",
-          "9": "Crossbow",
-          "10": "Webgun",
-          "11": "Freezeray",
-          "12": "Shotgun",
-          "13": "Camera",
-          "14": "Plasma cannon",
-          "15": "Teleporter",
-          "28": "Excalibur"
+          "9": "Torch",
+          "10": "Boomerang",
+          "11": "Machete",
+          "12": "Mattock",
+          "13": "Crossbow",
+          "14": "Webgun",
+          "15": "Freezeray",
+          "16": "Shotgun",
+          "17": "Camera",
+          "18": "Plasma cannon",
+          "19": "Wooden shield",
+          "20": "Metal shield",
+          "21": "Teleporter",
+          "22": "Mine",
+          "23": "Snaptrap",
+          "36": "Excalibur",
+          "37": "Scepter"
         }
       },
       {
@@ -4129,30 +4143,14 @@
         "type": "State8",
         "states": {
           "-1": "Nothing",
-          "22": "Cape",
-          "23": "Vlad's cape",
-          "24": "Jetpack",
-          "25": "Hoverpack",
-          "26": "Telepack",
-          "27": "Powerpack"
+          "30": "Cape",
+          "31": "Vlad's cape",
+          "32": "Jetpack",
+          "33": "Hoverpack",
+          "34": "Telepack",
+          "35": "Powerpack"
         }
       },
-      { "field": "unknown25", "type": "UnsignedByte" },
-      { "field": "unknown26", "type": "UnsignedByte" },
-      { "field": "unknown27", "type": "UnsignedByte" },
-      { "field": "unknown28", "type": "UnsignedByte" },
-      { "field": "unknown29", "type": "UnsignedByte" },
-      { "field": "unknown30", "type": "UnsignedByte" },
-      { "field": "unknown31", "type": "UnsignedByte" },
-      { "field": "unknown32", "type": "UnsignedByte" },
-      { "field": "unknown33", "type": "UnsignedByte" },
-      { "field": "unknown34", "type": "UnsignedByte" },
-      { "field": "unknown35", "type": "UnsignedByte" },
-      { "field": "unknown36", "type": "UnsignedByte" },
-      { "field": "unknown37", "type": "UnsignedByte" },
-      { "field": "unknown38", "type": "UnsignedByte" },
-      { "field": "unknown39", "type": "UnsignedByte" },
-      { "field": "unknown40", "type": "UnsignedByte" },
       { "field": "equipped_items", "type": "ArenaConfigEquippedItems" },
       {
         "field": "whip_damage",
@@ -4168,9 +4166,24 @@
           "7": "99"
         }
       },
-      { "field": "unknown41", "type": "UnsignedByte" },
-      { "field": "unknown42", "type": "UnsignedByte" },
-      { "field": "unknown43", "type": "UnsignedByte" }
+      { "field": "final_ghost", "type": "UnsignedByte" },
+      {
+        "field": "breath_cooldown",
+        "type": "State8",
+        "states": {
+          "0": "None",
+          "1": "0.25",
+          "2": "0.5",
+          "3": "0.75",
+          "4": "1.0",
+          "5": "1.25",
+          "6": "1.5",
+          "7": "1.75",
+          "8": "2.0",
+          "9": "Breath Off"
+        }
+      },
+      { "field": "punish_ball", "type": "Bool" }
     ],
     "ArenaConfigArenas": [
       { "field": "dwelling_1", "type": "Bool" },
@@ -4220,8 +4233,12 @@
       { "field": "bombbag", "type": "Bool" },
       { "field": "bombbox", "type": "Bool" },
       { "field": "ropepile", "type": "Bool" },
+      { "field": "pickup_12bag", "type": "Bool" },
+      { "field": "pickup_24bag", "type": "Bool" },
       { "field": "cooked_turkey", "type": "Bool" },
       { "field": "royal_jelly", "type": "Bool" },
+      { "field": "torch", "type": "Bool" },
+      { "field": "boomerang", "type": "Bool" },
       { "field": "machete", "type": "Bool" },
       { "field": "mattock", "type": "Bool" },
       { "field": "crossbow", "type": "Bool" },
@@ -4230,7 +4247,11 @@
       { "field": "shotgun", "type": "Bool" },
       { "field": "camera", "type": "Bool" },
       { "field": "plasma_cannon", "type": "Bool" },
+      { "field": "wooden_shield", "type": "Bool" },
+      { "field": "metal_shield", "type": "Bool" },
       { "field": "teleporter", "type": "Bool" },
+      { "field": "mine", "type": "Bool" },
+      { "field": "snaptrap", "type": "Bool" },
       { "field": "paste", "type": "Bool" },
       { "field": "climbing_gloves", "type": "Bool" },
       { "field": "pitchers_mitt", "type": "Bool" },
@@ -4244,19 +4265,15 @@
       { "field": "telepack", "type": "Bool" },
       { "field": "powerpack", "type": "Bool" },
       { "field": "excalibur", "type": "Bool" },
-      { "field": "kapala", "type": "Bool" }
+      { "field": "scepter", "type": "Bool" },
+      { "field": "kapala", "type": "Bool" },
+      { "field": "true_crown", "type": "Bool" }
     ],
     "ArenaConfigEquippedItems": [
-      { "field": "paste", "type": "Bool" },
-      { "field": "climbing_gloves", "type": "Bool" },
-      { "field": "pitchers_mitt", "type": "Bool" },
-      { "field": "spike_shoes", "type": "Bool" },
-      { "field": "spring_shoes", "type": "Bool" },
-      { "field": "parachute", "type": "Bool" },
       {
         "field": "dummy1",
         "type": "Bool",
-        "comment": "the backitems and excalibur have spaces here but are unused"
+        "comment": "the other items have spaces here but are unused"
       },
       { "field": "dummy2", "type": "Bool" },
       { "field": "dummy3", "type": "Bool" },
@@ -4264,7 +4281,39 @@
       { "field": "dummy5", "type": "Bool" },
       { "field": "dummy6", "type": "Bool" },
       { "field": "dummy7", "type": "Bool" },
-      { "field": "kapala", "type": "Bool" }
+      { "field": "dummy8", "type": "Bool" },
+      { "field": "dummy9", "type": "Bool" },
+      { "field": "dummy10", "type": "Bool" },
+      { "field": "dummy11", "type": "Bool" },
+      { "field": "dummy12", "type": "Bool" },
+      { "field": "dummy13", "type": "Bool" },
+      { "field": "dummy14", "type": "Bool" },
+      { "field": "dummy15", "type": "Bool" },
+      { "field": "dummy16", "type": "Bool" },
+      { "field": "dummy17", "type": "Bool" },
+      { "field": "dummy18", "type": "Bool" },
+      { "field": "dummy19", "type": "Bool" },
+      { "field": "dummy20", "type": "Bool" },
+      { "field": "dummy21", "type": "Bool" },
+      { "field": "dummy22", "type": "Bool" },
+      { "field": "dummy23", "type": "Bool" },
+      { "field": "dummy24", "type": "Bool" },
+      { "field": "paste", "type": "Bool" },
+      { "field": "climbing_gloves", "type": "Bool" },
+      { "field": "pitchers_mitt", "type": "Bool" },
+      { "field": "spike_shoes", "type": "Bool" },
+      { "field": "spring_shoes", "type": "Bool" },
+      { "field": "parachute", "type": "Bool" },
+      { "field": "dummy25", "type": "Bool" },
+      { "field": "dummy26", "type": "Bool" },
+      { "field": "dummy27", "type": "Bool" },
+      { "field": "dummy28", "type": "Bool" },
+      { "field": "dummy29", "type": "Bool" },
+      { "field": "dummy30", "type": "Bool" },
+      { "field": "dummy31", "type": "Bool" },
+      { "field": "dummy32", "type": "Bool" },
+      { "field": "kapala", "type": "Bool" },
+      { "field": "scepter", "type": "Bool" }
     ],
     "WaddlerStorage": [
       { "field": "slot1", "type": "EntityDBID" },
