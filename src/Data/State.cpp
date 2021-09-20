@@ -18,7 +18,7 @@ bool S2Plugin::State::loadState()
 
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "49 0F 44 C0");
     instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, afterBundleSize, "49 0F 44 C0");
-    instructionOffset = Script::Pattern::FindMem(instructionOffset - 0x10, afterBundleSize, "48 8B");
+    instructionOffset = Script::Pattern::FindMem(instructionOffset - 25, afterBundleSize, "48 8B");
     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
     auto heapOffsetPtr = instructionOffset + pcOffset + 7;
     auto heapOffset = Script::Memory::ReadDword(heapOffsetPtr);
@@ -33,7 +33,7 @@ bool S2Plugin::State::loadState()
             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
             auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
-            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x130);
+            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x120);
             mStatePtr = heapBase + heapOffset;
             break;
         }
