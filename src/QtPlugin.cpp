@@ -4,6 +4,7 @@
 #include "Data/EntityDB.h"
 #include "Data/GameManager.h"
 #include "Data/LevelGen.h"
+#include "Data/Online.h"
 #include "Data/ParticleDB.h"
 #include "Data/SaveGame.h"
 #include "Data/State.h"
@@ -33,6 +34,7 @@ static S2Plugin::SaveGame* gsSaveGame;
 static S2Plugin::LevelGen* gsLevelGen;
 static S2Plugin::VirtualTableLookup* gsVirtualTableLookup;
 static S2Plugin::StringsTable* gsStringsTable;
+static S2Plugin::Online* gsOnline;
 
 static HANDLE hSetupEvent;
 static HANDLE hStopEvent;
@@ -89,8 +91,9 @@ void QtPlugin::Setup()
         gsLevelGen = new S2Plugin::LevelGen(gsConfiguration, gsState);
         gsVirtualTableLookup = new S2Plugin::VirtualTableLookup(gsConfiguration);
         gsStringsTable = new S2Plugin::StringsTable(gsConfiguration);
+        gsOnline = new S2Plugin::Online(gsConfiguration);
 
-        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsCharacterDB, gsGameManager, gsSaveGame, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable,
+        gsViewToolbar = new S2Plugin::ViewToolbar(gsEntityDB, gsParticleDB, gsTextureDB, gsCharacterDB, gsGameManager, gsSaveGame, gsState, gsLevelGen, gsVirtualTableLookup, gsStringsTable, gsOnline,
                                                   gsConfiguration, gsMDIArea, parent);
         gsSpelunky2MainWindow->addDockWidget(Qt::DockWidgetArea::LeftDockWidgetArea, gsViewToolbar);
 

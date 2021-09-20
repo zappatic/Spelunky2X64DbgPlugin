@@ -5,6 +5,7 @@
 #include "Data/EntityDB.h"
 #include "Data/GameManager.h"
 #include "Data/LevelGen.h"
+#include "Data/Online.h"
 #include "Data/ParticleDB.h"
 #include "Data/SaveGame.h"
 #include "Data/State.h"
@@ -28,7 +29,7 @@ namespace S2Plugin
         Q_OBJECT
       public:
         ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl,
-                    StringsTable* stbl, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
+                    StringsTable* stbl, Online* online, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
         void showEntity(size_t offset);
 
         State* state();
@@ -41,6 +42,7 @@ namespace S2Plugin
         TextureDB* textureDB();
         VirtualTableLookup* virtualTableLookup();
         StringsTable* stringsTable();
+        Online* online();
         Configuration* configuration() const noexcept;
 
         void resetSpelunky2Data();
@@ -59,6 +61,7 @@ namespace S2Plugin
         void showSaveGame();
         void showLogger();
         void showVirtualFunctions(size_t offset, const std::string& typeName);
+        void showOnline();
         void clearLabels();
         void reloadConfig();
 
@@ -74,6 +77,7 @@ namespace S2Plugin
         VirtualTableLookup* mVirtualTableLookup;
         StringsTable* mStringsTable;
         Configuration* mConfiguration;
+        Online* mOnline;
 
         QMdiArea* mMDIArea;
         QVBoxLayout* mMainLayout;

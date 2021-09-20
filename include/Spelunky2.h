@@ -104,12 +104,14 @@ namespace S2Plugin
         LevelGenPointer,
         UTF16Char,
         UTF16StringFixedSize,
+        UTF8StringFixedSize,
         StringsTableID,
         PointerList,
         PointerListItems,
         CharacterDB,
         CharacterDBID,
         VirtualFunctionTable,
+        Online,
     };
 
     // for display purposes
@@ -161,12 +163,14 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
         {MemoryFieldType::UTF16StringFixedSize, "UTF16StringFixedSize"},
+        {MemoryFieldType::UTF8StringFixedSize, "UTF8StringFixedSize"},
         {MemoryFieldType::StringsTableID, "StringsTableID"},
         {MemoryFieldType::PointerList, "PointerList"},
         {MemoryFieldType::PointerListItems, "PointerListItems"},
         {MemoryFieldType::CharacterDB, "CharacterDB"},
         {MemoryFieldType::CharacterDBID, "CharacterDBID"},
         {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable"},
+        {MemoryFieldType::Online, "Online"},
     };
 
     // for C++ header generation
@@ -207,6 +211,7 @@ namespace S2Plugin
         {MemoryFieldType::LevelGenPointer, "LevelGen*"},
         {MemoryFieldType::UTF16Char, "uint16_t"},
         {MemoryFieldType::UTF16StringFixedSize, "// "},
+        {MemoryFieldType::UTF8StringFixedSize, "// "},
         {MemoryFieldType::StringsTableID, "uint32_t"},
         {MemoryFieldType::PointerList, "PointerList"},
         {MemoryFieldType::PointerListItems, "// ignore"},
@@ -262,12 +267,14 @@ namespace S2Plugin
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
         {"UTF16StringFixedSize", MemoryFieldType::UTF16StringFixedSize},
+        {"UTF8StringFixedSize", MemoryFieldType::UTF8StringFixedSize},
         {"StringsTableID", MemoryFieldType::StringsTableID},
         {"PointerList", MemoryFieldType::PointerList},
         {"PointerListItems", MemoryFieldType::PointerListItems},
         {"CharacterDB", MemoryFieldType::CharacterDB},
         {"CharacterDBID", MemoryFieldType::CharacterDBID},
         {"VirtualFunctionTable", MemoryFieldType::VirtualFunctionTable},
+        {"Online", MemoryFieldType::Online},
     };
 
     struct VirtualFunction

@@ -672,6 +672,7 @@
     "ScreenArenaStagesSelectPointer",
     "ScreenArenaLevelPointer",
     "ScreenArenaScorePointer",
+    "GamePropsPointer",
     "PlayerInputs",
     "InputMappingPointer",
     "QuestsInfoPointer",
@@ -787,7 +788,10 @@
     "AudioChannelParams",
     "PlayerInventory",
     "SelectPlayerSlot",
-    "UnknownPointerGroup"
+    "UnknownPointerGroup",
+    "OnlinePlayer",
+    "OnlineLobby",
+    "OnlineLobbyScreenPlayer"
   ],
   "refs": {
     "screen_states": {
@@ -855,6 +859,28 @@
       "6": "-",
       "7": "-",
       "8": "-"
+    },
+    "character_states": {
+      "0": "Ana Spelunky",
+      "1": "Margaret Tunnel",
+      "2": "Colin Northward",
+      "3": "Roffy D. Sloth",
+      "4": "Alto Singh",
+      "5": "Liz Mutton",
+      "6": "Nekka the Eagle ",
+      "7": "LISE Project",
+      "8": "Coco Von Diamonds",
+      "9": "Manfred Tunnel",
+      "10": "Little Jay",
+      "11": "Tina Flan",
+      "12": "Valerie Crump",
+      "13": "Au",
+      "14": "Demi Von Diamonds",
+      "15": "Pilot",
+      "16": "Princess Airyn",
+      "17": "Dirk Yamaoka",
+      "18": "Guy Spelunky",
+      "19": "Classic Guy"
     }
   },
 
@@ -1384,7 +1410,7 @@
         "type": "Flags8",
         "ref": "buttons_flags_movement"
       },
-      { "field": "more_button_states", "type": "DataPointer" },
+      { "field": "game_props", "type": "GamePropsPointer" },
       { "field": "screen_logo", "type": "ScreenLogoPointer" },
       {
         "field": "screen_intro",
@@ -1497,11 +1523,7 @@
         "field": "screen_online_loading",
         "type": "ScreenOnlineLoadingPointer"
       },
-      {
-        "field": "screen_online_lobby",
-        "type": "ScreenOnlineLobbyPointer",
-        "comment": "INCOMPLETE"
-      },
+      { "field": "screen_online_lobby", "type": "ScreenOnlineLobbyPointer" },
       { "field": "pause_ui", "type": "PauseUIPointer" },
       { "field": "journal_ui", "type": "JournalUIPointer" },
       { "field": "unknown27", "type": "DataPointer" },
@@ -1588,6 +1610,58 @@
       { "field": "unknown23", "type": "Float" },
       { "field": "unknown24", "type": "Float" },
       { "field": "unknown25", "type": "UnsignedDword" }
+    ],
+    "GamePropsPointer": [
+      {
+        "field": "buttons",
+        "type": "Flags32",
+        "flags": {
+          "1": "Jump",
+          "2": "Bomb",
+          "3": "Attack",
+          "4": "Rope",
+          "5": "",
+          "6": "Use door/buy",
+          "7": "",
+          "8": "Run",
+          "9": "",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "Left",
+          "18": "Right",
+          "19": "Up",
+          "20": "Down",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "buttons_dupe", "type": "Flags32", "flags": {} },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "buttons_dupe_but_different", "type": "Flags32", "flags": {} },
+      { "field": "unknown8", "type": "Byte" },
+      { "field": "game_has_focus", "type": "Bool" },
+      { "field": "unknown9", "type": "Bool" },
+      { "field": "unknown10", "type": "Bool" }
     ],
     "PauseUIPointer": [
       { "field": "menu_slidein_progress", "type": "Float" },
@@ -2047,8 +2121,162 @@
           }
         }
       },
-      { "field": "render_timer", "type": "Float" }
-      // INCOMPLETE
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      { "field": "woodpanels_slidein_timer", "type": "Float" },
+      { "field": "scroll_unfurl_timer", "type": "Float" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "woodpanel_bottom", "type": "TextureRenderingInfo" },
+      { "field": "woodpanel_top", "type": "TextureRenderingInfo" },
+      { "field": "unknown13", "type": "TextureRenderingInfo" },
+      { "field": "left_scroll_handle", "type": "TextureRenderingInfo" },
+      { "field": "right_scroll_handle", "type": "TextureRenderingInfo" },
+      { "field": "scroll_text_id", "type": "StringsTableID" },
+      { "field": "btn_left_text_id", "type": "StringsTableID" },
+      { "field": "btn_right_text_id", "type": "StringsTableID" },
+      { "field": "btn_center_text_id", "type": "StringsTableID" },
+      { "field": "woodpanel_top_visible", "type": "Bool" },
+      { "field": "woodpanel_bottom_visible", "type": "Bool" },
+      { "field": "toggle_panels_slidein", "type": "Bool" },
+      { "field": "unknown21", "type": "Bool" },
+      { "field": "player_1", "type": "OnlineLobbyScreenPlayer" },
+      { "field": "player_2", "type": "OnlineLobbyScreenPlayer" },
+      { "field": "player_3", "type": "OnlineLobbyScreenPlayer" },
+      { "field": "player_4", "type": "OnlineLobbyScreenPlayer" },
+      { "field": "background_image", "type": "TextureRenderingInfo" },
+      { "field": "unknown22", "type": "UnsignedQword" },
+      { "field": "unknown23", "type": "UnsignedQword" },
+      { "field": "unknown24", "type": "UnsignedQword" },
+      { "field": "unknown25", "type": "UnsignedQword" },
+      { "field": "unknown26", "type": "UnsignedQword" },
+      { "field": "unknown27", "type": "UnsignedQword" },
+      { "field": "unknown28", "type": "UnsignedQword" },
+      { "field": "unknown29", "type": "UnsignedQword" },
+      { "field": "unknown30", "type": "UnsignedQword" },
+      { "field": "unknown36", "type": "TextureRenderingInfo" },
+      { "field": "unknown37", "type": "TextureRenderingInfo" },
+      { "field": "unknown38", "type": "Float" },
+      { "field": "topleft_woodpanel_esc", "type": "TextureRenderingInfo" },
+      { "field": "topleft_woodpanel_esc_slidein_timer", "type": "Float" },
+      { "field": "character_walk_offset", "type": "Float" },
+      { "field": "character_facing_left", "type": "Bool" },
+      { "field": "move_direction", "type": "Byte" },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedByte" },
+      { "field": "character", "type": "TextureRenderingInfo" },
+      { "field": "player_ready_icon", "type": "TextureRenderingInfo" },
+      { "field": "render_timer_dupe", "type": "Float" },
+      { "field": "arrow_left", "type": "TextureRenderingInfo" },
+      { "field": "arrow_right", "type": "TextureRenderingInfo" },
+      { "field": "another_timer", "type": "Float" },
+      { "field": "arrow_left_hor_offset", "type": "Float" },
+      { "field": "arrow_right_hor_offset", "type": "Float" },
+      { "field": "platform_icon", "type": "TextureRenderingInfo" },
+      { "field": "player_count", "type": "UnsignedByte" },
+      { "field": "searching_for_players", "type": "Bool" },
+      { "field": "unknown47", "type": "UnsignedByte" },
+      { "field": "unknown48", "type": "UnsignedByte" },
+      { "field": "another_timer_2", "type": "Float" },
+      { "field": "show_code_panel", "type": "Bool" },
+      { "field": "unknown49", "type": "UnsignedByte" },
+      { "field": "unknown50", "type": "UnsignedByte" },
+      { "field": "unknown51", "type": "UnsignedByte" },
+      { "field": "unknown53", "type": "UnsignedDword" },
+      {
+        "field": "enter_code_screen_vftable",
+        "type": "DataPointer",
+        "comment": "this starts a new object"
+      },
+      { "field": "enter_code_render_timer", "type": "Float" },
+      { "field": "unknown54", "type": "UnsignedDword" },
+      { "field": "unknown56", "type": "Float" },
+      { "field": "enter_code_woodpanel_bottom_slidein_pos", "type": "Float" },
+      { "field": "unknown58", "type": "Float" },
+      { "field": "unknown59", "type": "Float" },
+      { "field": "unknown60", "type": "Float" },
+      {
+        "field": "enter_code_woodpanel_bottom",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "unknown61", "type": "TextureRenderingInfo" },
+      { "field": "unknown62", "type": "TextureRenderingInfo" },
+      { "field": "unknown63", "type": "TextureRenderingInfo" },
+      { "field": "unknown64", "type": "TextureRenderingInfo" },
+      { "field": "text_id_1", "type": "StringsTableID" },
+      { "field": "text_id_2", "type": "StringsTableID" },
+      { "field": "enter_code_btn_right_text_id", "type": "StringsTableID" },
+      { "field": "text_id_4", "type": "StringsTableID" },
+      { "field": "enter_code_woodpanel_top_visible", "type": "Bool" },
+      { "field": "enter_code_woodpanel_bottom_visible", "type": "Bool" },
+      { "field": "enter_code_toggle_panels_slidein", "type": "Bool" },
+      { "field": "unknown68", "type": "Bool" },
+      { "field": "unknown69", "type": "UnsignedDword" },
+      {
+        "field": "selected_character",
+        "type": "UnsignedDword",
+        "comment": "the character with the gold outline"
+      },
+      { "field": "unknown71a", "type": "Bool" },
+      { "field": "unknown71b", "type": "UnsignedByte" },
+      { "field": "code_char_1", "type": "UTF16Char" },
+      { "field": "code_char_2", "type": "UTF16Char" },
+      { "field": "code_char_3", "type": "UTF16Char" },
+      { "field": "code_char_4", "type": "UTF16Char" },
+      { "field": "code_char_5", "type": "UTF16Char" },
+      { "field": "code_char_6", "type": "UTF16Char" },
+      { "field": "code_char_7", "type": "UTF16Char" },
+      { "field": "code_char_8", "type": "UTF16Char" },
+      { "field": "code_char_terminator", "type": "UnsignedWord" },
+      { "field": "characters_entered_count", "type": "UnsignedDword" },
+      {
+        "field": "enter_code_topleft_woodpanel_esc_slidein_timer",
+        "type": "Float"
+      },
+      { "field": "enter_code_banner_text_id", "type": "StringsTableID" },
+      { "field": "enter_code_OK_text_id", "type": "StringsTableID" },
+      {
+        "field": "enter_code_main_woodpanel_left",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "enter_code_main_woodpanel_center",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "enter_code_main_woodpanel_right",
+        "type": "TextureRenderingInfo"
+      },
+      { "field": "enter_code_banner", "type": "TextureRenderingInfo" },
+      { "field": "enter_code_char_cutouts", "type": "TextureRenderingInfo" },
+      { "field": "enter_code_pointing_hand", "type": "TextureRenderingInfo" },
+      { "field": "enter_code_buttons", "type": "TextureRenderingInfo" },
+      { "field": "unknown85", "type": "TextureRenderingInfo" },
+      { "field": "enter_code_OK_panel", "type": "TextureRenderingInfo" },
+      { "field": "enter_code_OK_panel_slidein_timer", "type": "Float" },
+      { "field": "unknown87", "type": "Dword" },
+      {
+        "field": "enter_code_your_code_scroll",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "enter_code_your_code_scroll_left_handle",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "enter_code_your_code_scroll_right_handle",
+        "type": "TextureRenderingInfo"
+      }
+    ],
+    "OnlineLobbyScreenPlayer": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "character", "type": "State8", "ref": "character_states" },
+      { "field": "ready", "type": "Bool" },
+      { "field": "unknown2", "type": "UnsignedByte" }
     ],
     "ScreenOnlineLoadingPointer": [
       {
@@ -3435,7 +3663,6 @@
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" }
     ],
-
     "ShopOwnerInfoList": [
       { "field": "0", "type": "ShopOwnerInfoDetails" },
       { "field": "1", "type": "ShopOwnerInfoDetails" },
@@ -6471,6 +6698,88 @@
         "comment": "door2 only valid when there are two in the level, like Volcana drill, Olmec, ..."
       },
       { "field": "door2_y", "type": "Float" }
+    ],
+    "Online": [
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~Online", "params": "", "return": "" }
+        }
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "unknown10", "type": "UnsignedDword" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "online_player_1", "type": "OnlinePlayer" },
+      { "field": "online_player_2", "type": "OnlinePlayer" },
+      { "field": "online_player_3", "type": "OnlinePlayer" },
+      { "field": "online_player_4", "type": "OnlinePlayer" },
+      { "field": "local_player", "type": "OnlinePlayer" },
+      { "field": "lobby", "type": "OnlineLobby" },
+      { "field": "lobby_dupe", "type": "OnlineLobby" }
+    ],
+    "OnlinePlayer": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      {
+        "field": "ready_state",
+        "type": "State8",
+        "states": {
+          "0": "Unassigned",
+          "72": "Not ready",
+          "73": "Ready"
+        }
+      },
+      { "field": "character", "type": "State8", "ref": "character_states" },
+      {
+        "field": "player_name",
+        "type": "UTF8StringFixedSize",
+        "offset": 37
+      }
+    ],
+    "OnlineLobby": [
+      { "field": "code", "type": "UnsignedDword" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "keys_pressed", "type": "UnsignedDword" },
+      { "field": "keys_pressed_sync", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "Byte" },
+      { "field": "unknown5", "type": "Byte" },
+      { "field": "unknown6", "type": "Dword" },
+      { "field": "unknown7", "type": "Byte" },
+      { "field": "unknown8", "type": "Byte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedByte" },
+      { "field": "unknown11", "type": "Dword" },
+      { "field": "unknown12", "type": "Dword" },
+      { "field": "unknown13", "type": "Byte" },
+      { "field": "unknown14", "type": "Byte" },
+      { "field": "unknown15", "type": "UnsignedByte" },
+      { "field": "unknown16", "type": "UnsignedByte" },
+      { "field": "unknown17", "type": "UnsignedDword" },
+      { "field": "unknown18", "type": "UnsignedByte" },
+      { "field": "unknown19", "type": "UnsignedByte" },
+      { "field": "unknown20", "type": "Byte" },
+      { "field": "unknown21", "type": "Byte" },
+      { "field": "unknown22", "type": "Byte" },
+      { "field": "unknown23", "type": "UnsignedByte" },
+      { "field": "unknown24", "type": "UnsignedByte" },
+      { "field": "unknown25", "type": "UnsignedByte" },
+      { "field": "unknown26", "type": "UnsignedDword" }
     ],
     "Entity": [
       {

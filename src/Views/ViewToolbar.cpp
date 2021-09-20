@@ -6,6 +6,7 @@
 #include "Views/ViewGameManager.h"
 #include "Views/ViewLevelGen.h"
 #include "Views/ViewLogger.h"
+#include "Views/ViewOnline.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewSaveGame.h"
 #include "Views/ViewState.h"
@@ -18,9 +19,9 @@
 #include <QPushButton>
 
 S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen,
-                                   VirtualTableLookup* vtl, StringsTable* stbl, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+                                   VirtualTableLookup* vtl, StringsTable* stbl, Online* online, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
     : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mCharacterDB(cdb), mGameManager(gm), mSaveGame(sg), mState(state),
-      mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mConfiguration(config), mMDIArea(mdiArea)
+      mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mOnline(online), mConfiguration(config), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -85,6 +86,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     btnSaveGame->setText("SaveGame");
     mMainLayout->addWidget(btnSaveGame);
     QObject::connect(btnSaveGame, &QPushButton::clicked, this, &ViewToolbar::showSaveGame);
+
+    auto btnOnline = new QPushButton(this);
+    btnOnline->setText("Online");
+    mMainLayout->addWidget(btnOnline);
+    QObject::connect(btnOnline, &QPushButton::clicked, this, &ViewToolbar::showOnline);
 
     auto btnVirtualTable = new QPushButton(this);
     btnVirtualTable->setText("Virtual Table");
@@ -214,6 +220,16 @@ void S2Plugin::ViewToolbar::showStringsTable()
     }
 }
 
+void S2Plugin::ViewToolbar::showOnline()
+{
+    if (mOnline->loadOnline())
+    {
+        auto w = new ViewOnline(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
+}
+
 void S2Plugin::ViewToolbar::showEntity(size_t offset)
 {
     auto w = new ViewEntity(offset, this);
@@ -334,6 +350,12 @@ S2Plugin::StringsTable* S2Plugin::ViewToolbar::stringsTable()
     return mStringsTable;
 }
 
+S2Plugin::Online* S2Plugin::ViewToolbar::online()
+{
+    mOnline->loadOnline();
+    return mOnline;
+}
+
 S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
 {
     return mConfiguration;
@@ -362,6 +384,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
     mParticleDB->reset();
     mTextureDB->reset();
     mCharacterDB->reset();
+    mOnline->reset();
 }
 
 void S2Plugin::ViewToolbar::resetSpelunky2Data()
@@ -377,5 +400,6 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mVirtualTableLookup->reset();
     mStringsTable->reset();
     mCharacterDB->reset();
+    mOnline->reset();
     mConfiguration->spelunky2()->reset();
 }
