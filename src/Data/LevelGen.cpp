@@ -27,9 +27,7 @@ bool S2Plugin::LevelGen::loadLevelGen()
         return true;
     }
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "88 41 6A 48 8B 81");
-    auto pcOffset = Script::Memory::ReadDword(instructionOffset + 6);
-    mLevelGenPtr = Script::Memory::ReadQword(mState->offsetForField("p00") + pcOffset);
+    mLevelGenPtr = Script::Memory::ReadQword(mState->offsetForField("level_gen"));
 
     refreshOffsets();
     return true;
@@ -150,7 +148,8 @@ void S2Plugin::LevelGen::processJSON()
 
     std::unordered_map<std::string, QColor> colors;
 
-    auto getColor = [&colors](const std::string& colorName) -> const QColor& {
+    auto getColor = [&colors](const std::string& colorName) -> const QColor&
+    {
         if (colors.count(colorName) > 0)
         {
             return colors.at(colorName);
