@@ -3423,9 +3423,14 @@
       },
       { "field": "unknown27", "type": "MysteryPointer4" },
       {
-        "field": "instance_id_to_pointer",
-        "type": "UnorderedMap",
-        "comment": "std::unordered_map<uint32_t, Entity*>"
+        "field": "unknown28",
+        "type": "UnsignedQword",
+        "comment": "formerly instance_id_to_pointer"
+      },
+      {
+        "field": "unknown29",
+        "type": "DataPointer",
+        "comment": "formerly instance_id_to_pointer"
       },
       { "field": "backlayer_player_related1", "type": "DataPointer" },
       { "field": "backlayer_player_related2", "type": "DataPointer" },
