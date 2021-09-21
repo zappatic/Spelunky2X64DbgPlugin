@@ -907,6 +907,7 @@
     "SelectPlayerSlot",
     "UnknownPointerGroup",
     "OnlinePlayer",
+    "OnlinePlayerShort",
     "OnlineLobby",
     "OnlineLobbyScreenPlayer"
   ],
@@ -6883,9 +6884,9 @@
       },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedQword" },
-      { "field": "unknown4", "type": "UnsignedQword" },
-      { "field": "unknown5", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "UnsignedDword" },
@@ -6894,11 +6895,37 @@
       { "field": "unknown11", "type": "UnsignedDword" },
       { "field": "unknown12", "type": "UnsignedDword" },
       { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown14", "type": "UnsignedDword" },
+      { "field": "unknown15", "type": "StringsTableID" },
+      { "field": "unknown16", "type": "UnsignedDword" },
+      { "field": "unknown17", "type": "UnsignedDword" },
+      { "field": "unknown18", "type": "UnsignedDword" },
+      { "field": "unknown19", "type": "UnsignedDword" },
+      { "field": "unknown20", "type": "UnsignedDword" },
+      { "field": "unknown21", "type": "UnsignedDword" },
+      { "field": "unknown22", "type": "UnsignedDword" },
+      { "field": "unknown23", "type": "UnsignedDword" },
+      { "field": "unknown24", "type": "UnsignedDword" },
+      { "field": "unknown25", "type": "UnsignedDword" },
+      { "field": "unknown26", "type": "UnsignedDword" },
+      { "field": "unknown27", "type": "UnsignedDword" },
+      { "field": "unknown28", "type": "UnsignedDword" },
+      { "field": "unknown29", "type": "UnsignedDword" },
+      { "field": "unknown30", "type": "UnsignedDword" },
+      { "field": "unknown31", "type": "UnsignedDword" },
+      { "field": "unknown32", "type": "UnsignedDword" },
+      { "field": "unknown33", "type": "UnsignedDword" },
+      { "field": "unknown34", "type": "UnsignedDword" },
+      { "field": "unknown35", "type": "UnsignedDword" },
+      { "field": "unknown36", "type": "UnsignedDword" },
+      { "field": "unknown37", "type": "UnsignedDword" },
+      { "field": "unknown38", "type": "UnsignedDword" },
+      { "field": "unknown39", "type": "UnsignedDword" },
       { "field": "online_player_1", "type": "OnlinePlayer" },
       { "field": "online_player_2", "type": "OnlinePlayer" },
       { "field": "online_player_3", "type": "OnlinePlayer" },
       { "field": "online_player_4", "type": "OnlinePlayer" },
-      { "field": "local_player", "type": "OnlinePlayer" },
+      { "field": "local_player", "type": "OnlinePlayerShort" },
       { "field": "lobby", "type": "OnlineLobby" },
       { "field": "lobby_dupe", "type": "OnlineLobby" }
     ],
@@ -6922,6 +6949,28 @@
         "field": "player_name",
         "type": "UTF8StringFixedSize",
         "offset": 37
+      }
+    ],
+    "OnlinePlayerShort": [
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedByte" },
+      {
+        "field": "ready_state",
+        "type": "State8",
+        "states": {
+          "0": "Unassigned",
+          "72": "Not ready",
+          "73": "Ready"
+        }
+      },
+      { "field": "character", "type": "State8", "ref": "character_states" },
+      {
+        "field": "player_name",
+        "type": "UTF8StringFixedSize",
+        "offset": 33
       }
     ],
     "OnlineLobby": [
