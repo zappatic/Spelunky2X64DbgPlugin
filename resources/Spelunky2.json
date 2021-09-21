@@ -4614,10 +4614,11 @@
     ],
     "LiquidPhysicsPointer": [
       { "field": "unknown1", "type": "DataPointer" },
-      { "field": "liquidpool1", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool2", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool3", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool4", "type": "LiquidPhysicsParams" }
+      { "field": "water_physics", "type": "LiquidPhysicsParams" },
+      { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
+      { "field": "lava_physics", "type": "LiquidPhysicsParams" },
+      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" },
+      { "field": "coarse_lava_physics", "type": "LiquidPhysicsParams" }
     ],
     "LiquidPhysicsParams": [
       {
