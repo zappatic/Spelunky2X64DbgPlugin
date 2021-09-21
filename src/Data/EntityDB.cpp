@@ -18,8 +18,8 @@ bool S2Plugin::EntityDB::loadEntityDB()
     mEntityList = std::make_unique<EntityList>(mConfiguration->spelunky2());
 
     mMemoryOffsets.clear();
-    auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "48 B8 02 55 A7 74 52 9D 51 43");
-    auto entitiesPtr = instructionEntitiesPtr + Script::Memory::ReadDword(instructionEntitiesPtr - 4);
+    auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "A4 84 E4 CA DA BF 4E 83");
+    auto entitiesPtr = instructionEntitiesPtr - 33 + 7 + Script::Memory::ReadDword(instructionEntitiesPtr - 30);
     mEntityDBPtr = Script::Memory::ReadQword(entitiesPtr);
 
     auto offset = mEntityDBPtr;
