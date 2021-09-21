@@ -1610,13 +1610,21 @@
         "type": "DataPointer",
         "comment": "available in State"
       },
-      { "field": "screen_arena_menu", "type": "ScreenArenaPointer" },
+      {
+        "field": "unknown_screen_arena_menu",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
       {
         "field": "unknown_screen_arena_stages?",
         "type": "DataPointer",
         "comment": "available in State"
       },
-      { "field": "screen_arena_items", "type": "ScreenArenaItemsPointer" },
+      {
+        "field": "unknown_screen_arena_items",
+        "type": "DataPointer",
+        "comment": "available in State"
+      },
       {
         "field": "unknown_screen_arena_select?",
         "type": "DataPointer",
@@ -3359,20 +3367,12 @@
       { "field": "screen_scores", "type": "ScreenScoresPointer" },
       { "field": "screen_constellation", "type": "ScreenConstellationPointer" },
       { "field": "screen_recap", "type": "ScreenRecapPointer" },
-      {
-        "field": "unknown_screen_arena_menu?",
-        "type": "UnsignedQword",
-        "comment": "potentially ScreenArenaMenu, but this was moved to GameManager"
-      },
+      { "field": "screen_arena_menu", "type": "ScreenArenaPointer" },
       {
         "field": "screen_arena_stages_select1",
         "type": "ScreenArenaStagesSelectPointer"
       },
-      {
-        "field": "unknown_screen_arena_intro?",
-        "type": "UnsignedQword",
-        "comment": "potentially ScreenArenaIntro, but this was moved to GameManager"
-      },
+      { "field": "screen_arena_items", "type": "ScreenArenaItemsPointer" },
       {
         "field": "screen_arena_stages_select2",
         "type": "ScreenArenaStagesSelectPointer"
