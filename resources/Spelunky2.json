@@ -7747,6 +7747,7 @@
       { "field": "basecamp_button_entity_pointer", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
+      { "field": "y_pos?", "type": "Float" },
       { "field": "jump_flags_a", "type": "UnsignedByte" },
       { "field": "jump_flags_b", "type": "UnsignedByte" },
       { "field": "jump_flags_c", "type": "UnsignedByte" },
@@ -7756,9 +7757,7 @@
         "type": "UnsignedByte",
         "comment": "something different happens before or after 6"
       },
-      { "field": "can_use", "type": "UnsignedByte" },
-      { "field": "b176", "type": "UnsignedByte" },
-      { "field": "b177", "type": "UnsignedByte" }
+      { "field": "can_use", "type": "Bool" }
     ],
     "PlayerInventoryPointer": [
       { "field": "inventory", "type": "PlayerInventory" }
