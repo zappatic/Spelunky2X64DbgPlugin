@@ -7260,6 +7260,12 @@
       },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
+      {
+        "field": "abs_x",
+        "type": "Float",
+        "comment": "abs - only for movable entities, or entities that can be spawned without overlay, for the rest it's FLOAT_MIN?"
+      },
+      { "field": "abs_y", "type": "Float" },
       { "field": "w", "type": "Float" },
       { "field": "h", "type": "Float" },
       { "field": "special_offsetx", "type": "Float" },
