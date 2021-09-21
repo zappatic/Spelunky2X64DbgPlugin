@@ -10981,7 +10981,12 @@
     "Lava": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "Liquid": [
       { "field": "fx_surface", "type": "EntityPointer" },
-      { "field": "unknown1", "type": "Qword", "comment": "wtf is this?" },
+      {
+        "field": "x_pos?",
+        "type": "Float",
+        "comment": "for some reason accesses as Qword?, only updated when the position changes drastically"
+      },
+      { "field": "y_pos?", "type": "Float" },
       { "field": "mystery_liquid_pointer", "type": "DataPointer" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
