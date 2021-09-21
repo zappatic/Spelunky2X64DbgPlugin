@@ -746,6 +746,7 @@
     "MOUNT_BASECAMP_COUCH": "Mount",
     "LIQUID_.*LAVA": "Lava",
     "LIQUID_IMPOSTOR_LAKE": "Entity",
+    "LIQUID_IMPOSTOR_LAVA": "Entity",
     //
     "FLOOR_.*": "Floor",
     "FLOORSTYLED_.*": "Floor",
@@ -10980,11 +10981,14 @@
     "Lava": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "Liquid": [
       { "field": "fx_surface", "type": "EntityPointer" },
-      { "field": "unknown", "type": "DataPointer" },
-      { "field": "unknown_readonly1", "type": "UnsignedWord" },
-      { "field": "unknown_readonly2", "type": "UnsignedWord" },
-      { "field": "unknown_timer1", "type": "UnsignedWord" },
-      { "field": "unknown_timer2", "type": "UnsignedWord" }
+      { "field": "unknown1", "type": "Qword", "comment": "wtf is this?" },
+      { "field": "mystery_liquid_pointer", "type": "DataPointer" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown_timer1", "type": "Byte" },
+      { "field": "unknown_timer2", "type": "Byte" },
+      { "field": "unknown_timer3", "type": "Byte" },
+      { "field": "unk21", "type": "Byte" }
     ],
     "Pot": [
       {
