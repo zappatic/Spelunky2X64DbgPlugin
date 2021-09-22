@@ -329,7 +329,11 @@
     "EggplantThrower": "Entity",
     "LogicalMiniGame": "Entity",
     "DMSpawning": "Entity",
-    "DMAlienBlast": "Entity"
+    "DMAlienBlast": "Entity",
+    "CrossBeam": "Entity",
+    "PalaceSign": "Entity",
+    "DecoRegeneratingBlock": "Entity",
+    "DestructibleBG": "Entity"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -366,8 +370,13 @@
     "FLOOR_TENTACLE_BOTTOM": "TentacleBottom",
     "FLOORSTYLED_MINEWOOD": "PoleDeco",
     "FLOORSTYLED_PAGODA": "PoleDeco",
+    "DECORATION_CROSS_BEAM": "CrossBeam",
     "DECORATION_CHAINANDBLOCKS_CHAINDECORATION": "Movable",
     "DECORATION_SLIDINGWALL_CHAINDECORATION": "Movable",
+    "DECORATION_DUAT_DESTRUCTIBLE_BG": "DestructibleBG",
+    "DECORATION_PALACE_SIGN": "PalaceSign",
+    "DECORATION_REGENERATING_SMALL_BLOCK": "DecoRegeneratingBlock",
+    "DECORATION_REGENERATING_BORDER": "DecoRegeneratingBlock",
     "MONS_SPIDER": "Spider",
     "MONS_HANGSPIDER": "HangSpider",
     "MONS_GIANTSPIDER": "Spider",
@@ -729,7 +738,6 @@
     "LOGICAL_LAVA_DRAIN": "LogicalDrain",
     "LOGICAL_REGENERATING_BLOCK": "LogicalRegeneratingBlock",
     "LOGICAL_BIGSPEAR_TRAP_TRIGGER": "LogicalTrapTrigger",
-
     "LOGICAL_DM_ALIEN_BLAST": "DMAlienBlast",
     "LOGICAL_DM_CRATE_SPAWNING": "DMSpawning",
     "LOGICAL_DM_IDOL_SPAWNING": "DMSpawning",
@@ -857,7 +865,9 @@
     "SpeechBubblePointer",
     "SpeechBubbleTimerPointer",
     "SpeechBubbleLayoutPointer",
-    "SpeechBubbleLayoutDataPointer"
+    "SpeechBubbleLayoutDataPointer",
+    "MysteryLiquidPointer1",
+    "MysteryLiquidPointer2"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4622,17 +4632,22 @@
     ],
     "LiquidPhysicsParams": [
       {
-        "field": "unknown1",
+        "field": "shader_type?",
+        "type": "State32",
+        "states": {
+          "1": "water",
+          "2": "lava"
+        },
+        "comment": "can also be flags, as for water, any value with bit one is fine"
+      },
+      {
+        "field": "unknown2",
         "type": "UnsignedByte",
-        "comment": "anything other than 1 and standing water doesn't visually generate"
+        "comment": "shader related, shader id maybe?"
       },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "padding4", "type": "UnsignedByte" },
-      { "field": "padding5", "type": "UnsignedByte" },
-      { "field": "padding6", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "Float" },
       {
         "field": "cohesion?",
@@ -4646,11 +4661,15 @@
       },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
-      { "field": "agitation", "type": "Float" },
+      {
+        "field": "agitation",
+        "type": "Float",
+        "comment": "is agitation the right word? for me is just how bouncy the liquid is"
+      },
       {
         "field": "unknown9",
         "type": "Float",
-        "comment": "starts going nuts at around 2.70"
+        "comment": "starts going nuts at around 2.70, pressure force? it seam to only matter at spawn, when there is a lot of liquid in one place"
       },
       { "field": "unknown10", "type": "Float" },
       { "field": "unknown11", "type": "Float" },
@@ -4669,19 +4688,21 @@
       { "field": "unknown24", "type": "UnsignedDword" },
       { "field": "unknown25", "type": "DataPointer" },
       { "field": "unknown26", "type": "Float" },
-      { "field": "x_right", "type": "Float" },
-      { "field": "y_top", "type": "Float" },
-      { "field": "unknown29", "type": "Float" },
-      { "field": "unknown30", "type": "UnsignedDword" },
+      { "field": "last_spawn_x", "type": "Float" },
+      { "field": "last_spawn_y", "type": "Float" },
+      { "field": "spawn_velocity_x", "type": "Float" },
+      { "field": "spawn_velocity_y", "type": "Float" },
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" },
       { "field": "unknown33", "type": "UnsignedDword" },
-      { "field": "unknown34", "type": "DataPointer" },
-      { "field": "unknown35", "type": "UnsignedDword" },
-      { "field": "unknown36", "type": "UnsignedDword" },
-      { "field": "unknown37", "type": "UnsignedDword" },
-      { "field": "unknown38", "type": "Float" },
-      { "field": "unknown39", "type": "EntityUID" },
+      { "field": "unknown34", "type": "Map", "comment": "liquidpools?" },
+      {
+        "field": "liquidtile_liquid_amount?",
+        "type": "UnsignedDword",
+        "comment": "how much liquid will be spawned from tilecode, 1=1x2, 2=2x3, 3=3x4 etc."
+      },
+      { "field": "distance_between_spawned_droplets", "type": "Float" },
+      { "field": "unknown39", "type": "Dword" },
       { "field": "unknown40", "type": "Float" },
       { "field": "unknown41", "type": "Float" },
       { "field": "unknown42", "type": "UnsignedDword" }
@@ -5485,7 +5506,7 @@
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "input_mapping_keyboard", "type": "InputMappingPointer" },
       { "field": "input_mapping_controller", "type": "InputMappingPointer" },
-      { "field": "player_id", "type": "UnsignedByte" },
+      { "field": "player_slot", "type": "UnsignedByte" },
       { "field": "is_participating", "type": "Bool" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
@@ -7668,8 +7689,16 @@
       { "field": "health", "type": "UnsignedByte" },
       { "field": "stun_timer", "type": "UnsignedWord" },
       { "field": "stun_state", "type": "UnsignedWord" },
-      { "field": "after_dmg_airtime_timer?", "type": "UnsignedWord" },
-      { "field": "unknown", "type": "UnsignedWord" },
+      {
+        "field": "lock_input_timer",
+        "type": "UnsignedWord",
+        "comment": "Related to taking damage, also drops you from ladder/rope, can't be set while on the ground unless you'r on a mount"
+      },
+      {
+        "field": "unknown",
+        "type": "UnsignedWord",
+        "comment": "fading the entity to black, similar to dark_shadow_timer"
+      },
       { "field": "poison_tick_timer", "type": "Word" },
       {
         "field": "dark_shadow_timer",
@@ -7700,9 +7729,9 @@
       { "field": "b124", "type": "UnsignedByte" },
       { "field": "falling_timer", "type": "UnsignedByte" },
       {
-        "field": "unknown_timer",
+        "field": "b126",
         "type": "UnsignedByte",
-        "comment": "after layer change?"
+        "comment": "timer, after layer change?"
       },
       { "field": "b127", "type": "UnsignedByte" }
     ],
@@ -7786,13 +7815,13 @@
       },
       { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5a", "type": "UnsignedByte" },
-      { "field": "unknown5b", "type": "UnsignedByte" },
-      { "field": "unknown5c", "type": "UnsignedByte" },
+      { "field": "held_item", "type": "EntityDBID" },
+      { "field": "held_item_metadata?", "type": "Word" },
+      { "field": "unknown5c", "type": "UnsignedByte", "comment": "padding?" },
       { "field": "player_slot", "type": "Byte" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" },
+      { "field": "mount_type", "type": "EntityDBID" },
+      { "field": "mount_metadata?", "type": "Word" },
+      { "field": "unknown_mount_ralated", "type": "Word" },
       {
         "field": "collected_money",
         "type": "TruncatedEntityDBIDArray",
@@ -7833,14 +7862,22 @@
       },
       { "field": "kills_level", "type": "UnsignedDword" },
       { "field": "kills_total", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
-      { "field": "unknown10", "type": "UnsignedDword" },
-      { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "Dword" },
-      { "field": "unknown13", "type": "Dword" },
-      { "field": "unknown14", "type": "Dword" },
-      { "field": "unknown15", "type": "Dword" },
+      { "field": "unknown_companion_1", "type": "Word" },
+      { "field": "unknown_companion_2", "type": "Word" },
+      { "field": "unknown_companion_3", "type": "Word" },
+      { "field": "unknown_companion_4", "type": "Word" },
+      { "field": "unknown_companion_5", "type": "Word" },
+      { "field": "unknown_companion_6", "type": "Word" },
+      { "field": "unknown_companion_7", "type": "Word" },
+      { "field": "unknown_companion_8", "type": "Word" },
+      { "field": "companion1_poison_tick_timer", "type": "Word" },
+      { "field": "companion2_poison_tick_timer", "type": "Word" },
+      { "field": "companion3_poison_tick_timer", "type": "Word" },
+      { "field": "companion4_poison_tick_timer", "type": "Word" },
+      { "field": "companion5_poison_tick_timer", "type": "Word" },
+      { "field": "companion6_poison_tick_timer", "type": "Word" },
+      { "field": "companion7_poison_tick_timer", "type": "Word" },
+      { "field": "companion8_poison_tick_timer", "type": "Word" },
       { "field": "companion1", "type": "EntityDBID" },
       { "field": "companion2", "type": "EntityDBID" },
       { "field": "companion3", "type": "EntityDBID" },
@@ -7849,14 +7886,14 @@
       { "field": "companion6", "type": "EntityDBID" },
       { "field": "companion7", "type": "EntityDBID" },
       { "field": "companion8", "type": "EntityDBID" },
-      { "field": "unknown24", "type": "UnsignedDword" },
-      { "field": "unknown25", "type": "UnsignedDword" },
-      { "field": "unknown26", "type": "UnsignedDword" },
-      { "field": "unknown27", "type": "UnsignedDword" },
-      { "field": "unknown28", "type": "UnsignedDword" },
-      { "field": "unknown29", "type": "UnsignedDword" },
-      { "field": "unknown30", "type": "UnsignedDword" },
-      { "field": "unknown31", "type": "UnsignedDword" },
+      { "field": "companion1_held_item", "type": "EntityDBID" },
+      { "field": "companion2_held_item", "type": "EntityDBID" },
+      { "field": "companion3_held_item", "type": "EntityDBID" },
+      { "field": "companion4_held_item", "type": "EntityDBID" },
+      { "field": "companion5_held_item", "type": "EntityDBID" },
+      { "field": "companion6_held_item", "type": "EntityDBID" },
+      { "field": "companion7_held_item", "type": "EntityDBID" },
+      { "field": "companion8_held_item", "type": "EntityDBID" },
       { "field": "companion1_trust", "type": "UnsignedByte" },
       { "field": "companion2_trust", "type": "UnsignedByte" },
       { "field": "companion3_trust", "type": "UnsignedByte" },
@@ -7878,11 +7915,17 @@
       { "field": "companion6_health", "type": "UnsignedByte" },
       { "field": "companion7_health", "type": "UnsignedByte" },
       { "field": "companion8_health", "type": "UnsignedByte" },
-      { "field": "unknown35", "type": "UnsignedByte" },
-      { "field": "unknown36", "type": "UnsignedByte" },
-      { "field": "unknown37", "type": "UnsignedByte" },
-      { "field": "unknown38", "type": "UnsignedDword" },
-      { "field": "unknown39", "type": "UnsignedDword" },
+      { "field": "companion1_cursed", "type": "Bool" },
+      { "field": "companion2_cursed", "type": "Bool" },
+      { "field": "companion3_cursed", "type": "Bool" },
+      { "field": "companion4_cursed", "type": "Bool" },
+      { "field": "companion5_cursed", "type": "Bool" },
+      { "field": "companion6_cursed", "type": "Bool" },
+      { "field": "companion7_cursed", "type": "Bool" },
+      { "field": "companion8_cursed", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3", "type": "Byte" },
       {
         "field": "acquired_powerups",
         "type": "AquiredPowerups",
@@ -8366,21 +8409,25 @@
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID"
       },
       {
-        "field": "DIST_CENTER_X*POS_SCREEN_X",
+        "field": "POS_SCREEN_X",
         "type": "Float",
-        "comment": "sometimes a little off, like when X and Y below are 0; VANILLA_SOUND_PARAM names, for now"
+        "comment": "VANILLA_SOUND_PARAM names, for now"
       },
       { "field": "DIST_CENTER_X", "type": "Float" },
       { "field": "DIST_CENTER_Y", "type": "Float" },
-      { "field": "DIST_Z?", "type": "Float" },
+      { "field": "DIST_Z", "type": "Float" },
       {
-        "field": "distance",
+        "field": "DIST_PLAYER",
         "type": "Float",
-        "comment": "calculated from DIST_CENTER_X/DIST_CENTER_Y to 0.0/0.0"
+        "comment": "seams to be always here, even you you get nil in lua"
       },
       { "field": "SUBMERGED", "type": "Float" },
-      { "field": "unknown9", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
+      { "field": "LIQUID_STREAM", "type": "Float" },
+      {
+        "field": "unknown10",
+        "type": "Float",
+        "comment": "LIQUID_STREAM related? , maybe LIQUID_INTENSITY?"
+      },
       { "field": "VALUE", "type": "Float" },
       { "field": "unknown12", "type": "Float" },
       { "field": "unknown13", "type": "Float" },
@@ -8629,7 +8676,7 @@
         "type": "Bool",
         "comment": "also is set true if you set aggro to true, get's trigger even when whiping"
       },
-      { "field": "padding1", "type": "UnsignedByte" }, // some of this is padding probably
+      { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "Dword" }
     ],
@@ -10988,7 +11035,7 @@
         "comment": "for some reason accesses as Qword?, only updated when the position changes drastically"
       },
       { "field": "y_pos?", "type": "Float" },
-      { "field": "mystery_liquid_pointer", "type": "DataPointer" },
+      { "field": "unknown1", "type": "MysteryLiquidPointer1" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "unknown_timer1", "type": "Byte" },
@@ -11301,7 +11348,11 @@
       }
     ],
     "FrozenLiquid": [
-      { "field": "unknown1", "type": "Dword" }, //have problem cheeking those, looks like unused memory, but then, it's always zeros on spawn
+      {
+        "field": "unknown1",
+        "type": "Dword",
+        "comment": "have problem cheeking those, looks like unused memory, but then, it's always zeros on spawn, changing it can crash the game"
+      },
       { "field": "unknown2", "type": "Dword" }
     ],
     "Switch": [
@@ -11325,7 +11376,7 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "velocity_x", "type": "Float" },
       { "field": "velocity_y", "type": "Float" },
-      { "field": "swing", "type": "Float" }, //angle change?
+      { "field": "swing", "type": "Float", "comment": "angle change?" },
       {
         "field": "up_down_normal",
         "type": "Float",
@@ -11475,7 +11526,11 @@
       { "field": "unknown24", "type": "Byte" },
       { "field": "unknown25", "type": "Byte" },
       { "field": "unknown26", "type": "Dword" },
-      { "field": "unknown27", "type": "Map" } //added map for now, it's list of 3 pointers
+      {
+        "field": "unknown27",
+        "type": "Map",
+        "comment": "added map for now, it's list of 3 pointers"
+      }
     ],
     "EggshipCenterJetFlame": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -12141,6 +12196,68 @@
         "field": "unknown",
         "type": "Dword",
         "comment": "EntityUID? it's always -1"
+      }
+    ],
+    "CrossBeam": [
+      { "field": "attached_to_side", "type": "EntityUID" },
+      { "field": "attached_to_top", "type": "EntityUID" }
+    ],
+    "PalaceSign": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      {
+        "field": "illumination",
+        "type": "IlluminationPointer",
+        "comment": "illumination1/2 used only in dark level, no pointer in normal level"
+      },
+      { "field": "arrow_illumination", "type": "IlluminationPointer" },
+      { "field": "arrow_change_timer", "type": "UnsignedByte" }
+    ],
+    "DecoRegeneratingBlock": [
+      { "field": "unknown1", "type": "Byte" },
+      {
+        "field": "unknown2",
+        "type": "UnsignedByte",
+        "comment": "timer after self_destruct is triggered, modifies the size depending of the unknown1"
+      },
+      {
+        "field": "self_destruct?",
+        "type": "Bool",
+        "comment": "have reverse effect of spawning in after the broke is blocken, unsued in the game?"
+      }
+    ],
+    "DestructibleBG": [
+      { "field": "attached_to_1?", "type": "EntityUID" },
+      { "field": "attached_to_2?", "type": "EntityUID" },
+      { "field": "unknown1", "type": "Bool" },
+      { "field": "unknown2", "type": "Bool" }
+    ],
+    "MysteryLiquidPointer1": [
+      {
+        "field": "prev",
+        "type": "DataPointer",
+        "comment": "points to the previos element in this ... array?"
+      },
+      { "field": "unknown", "type": "MysteryLiquidPointer2" },
+      { "field": "liquid_id?", "type": "Dword" },
+      { "field": "unknown4", "type": "Dword", "comment": "garbage?" }
+    ],
+    "MysteryLiquidPointer2": [
+      {
+        "field": "back_pointer",
+        "type": "DataPointer",
+        "comment": "points at the MysteryLiquidPointer1"
+      },
+      { "field": "begin", "type": "DataPointer" },
+      { "field": "end", "type": "DataPointer" },
+      {
+        "field": "next?",
+        "type": "DataPointer",
+        "comment": "pointer to next MysteryLiquidPointer1?"
+      },
+      {
+        "field": "list",
+        "type": "DataPointer",
+        "comment": "lists of all pointers to MysteryLiquidPointer1"
       }
     ]
   }
