@@ -1,7 +1,7 @@
 #include "Data/VirtualTableLookup.h"
 #include "pluginmain.h"
 
-static constexpr size_t gsAmountOfPointers = 70000;
+static constexpr size_t gsAmountOfPointers = 53200;
 
 void S2Plugin::VirtualTableEntry::addSymbol(const std::string& s)
 {
@@ -18,29 +18,17 @@ bool S2Plugin::VirtualTableLookup::loadTable()
     }
     mOffsetToTableEntries.reserve(gsAmountOfPointers);
 
-    // find the base of the spel2.exe process, so we can add it to the RVA of the first pointer in the table
-    size_t base = Script::Module::BaseFromName("spel2.exe");
-
-    // find the address of symbol d3dcompiler_47.D3DCompile, which should be the very first pointer
-    // in the giant list, of which we base all relative offsets within the table
-    size_t d3dCompileRVA = 0;
-    std::unordered_map<size_t, std::string> knownSymbols;
-    auto symbolList = BridgeList<Script::Symbol::SymbolInfo>();
-    Script::Symbol::GetList(&symbolList);
-    for (auto x = 0; x < symbolList.Count(); ++x)
+    // From 1.23.2 on, the base isn't on D3Dcompile any more, so just look up the first pointer by pattern
+    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
+    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
+    if (afterBundle == 0)
     {
-        auto symbolInfo = symbolList[x];
-        if (strncmp(symbolInfo.mod, "spel2.exe", 9) == 0)
-        {
-            if (strncmp(symbolInfo.name, "D3DCompile", 10) == 0)
-            {
-                d3dCompileRVA = symbolInfo.rva;
-            }
-            knownSymbols[Script::Memory::ReadQword(base + symbolInfo.rva)] = std::string(symbolInfo.name);
-        }
+        return false;
     }
-    symbolList.Cleanup();
-    mTableStartAddress = base + d3dCompileRVA;
+
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 8D 0D 03 79 51 00");
+    auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
+    mTableStartAddress = instructionOffset + pcOffset + 7;
 
     // import the pointers
     size_t buffer[gsAmountOfPointers] = {0};
@@ -52,11 +40,6 @@ bool S2Plugin::VirtualTableLookup::loadTable()
         e.isValidAddress = Script::Memory::IsValidPtr(pointer);
         e.offset = x;
         e.value = pointer;
-        if (knownSymbols.count(pointer) > 0)
-        {
-            e.addSymbol(knownSymbols.at(pointer));
-            e.isAutoSymbol = true;
-        }
         mOffsetToTableEntries[x] = e;
     }
     return true;
