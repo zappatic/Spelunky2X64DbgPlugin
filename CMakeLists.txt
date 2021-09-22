@@ -64,6 +64,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/StringsTable.h
 	include/Data/CPPGenerator.h
 	include/Data/Logger.h
+	include/Data/Online.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
@@ -79,6 +80,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewStringsTable.h
 	include/Views/ViewLogger.h
 	include/Views/ViewVirtualFunctions.h
+	include/Views/ViewOnline.h
 	include/QtHelpers/StyledItemDelegateHTML.h
 	include/QtHelpers/StyledItemDelegateColorPicker.h
 	include/QtHelpers/TreeViewMemoryFields.h
@@ -118,6 +120,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/StringsTable.cpp
 	src/Data/CPPGenerator.cpp
 	src/Data/Logger.cpp
+	src/Data/Online.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp
@@ -133,6 +136,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewStringsTable.cpp
 	src/Views/ViewLogger.cpp
 	src/Views/ViewVirtualFunctions.cpp
+	src/Views/ViewOnline.cpp
 	src/QtHelpers/StyledItemDelegateHTML.cpp
 	src/QtHelpers/StyledItemDelegateColorPicker.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp

@@ -21,10 +21,9 @@ bool S2Plugin::ParticleDB::loadParticleDB()
 
     mMemoryOffsets.clear();
 
-    // Spelunky 1.20.4d last id = 0xDB 219
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "B8 01 00 00 00 66 89 05");
-    instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, afterBundleSize - (instructionOffset - afterBundle), "B8 01 00 00 00 66 89 05");
-    mParticleDBPtr = instructionOffset + 12 + Script::Memory::ReadDword(instructionOffset + 8);
+    // Spelunky 1.20.4d, 1.23.1b: last id = 0xDB 219
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "FE FF FF FF 66 C7 05");
+    mParticleDBPtr = instructionOffset + 13 + Script::Memory::ReadDword(instructionOffset + 7);
 
     auto counter = 0;
     size_t particleDBEntrySize = 0xA0;
