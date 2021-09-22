@@ -16,9 +16,9 @@ bool S2Plugin::Online::loadOnline()
         return true;
     }
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "4C 8B 35 FA 61 35 00");
-    auto relativeOffset = Script::Memory::ReadDword(instructionOffset + 3);
-    mOnlinePtr = Script::Memory::ReadQword(instructionOffset + 7 + relativeOffset);
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "66 0F 29 85 E0 03 00 00");
+    auto relativeOffset = Script::Memory::ReadDword(instructionOffset + 11);
+    mOnlinePtr = Script::Memory::ReadQword(instructionOffset + 15 + relativeOffset);
     refreshOffsets();
     return true;
 }

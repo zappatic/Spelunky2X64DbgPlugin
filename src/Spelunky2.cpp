@@ -91,7 +91,7 @@ void S2Plugin::Spelunky2::findSpelunky2InMemory()
     // find the 'after_bundle' location, where the actual code is
     // only search in the last 7 megabytes
     auto sevenMegs = 7 * 1024 * 1024;
-    gSpelunky2AfterBundle = Script::Pattern::FindMem(gSpelunky2CodeSectionStart + gSpelunky2CodeSectionSize - sevenMegs, sevenMegs, "48 81 EC E8 00 00 00");
+    gSpelunky2AfterBundle = Script::Pattern::FindMem(gSpelunky2CodeSectionStart + gSpelunky2CodeSectionSize - sevenMegs, sevenMegs, "55 41 57 41 56 41 55 41 54");
     if (gSpelunky2AfterBundle == 0)
     {
         displayError("Could not locate the 'after_bundle' location");

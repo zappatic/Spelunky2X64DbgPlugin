@@ -32,7 +32,7 @@ bool S2Plugin::GameManager::loadGameManager()
             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
             auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
-            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x130);
+            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x120);
             mSaveGamePtr = heapBase + heapOffsetSaveGame;
             break;
         }

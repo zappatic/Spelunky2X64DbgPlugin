@@ -6898,7 +6898,7 @@
       { "field": "unknown12", "type": "UnsignedDword" },
       { "field": "unknown13", "type": "UnsignedDword" },
       { "field": "unknown14", "type": "UnsignedDword" },
-      { "field": "unknown15", "type": "StringsTableID" },
+      { "field": "unknown15", "type": "UnsignedDword" },
       { "field": "unknown16", "type": "UnsignedDword" },
       { "field": "unknown17", "type": "UnsignedDword" },
       { "field": "unknown18", "type": "UnsignedDword" },
