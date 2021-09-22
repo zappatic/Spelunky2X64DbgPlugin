@@ -746,6 +746,7 @@
     "MOUNT_BASECAMP_COUCH": "Mount",
     "LIQUID_.*LAVA": "Lava",
     "LIQUID_IMPOSTOR_LAKE": "Entity",
+    "LIQUID_IMPOSTOR_LAVA": "Entity",
     //
     "FLOOR_.*": "Floor",
     "FLOORSTYLED_.*": "Floor",
@@ -4613,10 +4614,11 @@
     ],
     "LiquidPhysicsPointer": [
       { "field": "unknown1", "type": "DataPointer" },
-      { "field": "liquidpool1", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool2", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool3", "type": "LiquidPhysicsParams" },
-      { "field": "liquidpool4", "type": "LiquidPhysicsParams" }
+      { "field": "water_physics", "type": "LiquidPhysicsParams" },
+      { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
+      { "field": "lava_physics", "type": "LiquidPhysicsParams" },
+      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" },
+      { "field": "coarse_lava_physics", "type": "LiquidPhysicsParams" }
     ],
     "LiquidPhysicsParams": [
       {
@@ -7260,6 +7262,12 @@
       },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
+      {
+        "field": "abs_x",
+        "type": "Float",
+        "comment": "abs - only for movable entities, or entities that can be spawned without overlay, for the rest it's FLOAT_MIN?"
+      },
+      { "field": "abs_y", "type": "Float" },
       { "field": "w", "type": "Float" },
       { "field": "h", "type": "Float" },
       { "field": "special_offsetx", "type": "Float" },
@@ -7741,6 +7749,7 @@
       { "field": "basecamp_button_entity_pointer", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
+      { "field": "y_pos?", "type": "Float" },
       { "field": "jump_flags_a", "type": "UnsignedByte" },
       { "field": "jump_flags_b", "type": "UnsignedByte" },
       { "field": "jump_flags_c", "type": "UnsignedByte" },
@@ -7750,9 +7759,7 @@
         "type": "UnsignedByte",
         "comment": "something different happens before or after 6"
       },
-      { "field": "can_use", "type": "UnsignedByte" },
-      { "field": "b176", "type": "UnsignedByte" },
-      { "field": "b177", "type": "UnsignedByte" }
+      { "field": "can_use", "type": "Bool" }
     ],
     "PlayerInventoryPointer": [
       { "field": "inventory", "type": "PlayerInventory" }
@@ -10975,11 +10982,19 @@
     "Lava": [{ "field": "emitted_light", "type": "IlluminationPointer" }],
     "Liquid": [
       { "field": "fx_surface", "type": "EntityPointer" },
-      { "field": "unknown", "type": "DataPointer" },
-      { "field": "unknown_readonly1", "type": "UnsignedWord" },
-      { "field": "unknown_readonly2", "type": "UnsignedWord" },
-      { "field": "unknown_timer1", "type": "UnsignedWord" },
-      { "field": "unknown_timer2", "type": "UnsignedWord" }
+      {
+        "field": "x_pos?",
+        "type": "Float",
+        "comment": "for some reason accesses as Qword?, only updated when the position changes drastically"
+      },
+      { "field": "y_pos?", "type": "Float" },
+      { "field": "mystery_liquid_pointer", "type": "DataPointer" },
+      { "field": "unknown2", "type": "UnsignedWord" },
+      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "unknown_timer1", "type": "Byte" },
+      { "field": "unknown_timer2", "type": "Byte" },
+      { "field": "unknown_timer3", "type": "Byte" },
+      { "field": "unk21", "type": "Byte" }
     ],
     "Pot": [
       {
