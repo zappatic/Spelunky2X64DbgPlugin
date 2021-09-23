@@ -3435,14 +3435,14 @@
       },
       { "field": "unknown27", "type": "MysteryPointer4" },
       {
-        "field": "unknown28",
+        "field": "uid_to_entity_mask",
         "type": "UnsignedQword",
-        "comment": "formerly instance_id_to_pointer"
+        "comment": "RobinHoodTable mask"
       },
       {
-        "field": "unknown29",
+        "field": "uid_to_entity_data",
         "type": "DataPointer",
-        "comment": "formerly instance_id_to_pointer"
+        "comment": "RobinHoodTable entries"
       },
       { "field": "backlayer_player_related1", "type": "DataPointer" },
       { "field": "backlayer_player_related2", "type": "DataPointer" },
