@@ -869,10 +869,7 @@
     "SpeechBubbleLayoutPointer",
     "SpeechBubbleLayoutDataPointer",
     "MysteryLiquidPointer1",
-    "MysteryLiquidPointer2",
-    "UnknownDynamicMemoryBucketPointer",
-    "UnknownDynamicMemoryBucket2Pointer",
-    "UnknownDynamicMemoryRecordPointer"
+    "MysteryLiquidPointer2"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -925,8 +922,7 @@
     "OnlinePlayer",
     "OnlinePlayerShort",
     "OnlineLobby",
-    "OnlineLobbyScreenPlayer",
-    "UnknownDynamicMemory"
+    "OnlineLobbyScreenPlayer"
   ],
   "refs": {
     "screen_states": {
@@ -8091,34 +8087,6 @@
         "comment": "Value from the map, obviously type dependent (UnsignedDword just for visualization purposes in plugin)"
       }
     ],
-    "UnknownDynamicMemory": [
-      { "field": "unknown1", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "end", "type": "DataPointer" },
-      { "field": "size", "type": "UnsignedQword" },
-      {
-        "field": "first_bucket_ptr",
-        "type": "UnknownDynamicMemoryBucketPointer"
-      },
-      { "field": "end_of_buckets", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "mask", "type": "UnsignedQword" },
-      { "field": "bucket_size", "type": "UnsignedQword" }
-    ],
-    "UnknownDynamicMemoryBucketPointer": [
-      { "field": "first", "type": "UnknownDynamicMemoryBucket2Pointer" },
-      { "field": "last", "type": "UnknownDynamicMemoryBucket2Pointer" }
-    ],
-    "UnknownDynamicMemoryBucket2Pointer": [
-      { "field": "first", "type": "UnknownDynamicMemoryRecordPointer" },
-      { "field": "last", "type": "UnknownDynamicMemoryRecordPointer" }
-    ],
-    "UnknownDynamicMemoryRecordPointer": [
-      { "field": "next", "type": "DataPointer" },
-      { "field": "prev", "type": "DataPointer" },
-      { "field": "key?", "type": "EntityUID" },
-      { "field": "value?", "type": "UnsignedDword" }
-    ],
     "TextureDB": [
       { "field": "id", "type": "UnsignedQword" },
       { "field": "name", "type": "ConstCharPointerPointer" },
@@ -10958,7 +10926,7 @@
       { "field": "spark_uid", "type": "EntityUID" }
     ],
     "TransferFloor": [
-      { "field": "unknown_map", "type": "UnknownDynamicMemory" }
+      { "field": "unknown_map", "type": "UnorderedMap" }
     ],
     "ConveyorBelt": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
