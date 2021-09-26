@@ -10620,7 +10620,7 @@
       {
         "field": "state",
         "type": "State8",
-        "state": {
+        "states": {
           "0": "none",
           "1": "start",
           "2": "going_down",
@@ -10925,15 +10925,18 @@
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "spark_uid", "type": "EntityUID" }
     ],
-    "TransferFloor": [
-      { "field": "unknown_map", "type": "UnorderedMap" }
-    ],
+    "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
     "ConveyorBelt": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" },
       { "field": "timer2?", "type": "UnsignedByte" }
     ],
-    "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
+    "QuickSand": [
+      { "field": "unknown_timer1", "type": "UnsignedByte" },
+      { "field": "unknown_timer2", "type": "UnsignedByte" },
+      { "field": "unknown_timer3", "type": "UnsignedByte" },
+      { "field": "unknown_timer4", "type": "UnsignedByte" }
+    ],
     "Pipe": [
       { "field": "unkown1", "type": "UnknownPointerGroup" },
       {
@@ -10973,7 +10976,19 @@
     "TentacleBottom": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "attached_piece_uid", "type": "EntityUID" },
-      { "field": "tentacle_uid", "type": "EntityUID" }
+      { "field": "tentacle_uid", "type": "EntityUID" },
+      {
+        "field": "state",
+        "type": "State8",
+        "states": {
+          "0": "none",
+          "1": "start",
+          "2": "moving up",
+          "3": "at the top",
+          "4": "moving down",
+          "5": "pause"
+        }
+      }
     ],
     "Flame": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -11066,7 +11081,7 @@
       }
     ],
     "Coffin": [
-      { "field": "timer", "type": "Byte" },
+      { "field": "timer", "type": "UnsignedByte" },
       { "field": "shake_state?", "type": "Byte" }
     ],
     "SpecialShot": [
