@@ -9478,9 +9478,9 @@
           }
         }
       },
-      { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
+      { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
