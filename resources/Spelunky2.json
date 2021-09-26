@@ -10682,8 +10682,8 @@
       },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "DataPointer" }
+      { "field": "ball_rise", "type": "SoundPositionPointer" },
+      { "field": "ball_drop", "type": "SoundPositionPointer" }
     ],
     "Elevator": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
