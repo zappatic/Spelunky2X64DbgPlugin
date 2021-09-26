@@ -160,7 +160,7 @@
     "TransferFloor": "Floor",
     "ConveyorBelt": "TransferFloor",
     "QuickSand": "Floor",
-    "Pipe": "TransferFloor",
+    "Pipe": "Floor",
     "MotherStatue": "Floor",
     "TentacleBottom": "Floor",
     "Flame": "Movable",
@@ -10935,6 +10935,7 @@
     ],
     "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
     "Pipe": [
+      { "field": "unkown1", "type": "UnknownPointerGroup" },
       {
         "field": "direction_type",
         "type": "State8",
