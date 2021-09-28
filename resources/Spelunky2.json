@@ -7034,164 +7034,183 @@
         "functions": {
           "0": { "name": "~Entity", "params": "", "return": "" },
           "1": {
-            "name": "create_rendering_info",
+            "name": "create_rendering_info (WRONG1.23.3)",
             "params": "",
             "return": "void"
           },
           "2": {
+            "name": "unknown (NEW1.23.3)",
+            "params": "",
+            "return": "void"
+          },
+          "3": {
             "name": "kill",
             "params": "bool, Entity* frm",
             "return": "void"
           },
-          "3": {
-            "name": "on_collision1",
+          "4": {
+            "name": "on_collision1 (WRONG1.23.3)",
             "params": "Entity* other_entity",
             "return": "void",
             "comment": "needs investigating, difference between this and on_collision2"
           },
           "5": {
+            "name": "destroy",
+            "params": "",
+            "return": "void",
+            "comment": ""
+          },
+          "6": {
             "name": "apply_texture",
             "params": "Texture*",
             "return": "void"
           },
-          "6": {
-            "name": "hiredhand_description",
+          "7": {
+            "name": "hiredhand_description (POSSIBLYWRONG1.23.3)",
             "params": "char*",
             "return": "void"
           },
-          "7": {
-            "name": "generate_stomp_damage_particles",
+          "8": {
+            "name": "generate_stomp_damage_particles (WRONG1.23.3)",
             "params": "Entity* victim",
             "return": "void",
             "comment": "particles when jumping on top of enemy"
           },
-          "8": {
+          "9": {
             "name": "get_type_field_a8",
             "params": "",
             "return": "float"
           },
-          "9": {
+          "10": {
             "name": "block_pushing_related",
             "params": "",
             "return": "bool",
             "comment": "does a bittest for the 14 entities starting at pushblock, function hits when player pushes entity"
           },
           "11": {
-            "name": "v10",
+            "name": "v11",
             "params": "",
             "return": "",
             "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
           },
           "12": {
+            "name": "v12",
+            "params": "",
+            "return": "",
+            "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
+          },
+          "13": {
             "name": "check_type_properties_flags_19",
             "params": "",
             "return": "bool",
             "comment": "checks (properties_flags >> 0x12) & 1; can't get it to trigger"
           },
-          "13": {
+          "14": {
             "name": "get_type_field_60",
             "params": "",
             "return": "uint32_t"
           },
-          "14": { "name": "set_invisible", "params": "bool", "return": "void" },
-          "15": {
+          "15": { "name": "set_invisible", "params": "bool", "return": "void" },
+          "16": {
             "name": "handle_turning_left",
             "params": "bool apply",
             "return": "void",
             "comment": "if disabled, monsters don't turn left and keep walking in the wall (and other right-left issues)"
           },
-          "16": {
+          "17": {
             "name": "set_draw_depth",
             "params": "uint8_t draw_depth",
             "return": "void"
           },
-          "17": {
+          "18": {
             "name": "resume_ai",
             "params": "",
             "return": "",
             "comment": "works on entities with ai_func != 0; runs when companions are let go from being held"
           },
-          "18": { "name": "friction", "params": "", "return": "float" },
-          "20": {
+          "19": { "name": "friction", "params": "", "return": "float" },
+          "20": { "name": "v20", "params": "", "return": "" },
+          "21": {
             "name": "remove_item_ptr",
             "params": "Entity*",
             "return": "void"
           },
-          "21": {
+          "22": {
             "name": "get_held_entity",
             "params": "Entity*",
             "return": "void"
           },
-          "23": {
-            "name": "on_check_is_looking_up_while_thrown",
+          "23": { "name": "v23", "params": "", "return": "" },
+          "24": {
+            "name": "on_check_is_looking_up_while_thrown (CHANGED1.23.3)",
             "params": "Entity* thrower",
             "return": "bool",
             "comment": "used for crates and presents: checks whether looking up to open rather than throw"
           },
-          "24": {
+          "25": {
             "name": "on_attempt_shop_purchase",
             "params": "Entity* buyer",
             "return": "void",
             "comment": "checks if you have sufficient money, performs the sale if so"
           },
-          "25": {
+          "26": {
             "name": "on_collision2",
             "params": "Entity* other_entity",
             "return": "",
             "comment": "needs investigating, difference between this and on_collision1"
           },
-          "26": {
+          "27": {
             "name": "on_save_level_transition_data",
             "params": "",
             "return": "uint64_t",
             "comment": "e.g. for turkey: stores health, poison/curse state, for mattock: remaining swings (returned value is transferred)"
           },
-          "27": {
+          "28": {
             "name": "on_restore_level_transition_data",
             "params": "uint64_t data",
             "return": "void"
           },
-          "28": {
+          "29": {
             "name": "on_walked_on_by",
             "params": "Entity* walker",
             "return": "void",
             "comment": "hits when monster/player walks on a floor, does something when walker.velocityy<-0.21 (falling onto) and walker.hitboxy * hitboxx > 0.09"
           },
-          "29": {
+          "30": {
             "name": "on_walked_off_by",
             "params": "Entity* walker",
             "return": "void",
             "comment": "hits when monster/player walks off a floor, it checks whether the walker has floor as overlay, and if so, removes walker from floor's items by calling virtual 20 (remove_item_ptr)"
           },
-          "30": {
-            "name": "unknown30",
+          "31": {
+            "name": "v31",
             "params": "",
             "return": ""
           },
-          "31": {
+          "32": {
             "name": "on_stood_on_by",
             "params": "Entity* entity",
             "return": "",
             "comment": "e.g. pots, skulls, pushblocks, ... standing on floors"
           },
-          "32": {
+          "33": {
             "name": "toggle_backlayer_illumination",
             "params": "",
             "return": "",
             "comment": "for the player: when going to the backlayer, turns on player emitted light"
           },
-          "33": {
-            "name": "unknown33",
+          "34": {
+            "name": "v34",
             "params": "",
             "return": ""
           },
-          "34": {
+          "35": {
             "name": "liberate_from_shop",
             "params": "",
             "return": "",
             "comment": "can also be seen as event: when you anger the shopkeeper, this function gets called for each item; can be called on shopitems individually as well and they become 'purchased'"
           },
-          "35": { "name": "apply_db", "params": "", "return": "void" }
+          "36": { "name": "apply_db", "params": "", "return": "void" }
         }
       },
       { "field": "type", "type": "EntityDBPointer" },
@@ -7254,8 +7273,8 @@
           "13": "",
           "14": "Falling",
           "15": "Cursed effect",
-          "16": "Disable input",
-          "17": "",
+          "16": "Elixir buff",
+          "17": "Disable input",
           "18": "",
           "19": "",
           "20": "",
