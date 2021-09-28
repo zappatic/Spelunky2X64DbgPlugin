@@ -2,6 +2,7 @@
 
 #include "Configuration.h"
 #include "Data/MemoryMappedData.h"
+#include "Data/StringsTable.h"
 #include "Spelunky2.h"
 
 namespace S2Plugin
@@ -10,7 +11,7 @@ namespace S2Plugin
     {
       public:
         explicit CharacterDB(Configuration* config);
-        bool loadCharacters();
+        bool loadCharacters(StringsTable* stringsTable);
         uint8_t charactersCount() const noexcept;
 
         std::unordered_map<std::string, size_t>& offsetsForIndex(uint8_t characterIndex);

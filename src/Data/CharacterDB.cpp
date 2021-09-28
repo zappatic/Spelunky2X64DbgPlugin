@@ -3,7 +3,7 @@
 
 S2Plugin::CharacterDB::CharacterDB(Configuration* config) : MemoryMappedData(config) {}
 
-bool S2Plugin::CharacterDB::loadCharacters()
+bool S2Plugin::CharacterDB::loadCharacters(StringsTable* stringsTable)
 {
     auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
     if (afterBundle == 0)
@@ -20,10 +20,10 @@ bool S2Plugin::CharacterDB::loadCharacters()
     mCharacterNames.clear();
     mCharacterNamesStringList.clear();
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "0F B6 F2 4C 8D 2D");
-    mCharactersPtr = instructionOffset + 10 + Script::Memory::ReadDword(instructionOffset + 6);
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 6B C3 2C 48 8D 15 ?? ?? ?? ?? 48");
+    mCharactersPtr = instructionOffset + 11 + Script::Memory::ReadDword(instructionOffset + 7);
 
-    size_t characterSize = 0x6C;
+    size_t characterSize = 0x2C;
     for (size_t x = 0; x < 20; ++x)
     {
         size_t startOffset = mCharactersPtr + (x * characterSize);
@@ -34,9 +34,7 @@ bool S2Plugin::CharacterDB::loadCharacters()
         {
             if (field.name == "full_name")
             {
-                char buffer[1024] = {0};
-                Script::Memory::Read(offset, buffer, field.extraInfo, nullptr);
-                characterName = QString::fromUtf16(reinterpret_cast<const ushort*>(buffer));
+                characterName = stringsTable->nameForID(Script::Memory::ReadDword(offset));
             }
             offset = setOffsetForField(field, "CharacterDB." + field.name, offset, offsets);
         }

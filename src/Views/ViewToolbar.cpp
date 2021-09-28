@@ -158,7 +158,7 @@ S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
 
 S2Plugin::ViewCharacterDB* S2Plugin::ViewToolbar::showCharacterDB()
 {
-    if (mCharacterDB->loadCharacters())
+    if (mStringsTable->loadStringsTable() && mCharacterDB->loadCharacters(stringsTable()))
     {
         auto w = new ViewCharacterDB(this);
         mMDIArea->addSubWindow(w);
@@ -328,7 +328,7 @@ S2Plugin::ParticleDB* S2Plugin::ViewToolbar::particleDB()
 
 S2Plugin::CharacterDB* S2Plugin::ViewToolbar::characterDB()
 {
-    mCharacterDB->loadCharacters();
+    mCharacterDB->loadCharacters(stringsTable());
     return mCharacterDB;
 }
 
