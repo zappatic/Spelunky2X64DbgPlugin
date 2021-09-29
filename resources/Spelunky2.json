@@ -7697,7 +7697,7 @@
         "comment": "Related to taking damage, also drops you from ladder/rope, can't be set while on the ground unless you'r on a mount"
       },
       {
-        "field": "unknown",
+        "field": "wet_effect_timer",
         "type": "UnsignedWord",
         "comment": "fading the entity to black, similar to dark_shadow_timer"
       },
@@ -7705,7 +7705,7 @@
       {
         "field": "dark_shadow_timer",
         "type": "UnsignedByte",
-        "comment": "entitity is rendered darker, happens when being on fire/explosion"
+        "comment": "entitity is rendered darker, happens when being on fire/explosion, is this only on fire? like timer for logical on fire effect?"
       },
       {
         "field": "exit_invincibility_timer",
@@ -8782,7 +8782,7 @@
       }
     ],
     "Yang": [
-      { "field": "unknown2", "type": "Map" },
+      { "field": "turkeys_in_den", "type": "Map" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
       {
