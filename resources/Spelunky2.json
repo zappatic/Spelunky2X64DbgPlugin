@@ -160,7 +160,7 @@
     "TransferFloor": "Floor",
     "ConveyorBelt": "TransferFloor",
     "QuickSand": "Floor",
-    "Pipe": "TransferFloor",
+    "Pipe": "Floor",
     "MotherStatue": "Floor",
     "TentacleBottom": "Floor",
     "Flame": "Movable",
@@ -333,7 +333,8 @@
     "CrossBeam": "Entity",
     "PalaceSign": "Entity",
     "DecoRegeneratingBlock": "Entity",
-    "DestructibleBG": "Entity"
+    "DestructibleBG": "Entity",
+    "EggShipDoorS": "EggShipDoor"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -343,7 +344,8 @@
     "FLOOR_DOOR_STARTING_EXIT": "ExitDoor",
     "FLOOR_DOOR_LOCKED.*": "LockedDoor",
     "FLOOR_DOOR_COG": "CityOfGoldDoor",
-    "FLOOR_DOOR_EGGSHIP.*": "EggShipDoor",
+    "FLOOR_DOOR_EGGSHIP": "EggShipDoorS",
+    "FLOOR_DOOR_EGGSHIP_.*": "EggShipDoor",
     "FLOOR_DOOR_EGGPLANT_WORLD": "DecoratedDoor",
     "FLOOR_DOOR_PLATFORM": "Floor",
     "FLOOR_DOOR_.*": "Door",
@@ -7714,7 +7716,7 @@
         "comment": "Related to taking damage, also drops you from ladder/rope, can't be set while on the ground unless you'r on a mount"
       },
       {
-        "field": "unknown",
+        "field": "wet_effect_timer",
         "type": "UnsignedWord",
         "comment": "fading the entity to black, similar to dark_shadow_timer"
       },
@@ -7722,7 +7724,7 @@
       {
         "field": "dark_shadow_timer",
         "type": "UnsignedByte",
-        "comment": "entitity is rendered darker, happens when being on fire/explosion"
+        "comment": "entitity is rendered darker, happens when being on fire/explosion, is this only on fire? like timer for logical on fire effect?"
       },
       {
         "field": "exit_invincibility_timer",
@@ -7807,7 +7809,21 @@
         "type": "UnsignedByte",
         "comment": "something different happens before or after 6"
       },
-      { "field": "can_use", "type": "Bool" }
+      {
+        "field": "can_use",
+        "type": "Flags8",
+        "flags": {
+          "1": "is overlaying something or is attached to something or who the hell knowns sometimes",
+          "2": "changing layer",
+          "3": "unkown, stays on when switching on",
+          "4": "unkown, stays on when switching on",
+          "5": "unkown, stays on when switching on",
+          "6": "unkown, stays on when switching on",
+          "7": "unkown, stays on when switching on",
+          "8": "unkown, stays on when switching on"
+        },
+        "comment": "is compared with bit numbers, so probably flags"
+      }
     ],
     "PlayerInventoryPointer": [
       { "field": "inventory", "type": "PlayerInventory" }
@@ -8785,7 +8801,7 @@
       }
     ],
     "Yang": [
-      { "field": "unknown2", "type": "Map" },
+      { "field": "turkeys_in_den", "type": "Map" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
       {
@@ -10623,7 +10639,7 @@
       {
         "field": "state",
         "type": "State8",
-        "state": {
+        "states": {
           "0": "none",
           "1": "start",
           "2": "going_down",
@@ -10685,8 +10701,8 @@
       },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "DataPointer" }
+      { "field": "ball_rise", "type": "SoundPositionPointer" },
+      { "field": "ball_drop", "type": "SoundPositionPointer" }
     ],
     "Elevator": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -10883,12 +10899,7 @@
         "comment": "counts from 30 to 0, dunno why"
       },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "UnsignedWord" },
-      {
-        "field": "entered",
-        "type": "Bool",
-        "comment": "works only for DOOR_EGGSHIP"
-      }
+      { "field": "unknown4", "type": "UnsignedWord" }
     ],
     "TotemTrap": [
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -10936,10 +10947,17 @@
     "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
     "ConveyorBelt": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
-      { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" }
+      { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" },
+      { "field": "timer2?", "type": "UnsignedByte" }
     ],
-    "QuickSand": [{ "field": "unknown_timer", "type": "UnsignedByte" }],
+    "QuickSand": [
+      { "field": "unknown_timer1", "type": "UnsignedByte" },
+      { "field": "unknown_timer2", "type": "UnsignedByte" },
+      { "field": "unknown_timer3", "type": "UnsignedByte" },
+      { "field": "unknown_timer4", "type": "UnsignedByte" }
+    ],
     "Pipe": [
+      { "field": "unkown1", "type": "UnknownPointerGroup" },
       {
         "field": "direction_type",
         "type": "State8",
@@ -10977,7 +10995,19 @@
     "TentacleBottom": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "attached_piece_uid", "type": "EntityUID" },
-      { "field": "tentacle_uid", "type": "EntityUID" }
+      { "field": "tentacle_uid", "type": "EntityUID" },
+      {
+        "field": "state",
+        "type": "State8",
+        "states": {
+          "0": "none",
+          "1": "start",
+          "2": "moving up",
+          "3": "at the top",
+          "4": "moving down",
+          "5": "pause"
+        }
+      }
     ],
     "Flame": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -11070,7 +11100,7 @@
       }
     ],
     "Coffin": [
-      { "field": "timer", "type": "Byte" },
+      { "field": "timer", "type": "UnsignedByte" },
       { "field": "shake_state?", "type": "Byte" }
     ],
     "SpecialShot": [
@@ -12278,6 +12308,7 @@
         "type": "DataPointer",
         "comment": "lists of all pointers to MysteryLiquidPointer1"
       }
-    ]
+    ],
+    "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
 }
