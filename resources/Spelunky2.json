@@ -13,7 +13,7 @@
     "Bomb": "Movable",
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
-    "Cape": "Movable",
+    "Cape": "Backpack",
     "YellowCape": "Cape",
     "VladsCape": "Cape",
     "Powerup": "Movable",
@@ -190,7 +190,7 @@
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
-    "CloneGunShot": "TimedShot",
+    "CloneGunShot": "LightShot",
     "Bullet": "Movable",
     "Spark": "Flame",
     "TiamatShot": "LightEmitter",
@@ -238,7 +238,6 @@
     "Teleporter": "Movable",
     "Boomerang": "Movable",
     "Excalibur": "Movable",
-    "WebGun": "Gun",
     "Shield": "Movable",
     "Bat": "Monster",
     "Terra": "Monster",
@@ -597,7 +596,7 @@
     "ITEM_TELEPORTER_BACKPACK": "TeleporterBackpack",
     "ITEM_HOVERPACK": "Hoverpack",
     "ITEM_POWERPACK": "Backpack",
-    "ITEM_WEBGUN": "WebGun",
+    "ITEM_WEBGUN": "Gun",
     "ITEM_SHOTGUN": "Gun",
     "ITEM_FREEZERAY": "Gun",
     "ITEM_CAMERA": "Gun",
@@ -8252,9 +8251,13 @@
         "type": "UnsignedByte",
         "comment": "used only for clonegun"
       },
-      { "field": "unused", "type": "UnsignedByte" }
+      { "field": "unused", "type": "UnsignedByte" },
+      {
+        "field": "in_chamber",
+        "type": "EntityUID",
+        "comment": "only for webgun"
+      }
     ],
-    "WebGun": [{ "field": "in_chamber", "type": "EntityUID" }],
     "CrushTrap": [
       { "field": "dirx", "type": "Float" },
       { "field": "diry", "type": "Float" },
@@ -8347,7 +8350,6 @@
       { "field": "on_breaking", "type": "Bool" }
     ],
     "Cape": [
-      { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
@@ -10600,11 +10602,11 @@
         "field": "is_on",
         "type": "Bool",
         "comment": "starts the sound + first_item_beam but not fx for some reason"
-      }
+      },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" }
     ],
     "TimedForceField": [
-      { "field": "unused1", "type": "UnsignedByte" },
-      { "field": "unused2", "type": "UnsignedWord" },
       {
         "field": "timer",
         "type": "UnsignedDword",
@@ -10717,7 +10719,8 @@
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "dust_particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "dest_pos_x", "type": "Float" }
+      { "field": "dest_pos_x", "type": "Float" },
+      { "field": "unused", "type": "UnsignedDword" }
     ],
     "Bullet": [{ "field": "unknown1", "type": "UnknownPointerGroup" }],
     "TeleportingBorder": [
@@ -10751,7 +10754,6 @@
       }
     ],
     "TimedPowderkeg": [
-      { "field": "unused", "type": "UnsignedDword" },
       {
         "field": "timer",
         "type": "Dword",
@@ -10759,7 +10761,6 @@
       }
     ],
     "ChainedPushBlock": [
-      { "field": "unused", "type": "UnsignedDword" },
       {
         "field": "is_chained",
         "type": "Bool",
@@ -11153,6 +11154,7 @@
     ],
     "TimedShot": [{ "field": "timer", "type": "UnsignedByte" }],
     "CloneGunShot": [
+      { "field": "timer", "type": "UnsignedByte" },
       { "field": "unused1", "type": "Byte" },
       { "field": "unused2", "type": "Word" },
       { "field": "spawn_y", "type": "Float" },
