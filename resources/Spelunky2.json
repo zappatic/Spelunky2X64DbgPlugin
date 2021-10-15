@@ -13,7 +13,7 @@
     "Bomb": "Movable",
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
-    "Cape": "Movable",
+    "Cape": "Backpack",
     "YellowCape": "Cape",
     "VladsCape": "Cape",
     "Powerup": "Movable",
@@ -190,7 +190,7 @@
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
-    "CloneGunShot": "TimedShot",
+    "CloneGunShot": "LightShot",
     "Bullet": "Movable",
     "Spark": "Flame",
     "TiamatShot": "LightEmitter",
@@ -238,7 +238,6 @@
     "Teleporter": "Movable",
     "Boomerang": "Movable",
     "Excalibur": "Movable",
-    "WebGun": "Gun",
     "Shield": "Movable",
     "Bat": "Monster",
     "Terra": "Monster",
@@ -597,7 +596,7 @@
     "ITEM_TELEPORTER_BACKPACK": "TeleporterBackpack",
     "ITEM_HOVERPACK": "Hoverpack",
     "ITEM_POWERPACK": "Backpack",
-    "ITEM_WEBGUN": "WebGun",
+    "ITEM_WEBGUN": "Gun",
     "ITEM_SHOTGUN": "Gun",
     "ITEM_FREEZERAY": "Gun",
     "ITEM_CAMERA": "Gun",
@@ -869,7 +868,8 @@
     "SpeechBubbleLayoutPointer",
     "SpeechBubbleLayoutDataPointer",
     "MysteryLiquidPointer1",
-    "MysteryLiquidPointer2"
+    "MysteryLiquidPointer2",
+    "MysteryLiquidPointer3"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4688,8 +4688,45 @@
       { "field": "unknown22", "type": "UnsignedDword" },
       { "field": "unknown23", "type": "Float" },
       { "field": "unknown24", "type": "UnsignedDword" },
-      { "field": "unknown25", "type": "DataPointer" },
-      { "field": "unknown26", "type": "Float" },
+      { "field": "unknown25", "type": "MysteryLiquidPointer3" },
+      {
+        "field": "liquid_flags?",
+        "type": "Flags32",
+        "flags": {
+          "1": "",
+          "2": "lava_interaction? crashes the game if no lava is present",
+          "3": "pause_physics",
+          "4": "",
+          "5": "",
+          "6": "low_agitation?",
+          "7": "high_agitation?",
+          "8": "high_surface_tension?",
+          "9": "low_surface_tension?",
+          "10": "",
+          "11": "high_bounce?",
+          "12": "low_bounce?",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": "",
+          "17": "",
+          "18": "",
+          "19": "",
+          "20": "",
+          "21": "",
+          "22": "",
+          "23": "",
+          "24": "",
+          "25": "",
+          "26": "",
+          "27": "",
+          "28": "",
+          "29": "",
+          "30": "",
+          "31": "",
+          "32": ""
+        }
+      },
       { "field": "last_spawn_x", "type": "Float" },
       { "field": "last_spawn_y", "type": "Float" },
       { "field": "spawn_velocity_x", "type": "Float" },
@@ -4697,14 +4734,23 @@
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" },
       { "field": "unknown33", "type": "UnsignedDword" },
-      { "field": "unknown34", "type": "Map", "comment": "liquidpools?" },
+      { "field": "unknown34", "type": "DataPointer" },
+      {
+        "field": "unknown35",
+        "type": "DataPointer",
+        "comment": "DataPointer? seam to get access validation if you change to something"
+      },
       {
         "field": "liquidtile_liquid_amount?",
         "type": "UnsignedDword",
         "comment": "how much liquid will be spawned from tilecode, 1=1x2, 2=2x3, 3=3x4 etc."
       },
       { "field": "distance_between_spawned_droplets", "type": "Float" },
-      { "field": "unknown39", "type": "Dword" },
+      {
+        "field": "unknown39",
+        "type": "Dword",
+        "comment": "is the last 4 garbage? seams not accessed"
+      },
       { "field": "unknown40", "type": "Float" },
       { "field": "unknown41", "type": "Float" },
       { "field": "unknown42", "type": "UnsignedDword" }
@@ -8271,9 +8317,13 @@
         "type": "UnsignedByte",
         "comment": "used only for clonegun"
       },
-      { "field": "unused", "type": "UnsignedByte" }
+      { "field": "unused", "type": "UnsignedByte" },
+      {
+        "field": "in_chamber",
+        "type": "EntityUID",
+        "comment": "only for webgun"
+      }
     ],
-    "WebGun": [{ "field": "in_chamber", "type": "EntityUID" }],
     "CrushTrap": [
       { "field": "dirx", "type": "Float" },
       { "field": "diry", "type": "Float" },
@@ -8366,7 +8416,6 @@
       { "field": "on_breaking", "type": "Bool" }
     ],
     "Cape": [
-      { "field": "unknown", "type": "UnsignedQword" },
       { "field": "floating_down", "type": "Bool" },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
@@ -10619,11 +10668,11 @@
         "field": "is_on",
         "type": "Bool",
         "comment": "starts the sound + first_item_beam but not fx for some reason"
-      }
+      },
+      { "field": "unused1", "type": "UnsignedByte" },
+      { "field": "unused2", "type": "UnsignedWord" }
     ],
     "TimedForceField": [
-      { "field": "unused1", "type": "UnsignedByte" },
-      { "field": "unused2", "type": "UnsignedWord" },
       {
         "field": "timer",
         "type": "UnsignedDword",
@@ -10736,7 +10785,8 @@
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "dust_particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "dest_pos_x", "type": "Float" }
+      { "field": "dest_pos_x", "type": "Float" },
+      { "field": "unused", "type": "UnsignedDword" }
     ],
     "Bullet": [{ "field": "unknown1", "type": "UnknownPointerGroup" }],
     "TeleportingBorder": [
@@ -10770,7 +10820,6 @@
       }
     ],
     "TimedPowderkeg": [
-      { "field": "unused", "type": "UnsignedDword" },
       {
         "field": "timer",
         "type": "Dword",
@@ -10778,7 +10827,6 @@
       }
     ],
     "ChainedPushBlock": [
-      { "field": "unused", "type": "UnsignedDword" },
       {
         "field": "is_chained",
         "type": "Bool",
@@ -11172,6 +11220,7 @@
     ],
     "TimedShot": [{ "field": "timer", "type": "UnsignedByte" }],
     "CloneGunShot": [
+      { "field": "timer", "type": "UnsignedByte" },
       { "field": "unused1", "type": "Byte" },
       { "field": "unused2", "type": "Word" },
       { "field": "spawn_y", "type": "Float" },
@@ -12308,6 +12357,20 @@
         "type": "DataPointer",
         "comment": "lists of all pointers to MysteryLiquidPointer1"
       }
+    ],
+    "MysteryLiquidPointer3": [
+      { "field": "pause_physics", "type": "Bool" },
+      { "field": "padding1?", "type": "Byte" },
+      { "field": "padding2?", "type": "Byte" },
+      { "field": "padding3?", "type": "Byte" },
+      { "field": "physics_tick_timer?", "type": "Dword" },
+      { "field": "unknown1", "type": "Dword" },
+      { "field": "unknown2", "type": "Dword" },
+      { "field": "unknown3", "type": "Byte" },
+      { "field": "unknown4", "type": "Byte" },
+      { "field": "unknown5", "type": "Byte" },
+      { "field": "unknown6", "type": "Byte" },
+      { "field": "unknown_7", "type": "Byte" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
