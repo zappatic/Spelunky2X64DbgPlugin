@@ -778,6 +778,8 @@
   "pointer_types": [
     "StateItemsPointer",
     "LayerPointer",
+    "MysteryEntitiesListPointer",
+    "MysteryEntityUIDsListPointer",
     "PlayerInventoryPointer",
     "SoundPositionPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
@@ -7082,7 +7084,7 @@
         "functions": {
           "0": { "name": "~Entity", "params": "", "return": "" },
           "1": {
-            "name": "create_rendering_info (WRONG1.23.3)",
+            "name": "create_rendering_info",
             "params": "",
             "return": "void"
           },
@@ -7097,10 +7099,10 @@
             "return": "void"
           },
           "4": {
-            "name": "on_collision1 (WRONG1.23.3)",
+            "name": "on_collision1",
             "params": "Entity* other_entity",
             "return": "void",
-            "comment": "needs investigating, difference between this and on_collision2"
+            "comment": "triggers on collision between whip and hit object"
           },
           "5": {
             "name": "destroy",
@@ -7114,12 +7116,12 @@
             "return": "void"
           },
           "7": {
-            "name": "hiredhand_description (POSSIBLYWRONG1.23.3)",
+            "name": "hiredhand_description",
             "params": "char*",
             "return": "void"
           },
           "8": {
-            "name": "generate_stomp_damage_particles (WRONG1.23.3)",
+            "name": "generate_stomp_damage_particles",
             "params": "Entity* victim",
             "return": "void",
             "comment": "particles when jumping on top of enemy"
@@ -7190,7 +7192,7 @@
           },
           "23": { "name": "v23", "params": "", "return": "" },
           "24": {
-            "name": "on_check_is_looking_up_while_thrown (CHANGED1.23.3)",
+            "name": "on_check_is_looking_up_while_thrown",
             "params": "Entity* thrower",
             "return": "bool",
             "comment": "used for crates and presents: checks whether looking up to open rather than throw"
@@ -7427,6 +7429,7 @@
             "return": "",
             "comment": "disable to allow unlimited multijump; checks jump flags"
           },
+          "38": { "name": "v38", "params": "", "return": "" },
           "39": { "name": "sprint_factor", "params": "", "return": "float" },
           "40": {
             "name": "calculate_jump_height",
@@ -7458,82 +7461,90 @@
             "comment": "simply jumps to the 43rd virtual function, aka stomp_damage..."
           },
           "45": {
-            "name": "adjust_health",
-            "params": "int8_t amount",
-            "return": "void",
-            "comment": "called for dealing damage (neg amount) by the game, but not for gaining health (turkey, motherstatue), even though that works too (and there is even a max health check of 0x63)"
+            "name": "is_on_fire",
+            "params": "",
+            "return": "bool"
           },
           "46": {
-            "name": "check_dark_shadow_timer",
+            "name": "v46",
+            "params": "",
+            "return": ""
+          },
+          "47": {
+            "name": "v47",
             "params": "",
             "return": ""
           },
           "48": {
-            "name": "on_flying_object_collision",
-            "params": "Entity* victim",
-            "return": "",
-            "comment": "stuff like flying rocks, broken arrows hitting the player"
-          },
-          "49": {
             "name": "on_regular_damage",
             "params": "Entity* damage_dealer, int8_t damage_amount, uint8_t unknown = 1",
             "return": "",
             "comment": "disable for regular damage invincibility; does not handle crush deaths (boulder, quillback, ghost); unknown param = 2 when hired hand gets hit by player"
           },
-          "50": {
+          "49": {
             "name": "on_stun_damage",
             "params": "Entity* damage_dealer",
             "return": "",
             "comment": "triggers for broken arrow hit, calls handle_regular_damage with 0 damage; unsure about functionality and name"
           },
-          "52": {
+          "50": {
+            "name": "v50",
+            "params": "",
+            "return": ""
+          },
+          "51": {
             "name": "stun",
             "params": "uint16_t framecount",
             "return": "void"
           },
-          "53": {
+          "52": {
             "name": "freeze",
             "params": "uint8_t framecount",
             "return": "void"
           },
-          "54": {
+          "53": {
             "name": "light_on_fire",
             "params": "",
             "return": "void"
           },
-          "55": {
+          "54": {
             "name": "set_cursed",
             "params": "bool b",
             "return": "void"
           },
-          "56": {
+          "55": {
             "name": "on_spiderweb_collision",
             "params": "",
             "return": ""
           },
-          "57": {
+          "56": {
             "name": "set_last_owner_uid_b127",
             "params": "Entity* owner",
             "return": "",
             "comment": "assigns player as last_owner_uid and also manipulates movable.b127"
           },
-          "58": {
+          "57": {
             "name": "get_last_owner_uid",
             "params": "",
             "return": "uint32_t",
             "comment": "for players, it checks !stunned && !frozen && !cursed && !has_overlay; for others: just returns last_owner_uid"
           },
-          "59": {
+          "58": {
             "name": "check_out_of_bounds",
             "params": "",
             "return": "",
             "comment": "kills with the 'still falling' death cause"
           },
-          "60": {
+          "59": {
             "name": "standing_on",
             "params": "",
             "return": "Entity*",
             "comment": "looks up movable.standing_on_uid in state.instance_id_to_pointer"
+          },
+          "60": {
+            "name": "v60",
+            "params": "",
+            "return": ""
           },
           "61": {
             "name": "on_stomped_on_by",
@@ -7680,7 +7691,7 @@
             "params": "",
             "return": ""
           },
-          "87": { "name": "unknown_v87", "params": "", "return": "" },
+          "87": { "name": "v87", "params": "", "return": "" },
           "88": {
             "name": "stack_plus_28_is_0",
             "params": "",
@@ -8185,7 +8196,115 @@
       { "field": "first_entity*", "type": "DataPointer" },
       { "field": "b", "type": "DataPointer" },
       { "field": "capacity", "type": "Dword" },
-      { "field": "size", "type": "Dword" }
+      { "field": "size", "type": "Dword" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 410656,
+        "comment": "skip 0x64440 - 4 * sizeof(size_t) for the fields above"
+      },
+      { "field": "unknown_entities", "type": "MysteryEntitiesListPointer" },
+      {
+        "field": "unknown_entity_uids",
+        "type": "MysteryEntityUIDsListPointer"
+      },
+      { "field": "unknown1a", "type": "UnsignedDword" },
+      { "field": "unknown1b", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "DataPointer" },
+      { "field": "unknown7", "type": "DataPointer" },
+      { "field": "unknown8", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedByte" },
+      { "field": "unknown11", "type": "UnsignedByte" },
+      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "is_layer_loading", "type": "Bool" },
+      { "field": "unknown14", "type": "Bool" },
+      { "field": "unknown15", "type": "UnsignedByte" },
+      { "field": "unknown16", "type": "UnsignedByte" },
+      { "field": "unknown17", "type": "UnsignedDword" },
+      { "field": "unknown18", "type": "UnsignedDword" },
+      { "field": "unknown19", "type": "UnsignedDword" },
+      { "field": "unknown20", "type": "DataPointer" },
+      { "field": "unknown21", "type": "DataPointer" },
+      { "field": "unknown22", "type": "DataPointer" },
+      { "field": "unknown23", "type": "Bool" },
+      {
+        "field": "layer_freeze?",
+        "type": "Bool",
+        "comment": "locking mechanism?"
+      },
+      { "field": "unknown25", "type": "UnsignedByte" },
+      { "field": "unknown26", "type": "UnsignedByte" },
+      { "field": "unknown27", "type": "UnsignedDword" },
+      { "field": "unknown28", "type": "UnsignedQword" },
+      { "field": "unknown29", "type": "UnsignedQword" },
+      { "field": "unknown30", "type": "UnsignedQword" },
+      { "field": "unknown31", "type": "UnsignedQword" },
+      { "field": "unknown32", "type": "UnsignedQword" },
+      { "field": "unknown33", "type": "UnsignedDword" },
+      { "field": "unknown34", "type": "UnsignedDword" },
+      { "field": "unknown35", "type": "DataPointer" },
+      { "field": "unknown36", "type": "DataPointer" },
+      { "field": "unknown37", "type": "DataPointer" },
+      { "field": "unknown38", "type": "Bool" },
+      { "field": "unknown39", "type": "Bool" },
+      { "field": "unknown40", "type": "UnsignedByte" },
+      { "field": "unknown41", "type": "UnsignedByte" },
+      { "field": "unknown42", "type": "UnsignedDword" },
+      { "field": "unknown43", "type": "UnsignedQword" },
+      { "field": "unknown44", "type": "UnsignedQword" },
+      { "field": "unknown45", "type": "UnsignedQword" },
+      { "field": "unknown46", "type": "UnsignedQword" },
+      { "field": "unknown47", "type": "Bool" },
+      { "field": "unknown48", "type": "UnsignedByte" },
+      { "field": "unknown49", "type": "UnsignedByte" },
+      { "field": "unknown50", "type": "UnsignedByte" },
+      { "field": "unknown51", "type": "UnsignedDword" },
+      { "field": "unknown52", "type": "MysteryEntitiesListPointer" },
+      { "field": "unknown53", "type": "MysteryEntityUIDsListPointer" },
+      { "field": "unknown54", "type": "UnsignedByte" },
+      { "field": "unknown55", "type": "UnsignedByte" },
+      { "field": "unknown56", "type": "UnsignedByte" },
+      { "field": "unknown57", "type": "UnsignedByte" },
+      { "field": "unknown58", "type": "UnsignedDword", "comment": "garbage?" },
+      { "field": "unknown59", "type": "MysteryEntitiesListPointer" },
+      { "field": "unknown60", "type": "MysteryEntityUIDsListPointer" },
+      { "field": "unknown61", "type": "UnsignedByte" },
+      { "field": "unknown62", "type": "UnsignedByte" },
+      { "field": "unknown63", "type": "UnsignedByte" },
+      { "field": "unknown64", "type": "UnsignedByte" },
+      { "field": "unknown65", "type": "UnsignedDword" },
+      { "field": "unknown66", "type": "DataPointer" },
+      { "field": "unknown67", "type": "DataPointer" },
+      { "field": "unknown68", "type": "UnsignedDword" }
+    ],
+    "MysteryEntitiesListPointer": [
+      { "field": "entity_1", "type": "EntityPointer" },
+      { "field": "entity_2", "type": "EntityPointer" },
+      { "field": "entity_3", "type": "EntityPointer" },
+      { "field": "entity_4", "type": "EntityPointer" },
+      { "field": "entity_5", "type": "EntityPointer" },
+      { "field": "entity_6", "type": "EntityPointer" },
+      { "field": "entity_7", "type": "EntityPointer" },
+      { "field": "entity_8", "type": "EntityPointer" },
+      { "field": "entity_9", "type": "EntityPointer" },
+      { "field": "entity_10", "type": "EntityPointer" }
+    ],
+    "MysteryEntityUIDsListPointer": [
+      { "field": "entity_uid_1", "type": "EntityUID" },
+      { "field": "entity_uid_2", "type": "EntityUID" },
+      { "field": "entity_uid_3", "type": "EntityUID" },
+      { "field": "entity_uid_4", "type": "EntityUID" },
+      { "field": "entity_uid_5", "type": "EntityUID" },
+      { "field": "entity_uid_6", "type": "EntityUID" },
+      { "field": "entity_uid_7", "type": "EntityUID" },
+      { "field": "entity_uid_8", "type": "EntityUID" },
+      { "field": "entity_uid_9", "type": "EntityUID" },
+      { "field": "entity_uid_10", "type": "EntityUID" }
     ],
     "StateItemsPointer": [
       { "field": "__vftable", "type": "DataPointer" },
@@ -10229,14 +10348,15 @@
             "return": "",
             "comment": "metal clanking and air of oppression"
           },
-          "12": {
+          "12": { "name": "v12", "params": "", "return": "" },
+          "13": {
             "name": "populate_level",
             "params": "",
             "return": "",
             "comment": "disable this and only the player is spawned in the level"
           },
-          "13": { "name": "add_level_bordertiles", "params": "", "return": "" },
-          "14": {
+          "14": { "name": "add_level_bordertiles", "params": "", "return": "" },
+          "15": {
             "name": "post_process_level",
             "params": "",
             "return": "",
@@ -10248,7 +10368,7 @@
               "abzu, tiamat: spawns impostor lake"
             ]
           },
-          "15": {
+          "16": {
             "name": "post_process_exitdoors",
             "params": "",
             "return": "",
@@ -10260,7 +10380,7 @@
               "other themes also do stuff, but nothing seemingly important"
             ]
           },
-          "16": {
+          "17": {
             "name": "post_process_entities",
             "params": "",
             "return": "",
@@ -10270,30 +10390,30 @@
               "co: does nothing, so no slimy bridges in CO sunken city levels! (forgotten/bug?)"
             ]
           },
-          "17": {
+          "18": {
             "name": "populate_background",
             "params": "",
             "return": "",
             "comment": "adds the background, but also the compass indicator at the door"
           },
-          "18": {
+          "19": {
             "name": "populate_background_beautification",
             "params": "",
             "return": "",
             "comment": "adds random beautification to the background, e.g. the chalk drawings of the three people in dwelling"
           },
-          "19": {
+          "20": {
             "name": "populate_extra_lighting",
             "params": "",
             "return": "",
             "comment": "adds extra light where needed, e.g. in the udjat chest room, or the top layer of the black market: spawns ENT_TYPE_LOGICAL_ROOM_LIGHT"
           },
-          "20": {
+          "21": {
             "name": "populate_level_transition",
             "params": "",
             "return": ""
           },
-          "21": {
+          "22": {
             "name": "on_level_transition",
             "params": "",
             "return": "",
@@ -10303,31 +10423,31 @@
               "sets state.ingame to true, adjust fade values and starts loading"
             ]
           },
-          "22": {
+          "23": {
             "name": "populate_players",
             "params": "",
             "return": "",
             "comment": "spawns the player(s?) in the world, along with what they were holding"
           },
-          "23": {
+          "24": {
             "name": "handle_multiplayer",
             "params": "",
             "return": "",
             "comment": "when disabled, during multiplayer the camera is not focused; also responsible for spawning the leader flag; not looked at in detail"
           },
-          "24": {
+          "25": {
             "name": "level_file_to_load",
             "params": "",
             "return": "const char*",
             "comment": "the .lvl file to load (e.g. dwelling = dwellingarea.lvl except when level == 4 (cavebossarea.lvl))"
           },
-          "25": {
+          "26": {
             "name": "theme_id",
             "params": "",
             "return": "uint8_t",
             "comment": "for co: returns sub_theme->theme_id()"
           },
-          "26": {
+          "27": {
             "name": "theme_base_id",
             "params": "",
             "return": "uint8_t",
@@ -10336,7 +10456,7 @@
               "e.g. theme_abzu->theme_base_id() = 5 (tide_pool) as opposed to theme_abzu->theme_id() = 13 (abzu)"
             ]
           },
-          "27": {
+          "28": {
             "name": "random_block_floorstyle",
             "params": "",
             "return": "uint32_t",
@@ -10351,7 +10471,7 @@
               "strangely, it's only applied to an odd block here and there"
             ]
           },
-          "28": {
+          "29": {
             "name": "random_block_floorstyle_2",
             "params": "",
             "return": "uint32_t",
@@ -10359,13 +10479,13 @@
               "similar to random_block_floorstyle(), except now the default = 103 (ENT_TYPE_FLOORSTYLED_STONE)"
             ]
           },
-          "29": {
+          "30": {
             "name": "unknown_v29",
             "params": "",
             "return": "bool",
             "comment": "all return false, except olmec, temple, neobab, cog, duat"
           },
-          "30": {
+          "31": {
             "name": "transition_tunnel_block_modifier",
             "params": "",
             "return": "uint32_t",
@@ -10374,19 +10494,19 @@
               "returns 85 by default, except for: olmec: 15, cog: 23"
             ]
           },
-          "31": {
+          "32": {
             "name": "unknown_v31",
             "params": "",
             "return": "uint32_t",
             "comment": ""
           },
-          "32": {
+          "33": {
             "name": "backwall_entity_id",
             "params": "",
             "return": "uint32_t",
             "comment": "always returns 778 ENT_TYPE_BG_LEVEL_BACKWALL"
           },
-          "33": {
+          "34": {
             "name": "bordertile_entity_id",
             "params": "",
             "return": "uint32_t",
@@ -10399,19 +10519,19 @@
               "hundun ENT_TYPE_FLOOR_BORDERTILE_OCTOPUS"
             ]
           },
-          "34": {
+          "35": {
             "name": "transition_tunnel_critter_entity_id",
             "params": "",
             "return": "uint32_t",
             "comment": ""
           },
-          "35": {
+          "36": {
             "name": "liquid_gravity_direction",
             "params": "",
             "return": "float",
             "comment": "returns -1.0 (downwards) by default, except for sunken/hundun; applies both to lava and water"
           },
-          "36": {
+          "37": {
             "name": "are_players_vulnerable",
             "params": "",
             "return": "bool",
@@ -10420,19 +10540,19 @@
               "if you return false in other themes you are invincible except for crushing deaths, and you do still experience knockback and stun"
             ]
           },
-          "37": {
+          "38": {
             "name": "unknown_v37",
             "params": "",
             "return": "bool",
             "comment": "returns true by default, except CO, duat"
           },
-          "38": {
+          "39": {
             "name": "backlayer_lut",
             "params": "",
             "return": "uint32_t",
             "comment": "returns the texture ID for the LUT to be applied to the special back layer, e.g. vlad's castle for the volcana theme"
           },
-          "39": {
+          "40": {
             "name": "backlayer_global_illumination_level",
             "params": "",
             "return": "float",
@@ -10443,7 +10563,7 @@
               "for tiamat: the value is always 1.0 for full backlayer global illumination (ship)"
             ]
           },
-          "40": {
+          "41": {
             "name": "enable_camera_loop",
             "params": "",
             "return": "bool",
@@ -10452,7 +10572,7 @@
               "if enabled in another theme, it adds an extra border and if you zoom out, you see the level loop if you move to the side"
             ]
           },
-          "41": {
+          "42": {
             "name": "max_level_for_vault",
             "params": "",
             "return": "uint8_t",
@@ -10461,13 +10581,13 @@
               "looks to be the highest level a vault can spawn; it's mostly 3 or 4, but for neobab it's 1, which makes sense"
             ]
           },
-          "42": {
+          "43": {
             "name": "get_unknown_1_or_2",
             "params": "uint index",
             "return": "bool",
             "comment": "index == 0 ? return unknown1 : return unknown2"
           },
-          "43": {
+          "44": {
             "name": "get_dynamic_floor_texture_id",
             "params": "int8_t texture_id",
             "return": "uint32_t",
@@ -10483,7 +10603,7 @@
               "that number is passed here and mapped into this dynamic per-theme list (see entitydb[4].texture)"
             ]
           },
-          "44": {
+          "45": {
             "name": "set_next_world_level_theme",
             "params": "",
             "return": "",
@@ -10494,7 +10614,7 @@
               "for CO it checks whether the next level is 99, and set state.win_state to 3 to finish the game"
             ]
           },
-          "45": {
+          "46": {
             "name": "get_zero_based_level_height",
             "params": "",
             "return": "uint32_t",
@@ -10503,13 +10623,13 @@
               "for special levels (black market, vlad, ...) fixed heights are returned"
             ]
           },
-          "46": {
+          "47": {
             "name": "unknown_v46",
             "params": "",
             "return": "uint32_t",
             "comment": "returns a value that appears to affect room generation and is based on current world,level"
           },
-          "47": {
+          "48": {
             "name": "post_process_decoration1",
             "params": "",
             "return": "",
@@ -10519,7 +10639,7 @@
               "might do other things as well"
             ]
           },
-          "48": {
+          "49": {
             "name": "post_process_decoration2",
             "params": "",
             "return": "",
@@ -10529,7 +10649,7 @@
               "does lots of other things as well, not sure about difference between this and post_process_decoration1"
             ]
           },
-          "49": {
+          "50": {
             "name": "populate_extra_random_entities",
             "params": "",
             "return": "",
@@ -10541,7 +10661,7 @@
               "neobab: adds neon signs, hanging wires, ..."
             ]
           },
-          "50": {
+          "51": {
             "name": "do_procedural_spawn",
             "params": "",
             "return": "",
