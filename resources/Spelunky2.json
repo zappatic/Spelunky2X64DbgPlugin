@@ -843,6 +843,7 @@
     "ShopRestrictedItemPointer3",
     "ShopRestrictedItemPointer4",
     "ShopRestrictedItemPointer5",
+    "AITargetsPointer",
     "SaveGameHeapOffsetPointer",
     "ScreenLogoPointer",
     "ScreenIntroPointer",
@@ -905,6 +906,7 @@
     "ArenaConfigEquippedItems",
     "ShopsInfo",
     "ShopOwnerInfoDetails",
+    "AITarget",
     "Dialogue",
     "DialogueDetails",
     "DialogueDetailsGroup",
@@ -3425,7 +3427,7 @@
       { "field": "layer1", "type": "LayerPointer" },
       { "field": "logic", "type": "LogicPointer" },
       { "field": "quests", "type": "QuestsInfoPointer" },
-      { "field": "ai_targets", "type": "UnorderedMapPointer" },
+      { "field": "ai_targets", "type": "AITargetsPointer" },
       { "field": "liquid_physics", "type": "LiquidPhysicsPointer" },
       {
         "field": "particle_emitters",
@@ -3558,6 +3560,20 @@
       { "field": "unknown18", "type": "UnsignedDword" },
       { "field": "unknown19", "type": "Float" },
       { "field": "unknown20", "type": "Float" }
+    ],
+    "AITargetsPointer": [
+      { "field": "target1", "type": "AITarget" },
+      { "field": "target2", "type": "AITarget" },
+      { "field": "target3", "type": "AITarget" },
+      { "field": "target4", "type": "AITarget" },
+      { "field": "target5", "type": "AITarget" },
+      { "field": "target6", "type": "AITarget" },
+      { "field": "target7", "type": "AITarget" },
+      { "field": "target8", "type": "AITarget" }
+    ],
+    "AITarget": [
+      { "field": "ai", "type": "EntityUID" },
+      { "field": "target", "type": "EntityUID" }
     ],
     "Dialogue": [
       { "field": "base_dialogue", "type": "DialogueDetailsGroup" },
