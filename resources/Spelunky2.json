@@ -7915,13 +7915,17 @@
         "type": "Bool",
         "comment": "Used in level transition to transfer to new player entity"
       },
+      {
+        "field": "elixir_buff",
+        "type": "Bool",
+        "comment": "Used in level transition to transfer to new player entity"
+      },
       { "field": "health", "type": "UnsignedByte" },
       {
         "field": "kapala_blood_amount",
         "type": "UnsignedByte",
         "comment": "Used in level transition to transfer to new player entity"
       },
-      { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "held_item", "type": "EntityDBID" },
       { "field": "held_item_metadata?", "type": "Word" },
@@ -12506,7 +12510,16 @@
       { "field": "unknown4", "type": "Byte" },
       { "field": "unknown5", "type": "Byte" },
       { "field": "unknown6", "type": "Byte" },
-      { "field": "unknown_7", "type": "Byte" }
+      { "field": "unknown_7", "type": "Byte" },
+      { "field": "unknown8", "type": "Byte" },
+      { "field": "unknown9", "type": "Byte" },
+      { "field": "unknown10", "type": "Byte" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "entity_count", "type": "UnsignedDword" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
