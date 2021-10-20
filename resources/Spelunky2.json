@@ -4820,12 +4820,16 @@
         "type": "VolcanaRelatedPointer",
         "comment": "size is most likely incorrect"
       },
+      {
+        "field": "tiamat_camp_abzu_hundun_eggplantworld_related",
+        "type": "TiamatInfoPointer"
+      },
       { "field": "olmec_cutscene", "type": "OlmecCutscenePointer" },
       { "field": "tiamat_cutscene", "type": "TiamatCutscenePointer" },
       { "field": "apep_trigger", "type": "ApepTriggerPointer" },
       { "field": "unknown16", "type": "UnsignedQword" },
       { "field": "duat_bosses_trigger", "type": "DuatBossesTriggerPointer" },
-      { "field": "tiamat_related", "type": "TiamatInfoPointer" },
+      { "field": "unknown17", "type": "UnsignedQword" },
       { "field": "tusk_pleasure_palace", "type": "TuskPleasurePalacePointer" },
       {
         "field": "discovery_info",
@@ -4929,11 +4933,11 @@
         }
       },
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "EntityUID" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "EntityUID" },
-      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "floor_challenge_entrance", "type": "EntityUID" },
+      { "field": "floor_challenge_waitroom", "type": "EntityUID" },
       { "field": "challenge_active", "type": "Bool" },
       {
         "field": "forcefield_countdown",
@@ -4958,11 +4962,11 @@
         }
       },
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "EntityUID" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "EntityUID" },
-      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "floor_challenge_entrance", "type": "EntityUID" },
+      { "field": "floor_challenge_waitroom", "type": "EntityUID" },
       { "field": "challenge_active", "type": "Bool" },
       {
         "field": "forcefield_countdown",
@@ -4982,7 +4986,7 @@
         "comment": "this appears to be the address after the last torch, like an end iterator"
       },
       { "field": "unknown9", "type": "DataPointer" },
-      { "field": "start_countdown", "type": "UnsignedDword" }
+      { "field": "start_countdown", "type": "UnsignedByte" }
     ],
     "StarChallengeTorchesPointer": [
       { "field": "torch1", "type": "EntityPointer" },
@@ -5007,8 +5011,8 @@
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "EntityUID" },
-      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "floor_challenge_entrance", "type": "EntityUID" },
+      { "field": "floor_challenge_waitroom", "type": "EntityUID" },
       { "field": "challenge_active", "type": "Bool" },
       {
         "field": "forcefield_countdown",
