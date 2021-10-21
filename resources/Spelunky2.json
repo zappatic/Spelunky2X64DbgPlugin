@@ -872,7 +872,10 @@
     "SpeechBubbleLayoutDataPointer",
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2",
-    "MysteryLiquidPointer3"
+    "MysteryLiquidPointer3",
+    "GetEntitiesResultPointer",
+    "EntitiesResultEntitiesPointer",
+    "EntitiesResultEntityUIDsPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4787,13 +4790,54 @@
       { "field": "unknown17", "type": "DataPointer" },
       { "field": "unknown18", "type": "DataPointer" },
       { "field": "unknown19", "type": "DataPointer" },
-      { "field": "unknown20", "type": "DataPointer" },
+      { "field": "get_entities_result", "type": "GetEntitiesResultPointer" },
       { "field": "unknown21", "type": "UnsignedQword" },
       { "field": "unknown22", "type": "UnsignedByte" },
       { "field": "unknown23", "type": "UnsignedByte" },
       { "field": "unknown24", "type": "UnsignedByte" },
       { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "UnsignedDword" }
+    ],
+    "GetEntitiesResultPointer": [
+      {
+        "field": "entities",
+        "type": "EntitiesResultEntitiesPointer",
+        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
+      },
+      {
+        "field": "entity_uids",
+        "type": "EntitiesResultEntityUIDsPointer",
+        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "count", "type": "UnsignedDword" }
+    ],
+    "EntitiesResultEntitiesPointer": [
+      { "field": "entity0", "type": "EntityPointer" },
+      { "field": "entity1", "type": "EntityPointer" },
+      { "field": "entity2", "type": "EntityPointer" },
+      { "field": "entity3", "type": "EntityPointer" },
+      { "field": "entity4", "type": "EntityPointer" },
+      { "field": "entity5", "type": "EntityPointer" },
+      { "field": "entity6", "type": "EntityPointer" },
+      { "field": "entity7", "type": "EntityPointer" },
+      { "field": "entity8", "type": "EntityPointer" },
+      { "field": "entity9", "type": "EntityPointer" }
+    ],
+    "EntitiesResultEntityUIDsPointer": [
+      { "field": "entity_uid0", "type": "EntityUID" },
+      { "field": "entity_uid1", "type": "EntityUID" },
+      { "field": "entity_uid2", "type": "EntityUID" },
+      { "field": "entity_uid3", "type": "EntityUID" },
+      { "field": "entity_uid4", "type": "EntityUID" },
+      { "field": "entity_uid5", "type": "EntityUID" },
+      { "field": "entity_uid6", "type": "EntityUID" },
+      { "field": "entity_uid7", "type": "EntityUID" },
+      { "field": "entity_uid8", "type": "EntityUID" },
+      { "field": "entity_uid9", "type": "EntityUID" }
     ],
     "LogicPointer": [
       { "field": "unknown1", "type": "UnsignedQword" },
