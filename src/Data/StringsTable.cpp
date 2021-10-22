@@ -16,7 +16,7 @@ bool S2Plugin::StringsTable::loadStringsTable()
         return true;
     }
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 8D 15 58 1E 5F 00");
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 8D 15 ?? ?? ?? ?? 4C 8B 0C CA");
     auto relativeOffset = Script::Memory::ReadDword(instructionOffset + 3);
     mStringsTablePtr = instructionOffset + 7 + relativeOffset;
 

@@ -26,7 +26,7 @@ bool S2Plugin::VirtualTableLookup::loadTable()
         return false;
     }
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 8D 0D 03 79 51 00");
+    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 8D 0D ?? ?? ?? ?? 48 89 0D ?? ?? ?? ?? 48 C7 05");
     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
     mTableStartAddress = instructionOffset + pcOffset + 7;
 
