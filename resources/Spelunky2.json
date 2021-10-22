@@ -872,7 +872,10 @@
     "SpeechBubbleLayoutDataPointer",
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2",
-    "MysteryLiquidPointer3"
+    "MysteryLiquidPointer3",
+    "GetEntitiesResultPointer",
+    "EntitiesResultEntitiesPointer",
+    "EntitiesResultEntityUIDsPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4790,13 +4793,54 @@
       { "field": "unknown17", "type": "DataPointer" },
       { "field": "unknown18", "type": "DataPointer" },
       { "field": "unknown19", "type": "DataPointer" },
-      { "field": "unknown20", "type": "DataPointer" },
+      { "field": "get_entities_result", "type": "GetEntitiesResultPointer" },
       { "field": "unknown21", "type": "UnsignedQword" },
       { "field": "unknown22", "type": "UnsignedByte" },
       { "field": "unknown23", "type": "UnsignedByte" },
       { "field": "unknown24", "type": "UnsignedByte" },
       { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "UnsignedDword" }
+    ],
+    "GetEntitiesResultPointer": [
+      {
+        "field": "entities",
+        "type": "EntitiesResultEntitiesPointer",
+        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
+      },
+      {
+        "field": "entity_uids",
+        "type": "EntitiesResultEntityUIDsPointer",
+        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
+      },
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "UnsignedByte" },
+      { "field": "unknown4", "type": "UnsignedByte" },
+      { "field": "count", "type": "UnsignedDword" }
+    ],
+    "EntitiesResultEntitiesPointer": [
+      { "field": "entity0", "type": "EntityPointer" },
+      { "field": "entity1", "type": "EntityPointer" },
+      { "field": "entity2", "type": "EntityPointer" },
+      { "field": "entity3", "type": "EntityPointer" },
+      { "field": "entity4", "type": "EntityPointer" },
+      { "field": "entity5", "type": "EntityPointer" },
+      { "field": "entity6", "type": "EntityPointer" },
+      { "field": "entity7", "type": "EntityPointer" },
+      { "field": "entity8", "type": "EntityPointer" },
+      { "field": "entity9", "type": "EntityPointer" }
+    ],
+    "EntitiesResultEntityUIDsPointer": [
+      { "field": "entity_uid0", "type": "EntityUID" },
+      { "field": "entity_uid1", "type": "EntityUID" },
+      { "field": "entity_uid2", "type": "EntityUID" },
+      { "field": "entity_uid3", "type": "EntityUID" },
+      { "field": "entity_uid4", "type": "EntityUID" },
+      { "field": "entity_uid5", "type": "EntityUID" },
+      { "field": "entity_uid6", "type": "EntityUID" },
+      { "field": "entity_uid7", "type": "EntityUID" },
+      { "field": "entity_uid8", "type": "EntityUID" },
+      { "field": "entity_uid9", "type": "EntityUID" }
     ],
     "LogicPointer": [
       { "field": "unknown1", "type": "UnsignedQword" },
@@ -4823,12 +4867,16 @@
         "type": "VolcanaRelatedPointer",
         "comment": "size is most likely incorrect"
       },
+      {
+        "field": "tiamat_camp_abzu_hundun_eggplantworld_related",
+        "type": "TiamatInfoPointer"
+      },
       { "field": "olmec_cutscene", "type": "OlmecCutscenePointer" },
       { "field": "tiamat_cutscene", "type": "TiamatCutscenePointer" },
       { "field": "apep_trigger", "type": "ApepTriggerPointer" },
       { "field": "unknown16", "type": "UnsignedQword" },
       { "field": "duat_bosses_trigger", "type": "DuatBossesTriggerPointer" },
-      { "field": "tiamat_related", "type": "TiamatInfoPointer" },
+      { "field": "unknown17", "type": "UnsignedQword" },
       { "field": "tusk_pleasure_palace", "type": "TuskPleasurePalacePointer" },
       {
         "field": "discovery_info",
@@ -4932,11 +4980,11 @@
         }
       },
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "EntityUID" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "EntityUID" },
-      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "floor_challenge_entrance", "type": "EntityUID" },
+      { "field": "floor_challenge_waitroom", "type": "EntityUID" },
       { "field": "challenge_active", "type": "Bool" },
       {
         "field": "forcefield_countdown",
@@ -4961,11 +5009,11 @@
         }
       },
       { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "EntityUID" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "EntityUID" },
-      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "floor_challenge_entrance", "type": "EntityUID" },
+      { "field": "floor_challenge_waitroom", "type": "EntityUID" },
       { "field": "challenge_active", "type": "Bool" },
       {
         "field": "forcefield_countdown",
@@ -4985,7 +5033,7 @@
         "comment": "this appears to be the address after the last torch, like an end iterator"
       },
       { "field": "unknown9", "type": "DataPointer" },
-      { "field": "start_countdown", "type": "UnsignedDword" }
+      { "field": "start_countdown", "type": "UnsignedByte" }
     ],
     "StarChallengeTorchesPointer": [
       { "field": "torch1", "type": "EntityPointer" },
@@ -5010,8 +5058,8 @@
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "EntityUID" },
-      { "field": "unknown6", "type": "EntityUID" },
+      { "field": "floor_challenge_entrance", "type": "EntityUID" },
+      { "field": "floor_challenge_waitroom", "type": "EntityUID" },
       { "field": "challenge_active", "type": "Bool" },
       {
         "field": "forcefield_countdown",
