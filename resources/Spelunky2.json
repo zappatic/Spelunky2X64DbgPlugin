@@ -3181,9 +3181,9 @@
       { "field": "kills_npc", "type": "UnsignedByte" },
       { "field": "level_count", "type": "UnsignedByte" },
       {
-        "field": "unknown1a",
+        "field": "damage_taken",
         "type": "UnsignedByte",
-        "comment": "online dmg count?"
+        "comment": "total amount of damage taken, excluding cause of death"
       },
       { "field": "unknown1b", "type": "UnsignedByte" },
       {
