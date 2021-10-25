@@ -36,6 +36,7 @@ void S2Plugin::ViewStringsTable::initializeUI()
     mMainTableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     mHTMLDelegate->setCenterVertically(true);
+    mMainTableView->setItemDelegateForColumn(gsColStringTableOffset, mHTMLDelegate.get());
     mMainTableView->setItemDelegateForColumn(gsColStringMemoryOffset, mHTMLDelegate.get());
     QObject::connect(mMainTableView, &QTableView::clicked, this, &ViewStringsTable::cellClicked);
     mMainLayout->addWidget(mMainTableView);
@@ -45,6 +46,7 @@ void S2Plugin::ViewStringsTable::initializeUI()
     mModelProxy->setSourceModel(mModel);
     mMainTableView->setModel(mModelProxy);
     mMainTableView->setColumnWidth(gsColStringID, 40);
+    mMainTableView->setColumnWidth(gsColStringTableOffset, 125);
     mMainTableView->setColumnWidth(gsColStringMemoryOffset, 125);
     mMainTableView->setWordWrap(true);
 }
@@ -71,7 +73,12 @@ void S2Plugin::ViewStringsTable::cellClicked(const QModelIndex& index)
     const auto entry = mToolbar->stringsTable()->entryForID(id);
     auto column = mappedIndex.column();
 
-    if (column == gsColStringMemoryOffset)
+    if (column == gsColStringTableOffset)
+    {
+        GuiDumpAt(entry.stringTableOffset);
+        GuiShowCpu();
+    }
+    else if (column == gsColStringMemoryOffset)
     {
         GuiDumpAt(entry.memoryOffset);
         GuiShowCpu();

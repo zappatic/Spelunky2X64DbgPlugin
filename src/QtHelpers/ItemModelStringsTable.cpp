@@ -1,4 +1,5 @@
 #include "QtHelpers/ItemModelStringsTable.h"
+#include "pluginmain.h"
 
 S2Plugin::ItemModelStringsTable::ItemModelStringsTable(StringsTable* stbl, QObject* parent) : QAbstractItemModel(parent), mStringsTable(stbl) {}
 
@@ -16,6 +17,8 @@ QVariant S2Plugin::ItemModelStringsTable::data(const QModelIndex& index, int rol
         {
             case gsColStringID:
                 return entry.id;
+            case gsColStringTableOffset:
+                return QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", entry.stringTableOffset);
             case gsColStringMemoryOffset:
                 return QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", entry.memoryOffset);
             case gsColStringValue:
@@ -32,7 +35,7 @@ int S2Plugin::ItemModelStringsTable::rowCount(const QModelIndex& parent) const
 
 int S2Plugin::ItemModelStringsTable::columnCount(const QModelIndex& parent) const
 {
-    return 3;
+    return 4;
 }
 
 QModelIndex S2Plugin::ItemModelStringsTable::index(int row, int column, const QModelIndex& parent) const
@@ -53,6 +56,8 @@ QVariant S2Plugin::ItemModelStringsTable::headerData(int section, Qt::Orientatio
         {
             case gsColStringID:
                 return "ID";
+            case gsColStringTableOffset:
+                return "Table offset";
             case gsColStringMemoryOffset:
                 return "Memory offset";
             case gsColStringValue:

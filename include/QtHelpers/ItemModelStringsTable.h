@@ -8,8 +8,9 @@
 namespace S2Plugin
 {
     static const uint8_t gsColStringID = 0;
-    static const uint8_t gsColStringMemoryOffset = 1;
-    static const uint8_t gsColStringValue = 2;
+    static const uint8_t gsColStringTableOffset = 1;
+    static const uint8_t gsColStringMemoryOffset = 2;
+    static const uint8_t gsColStringValue = 3;
 
     class ItemModelStringsTable : public QAbstractItemModel
     {

@@ -9,7 +9,8 @@ namespace S2Plugin
     struct StringEntry
     {
         uint32_t id;
-        size_t memoryOffset;
+        size_t stringTableOffset; // pointer into the strings table
+        size_t memoryOffset;      // pointer to the string itself
         QString str;
     };
 
