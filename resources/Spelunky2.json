@@ -7603,15 +7603,15 @@
             "comment": "kills with the 'still falling' death cause"
           },
           "59": {
+            "name": "v59",
+            "params": "",
+            "return": ""
+          },
+          "60": {
             "name": "standing_on",
             "params": "",
             "return": "Entity*",
             "comment": "looks up movable.standing_on_uid in state.instance_id_to_pointer"
-          },
-          "60": {
-            "name": "v60",
-            "params": "",
-            "return": ""
           },
           "61": {
             "name": "on_stomped_on_by",
