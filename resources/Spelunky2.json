@@ -1820,8 +1820,7 @@
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "DataPointer" },
       { "field": "confirmation_panel", "type": "TextureRenderingInfo" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "DataPointer" },
       { "field": "unknown7", "type": "DataPointer" },
       { "field": "unknown8", "type": "UnsignedDword" },
       { "field": "previously_selected_menu_index", "type": "UnsignedDword" },
@@ -4709,7 +4708,11 @@
       { "field": "unknown22", "type": "UnsignedDword" },
       { "field": "unknown23", "type": "Float" },
       { "field": "unknown24", "type": "UnsignedDword" },
-      { "field": "unknown25", "type": "MysteryLiquidPointer3" },
+      {
+        "field": "unknown25",
+        "type": "MysteryLiquidPointer3",
+        "comment": "resets each level"
+      },
       {
         "field": "liquid_flags?",
         "type": "Flags32",
@@ -12564,10 +12567,33 @@
       { "field": "unknown10", "type": "Byte" },
       { "field": "unknown11", "type": "UnsignedDword" },
       { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Float" },
+      { "field": "blob_size", "type": "Float" },
+      { "field": "weight", "type": "Float" },
       { "field": "unknown15", "type": "Float" },
-      { "field": "entity_count", "type": "UnsignedDword" }
+      { "field": "entity_count", "type": "UnsignedDword" },
+      { "field": "allocated_size", "type": "UnsignedDword" },
+      { "field": "unk23", "type": "UnsignedDword" },
+      { "field": "unk1", "type": "DataPointer" },
+      { "field": "unk2", "type": "DataPointer" },
+      {
+        "field": "unk3a",
+        "type": "UnsignedDword",
+        "comment": "interesting stuff seting access bp and spawning some liquid"
+      },
+      {
+        "field": "unk3b",
+        "type": "UnsignedDword",
+        "comment": "padding probably"
+      },
+      { "field": "unk41", "type": "DataPointer" },
+      { "field": "unk42", "type": "DataPointer" },
+      {
+        "field": "unk43",
+        "type": "DataPointer",
+        "comment": "ralated to unk3a"
+      },
+      { "field": "unk44", "type": "DataPointer" },
+      { "field": "list", "type": "DataPointer" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
