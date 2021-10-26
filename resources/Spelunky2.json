@@ -824,6 +824,7 @@
     "ApepTriggerPointer",
     "DuatBossesTriggerPointer",
     "TiamatInfoPointer",
+    "WaterRelatedPointer",
     "TuskPleasurePalacePointer",
     "DiscoveryPointer",
     "BlackMarketDoorPointer",
@@ -1572,8 +1573,9 @@
       },
       { "field": "screen_seed_input", "type": "ScreenSeedInputPointer" },
       {
-        "field": "screen_character_select",
-        "type": "ScreenCharacterSelectPointer"
+        "field": "unknown_screen_character_select?",
+        "type": "DataPointer",
+        "comment": "available in State"
       },
       {
         "field": "unknown_screen_team_select?",
@@ -1591,9 +1593,9 @@
         "comment": "in state there is also screen_level"
       },
       {
-        "field": "unknown_screen_transition?",
-        "type": "DataPointer",
-        "comment": "available in State"
+        "field": "screen_transition",
+        "type": "ScreenTransitionPointer",
+        "comment": "in state there is also screen_transition which is complete (this one isn't)"
       },
       {
         "field": "unknown_screen_death?",
@@ -2062,35 +2064,33 @@
       { "field": "spear_dangler", "type": "TextureRenderingInfo" },
       { "field": "play_scroll", "type": "TextureRenderingInfo" },
       { "field": "info_toast", "type": "TextureRenderingInfo" },
-      { "field": "cthulhu_animation", "type": "DataPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "unknown16", "type": "DataPointer" },
-      { "field": "cthulhu_disc_ring_angle", "type": "Float" },
-      { "field": "cthulhu_disc_split_progress", "type": "Float" },
-      { "field": "cthulhu_disc_y", "type": "Float" },
-      { "field": "cthulhu_timer", "type": "Float" },
-      { "field": "unknown17", "type": "CodePointer" },
+      { "field": "unknown15", "type": "TextureRenderingInfo" },
+      { "field": "unknown16a", "type": "UnsignedDword" },
+      { "field": "unknown16b", "type": "UnsignedDword" },
+      { "field": "unknown16c", "type": "UnsignedDword" },
+      { "field": "unknown16d", "type": "UnsignedDword" },
+      { "field": "unknown16e", "type": "DataPointer" },
+      { "field": "unknown16f", "type": "DataPointer" },
+      { "field": "unknown16g", "type": "Float" },
+      { "field": "unknown16h", "type": "Float" },
+      { "field": "unknown16i", "type": "Float" },
+      { "field": "unknown16j", "type": "UnsignedDword" },
+      { "field": "unknown16k", "type": "DataPointer" },
+      { "field": "unknown17", "type": "DataPointer" },
       { "field": "unknown18", "type": "DataPointer" },
       { "field": "unknown19", "type": "DataPointer" },
       { "field": "unknown20", "type": "DataPointer" },
       { "field": "unknown21", "type": "DataPointer" },
       { "field": "unknown22", "type": "DataPointer" },
-      { "field": "unknown23", "type": "DataPointer" },
-      { "field": "selected_menu_index", "type": "UnsignedDword" },
+      { "field": "buttons?", "type": "DataPointer" },
+      { "field": "unknown23", "type": "UnsignedDword" },
       { "field": "unknown24", "type": "UnsignedDword" },
-      { "field": "unknown25", "type": "UnsignedDword" },
-      { "field": "unknown26", "type": "UnsignedByte" },
-      { "field": "unknown27", "type": "UnsignedByte" },
-      { "field": "unknown28", "type": "UnsignedByte" },
-      { "field": "unknown29", "type": "UnsignedByte" },
-      { "field": "show_toast_text", "type": "Bool" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown30", "type": "Bool" },
-      { "field": "padding4", "type": "UnsignedByte" },
-      { "field": "padding5", "type": "UnsignedByte" },
-      { "field": "padding6", "type": "UnsignedByte" },
+      { "field": "selected_menu_index", "type": "UnsignedDword" },
+      { "field": "unknown26", "type": "UnsignedDword" },
+      { "field": "unknown27", "type": "UnsignedDword" },
+      { "field": "unknown28", "type": "UnsignedDword" },
+      { "field": "unknown29a", "type": "UnsignedDword" },
+      { "field": "unknown29b", "type": "UnsignedDword" },
       { "field": "menu_text_opacity", "type": "Float" },
       { "field": "spear_1_position", "type": "Float" },
       { "field": "spear_2_position", "type": "Float" },
@@ -2098,32 +2098,73 @@
       { "field": "spear_4_position", "type": "Float" },
       { "field": "spear_5_position", "type": "Float" },
       { "field": "spear_6_position", "type": "Float" },
-      { "field": "spear_1_dangler_animation_frame1", "type": "UnsignedDword" },
-      { "field": "spear_1_dangler_animation_frame2", "type": "UnsignedDword" },
-      { "field": "spear_2_dangler_animation_frame1", "type": "UnsignedDword" },
-      { "field": "spear_2_dangler_animation_frame2", "type": "UnsignedDword" },
-      { "field": "spear_3_dangler_animation_frame1", "type": "UnsignedDword" },
-      { "field": "spear_3_dangler_animation_frame2", "type": "UnsignedDword" },
-      { "field": "spear_4_dangler_animation_frame1", "type": "UnsignedDword" },
-      { "field": "spear_4_dangler_animation_frame2", "type": "UnsignedDword" },
-      { "field": "spear_5_dangler_animation_frame1", "type": "UnsignedDword" },
-      { "field": "spear_5_dangler_animation_frame2", "type": "UnsignedDword" },
-      { "field": "spear_6_dangler_animation_frame1", "type": "UnsignedDword" },
-      { "field": "spear_6_dangler_animation_frame2", "type": "UnsignedDword" },
-      { "field": "spear_1_unknown47", "type": "UnsignedDword" },
-      { "field": "spear_2_unknown51", "type": "UnsignedDword" },
-      { "field": "spear_3_unknown52", "type": "UnsignedDword" },
-      { "field": "spear_4_unknown53", "type": "UnsignedDword" },
-      { "field": "spear_5_unknown54", "type": "UnsignedDword" },
-      { "field": "spear_6_unknown55", "type": "UnsignedDword" },
-      { "field": "spear_1_unknown56", "type": "UnsignedDword" },
-      { "field": "spear_2_unknown57", "type": "UnsignedDword" },
-      { "field": "spear_3_unknown58", "type": "UnsignedDword" },
-      { "field": "spear_4_unknown59", "type": "UnsignedDword" },
-      { "field": "spear_5_unknown60", "type": "UnsignedDword" },
-      { "field": "spear_6_unknown61", "type": "UnsignedDword" },
+      {
+        "field": "spear_1_dangler_animation_frame_col",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_1_dangler_animation_frame_row",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_2_dangler_animation_frame_col",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_2_dangler_animation_frame_row",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_3_dangler_animation_frame_col",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_3_dangler_animation_frame_row",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_4_dangler_animation_frame_col",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_4_dangler_animation_frame_row",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_5_dangler_animation_frame_col",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_5_dangler_animation_frame_row",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_6_dangler_animation_frame_col",
+        "type": "UnsignedDword"
+      },
+      {
+        "field": "spear_6_dangler_animation_frame_row",
+        "type": "UnsignedDword"
+      },
+      { "field": "spear_1_dangle_momentum", "type": "Float" },
+      { "field": "spear_2_dangle_momentum", "type": "Float" },
+      { "field": "spear_3_dangle_momentum", "type": "Float" },
+      { "field": "spear_4_dangle_momentum", "type": "Float" },
+      { "field": "spear_5_dangle_momentum", "type": "Float" },
+      { "field": "spear_6_dangle_momentum", "type": "Float" },
+      { "field": "spear_1_dangle_angle", "type": "Float" },
+      { "field": "spear_2_dangle_angle", "type": "Float" },
+      { "field": "spear_3_dangle_angle", "type": "Float" },
+      { "field": "spear_4_dangle_angle", "type": "Float" },
+      { "field": "spear_5_dangle_angle", "type": "Float" },
+      { "field": "spear_6_dangle_angle", "type": "Float" },
       { "field": "play_scroll_descend_timer", "type": "Float" },
-      { "field": "scroll_text", "type": "StringsTableID" }
+      { "field": "scroll_text", "type": "StringsTableID" },
+      { "field": "cthulhu_disc_ring_angle", "type": "Float" },
+      { "field": "cthulhu_disc_split_progress", "type": "Float" },
+      { "field": "cthulhu_disc_y", "type": "Float" },
+      { "field": "cthulhu_timer", "type": "Float" },
+      { "field": "cthulhu_animation", "type": "DataPointer" }
     ],
     "ScreenOptionsPointer": [
       {
@@ -2559,7 +2600,7 @@
       { "field": "top_bottom_woodpanel_slidein_timer", "type": "Float" },
       { "field": "top_scroll_unfurl_timer", "type": "Float" },
       { "field": "unknown28", "type": "Float" },
-      { "field": "unknown29", "type": "UnsignedDword" },
+      { "field": "unknown29", "type": "Float" },
       { "field": "unknown30", "type": "UnsignedDword" },
       { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
       { "field": "top_woodpanel", "type": "TextureRenderingInfo" },
@@ -3365,6 +3406,10 @@
       { "field": "speechbubble_owner", "type": "EntityUID" },
       { "field": "basecamp_dialogue", "type": "Dialogue" },
       {
+        "field": "screen_character_select",
+        "type": "ScreenCharacterSelectPointer"
+      },
+      {
         "field": "screen_team_select",
         "type": "ScreenTeamSelectPointer"
       },
@@ -3656,9 +3701,7 @@
       { "field": "unknown15", "type": "UnsignedDword" },
       { "field": "unknown16", "type": "UnsignedDword" },
       { "field": "unknown17", "type": "UnsignedDword" },
-      { "field": "unknown18", "type": "UnsignedDword" },
-      { "field": "unknown19", "type": "UnsignedDword" },
-      { "field": "unknown20", "type": "UnsignedDword" }
+      { "field": "unknown18", "type": "UnsignedDword" }
     ],
     "DialogueDetailsGroup": [
       { "field": "ana_spelunky", "type": "DialogueDetails" },
@@ -4868,22 +4911,22 @@
         "comment": "size is most likely incorrect"
       },
       {
-        "field": "tiamat_camp_abzu_hundun_eggplantworld_related",
-        "type": "TiamatInfoPointer"
+        "field": "water_related",
+        "type": "WaterRelatedPointer"
       },
       { "field": "olmec_cutscene", "type": "OlmecCutscenePointer" },
       { "field": "tiamat_cutscene", "type": "TiamatCutscenePointer" },
       { "field": "apep_trigger", "type": "ApepTriggerPointer" },
       { "field": "unknown16", "type": "UnsignedQword" },
       { "field": "duat_bosses_trigger", "type": "DuatBossesTriggerPointer" },
-      { "field": "unknown17", "type": "UnsignedQword" },
+      { "field": "tiamat", "type": "TiamatInfoPointer" },
       { "field": "tusk_pleasure_palace", "type": "TuskPleasurePalacePointer" },
       {
         "field": "discovery_info",
         "type": "DiscoveryPointer",
         "comment": "black market, vlad, wet fur discovery; shows the toast"
       },
-      { "field": "black_market_door", "type": "BlackMarketDoorPointer" },
+      { "field": "black_market", "type": "BlackMarketDoorPointer" },
       { "field": "cosmic_ocean", "type": "CosmicOceanPointer" },
       { "field": "arena_1", "type": "Arena1Pointer" },
       { "field": "arena_2", "type": "Arena2Pointer" },
@@ -5091,6 +5134,22 @@
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "DataPointer" },
       { "field": "unknown9", "type": "DataPointer" }
+    ],
+    "WaterRelatedPointer": [
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~WaterRelatedPointer",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "unknown3", "type": "UnsignedByte" }
     ],
     "DiceShopPointer": [
       {
