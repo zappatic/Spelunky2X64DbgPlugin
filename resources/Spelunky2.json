@@ -753,9 +753,9 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
-    "LIQUID_.*LAVA": "Lava",
     "LIQUID_IMPOSTOR_LAKE": "Entity",
     "LIQUID_IMPOSTOR_LAVA": "Entity",
+    "LIQUID_.*LAVA": "Lava",
     //
     "FLOOR_.*": "Floor",
     "FLOORSTYLED_.*": "Floor",
@@ -3358,7 +3358,7 @@
       { "field": "padding12", "type": "UnsignedByte" },
       { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
       { "field": "waddler_floor_storage", "type": "EntityUID" },
-      { "field": "toast", "type": "DataPointer" },
+      { "field": "toast", "type": "SpeechBubblePointer" },
       { "field": "speechbubble", "type": "SpeechBubblePointer" },
       { "field": "speechbubble_timer", "type": "UnsignedDword" },
       { "field": "toast_timer", "type": "UnsignedDword" },
@@ -7489,7 +7489,9 @@
     ],
     "Movable": [
       {
-        "vftablefunctions": {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
           "37": {
             "name": "can_jump",
             "params": "bool",
