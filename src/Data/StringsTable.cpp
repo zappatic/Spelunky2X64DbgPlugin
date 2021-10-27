@@ -40,6 +40,7 @@ bool S2Plugin::StringsTable::loadStringsTable()
 
         StringEntry e;
         e.id = stringIndex;
+        e.stringTableOffset = mStringsTablePtr + (stringIndex * sizeof(size_t));
         e.memoryOffset = stringPointer;
         e.str = QString::fromUtf16(buffer);
         mStringEntries[e.id] = e;
