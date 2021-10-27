@@ -7489,9 +7489,7 @@
     ],
     "Movable": [
       {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
+        "vftablefunctions": {
           "37": {
             "name": "can_jump",
             "params": "bool",
