@@ -908,6 +908,8 @@
     "SaveGameStickerVerticalOffsets",
     "SaveGamePlayers",
     "SaveGameDeathCountLevels",
+    "SaveGameThemesCompleted",
+    "JournalPopupUI",
     "JournalProgression",
     "JournalProgressionSlot",
     "ThemeProgression",
@@ -986,25 +988,86 @@
       "9": "Sunken City",
       "10": "Cosmic Ocean"
     },
-    "buttons_flags_controls": {
-      "1": "Jump",
-      "2": "Attack",
-      "3": "Bomb",
-      "4": "Rope",
-      "5": "Run",
-      "6": "Use door/buy",
-      "7": "-",
-      "8": "-"
+    "buttons_flags_multiplayer_controls": {
+      "1": "P1: Jump",
+      "2": "P1: Attack",
+      "3": "P1: Bomb",
+      "4": "P1: Rope",
+      "5": "P1: Run",
+      "6": "P1: Use door/buy",
+      "7": "P1: -",
+      "8": "P1: Journal",
+      "9": "P2: Jump",
+      "10": "P2: Attack",
+      "11": "P2: Bomb",
+      "12": "P2: Rope",
+      "13": "P2: Run",
+      "14": "P2: Use door/buy",
+      "15": "P2: -",
+      "16": "P2: Journal",
+      "17": "P3: Jump",
+      "18": "P3: Attack",
+      "19": "P3: Bomb",
+      "20": "P3: Rope",
+      "21": "P3: Run",
+      "22": "P3: Use door/buy",
+      "23": "P3: -",
+      "24": "P3: Journal",
+      "25": "P4: Jump",
+      "26": "P4: Attack",
+      "27": "P4: Bomb",
+      "28": "P4: Rope",
+      "29": "P4: Run",
+      "30": "P4: Use door/buy",
+      "31": "P4: -",
+      "32": "P4: Journal"
     },
-    "buttons_flags_movement": {
-      "1": "Left",
-      "2": "Right",
-      "3": "Up",
-      "4": "Down",
+    "buttons_flags_multiplayer_movement": {
+      "1": "P1: Left",
+      "2": "P1: Right",
+      "3": "P1: Up",
+      "4": "P1: Down",
       "5": "-",
       "6": "-",
       "7": "-",
-      "8": "-"
+      "8": "-",
+      "9": "P2: Left",
+      "10": "P2: Right",
+      "11": "P2: Up",
+      "12": "P2: Down",
+      "13": "-",
+      "14": "-",
+      "15": "-",
+      "16": "-",
+      "17": "P3: Left",
+      "18": "P3: Right",
+      "19": "P3: Up",
+      "20": "P3: Down",
+      "21": "-",
+      "22": "-",
+      "23": "-",
+      "24": "-",
+      "25": "P4: Left",
+      "26": "P4: Right",
+      "27": "P4: Up",
+      "28": "P4: Down",
+      "29": "-",
+      "30": "-",
+      "31": "-",
+      "32": "-"
+    },
+    "journal_chapters": {
+      "1": "Player profile",
+      "2": "Journal",
+      "3": "Places",
+      "4": "People",
+      "5": "Bestiary",
+      "6": "Items",
+      "7": "Traps",
+      "8": "Story",
+      "9": "Feats",
+      "10": "Recap",
+      "11": "Death"
     },
     "character_states": {
       "0": "Ana Spelunky",
@@ -1517,44 +1580,14 @@
       { "field": "backgroundmusic", "type": "BackgroundMusicManagerPointer" },
       { "field": "savegame", "type": "SaveGameHeapOffsetPointer" },
       {
-        "field": "buttons_controls_player1",
-        "type": "Flags8",
-        "ref": "buttons_flags_controls"
+        "field": "buttons_controls",
+        "type": "Flags32",
+        "ref": "buttons_flags_multiplayer_controls"
       },
       {
-        "field": "buttons_controls_player2",
-        "type": "Flags8",
-        "ref": "buttons_flags_controls"
-      },
-      {
-        "field": "buttons_controls_player3",
-        "type": "Flags8",
-        "ref": "buttons_flags_controls"
-      },
-      {
-        "field": "buttons_controls_player4",
-        "type": "Flags8",
-        "ref": "buttons_flags_controls"
-      },
-      {
-        "field": "buttons_movement_player1",
-        "type": "Flags8",
-        "ref": "buttons_flags_movement"
-      },
-      {
-        "field": "buttons_movement_player2",
-        "type": "Flags8",
-        "ref": "buttons_flags_movement"
-      },
-      {
-        "field": "buttons_movement_player3",
-        "type": "Flags8",
-        "ref": "buttons_flags_movement"
-      },
-      {
-        "field": "buttons_movement_player4",
-        "type": "Flags8",
-        "ref": "buttons_flags_movement"
+        "field": "buttons_movement",
+        "type": "Flags32",
+        "ref": "buttons_flags_multiplayer_movement"
       },
       { "field": "game_props", "type": "GamePropsPointer" },
       { "field": "screen_logo", "type": "ScreenLogoPointer" },
@@ -1862,22 +1895,7 @@
           "5": "Fading out"
         }
       },
-      {
-        "field": "page_shown",
-        "type": "State8",
-        "states": {
-          "1": "Player profile",
-          "2": "Journal",
-          "3": "Places",
-          "4": "People",
-          "5": "Bestiary",
-          "6": "Items",
-          "7": "Traps",
-          "8": "Story",
-          "9": "Recap",
-          "10": "Death"
-        }
-      },
+      { "field": "chapter_shown", "type": "State8", "ref": "journal_chapters" },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedWord" },
       {
@@ -1920,7 +1938,8 @@
       { "field": "unknown30", "type": "UnsignedDword" }
     ],
     "SaveGameHeapOffsetPointer": [
-      { "field": "heap_offset", "type": "UnsignedQword" }
+      { "field": "heap_offset", "type": "UnsignedQword" },
+      { "field": "journal_popup_ui", "type": "JournalPopupUI" }
     ],
     "ScreenLogoPointer": [
       {
@@ -3048,6 +3067,24 @@
       { "field": "center_panels_horizontal_slide_position", "type": "Float" },
       { "field": "esc_panel_slide_timer", "type": "Float" },
       { "field": "selected_item_index", "type": "UnsignedDword" }
+    ],
+    "JournalPopupUI": [
+      { "field": "wiggling_page_icon", "type": "TextureRenderingInfo" },
+      { "field": "black_background", "type": "TextureRenderingInfo" },
+      { "field": "button_icon", "type": "TextureRenderingInfo" },
+      { "field": "wiggling_page_angle", "type": "Float" },
+      {
+        "field": "chapter_to_show",
+        "type": "State32",
+        "ref": "journal_chapters"
+      },
+      {
+        "field": "entry_to_show",
+        "type": "UnsignedDword",
+        "comment": "use the odd entry for the left hand page"
+      },
+      { "field": "timer", "type": "UnsignedDword" },
+      { "field": "slide_position", "type": "Float" }
     ],
     "State": [
       { "field": "p00", "type": "DataPointer" },
@@ -6450,14 +6487,18 @@
       { "field": "traps", "type": "SaveGameTraps" },
       { "field": "bd2", "type": "Byte" },
       { "field": "bd3", "type": "Byte" },
-      { "field": "best_time_speedrun", "type": "Dword" },
+      { "field": "time_tutorial", "type": "Dword" },
       {
         "field": "last_daily",
         "type": "Skip",
         "offset": 8,
         "comment": "nothing to see here"
       },
-      { "field": "be1", "type": "Byte" },
+      {
+        "field": "show_longer_journal_popup_count",
+        "type": "Byte",
+        "comment": "the next n times the 'Journal entry added' popup is shown, it's shown for 300 frames instead of 180"
+      },
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
       { "field": "padding3", "type": "Byte" },
@@ -6563,7 +6604,7 @@
       { "field": "time_best", "type": "Dword" },
       { "field": "character_deaths", "type": "SaveGameCharacterDeaths" },
       { "field": "pets_rescued", "type": "SaveGamePetsRescued" },
-      { "field": "skip6", "type": "Skip", "offset": 20 },
+      { "field": "completed_themes", "type": "SaveGameThemesCompleted" },
       { "field": "completed_normal", "type": "Bool" },
       { "field": "completed_ironman", "type": "Bool" },
       { "field": "completed_hard", "type": "Bool" },
@@ -7286,6 +7327,40 @@
       { "field": "level252", "type": "UnsignedDword" },
       { "field": "level253", "type": "UnsignedDword" },
       { "field": "level254", "type": "UnsignedDword" }
+    ],
+    "SaveGameThemesCompleted": [
+      {
+        "field": "theme0",
+        "type": "Bool",
+        "comment": "themes are 1-based, so in this array theme zero refers to nothing"
+      },
+      { "field": "dwelling", "type": "Bool" },
+      { "field": "jungle", "type": "Bool" },
+      { "field": "volcana", "type": "Bool" },
+      { "field": "olmec", "type": "Bool" },
+      { "field": "tidepool", "type": "Bool" },
+      { "field": "temple", "type": "Bool" },
+      { "field": "icecaves", "type": "Bool" },
+      {
+        "field": "neobabylon",
+        "type": "Bool",
+        "comment": "due to Tiamat, this only gets triggered when you finish a neobab 7-98"
+      },
+      {
+        "field": "sunkencity",
+        "type": "Bool",
+        "comment": "due to Hundun, this only gets triggered when you finish a sunkencity 7-98"
+      },
+      { "field": "cosmicocean", "type": "Bool" },
+      { "field": "city_of_gold", "type": "Bool" },
+      { "field": "duat", "type": "Bool" },
+      { "field": "abzu", "type": "Bool" },
+      { "field": "tiamat", "type": "Bool" },
+      { "field": "eggplant_world", "type": "Bool" },
+      { "field": "hundun", "type": "Bool" },
+      { "field": "basecamp", "type": "Bool" },
+      { "field": "arena", "type": "Bool" },
+      { "field": "unknown", "type": "Bool" }
     ],
     "LevelGen": [
       { "field": "data", "type": "LevelGenDataPointer" },
