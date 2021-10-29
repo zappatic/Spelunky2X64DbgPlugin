@@ -69,7 +69,6 @@
     "Ammit": "Monster",
     "ApepPart": "Monster",
     "ApepHead": "ApepPart",
-    "ApepBody": "ApepPart",
     "OsirisHead": "Monster",
     "OsirisHand": "Monster",
     "Alien": "Monster",
@@ -174,8 +173,8 @@
     "Liquid": "Entity",
     "Lava": "Liquid",
     "ClimbableRope": "Movable",
-    "Pot": "Container",
-    "Coffin": "Container",
+    "Pot": "Movable",
+    "Coffin": "Movable",
     "SpecialShot": "LightEmitter",
     "Idol": "Movable",
     "Spear": "Movable",
@@ -628,6 +627,7 @@
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
+    "FX_EGGSHIP_CENTERJETFLAME": "EggshipCenterJetFlame",
     "FX_TORNJOURNALPAGE": "FxTornJournalPage",
     "FX_MAIN_EXIT_DOOR": "FxMainExitDoor",
     "FX_BIRDIES": "Birdies",
@@ -658,7 +658,7 @@
     "FX_WATER_DROP": "FxWaterDrop",
     "FX_WATER_SURFACE": "LiquidSurface",
     "FX_KINGU_SLIDING": "FxKinguSliding",
-    "FX_ALIENBLAST.*": "FxAlienBlastReticule",
+    "FX_ALIENBLAST.*": "FxAlienBlast",
     "FX_SPARK_SMALL": "FxSparkSmall",
     "FX_TIAMAT_HEAD": "FxTiamatHead",
     "FX_TIAMAT_TORSO": "FxTiamatTorso",
@@ -753,9 +753,9 @@
     "MOUNT_QILIN": "Qilin",
     "MOUNT_BASECAMP_CHAIR": "Mount",
     "MOUNT_BASECAMP_COUCH": "Mount",
-    "LIQUID_.*LAVA": "Lava",
     "LIQUID_IMPOSTOR_LAKE": "Entity",
     "LIQUID_IMPOSTOR_LAVA": "Entity",
+    "LIQUID_.*LAVA": "Lava",
     //
     "FLOOR_.*": "Floor",
     "FLOORSTYLED_.*": "Floor",
@@ -3443,7 +3443,7 @@
       { "field": "padding12", "type": "UnsignedByte" },
       { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
       { "field": "waddler_floor_storage", "type": "EntityUID" },
-      { "field": "toast", "type": "DataPointer" },
+      { "field": "toast", "type": "SpeechBubblePointer" },
       { "field": "speechbubble", "type": "SpeechBubblePointer" },
       { "field": "speechbubble_timer", "type": "UnsignedDword" },
       { "field": "toast_timer", "type": "UnsignedDword" },
@@ -8383,17 +8383,9 @@
         "type": "UnsignedWord",
         "comment": "Related to taking damage, also drops you from ladder/rope, can't be set while on the ground unless you'r on a mount"
       },
-      {
-        "field": "wet_effect_timer",
-        "type": "UnsignedWord",
-        "comment": "fading the entity to black, similar to dark_shadow_timer"
-      },
+      { "field": "wet_effect_timer", "type": "UnsignedWord" },
       { "field": "poison_tick_timer", "type": "Word" },
-      {
-        "field": "dark_shadow_timer",
-        "type": "UnsignedByte",
-        "comment": "entitity is rendered darker, happens when being on fire/explosion, is this only on fire? like timer for logical on fire effect?"
-      },
+      { "field": "onfire_effect_timer", "type": "UnsignedByte" },
       {
         "field": "exit_invincibility_timer",
         "type": "UnsignedByte",
@@ -9177,7 +9169,7 @@
         "comment": "layer change related"
       },
       {
-        "field": "state",
+        "field": "ghost_behaviour",
         "type": "State8",
         "states": {
           "0": "standard, chasing",
@@ -9914,10 +9906,10 @@
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
         "comment": "alternates between walking and pausing when timer reaches zero"
-      }
+      },
+      { "field": "padding", "type": "Dword" }
     ],
     "Vlad": [
-      { "field": "unknown1", "type": "UnsignedDword" },
       {
         "field": "teleport_cooldown",
         "type": "UnsignedByte",
@@ -10173,7 +10165,6 @@
       { "field": "padding2", "type": "Word" },
       { "field": "padding3", "type": "Dword" }
     ],
-    "ApepBody": [{ "field": "sync?", "type": "UnsignedByte" }],
     "OsirisHead": [
       {
         "field": "right_hand_uid",
@@ -10792,7 +10783,7 @@
     ],
     "Critter": [
       { "field": "last_picked_up_by_uid", "type": "EntityUID" },
-      { "field": "state", "type": "UnsignedByte" },
+      { "field": "holding_state", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" }
@@ -11727,7 +11718,13 @@
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "spark_uid", "type": "EntityUID" }
     ],
-    "TransferFloor": [{ "field": "unknown_map", "type": "UnorderedMap" }],
+    "TransferFloor": [
+      {
+        "field": "transferred_entities",
+        "type": "UnorderedMap",
+        "comment": "unordered_map<int32_t, uint32_t> key is the uid, value is frame entity entered the floor"
+      }
+    ],
     "ConveyorBelt": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "timer", "type": "UnsignedByte", "comment": "0 to 15" },
@@ -11876,6 +11873,7 @@
       { "field": "unk21", "type": "Byte" }
     ],
     "Pot": [
+      { "field": "inside", "type": "EntityDBID" },
       {
         "field": "dont_transfer_dmg",
         "type": "Bool",
@@ -11883,6 +11881,7 @@
       }
     ],
     "Coffin": [
+      { "field": "inside", "type": "EntityDBID" },
       { "field": "timer", "type": "UnsignedByte" },
       { "field": "shake_state?", "type": "Byte" }
     ],
@@ -11970,7 +11969,7 @@
       { "field": "fx_entity", "type": "EntityPointer" },
       { "field": "rotation_center_x", "type": "Float" },
       { "field": "rotation_center_y", "type": "Float" },
-      { "field": "angle", "type": "Float" },
+      { "field": "rotation_angle", "type": "Float" },
       {
         "field": "size",
         "type": "Float",
@@ -12043,7 +12042,7 @@
       }
     ],
     "Treasure": [
-      { "field": "state?", "type": "UnsignedDword" },
+      { "field": "unknown_state", "type": "UnsignedDword" },
       { "field": "cashed", "type": "Bool", "comment": "spawns a dust effect" },
       { "field": "unknown1", "type": "Byte" },
       { "field": "unknown2", "type": "Word" }
@@ -12228,7 +12227,7 @@
     "EggSac": [{ "field": "timer", "type": "UnsignedByte" }],
     "Goldbar": [
       {
-        "field": "unknown_schnie",
+        "field": "unknown_shine",
         "type": "UnsignedByte",
         "comment": "get's updated every time animation_frame is changes by the game, setting it to 64 or less disables the effect"
       }
@@ -12521,7 +12520,7 @@
     "FxCompass": [
       { "field": "unknown1", "type": "Float", "comment": "moving distance" },
       {
-        "field": "angle?",
+        "field": "sine_angle",
         "type": "Float",
         "comment": "counts form 0 to 2*pi, responsible for moving back and forth"
       },
@@ -12629,14 +12628,14 @@
         "comment": "setting it true makes it disappear/fade away"
       },
       {
-        "field": "invert",
+        "field": "inverted",
         "type": "Bool",
         "comment": "goes down instead of up"
       }
     ],
     "FxWaterDrop": [
       {
-        "field": "invert",
+        "field": "inverted",
         "type": "Bool",
         "comment": "floats up instead of drooping down"
       },
@@ -12644,7 +12643,7 @@
       { "field": "unknown2", "type": "Byte" },
       { "field": "unknown3", "type": "Byte" },
       { "field": "unknown4", "type": "Dword" },
-      { "field": "droplet_source", "type": "EntityUID" }
+      { "field": "droplet_source_uid", "type": "EntityUID" }
     ],
     "FxKinguSliding": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" }
@@ -12869,11 +12868,11 @@
     "PoisonedEffect": [
       { "field": "particle_burst", "type": "ParticleEmitterInfoPointer" },
       { "field": "particle_base", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound_timer", "type": "UnsignedWord" },
+      { "field": "burst_timer", "type": "UnsignedWord" },
       {
-        "field": "sound_active",
+        "field": "burst_active",
         "type": "Bool",
-        "comment": "if set to false, it will not play the sound or spawn particles"
+        "comment": "If forced to false, it will not play the sound or spawn burst particles"
       }
     ],
     "CursedEffect": [
@@ -12884,7 +12883,7 @@
       { "field": "target_x", "type": "Float" },
       { "field": "target_y", "type": "Float" },
       { "field": "velocity_x", "type": "Float" },
-      { "field": "velocity_Y", "type": "Float" }
+      { "field": "velocity_y", "type": "Float" }
     ],
     "OuroboroCameraZoomin": [
       {
@@ -13032,8 +13031,8 @@
       }
     ],
     "CrossBeam": [
-      { "field": "attached_to_side", "type": "EntityUID" },
-      { "field": "attached_to_top", "type": "EntityUID" }
+      { "field": "attached_to_side_uid", "type": "EntityUID" },
+      { "field": "attached_to_top_uid", "type": "EntityUID" }
     ],
     "PalaceSign": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
