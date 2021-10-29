@@ -12121,11 +12121,16 @@
       { "field": "player_inputs", "type": "PlayerInputs" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "body", "type": "EntityUID" },
       { "field": "unknown_timer", "type": "UnsignedWord" },
       { "field": "shake_timer", "type": "UnsignedByte" },
       { "field": "boost_timer", "type": "UnsignedByte" },
-      { "field": "unused?", "type": "Dword" },
-      { "field": "unknown", "type": "Qword" }
+      { "field": "unknown_timer2", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3", "type": "Byte" },
+      { "field": "padding4", "type": "Dword" },
+      { "field": "unknown", "type": "DataPointer" }
     ],
     "GhostBreath": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
