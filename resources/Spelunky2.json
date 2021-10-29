@@ -658,7 +658,7 @@
     "FX_WATER_DROP": "FxWaterDrop",
     "FX_WATER_SURFACE": "LiquidSurface",
     "FX_KINGU_SLIDING": "FxKinguSliding",
-    "FX_ALIENBLAST.*": "FxAlienBlastReticule",
+    "FX_ALIENBLAST.*": "FxAlienBlast",
     "FX_SPARK_SMALL": "FxSparkSmall",
     "FX_TIAMAT_HEAD": "FxTiamatHead",
     "FX_TIAMAT_TORSO": "FxTiamatTorso",
@@ -12445,7 +12445,7 @@
     "FxCompass": [
       { "field": "unknown1", "type": "Float", "comment": "moving distance" },
       {
-        "field": "angle?",
+        "field": "sine_angle",
         "type": "Float",
         "comment": "counts form 0 to 2*pi, responsible for moving back and forth"
       },
@@ -12553,14 +12553,14 @@
         "comment": "setting it true makes it disappear/fade away"
       },
       {
-        "field": "invert",
+        "field": "inverted",
         "type": "Bool",
         "comment": "goes down instead of up"
       }
     ],
     "FxWaterDrop": [
       {
-        "field": "invert",
+        "field": "inverted",
         "type": "Bool",
         "comment": "floats up instead of drooping down"
       },
@@ -12568,7 +12568,7 @@
       { "field": "unknown2", "type": "Byte" },
       { "field": "unknown3", "type": "Byte" },
       { "field": "unknown4", "type": "Dword" },
-      { "field": "droplet_source", "type": "EntityUID" }
+      { "field": "droplet_source_uid", "type": "EntityUID" }
     ],
     "FxKinguSliding": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" }
@@ -12793,11 +12793,11 @@
     "PoisonedEffect": [
       { "field": "particle_burst", "type": "ParticleEmitterInfoPointer" },
       { "field": "particle_base", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound_timer", "type": "UnsignedWord" },
+      { "field": "burst_timer", "type": "UnsignedWord" },
       {
-        "field": "sound_active",
+        "field": "burst_active",
         "type": "Bool",
-        "comment": "if set to false, it will not play the sound or spawn particles"
+        "comment": "If forced to false, it will not play the sound or spawn burst particles"
       }
     ],
     "CursedEffect": [
@@ -12808,7 +12808,7 @@
       { "field": "target_x", "type": "Float" },
       { "field": "target_y", "type": "Float" },
       { "field": "velocity_x", "type": "Float" },
-      { "field": "velocity_Y", "type": "Float" }
+      { "field": "velocity_y", "type": "Float" }
     ],
     "OuroboroCameraZoomin": [
       {
@@ -12956,8 +12956,8 @@
       }
     ],
     "CrossBeam": [
-      { "field": "attached_to_side", "type": "EntityUID" },
-      { "field": "attached_to_top", "type": "EntityUID" }
+      { "field": "attached_to_side_uid", "type": "EntityUID" },
+      { "field": "attached_to_top_uid", "type": "EntityUID" }
     ],
     "PalaceSign": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
