@@ -13419,7 +13419,7 @@
       { "field": "unk44", "type": "DataPointer" },
       { "field": "list", "type": "DataPointer" },
       { "field": "unknown45", "type": "UnsignedQword" },
-      { "field": "unknown46", "type": "DataPointer" },
+      { "field": "liquid_flags_array", "type": "DataPointer" },
       { "field": "unknown47", "type": "UnsignedQword" },
       { "field": "entity_coordinates", "type": "DataPointer" },
       { "field": "unknown49", "type": "UnsignedQword" },
