@@ -908,6 +908,12 @@
     "SaveGamePlayers",
     "SaveGameDeathCountLevels",
     "SaveGameThemesCompleted",
+    "SaveGameArenaRuleset",
+    "Constellation",
+    "ConstellationStars",
+    "ConstellationStar",
+    "ConstellationLines",
+    "ConstellationLine",
     "JournalPopupUI",
     "JournalProgression",
     "JournalProgressionSlot",
@@ -1089,6 +1095,124 @@
       "17": "Dirk Yamaoka",
       "18": "Guy Spelunky",
       "19": "Classic Guy"
+    },
+    "arena_timer_states": {
+      "0": "0:30",
+      "1": "1:00",
+      "2": "1:30",
+      "3": "2:00",
+      "4": "2:30",
+      "5": "3:00",
+      "6": "3:30",
+      "7": "4:00",
+      "8": "4:30",
+      "9": "5:00",
+      "10": "5:30",
+      "11": "6:00",
+      "12": "6:30",
+      "13": "7:00",
+      "14": "7:30",
+      "15": "8:00",
+      "16": "8:30",
+      "17": "9:00",
+      "18": "9:30",
+      "19": "10:00",
+      "20": "Infinite"
+    },
+    "arena_timer_ending_states": {
+      "0": "Round Ends",
+      "1": "Death Mist",
+      "2": "Alien Blast",
+      "3": "Loose Bombs",
+      "4": "Ghost",
+      "5": "Random"
+    },
+    "arena_stun_time_states": {
+      "0": "x0.00",
+      "1": "x0.25",
+      "2": "x0.50",
+      "3": "x0.75",
+      "4": "x1.00",
+      "5": "x1.25",
+      "6": "x1.50",
+      "7": "x1.75",
+      "8": "x2.00"
+    },
+    "arena_mount_states": {
+      "0": "None",
+      "1": "Turkey",
+      "2": "Rockdog",
+      "3": "Axolotl",
+      "4": "Random"
+    },
+    "arena_select_states": {
+      "0": "Take Turns",
+      "1": "Loser Picks",
+      "2": "Random Level"
+    },
+    "arena_dark_level_chance_states": {
+      "0": "None",
+      "1": "10%",
+      "2": "50%",
+      "3": "Always"
+    },
+    "arena_crate_frequency_states": {
+      "0": "None",
+      "1": "Low",
+      "2": "Medium",
+      "3": "High",
+      "4": "Very High"
+    },
+    "arena_held_item_states": {
+      "-1": "Nothing",
+      "9": "Torch",
+      "10": "Boomerang",
+      "11": "Machete",
+      "12": "Mattock",
+      "13": "Crossbow",
+      "14": "Webgun",
+      "15": "Freezeray",
+      "16": "Shotgun",
+      "17": "Camera",
+      "18": "Plasma cannon",
+      "19": "Wooden shield",
+      "20": "Metal shield",
+      "21": "Teleporter",
+      "22": "Mine",
+      "23": "Snaptrap",
+      "36": "Excalibur",
+      "37": "Scepter"
+    },
+    "arena_equipped_backitem_states": {
+      "-1": "Nothing",
+      "30": "Cape",
+      "31": "Vlad's cape",
+      "32": "Jetpack",
+      "33": "Hoverpack",
+      "34": "Telepack",
+      "35": "Powerpack"
+    },
+    "arena_whip_damage_states": {
+      "0": "0",
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "10",
+      "7": "99"
+    },
+    "arena_breath_cooldown_states": {
+      "0": "None",
+      "1": "0.25",
+      "2": "0.5",
+      "3": "0.75",
+      "4": "1.0",
+      "5": "1.25",
+      "6": "1.5",
+      "7": "1.75",
+      "8": "2.0",
+      "9": "Breath Off"
     }
   },
 
@@ -1442,7 +1566,7 @@
       { "field": "sound_killed_by_other", "type": "Dword" },
       { "field": "field_a8", "type": "Float" },
       { "field": "field_AC", "type": "Dword" },
-      { "field": "-", "type": "Skip", "offset": 64 }, // 0x40 (AnimationMap)
+      { "field": "animations", "type": "UnorderedMap" },
       { "field": "attachOffsetX", "type": "Float" },
       { "field": "attachOffsetY", "type": "Float" },
       { "field": "init", "type": "UnsignedByte" },
@@ -4110,7 +4234,8 @@
           "1": "Tournament",
           "2": "Joust",
           "3": "Frantic",
-          "4": "Custom"
+          "4": "Custom",
+          "5": "Favorite"
         }
       },
       { "field": "player1_lives", "type": "UnsignedByte" },
@@ -4134,41 +4259,12 @@
       {
         "field": "timer",
         "type": "State8",
-        "states": {
-          "0": "0:30",
-          "1": "1:00",
-          "2": "1:30",
-          "3": "2:00",
-          "4": "2:30",
-          "5": "3:00",
-          "6": "3:30",
-          "7": "4:00",
-          "8": "4:30",
-          "9": "5:00",
-          "10": "5:30",
-          "11": "6:00",
-          "12": "6:30",
-          "13": "7:00",
-          "14": "7:30",
-          "15": "8:00",
-          "16": "8:30",
-          "17": "9:00",
-          "18": "9:30",
-          "19": "10:00",
-          "20": "Infinite"
-        }
+        "ref": "arena_timer_states"
       },
       {
         "field": "timer_ending",
         "type": "State8",
-        "states": {
-          "0": "Round Ends",
-          "1": "Death Mist",
-          "2": "Alien Blast",
-          "3": "Loose Bombs",
-          "4": "Ghost",
-          "5": "Random"
-        }
+        "ref": "arena_timer_ending_states"
       },
       { "field": "wins", "type": "UnsignedByte" },
       { "field": "lives", "type": "UnsignedByte" },
@@ -4184,130 +4280,52 @@
       {
         "field": "stun_time",
         "type": "State8",
-        "states": {
-          "0": "x0.00",
-          "1": "x0.25",
-          "2": "x0.50",
-          "3": "x0.75",
-          "4": "x1.00",
-          "5": "x1.25",
-          "6": "x1.50",
-          "7": "x1.75",
-          "8": "x2.00"
-        }
+        "ref": "arena_stun_time_states"
       },
       {
         "field": "mount",
         "type": "State8",
-        "states": {
-          "0": "None",
-          "1": "Turkey",
-          "2": "Rockdog",
-          "3": "Axolotl",
-          "4": "Random"
-        }
+        "ref": "arena_mount_states"
       },
       {
         "field": "arena_select",
         "type": "State8",
-        "states": {
-          "0": "Take Turns",
-          "1": "Loser Picks",
-          "2": "Random Level"
-        }
+        "ref": "arena_select_states"
       },
       { "field": "arenas", "type": "ArenaConfigArenas" },
       {
         "field": "dark_level_chance",
         "type": "State8",
-        "states": {
-          "0": "None",
-          "1": "10%",
-          "2": "50%",
-          "3": "Always"
-        }
+        "ref": "arena_dark_level_chance_states"
       },
       {
         "field": "crate_frequency",
         "type": "State8",
-        "states": {
-          "0": "None",
-          "1": "Low",
-          "2": "Medium",
-          "3": "High",
-          "4": "Very High"
-        }
+        "ref": "arena_crate_frequency_states"
       },
       { "field": "items_enabled", "type": "ArenaConfigItems" },
       { "field": "items_in_crate", "type": "ArenaConfigItems" },
       {
         "field": "held_item",
         "type": "State8",
-        "states": {
-          "-1": "Nothing",
-          "9": "Torch",
-          "10": "Boomerang",
-          "11": "Machete",
-          "12": "Mattock",
-          "13": "Crossbow",
-          "14": "Webgun",
-          "15": "Freezeray",
-          "16": "Shotgun",
-          "17": "Camera",
-          "18": "Plasma cannon",
-          "19": "Wooden shield",
-          "20": "Metal shield",
-          "21": "Teleporter",
-          "22": "Mine",
-          "23": "Snaptrap",
-          "36": "Excalibur",
-          "37": "Scepter"
-        }
+        "ref": "arena_held_item_states"
       },
       {
         "field": "equipped_backitem",
         "type": "State8",
-        "states": {
-          "-1": "Nothing",
-          "30": "Cape",
-          "31": "Vlad's cape",
-          "32": "Jetpack",
-          "33": "Hoverpack",
-          "34": "Telepack",
-          "35": "Powerpack"
-        }
+        "ref": "arena_equipped_backitem_states"
       },
       { "field": "equipped_items", "type": "ArenaConfigEquippedItems" },
       {
         "field": "whip_damage",
         "type": "State8",
-        "states": {
-          "0": "0",
-          "1": "1",
-          "2": "2",
-          "3": "3",
-          "4": "4",
-          "5": "5",
-          "6": "10",
-          "7": "99"
-        }
+        "ref": "arena_whip_damage_states"
       },
-      { "field": "final_ghost", "type": "UnsignedByte" },
+      { "field": "final_ghost", "type": "Bool" },
       {
         "field": "breath_cooldown",
         "type": "State8",
-        "states": {
-          "0": "None",
-          "1": "0.25",
-          "2": "0.5",
-          "3": "0.75",
-          "4": "1.0",
-          "5": "1.25",
-          "6": "1.5",
-          "7": "1.75",
-          "8": "2.0",
-          "9": "Breath Off"
-        }
+        "ref": "arena_breath_cooldown_states"
       },
       { "field": "punish_ball", "type": "Bool" }
     ],
@@ -6630,7 +6648,202 @@
         "type": "SaveGameStickerVerticalOffsets"
       },
       { "field": "skip8", "type": "Skip", "offset": 40 },
-      { "field": "players", "type": "SaveGamePlayers" }
+      { "field": "players", "type": "SaveGamePlayers" },
+      { "field": "arena_favorite_ruleset", "type": "SaveGameArenaRuleset" },
+      { "field": "constellation", "type": "Constellation" }
+    ],
+    "Constellation": [
+      { "field": "star_count", "type": "UnsignedDword" },
+      { "field": "stars", "type": "ConstellationStars" },
+      { "field": "scale", "type": "Float" },
+      { "field": "line_count", "type": "UnsignedByte" },
+      {
+        "field": "lines",
+        "type": "ConstellationLines",
+        "comment": "You'd only need 44 lines if you have 45 stars, but there is room for 91. Could be to draw two lines on top of each other to make it brighter."
+      },
+      {
+        "field": "line_red_intensity",
+        "type": "Float",
+        "comment": "0 = normal white, npc_kills 8 - 16 = 0.5 - 1.0 (pink to deep red for criminalis)"
+      }
+    ],
+    "ConstellationStars": [
+      { "field": "star_1", "type": "ConstellationStar" },
+      { "field": "star_2", "type": "ConstellationStar" },
+      { "field": "star_3", "type": "ConstellationStar" },
+      { "field": "star_4", "type": "ConstellationStar" },
+      { "field": "star_5", "type": "ConstellationStar" },
+      { "field": "star_6", "type": "ConstellationStar" },
+      { "field": "star_7", "type": "ConstellationStar" },
+      { "field": "star_8", "type": "ConstellationStar" },
+      { "field": "star_9", "type": "ConstellationStar" },
+      { "field": "star_10", "type": "ConstellationStar" },
+      { "field": "star_11", "type": "ConstellationStar" },
+      { "field": "star_12", "type": "ConstellationStar" },
+      { "field": "star_13", "type": "ConstellationStar" },
+      { "field": "star_14", "type": "ConstellationStar" },
+      { "field": "star_15", "type": "ConstellationStar" },
+      { "field": "star_16", "type": "ConstellationStar" },
+      { "field": "star_17", "type": "ConstellationStar" },
+      { "field": "star_18", "type": "ConstellationStar" },
+      { "field": "star_19", "type": "ConstellationStar" },
+      { "field": "star_20", "type": "ConstellationStar" },
+      { "field": "star_21", "type": "ConstellationStar" },
+      { "field": "star_22", "type": "ConstellationStar" },
+      { "field": "star_23", "type": "ConstellationStar" },
+      { "field": "star_24", "type": "ConstellationStar" },
+      { "field": "star_25", "type": "ConstellationStar" },
+      { "field": "star_26", "type": "ConstellationStar" },
+      { "field": "star_27", "type": "ConstellationStar" },
+      { "field": "star_28", "type": "ConstellationStar" },
+      { "field": "star_29", "type": "ConstellationStar" },
+      { "field": "star_30", "type": "ConstellationStar" },
+      { "field": "star_31", "type": "ConstellationStar" },
+      { "field": "star_32", "type": "ConstellationStar" },
+      { "field": "star_33", "type": "ConstellationStar" },
+      { "field": "star_34", "type": "ConstellationStar" },
+      { "field": "star_35", "type": "ConstellationStar" },
+      { "field": "star_36", "type": "ConstellationStar" },
+      { "field": "star_37", "type": "ConstellationStar" },
+      { "field": "star_38", "type": "ConstellationStar" },
+      { "field": "star_39", "type": "ConstellationStar" },
+      { "field": "star_40", "type": "ConstellationStar" },
+      { "field": "star_41", "type": "ConstellationStar" },
+      { "field": "star_42", "type": "ConstellationStar" },
+      { "field": "star_43", "type": "ConstellationStar" },
+      { "field": "star_44", "type": "ConstellationStar" },
+      { "field": "star_45", "type": "ConstellationStar" }
+    ],
+    "ConstellationStar": [
+      {
+        "field": "type",
+        "type": "State32",
+        "states": {
+          "0": "Default plain star",
+          "1": "Starburst effect",
+          "2": "Eggplant bright purple"
+        }
+      },
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "size", "type": "Float" },
+      { "field": "red", "type": "Float" },
+      { "field": "green", "type": "Float" },
+      { "field": "blue", "type": "Float" },
+      { "field": "alpha", "type": "Float" },
+      { "field": "halo_red", "type": "Float" },
+      { "field": "halo_green", "type": "Float" },
+      { "field": "halo_blue", "type": "Float" },
+      { "field": "halo_alpha", "type": "Float" },
+      { "field": "canis_ring", "type": "Bool" },
+      { "field": "fidelis_ring", "type": "Bool" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      {
+        "field": "unknown14",
+        "type": "UnsignedDword",
+        "comment": "might have something to do with how they are laid out on the path, having/being offshoots etc"
+      }
+    ],
+    "ConstellationLines": [
+      { "field": "line_1", "type": "ConstellationLine" },
+      { "field": "line_2", "type": "ConstellationLine" },
+      { "field": "line_3", "type": "ConstellationLine" },
+      { "field": "line_4", "type": "ConstellationLine" },
+      { "field": "line_5", "type": "ConstellationLine" },
+      { "field": "line_6", "type": "ConstellationLine" },
+      { "field": "line_7", "type": "ConstellationLine" },
+      { "field": "line_8", "type": "ConstellationLine" },
+      { "field": "line_9", "type": "ConstellationLine" },
+      { "field": "line_10", "type": "ConstellationLine" },
+      { "field": "line_11", "type": "ConstellationLine" },
+      { "field": "line_12", "type": "ConstellationLine" },
+      { "field": "line_13", "type": "ConstellationLine" },
+      { "field": "line_14", "type": "ConstellationLine" },
+      { "field": "line_15", "type": "ConstellationLine" },
+      { "field": "line_16", "type": "ConstellationLine" },
+      { "field": "line_17", "type": "ConstellationLine" },
+      { "field": "line_18", "type": "ConstellationLine" },
+      { "field": "line_19", "type": "ConstellationLine" },
+      { "field": "line_20", "type": "ConstellationLine" },
+      { "field": "line_21", "type": "ConstellationLine" },
+      { "field": "line_22", "type": "ConstellationLine" },
+      { "field": "line_23", "type": "ConstellationLine" },
+      { "field": "line_24", "type": "ConstellationLine" },
+      { "field": "line_25", "type": "ConstellationLine" },
+      { "field": "line_26", "type": "ConstellationLine" },
+      { "field": "line_27", "type": "ConstellationLine" },
+      { "field": "line_28", "type": "ConstellationLine" },
+      { "field": "line_29", "type": "ConstellationLine" },
+      { "field": "line_30", "type": "ConstellationLine" },
+      { "field": "line_31", "type": "ConstellationLine" },
+      { "field": "line_32", "type": "ConstellationLine" },
+      { "field": "line_33", "type": "ConstellationLine" },
+      { "field": "line_34", "type": "ConstellationLine" },
+      { "field": "line_35", "type": "ConstellationLine" },
+      { "field": "line_36", "type": "ConstellationLine" },
+      { "field": "line_37", "type": "ConstellationLine" },
+      { "field": "line_38", "type": "ConstellationLine" },
+      { "field": "line_39", "type": "ConstellationLine" },
+      { "field": "line_40", "type": "ConstellationLine" },
+      { "field": "line_41", "type": "ConstellationLine" },
+      { "field": "line_42", "type": "ConstellationLine" },
+      { "field": "line_43", "type": "ConstellationLine" },
+      { "field": "line_44", "type": "ConstellationLine" },
+      { "field": "line_45", "type": "ConstellationLine" },
+      { "field": "line_46", "type": "ConstellationLine" },
+      { "field": "line_47", "type": "ConstellationLine" },
+      { "field": "line_48", "type": "ConstellationLine" },
+      { "field": "line_49", "type": "ConstellationLine" },
+      { "field": "line_50", "type": "ConstellationLine" },
+      { "field": "line_51", "type": "ConstellationLine" },
+      { "field": "line_52", "type": "ConstellationLine" },
+      { "field": "line_53", "type": "ConstellationLine" },
+      { "field": "line_54", "type": "ConstellationLine" },
+      { "field": "line_55", "type": "ConstellationLine" },
+      { "field": "line_56", "type": "ConstellationLine" },
+      { "field": "line_57", "type": "ConstellationLine" },
+      { "field": "line_58", "type": "ConstellationLine" },
+      { "field": "line_59", "type": "ConstellationLine" },
+      { "field": "line_60", "type": "ConstellationLine" },
+      { "field": "line_61", "type": "ConstellationLine" },
+      { "field": "line_62", "type": "ConstellationLine" },
+      { "field": "line_63", "type": "ConstellationLine" },
+      { "field": "line_64", "type": "ConstellationLine" },
+      { "field": "line_65", "type": "ConstellationLine" },
+      { "field": "line_66", "type": "ConstellationLine" },
+      { "field": "line_67", "type": "ConstellationLine" },
+      { "field": "line_68", "type": "ConstellationLine" },
+      { "field": "line_69", "type": "ConstellationLine" },
+      { "field": "line_70", "type": "ConstellationLine" },
+      { "field": "line_71", "type": "ConstellationLine" },
+      { "field": "line_72", "type": "ConstellationLine" },
+      { "field": "line_73", "type": "ConstellationLine" },
+      { "field": "line_74", "type": "ConstellationLine" },
+      { "field": "line_75", "type": "ConstellationLine" },
+      { "field": "line_76", "type": "ConstellationLine" },
+      { "field": "line_77", "type": "ConstellationLine" },
+      { "field": "line_78", "type": "ConstellationLine" },
+      { "field": "line_79", "type": "ConstellationLine" },
+      { "field": "line_80", "type": "ConstellationLine" },
+      { "field": "line_81", "type": "ConstellationLine" },
+      { "field": "line_82", "type": "ConstellationLine" },
+      { "field": "line_83", "type": "ConstellationLine" },
+      { "field": "line_84", "type": "ConstellationLine" },
+      { "field": "line_85", "type": "ConstellationLine" },
+      { "field": "line_86", "type": "ConstellationLine" },
+      { "field": "line_87", "type": "ConstellationLine" },
+      { "field": "line_88", "type": "ConstellationLine" },
+      { "field": "line_89", "type": "ConstellationLine" },
+      { "field": "line_90", "type": "ConstellationLine" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" }
+    ],
+    "ConstellationLine": [
+      { "field": "from", "type": "UnsignedByte", "comment": "star index" },
+      { "field": "to", "type": "UnsignedByte" }
     ],
     "SaveGamePlaces": [
       { "field": "Dwelling", "type": "Bool" },
@@ -7361,6 +7574,80 @@
       { "field": "basecamp", "type": "Bool" },
       { "field": "arena", "type": "Bool" },
       { "field": "unknown", "type": "Bool" }
+    ],
+    "SaveGameArenaRuleset": [
+      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "timer", "type": "State8", "ref": "arena_timer_states" },
+      {
+        "field": "timer_ending",
+        "type": "State8",
+        "ref": "arena_timer_ending_states"
+      },
+      { "field": "wins", "type": "UnsignedByte" },
+      { "field": "lives", "type": "UnsignedByte" },
+      { "field": "unknown7", "type": "UnsignedByte" },
+      { "field": "unknown8", "type": "UnsignedByte" },
+      {
+        "field": "unused_player1_idolheld_countdown",
+        "type": "UnsignedWord",
+        "comment": "struct is similar to state.arenas so they just copied it, but this is not useful to store in the savegame"
+      },
+      { "field": "unused_player2_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "unused_player3_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "unused_player4_idolheld_countdown", "type": "UnsignedWord" },
+      { "field": "health", "type": "UnsignedByte" },
+      { "field": "bombs", "type": "UnsignedByte" },
+      { "field": "ropes", "type": "UnsignedByte" },
+      {
+        "field": "stun_time",
+        "type": "State8",
+        "ref": "arena_stun_time_states"
+      },
+      { "field": "mount", "type": "State8", "ref": "arena_mount_states" },
+      {
+        "field": "arena_select",
+        "type": "State8",
+        "ref": "arena_select_states"
+      },
+      { "field": "arenas", "type": "ArenaConfigArenas" },
+      {
+        "field": "dark_level_chance",
+        "type": "State8",
+        "ref": "arena_dark_level_chance_states"
+      },
+      {
+        "field": "crate_frequency",
+        "type": "State8",
+        "ref": "arena_crate_frequency_states"
+      },
+      { "field": "items_enabled", "type": "ArenaConfigItems" },
+      { "field": "items_in_crate", "type": "ArenaConfigItems" },
+      {
+        "field": "held_item",
+        "type": "State8",
+        "ref": "arena_held_item_states"
+      },
+      {
+        "field": "equipped_backitem",
+        "type": "State8",
+        "ref": "arena_equipped_backitem_states"
+      },
+      { "field": "equipped_items", "type": "ArenaConfigEquippedItems" },
+      {
+        "field": "whip_damage",
+        "type": "State8",
+        "ref": "arena_whip_damage_states"
+      },
+      { "field": "final_ghost", "type": "Bool" },
+      {
+        "field": "breath_cooldown",
+        "type": "State8",
+        "ref": "arena_breath_cooldown_states"
+      },
+      { "field": "punish_ball", "type": "Bool" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" }
     ],
     "LevelGen": [
       { "field": "data", "type": "LevelGenDataPointer" },
@@ -13130,7 +13417,15 @@
         "comment": "ralated to unk3a"
       },
       { "field": "unk44", "type": "DataPointer" },
-      { "field": "list", "type": "DataPointer" }
+      { "field": "list", "type": "DataPointer" },
+      { "field": "unknown45", "type": "UnsignedQword" },
+      { "field": "unknown46", "type": "DataPointer" },
+      { "field": "unknown47", "type": "UnsignedQword" },
+      { "field": "entity_coordinates", "type": "DataPointer" },
+      { "field": "unknown49", "type": "UnsignedQword" },
+      { "field": "entity_velocities", "type": "DataPointer" },
+      { "field": "unknown51", "type": "UnsignedQword" },
+      { "field": "unknown52", "type": "DataPointer" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
