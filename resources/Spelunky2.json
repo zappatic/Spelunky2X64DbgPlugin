@@ -1566,7 +1566,7 @@
       { "field": "sound_killed_by_other", "type": "Dword" },
       { "field": "field_a8", "type": "Float" },
       { "field": "field_AC", "type": "Dword" },
-      { "field": "-", "type": "Skip", "offset": 64 }, // 0x40 (AnimationMap)
+      { "field": "animations", "type": "UnorderedMap" },
       { "field": "attachOffsetX", "type": "Float" },
       { "field": "attachOffsetY", "type": "Float" },
       { "field": "init", "type": "UnsignedByte" },
@@ -13423,7 +13423,15 @@
         "comment": "ralated to unk3a"
       },
       { "field": "unk44", "type": "DataPointer" },
-      { "field": "list", "type": "DataPointer" }
+      { "field": "list", "type": "DataPointer" },
+      { "field": "unknown45", "type": "UnsignedQword" },
+      { "field": "unknown46", "type": "DataPointer" },
+      { "field": "unknown47", "type": "UnsignedQword" },
+      { "field": "entity_coordinates", "type": "DataPointer" },
+      { "field": "unknown49", "type": "UnsignedQword" },
+      { "field": "unknown50", "type": "DataPointer" },
+      { "field": "unknown51", "type": "UnsignedQword" },
+      { "field": "unknown52", "type": "DataPointer" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
