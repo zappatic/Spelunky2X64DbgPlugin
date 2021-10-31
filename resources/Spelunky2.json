@@ -4754,8 +4754,8 @@
       { "field": "water_physics", "type": "LiquidPhysicsParams" },
       { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
       { "field": "lava_physics", "type": "LiquidPhysicsParams" },
-      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" },
-      { "field": "coarse_lava_physics", "type": "LiquidPhysicsParams" }
+      { "field": "coarse_lava_physics", "type": "LiquidPhysicsParams" },
+      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" }
     ],
     "LiquidPhysicsParams": [
       {
