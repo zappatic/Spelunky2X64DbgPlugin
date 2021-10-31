@@ -13429,7 +13429,8 @@
       { "field": "entity_velocities", "type": "DataPointer" },
       { "field": "unknown51a", "type": "Dword" },
       { "field": "unknown51b", "type": "Dword", "comment": "probably padding" },
-      { "field": "unknown52", "type": "DataPointer" }
+      { "field": "unknown52", "type": "DataPointer" },
+      { "field": "unknown53", "type": "DataPointer" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
