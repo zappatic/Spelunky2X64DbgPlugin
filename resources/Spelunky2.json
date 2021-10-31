@@ -13429,7 +13429,7 @@
       { "field": "unknown47", "type": "UnsignedQword" },
       { "field": "entity_coordinates", "type": "DataPointer" },
       { "field": "unknown49", "type": "UnsignedQword" },
-      { "field": "unknown50", "type": "DataPointer" },
+      { "field": "entity_velocities", "type": "DataPointer" },
       { "field": "unknown51", "type": "UnsignedQword" },
       { "field": "unknown52", "type": "DataPointer" }
     ],
