@@ -871,8 +871,7 @@
     "SpeechBubbleTimerPointer",
     "SpeechBubbleLayoutPointer",
     "SpeechBubbleLayoutDataPointer",
-    "MysteryLiquidPointer1",
-    "MysteryLiquidPointer2",
+    "STD_ListPointer",
     "MysteryLiquidPointer3",
     "GetEntitiesResultPointer",
     "EntitiesResultEntitiesPointer",
@@ -1144,6 +1143,7 @@
       { "field": "default_b3f", "type": "Byte" },
       { "field": "field_26", "type": "Word" },
       { "field": "rect_collision", "type": "Rect" },
+      { "field": "default_duckmask", "type": "UnsignedDword" },
       {
         "field": "field_3C",
         "type": "Flags32",
@@ -4852,11 +4852,11 @@
         "comment": "DataPointer? seam to get access validation if you change to something"
       },
       {
-        "field": "liquidtile_liquid_amount?",
+        "field": "liquidtile_liquid_amount",
         "type": "UnsignedDword",
-        "comment": "how much liquid will be spawned from tilecode, 1=1x2, 2=2x3, 3=3x4 etc."
+        "comment": "how much liquid will be spawned from tilecode, it's (this + 1) * this"
       },
-      { "field": "distance_between_spawned_droplets", "type": "Float" },
+      { "field": "blobs_separation", "type": "Float" },
       {
         "field": "unknown39",
         "type": "Dword",
@@ -9021,13 +9021,10 @@
       }
     ],
     "Rect": [
-      { "field": "masks", "type": "UnsignedDword" },
-      { "field": "up_minus_down", "type": "Float" },
-      { "field": "side", "type": "Float" },
-      { "field": "up_plus_down", "type": "Float" },
-      { "field": "field_10", "type": "UnsignedByte" },
-      { "field": "field_11", "type": "UnsignedByte" },
-      { "field": "field_12", "type": "UnsignedWord" }
+      { "field": "offsetx", "type": "Float" },
+      { "field": "offsety", "type": "Float" },
+      { "field": "hitboxx", "type": "Float" },
+      { "field": "hitboxy", "type": "Float" }
     ],
     "Arrowtrap": [{ "field": "arrow_shot", "type": "Bool" }],
     "Container": [{ "field": "inside", "type": "EntityDBID" }],
@@ -11864,11 +11861,19 @@
         "comment": "for some reason accesses as Qword?, only updated when the position changes drastically"
       },
       { "field": "y_pos?", "type": "Float" },
-      { "field": "unknown1", "type": "MysteryLiquidPointer1" },
+      {
+        "field": "liquid_id_list_pointer",
+        "type": "STD_ListPointer",
+        "comment": "is it called, iterator?"
+      },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "unknown_timer1", "type": "Byte" },
-      { "field": "unknown_timer2", "type": "Byte" },
+      {
+        "field": "pos_update_timer",
+        "type": "Byte",
+        "comment": "when 0, updates x_pos and y_pos"
+      },
       { "field": "unknown_timer3", "type": "Byte" },
       { "field": "unk21", "type": "Byte" }
     ],
@@ -13068,34 +13073,18 @@
       { "field": "unknown1", "type": "Bool" },
       { "field": "unknown2", "type": "Bool" }
     ],
-    "MysteryLiquidPointer1": [
+    "STD_ListPointer": [
       {
         "field": "prev",
         "type": "DataPointer",
-        "comment": "points to the previos element in this ... array?"
-      },
-      { "field": "unknown", "type": "MysteryLiquidPointer2" },
-      { "field": "liquid_id?", "type": "Dword" },
-      { "field": "unknown4", "type": "Dword", "comment": "garbage?" }
-    ],
-    "MysteryLiquidPointer2": [
-      {
-        "field": "back_pointer",
-        "type": "DataPointer",
-        "comment": "points at the MysteryLiquidPointer1"
-      },
-      { "field": "begin", "type": "DataPointer" },
-      { "field": "end", "type": "DataPointer" },
-      {
-        "field": "next?",
-        "type": "DataPointer",
-        "comment": "pointer to next MysteryLiquidPointer1?"
+        "comment": "points to the previous element in list (STD_ListPointer)"
       },
       {
-        "field": "list",
+        "field": "next",
         "type": "DataPointer",
-        "comment": "lists of all pointers to MysteryLiquidPointer1"
-      }
+        "comment": "points to the next element in list (STD_ListPointer)"
+      },
+      { "field": "liquid_id", "type": "Dword" }
     ],
     "MysteryLiquidPointer3": [
       { "field": "pause_physics", "type": "Bool" },
