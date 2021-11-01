@@ -871,7 +871,7 @@
     "SpeechBubbleTimerPointer",
     "SpeechBubbleLayoutPointer",
     "SpeechBubbleLayoutDataPointer",
-    "STD_ListPointer",
+    "StdListIteratorPointer",
     "MysteryLiquidPointer3",
     "GetEntitiesResultPointer",
     "EntitiesResultEntitiesPointer",
@@ -944,7 +944,8 @@
     "OnlinePlayer",
     "OnlinePlayerShort",
     "OnlineLobby",
-    "OnlineLobbyScreenPlayer"
+    "OnlineLobbyScreenPlayer",
+    "StdList"
   ],
   "refs": {
     "screen_states": {
@@ -12150,7 +12151,7 @@
       { "field": "y_pos?", "type": "Float" },
       {
         "field": "liquid_id_list_pointer",
-        "type": "STD_ListPointer",
+        "type": "StdListIteratorPointer",
         "comment": "is it called, iterator?"
       },
       { "field": "unknown2", "type": "UnsignedWord" },
@@ -13360,18 +13361,22 @@
       { "field": "unknown1", "type": "Bool" },
       { "field": "unknown2", "type": "Bool" }
     ],
-    "STD_ListPointer": [
+    "StdList": [
+      { "field": "back", "type": "StdListIteratorPointer" },
+      { "field": "front", "type": "StdListIteratorPointer" }
+    ],
+    "StdListIteratorPointer": [
       {
         "field": "prev",
         "type": "DataPointer",
-        "comment": "points to the previous element in list (STD_ListPointer)"
+        "comment": "points to the previous element in list (StrListIteratorPointer)"
       },
       {
         "field": "next",
         "type": "DataPointer",
-        "comment": "points to the next element in list (STD_ListPointer)"
+        "comment": "points to the next element in list (StrListIteratorPointer)"
       },
-      { "field": "liquid_id", "type": "Dword" }
+      { "field": "value", "type": "Dword", "comment": "type can varray" }
     ],
     "MysteryLiquidPointer3": [
       { "field": "pause_physics", "type": "Bool" },
@@ -13396,41 +13401,75 @@
       { "field": "unknown15", "type": "Float" },
       { "field": "entity_count", "type": "UnsignedDword" },
       { "field": "allocated_size", "type": "UnsignedDword" },
-      { "field": "unk23", "type": "UnsignedDword" },
-      { "field": "unk1", "type": "DataPointer" },
-      { "field": "unk2", "type": "DataPointer" },
       {
-        "field": "unk3a",
+        "field": "unk23",
         "type": "UnsignedDword",
-        "comment": "interesting stuff seting access bp and spawning some liquid"
+        "comment": "padding probably"
+      },
+      { "field": "unk1", "type": "StdList" },
+      {
+        "field": "resize_value",
+        "type": "UnsignedDword",
+        "comment": "used to resive the arrays"
       },
       {
         "field": "unk3b",
         "type": "UnsignedDword",
         "comment": "padding probably"
       },
-      { "field": "unk41", "type": "DataPointer" },
-      { "field": "unk42", "type": "DataPointer" },
+      { "field": "liquid_ids", "type": "StdList" },
       {
-        "field": "unk43",
-        "type": "DataPointer",
-        "comment": "ralated to unk3a"
+        "field": "unknown44",
+        "type": "StdList",
+        "comment": "all of them are -1"
       },
-      { "field": "unk44", "type": "DataPointer" },
-      { "field": "list", "type": "DataPointer" },
+      {
+        "field": "list",
+        "type": "DataPointer",
+        "comment": "array of all iterators of liquid_ids?"
+      },
       { "field": "unknown45a", "type": "Dword" },
       { "field": "unknown45b", "type": "Dword", "comment": "probably padding" },
-      { "field": "liquid_flags_array", "type": "DataPointer" },
+      {
+        "field": "liquid_flags_array",
+        "type": "DataPointer",
+        "comment": "uint32_t*"
+      },
       { "field": "unknown47a", "type": "Dword" },
       { "field": "unknown47b", "type": "Dword", "comment": "probably padding" },
-      { "field": "entity_coordinates", "type": "DataPointer" },
+      {
+        "field": "entity_coordinates",
+        "type": "DataPointer",
+        "comment": "std::pair<float, float>*"
+      },
       { "field": "unknown49a", "type": "Dword" },
       { "field": "unknown49b", "type": "Dword", "comment": "probably padding" },
-      { "field": "entity_velocities", "type": "DataPointer" },
+      {
+        "field": "entity_velocities",
+        "type": "DataPointer",
+        "comment": "std::pair<float, float>*"
+      },
       { "field": "unknown51a", "type": "Dword" },
       { "field": "unknown51b", "type": "Dword", "comment": "probably padding" },
-      { "field": "unknown52", "type": "DataPointer" },
-      { "field": "unknown53", "type": "DataPointer" }
+      {
+        "field": "unknown52",
+        "type": "DataPointer",
+        "comment": "std::pair<float, float>* ? not sure"
+      },
+      {
+        "field": "unknown53",
+        "type": "DataPointer",
+        "comment": "std::pair<float, float>*"
+      },
+      { "field": "unknown54", "type": "Qword" },
+      {
+        "field": "unknown55",
+        "type": "DataPointer",
+        "comment": "std::pair<float, float>*"
+      },
+      { "field": "unknown56", "type": "Qword" },
+      { "field": "unknown57", "type": "Qword" },
+      { "field": "unknown58", "type": "Qword" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
   }
