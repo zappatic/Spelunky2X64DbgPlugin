@@ -837,6 +837,7 @@
     "UnorderedMapPointer",
     "UnorderedMapBucketPointer",
     "UnorderedMapRecordPointer",
+    "StdVectorPointer",
     "MysteryPointer1",
     "LevelGenDataPointer",
     "ShopRestrictedItemPointer1",
@@ -863,6 +864,8 @@
     "ScreenOnlineLoadingPointer",
     "PauseUIPointer",
     "JournalUIPointer",
+    "JournalPagePointerPointer",
+    "JournalPagePointer",
     "BackgroundMusicManagerPointer",
     "MusicTrackPointer",
     "Ai_func",
@@ -887,6 +890,7 @@
     "Color",
     "Map",
     "UnorderedMap",
+    "StdVector",
     "TextureRenderingInfo",
     "PlayerSlot",
     "PlayerSlotSettings",
@@ -2022,16 +2026,8 @@
       { "field": "chapter_shown", "type": "State8", "ref": "journal_chapters" },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedWord" },
-      {
-        "field": "unknown3",
-        "type": "DataPointer",
-        "comment": "this and below: pointer list of Page objects/contents of the pages"
-      },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
-      { "field": "unknown7", "type": "DataPointer" },
-      { "field": "unknown8", "type": "DataPointer" },
+      { "field": "pages", "type": "StdVector" },
+      { "field": "unknown3", "type": "StdVector" },
       { "field": "current_page", "type": "UnsignedDword" },
       { "field": "flipping_to_page", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "UnsignedDword" },
@@ -2047,7 +2043,9 @@
       { "field": "unknown16", "type": "UnsignedQword" },
       { "field": "unknown17", "type": "UnsignedQword" },
       { "field": "unknown18", "type": "UnsignedQword" },
-      { "field": "unknown19", "type": "DataPointer" },
+      { "field": "unknown19", "type": "UnsignedQword" },
+      { "field": "unknown20", "type": "DataPointer" },
+      { "field": "unknown21", "type": "UnsignedQword" },
       { "field": "book_background", "type": "TextureRenderingInfo" },
       { "field": "arrow_left", "type": "TextureRenderingInfo" },
       { "field": "arrow_right", "type": "TextureRenderingInfo" },
@@ -2060,6 +2058,20 @@
       { "field": "unknown29", "type": "DataPointer" },
       { "field": "unknown31", "type": "Float" },
       { "field": "unknown30", "type": "UnsignedDword" }
+    ],
+    "JournalPagePointerPointer": [
+      { "field": "page", "type": "JournalPagePointer" }
+    ],
+    "JournalPagePointer": [
+      {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": { "name": "~JournalPage", "params": "", "return": "" },
+          "4": { "name": "render", "params": "", "return": "" }
+        }
+      },
+      { "field": "unknown1", "type": "TextureRenderingInfo" }
     ],
     "SaveGameHeapOffsetPointer": [
       { "field": "heap_offset", "type": "UnsignedQword" },
@@ -3646,12 +3658,12 @@
       { "field": "liquid_physics", "type": "LiquidPhysicsPointer" },
       {
         "field": "particle_emitters",
-        "type": "PointerList",
+        "type": "StdVectorPointer",
         "pointer_type": "ParticleEmitterInfoPointer"
       },
       {
         "field": "lightsources",
-        "type": "PointerList",
+        "type": "StdVectorPointer",
         "pointer_type": "IlluminationPointer"
       },
       { "field": "unknown27", "type": "MysteryPointer4" },
@@ -4053,19 +4065,6 @@
       },
       { "field": "shop_owner", "type": "EntityUID" }
     ],
-    "PointerList": [
-      { "field": "begin", "type": "DataPointer" },
-      {
-        "field": "end",
-        "type": "DataPointer",
-        "comment": "one past the last pointer, like end iterator"
-      },
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "items", "type": "PointerListItems" }
-    ],
-    "PointerListItems": [],
     "JournalProgression": [
       { "field": "count", "type": "UnsignedWord" },
       { "field": "slot1", "type": "JournalProgressionSlot" },
@@ -9057,6 +9056,12 @@
         "comment": "Value from the map, obviously type dependent (UnsignedDword just for visualization purposes in plugin)"
       }
     ],
+    "StdVector": [
+      { "field": "data", "type": "DataPointer" },
+      { "field": "end", "type": "DataPointer" },
+      { "field": "end_capacity", "type": "DataPointer" }
+    ],
+    "StdVectorPointer": [{ "field": "vector", "type": "StdVector" }],
     "TextureDB": [
       { "field": "id", "type": "UnsignedQword" },
       { "field": "name", "type": "ConstCharPointerPointer" },

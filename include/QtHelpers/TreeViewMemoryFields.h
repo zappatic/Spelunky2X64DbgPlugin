@@ -45,7 +45,6 @@ namespace S2Plugin
 
       private slots:
         void cellClicked(const QModelIndex& index);
-        void cellCollapsed(const QModelIndex& index);
 
       private:
         ViewToolbar* mToolbar;

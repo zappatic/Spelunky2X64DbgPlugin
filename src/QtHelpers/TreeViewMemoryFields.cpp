@@ -29,7 +29,6 @@ S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, Memor
     setAcceptDrops(false);
 
     QObject::connect(this, &QTreeView::clicked, this, &TreeViewMemoryFields::cellClicked);
-    QObject::connect(this, &QTreeView::collapsed, this, &TreeViewMemoryFields::cellCollapsed);
 }
 
 void S2Plugin::TreeViewMemoryFields::setMemoryMappedData(MemoryMappedData* mmd)
@@ -258,15 +257,6 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
             }
             break;
         }
-        case MemoryFieldType::PointerList:
-        {
-            returnField = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFields(MemoryFieldType::PointerList))
-            {
-                addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
-            }
-            break;
-        }
         case MemoryFieldType::EntitySubclass:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
@@ -445,7 +435,15 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::CodePointer:
         {
             size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
-            auto newHexValue = QString::asprintf("<font color='green'><u>0x%016llX</u></font>", value);
+            QString newHexValue;
+            if (value == 0)
+            {
+                newHexValue = "<font color='#aaa'>nullptr</font>";
+            }
+            else
+            {
+                newHexValue = QString::asprintf("<font color='green'><u>0x%016llX</u></font>", value);
+            }
             itemValue->setData(newHexValue, Qt::DisplayRole);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
@@ -463,7 +461,15 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::DataPointer:
         {
             size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
-            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            QString newHexValue;
+            if (value == 0)
+            {
+                newHexValue = "<font color='#aaa'>nullptr</font>";
+            }
+            else
+            {
+                newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            }
             itemValue->setData(newHexValue, Qt::DisplayRole);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
@@ -1391,71 +1397,6 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
-        case MemoryFieldType::PointerList:
-        {
-            itemField->setData(QString::fromStdString(field.pointerListPointerType), gsRolePointerListPointerType);
-
-            auto value = Script::Memory::ReadQword(memoryOffset);
-            if (value == 0)
-            {
-                itemValue->setData("<font color='#aaa'>nullptr</font>", Qt::DisplayRole);
-            }
-            else
-            {
-                itemValue->setData("<font color='#aaa'>Refresh items by collapsing and reopening the items node</font>", Qt::DisplayRole);
-            }
-
-            if (shouldUpdateChildren)
-            {
-                for (const auto& f : mToolbar->configuration()->typeFields(MemoryFieldType::PointerList))
-                {
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField);
-                }
-            }
-            break;
-        }
-        case MemoryFieldType::PointerListItems:
-        {
-            itemField->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(MemoryFieldType::PointerListItems)), gsRoleFieldType);
-
-            auto parentFieldName = itemField->parent()->data(gsRoleFieldName).toString().toStdString();
-            auto pointerType = itemField->parent()->data(gsRolePointerListPointerType).toString().toStdString();
-
-            if (offsets.count(parentFieldName + ".begin") > 0 && offsets.count(parentFieldName + ".end") > 0)
-            {
-                auto offsetBegin = Script::Memory::ReadQword(offsets.at(parentFieldName + ".begin"));
-                auto offsetEnd = Script::Memory::ReadQword(offsets.at(parentFieldName + ".end"));
-
-                auto addChildren = (!itemField->hasChildren());
-
-                auto count = (offsetEnd - offsetBegin) / sizeof(size_t);
-                for (auto x = 0; x < count; ++x)
-                {
-                    MemoryField f;
-                    f.name = std::to_string(x);
-                    if (gsJSONStringToMemoryFieldTypeMapping.count(pointerType) > 0)
-                    {
-                        f.type = gsJSONStringToMemoryFieldTypeMapping.at(pointerType);
-                    }
-                    else
-                    {
-                        f.type = MemoryFieldType::PointerType;
-                        f.isPointer = true;
-                        f.jsonName = pointerType;
-                    }
-                    auto subItemOffset = offsetBegin + (x * sizeof(size_t));
-                    if (addChildren)
-                    {
-                        addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
-                    }
-
-                    mMemoryMappedData->setOffsetForField(f, fieldNameOverride + "." + f.name, subItemOffset, offsets);
-
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField, true);
-                }
-            }
-            break;
-        }
         case MemoryFieldType::ConstCharPointerPointer:
         {
             constexpr uint16_t bufferSize = 1024;
@@ -1620,7 +1561,10 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             }
             else
             {
-                itemValue->setData("", Qt::DisplayRole);
+                itemValue->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+                itemValueHex->setData(QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value), Qt::DisplayRole);
+                itemValue->setData(value, gsRoleRawValue);
+                itemValueHex->setData(value, gsRoleRawValue);
             }
 
             if (shouldUpdateChildren)
@@ -1685,6 +1629,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::ConstCharPointerPointer:
                 case MemoryFieldType::ConstCharPointer:
                 case MemoryFieldType::DataPointer:
+                case MemoryFieldType::PointerType:
                 {
                     GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
                     GuiShowCpu();
@@ -1901,16 +1846,6 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
             }
             emit memoryFieldValueUpdated(clickedItem->data(gsRoleFieldName).toString());
         }
-    }
-}
-
-void S2Plugin::TreeViewMemoryFields::cellCollapsed(const QModelIndex& index)
-{
-    auto item = mModel->itemFromIndex(index);
-    auto fieldName = item->data(gsRoleFieldType).toString().toStdString();
-    if (fieldName == gsMemoryFieldTypeToStringMapping.at(MemoryFieldType::PointerListItems))
-    {
-        item->removeRows(0, item->rowCount());
     }
 }
 
