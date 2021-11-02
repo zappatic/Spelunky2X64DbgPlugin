@@ -38,8 +38,7 @@ namespace S2Plugin
     static const uint16_t gsRoleFieldName = Qt::UserRole + 16;
     static const uint16_t gsRoleFieldType = Qt::UserRole + 17;
     static const uint16_t gsRoleBaseFieldName = Qt::UserRole + 18;
-    static const uint16_t gsRolePointerListPointerType = Qt::UserRole + 19;
-    static const uint16_t gsRoleEntireMemoryField = Qt::UserRole + 20;
+    static const uint16_t gsRoleEntireMemoryField = Qt::UserRole + 19;
 
     static const char* gsJSONDragDropMemoryField_UID = "uid";
     static const char* gsJSONDragDropMemoryField_Offset = "offset";
@@ -106,8 +105,6 @@ namespace S2Plugin
         UTF16StringFixedSize,
         UTF8StringFixedSize,
         StringsTableID,
-        PointerList,
-        PointerListItems,
         CharacterDB,
         CharacterDBID,
         VirtualFunctionTable,
@@ -165,8 +162,6 @@ namespace S2Plugin
         {MemoryFieldType::UTF16StringFixedSize, "UTF16StringFixedSize"},
         {MemoryFieldType::UTF8StringFixedSize, "UTF8StringFixedSize"},
         {MemoryFieldType::StringsTableID, "StringsTableID"},
-        {MemoryFieldType::PointerList, "PointerList"},
-        {MemoryFieldType::PointerListItems, "PointerListItems"},
         {MemoryFieldType::CharacterDB, "CharacterDB"},
         {MemoryFieldType::CharacterDBID, "CharacterDBID"},
         {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable"},
@@ -213,8 +208,6 @@ namespace S2Plugin
         {MemoryFieldType::UTF16StringFixedSize, "// "},
         {MemoryFieldType::UTF8StringFixedSize, "// "},
         {MemoryFieldType::StringsTableID, "uint32_t"},
-        {MemoryFieldType::PointerList, "PointerList"},
-        {MemoryFieldType::PointerListItems, "// ignore"},
         {MemoryFieldType::CharacterDB, "CharacterDB*"},
         {MemoryFieldType::CharacterDBID, "uint8_t"},
         {MemoryFieldType::VirtualFunctionTable, "size_t"},
@@ -269,8 +262,6 @@ namespace S2Plugin
         {"UTF16StringFixedSize", MemoryFieldType::UTF16StringFixedSize},
         {"UTF8StringFixedSize", MemoryFieldType::UTF8StringFixedSize},
         {"StringsTableID", MemoryFieldType::StringsTableID},
-        {"PointerList", MemoryFieldType::PointerList},
-        {"PointerListItems", MemoryFieldType::PointerListItems},
         {"CharacterDB", MemoryFieldType::CharacterDB},
         {"CharacterDBID", MemoryFieldType::CharacterDBID},
         {"VirtualFunctionTable", MemoryFieldType::VirtualFunctionTable},
@@ -297,7 +288,6 @@ namespace S2Plugin
         std::string comment;
         std::string parentPointerJsonName;
         std::string parentStructJsonName;
-        std::string pointerListPointerType;
         std::string virtualFunctionTableType;
         bool isPointer = false;
         bool isInlineStruct = false;
