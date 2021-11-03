@@ -878,7 +878,9 @@
     "MysteryLiquidPointer3",
     "GetEntitiesResultPointer",
     "EntitiesResultEntitiesPointer",
-    "EntitiesResultEntityUIDsPointer"
+    "EntitiesResultEntityUIDsPointer",
+    "MysteryLiquidPointer1",
+    "MysteryLiquidPointer2"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -4818,7 +4820,7 @@
       { "field": "top", "type": "Float" }
     ],
     "LiquidPhysicsPointer": [
-      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown1", "type": "MysteryLiquidPointer1" },
       { "field": "water_physics", "type": "LiquidPhysicsParams" },
       { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
       { "field": "lava_physics", "type": "LiquidPhysicsParams" },
@@ -4931,7 +4933,7 @@
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" },
       { "field": "unknown33", "type": "UnsignedDword" },
-      { "field": "unknown34", "type": "DataPointer" },
+      { "field": "unknown34", "type": "MysteryLiquidPointer2" },
       {
         "field": "unknown35",
         "type": "DataPointer",
@@ -4945,7 +4947,7 @@
       { "field": "blobs_separation", "type": "Float" },
       {
         "field": "unknown39",
-        "type": "Dword",
+        "type": "Float",
         "comment": "is the last 4 garbage? seams not accessed"
       },
       { "field": "unknown40", "type": "Float" },
@@ -13434,6 +13436,7 @@
       { "field": "unknown1", "type": "Bool" },
       { "field": "unknown2", "type": "Bool" }
     ],
+    "EggShipDoorS": [{ "field": "entered", "type": "Bool" }],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
@@ -13544,6 +13547,34 @@
       { "field": "unknown57", "type": "Qword" },
       { "field": "unknown58", "type": "Qword" }
     ],
-    "EggShipDoorS": [{ "field": "entered", "type": "Bool" }]
+    "MysteryLiquidPointer1": [
+      {
+        "field": "unknown1",
+        "type": "DataPointer",
+        "comment": "some sort of array?"
+      },
+      {
+        "field": "unknown2",
+        "type": "Dword",
+        "comment": "related to the level size?"
+      },
+      { "field": "unknown3", "type": "Dword" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "DataPointer" },
+      { "field": "unknown7", "type": "DataPointer" },
+      { "field": "unknown8", "type": "DataPointer" },
+      {
+        "field": "unknown9",
+        "type": "DataPointer",
+        "comment": "array of entities? removed ones?"
+      },
+      { "field": "unknown10", "type": "DataPointer", "comment": "map?" },
+      { "field": "unknown11", "type": "Qword" }
+    ],
+    "MysteryLiquidPointer2": [
+      { "field": "last_spawn_liquid", "type": "EntityPointer" },
+      { "field": "unknown2", "type": "Qword", "comment": "counter? offset?" }
+    ]
   }
 }
