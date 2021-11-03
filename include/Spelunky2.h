@@ -91,6 +91,7 @@ namespace S2Plugin
         TextureDBID,
         TextureDBPointer,
         Vector,
+        StdVector,
         ConstCharPointer,
         ConstCharPointerPointer,
         EntitySubclass,               // a subclass of an entity defined in json
@@ -99,6 +100,7 @@ namespace S2Plugin
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
         LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
+        JournalPagePointer,           // used to make journal page in vector clickable
         ThemeInfoName,
         LevelGenPointer,
         UTF16Char,
@@ -149,6 +151,7 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBID, "TextureDB ID"},
         {MemoryFieldType::TextureDBPointer, "TextureDB pointer"},
         {MemoryFieldType::Vector, "Vector"},
+        {MemoryFieldType::StdVector, "StdVector"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::ConstCharPointer, "Const char*"},
         {MemoryFieldType::PointerType, "Pointer"},
@@ -156,6 +159,7 @@ namespace S2Plugin
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer"},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer"},
+        {MemoryFieldType::JournalPagePointer, "JournalPagePointer"},
         {MemoryFieldType::ThemeInfoName, "ThemeInfoName"},
         {MemoryFieldType::LevelGenPointer, "LevelGenPointer"},
         {MemoryFieldType::UTF16Char, "UTF16Char"},
@@ -198,11 +202,13 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBID, "uint32_t"},
         {MemoryFieldType::TextureDBPointer, "Texture*"},
         {MemoryFieldType::Vector, "Vector"},
+        {MemoryFieldType::StdVector, "std::vector<T>"},
         {MemoryFieldType::ConstCharPointerPointer, "const char**"},
         {MemoryFieldType::ConstCharPointer, "const char*"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "ThemeInfo*"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRooms*"},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMeta*"},
+        {MemoryFieldType::JournalPagePointer, "JournalPage*"},
         {MemoryFieldType::LevelGenPointer, "LevelGen*"},
         {MemoryFieldType::UTF16Char, "uint16_t"},
         {MemoryFieldType::UTF16StringFixedSize, "// "},
@@ -251,11 +257,13 @@ namespace S2Plugin
         {"TextureDBID", MemoryFieldType::TextureDBID},
         {"TextureDBPointer", MemoryFieldType::TextureDBPointer},
         {"Vector", MemoryFieldType::Vector},
+        {"StdVector", MemoryFieldType::StdVector},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"ConstCharPointer", MemoryFieldType::ConstCharPointer},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
         {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},
+        {"JournalPagePointer", MemoryFieldType::JournalPagePointer},
         {"ThemeInfoName", MemoryFieldType::ThemeInfoName},
         {"LevelGenPointer", MemoryFieldType::LevelGenPointer},
         {"UTF16Char", MemoryFieldType::UTF16Char},
@@ -289,6 +297,7 @@ namespace S2Plugin
         std::string parentPointerJsonName;
         std::string parentStructJsonName;
         std::string virtualFunctionTableType;
+        std::string vectorType;
         bool isPointer = false;
         bool isInlineStruct = false;
     };

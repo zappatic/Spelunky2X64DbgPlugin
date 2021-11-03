@@ -4,12 +4,14 @@
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewGameManager.h"
+#include "Views/ViewJournalPage.h"
 #include "Views/ViewLevelGen.h"
 #include "Views/ViewLogger.h"
 #include "Views/ViewOnline.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewSaveGame.h"
 #include "Views/ViewState.h"
+#include "Views/ViewStdVector.h"
 #include "Views/ViewStringsTable.h"
 #include "Views/ViewTextureDB.h"
 #include "Views/ViewVirtualFunctions.h"
@@ -267,6 +269,20 @@ void S2Plugin::ViewToolbar::showLogger()
 void S2Plugin::ViewToolbar::showVirtualFunctions(size_t offset, const std::string& typeName)
 {
     auto w = new ViewVirtualFunctions(typeName, offset, this, this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
+}
+
+void S2Plugin::ViewToolbar::showStdVector(size_t offset, const std::string& typeName)
+{
+    auto w = new ViewStdVector(this, typeName, offset, this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
+}
+
+void S2Plugin::ViewToolbar::showJournalPage(size_t offset, const std::string& pageType)
+{
+    auto w = new ViewJournalPage(this, offset, pageType, this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }

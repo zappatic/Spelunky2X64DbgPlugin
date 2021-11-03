@@ -165,6 +165,19 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = MemoryFieldType::VirtualFunctionTable;
                 memField.virtualFunctionTableType = key;
             }
+            else if (fieldTypeStr == "StdVector")
+            {
+                memField.type = MemoryFieldType::StdVector;
+                if (field.contains("vectortype"))
+                {
+                    memField.vectorType = field["vectortype"].get<std::string>();
+                }
+                else
+                {
+                    memField.vectorType = "UnsignedQword";
+                    dprintf("No vectortype specified for StdVector %s\n", key.c_str());
+                }
+            }
             else
             {
                 if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
@@ -318,6 +331,11 @@ bool S2Plugin::Configuration::isPointer(const std::string& type) const
 bool S2Plugin::Configuration::isInlineStruct(const std::string& type) const
 {
     return (mTypeFieldsInlineStructs.count(type) > 0);
+}
+
+bool S2Plugin::Configuration::isBuiltInType(const std::string& type) const
+{
+    return (gsJSONStringToMemoryFieldTypeMapping.count(type) > 0);
 }
 
 S2Plugin::Spelunky2* S2Plugin::Configuration::spelunky2() const noexcept

@@ -30,6 +30,7 @@ namespace S2Plugin
         bool isEntitySubclass(const std::string& type) const;
         bool isPointer(const std::string& type) const;
         bool isInlineStruct(const std::string& type) const;
+        bool isBuiltInType(const std::string& type) const;
 
         std::string flagTitle(const std::string& fieldName, uint8_t flagNumber);
         std::string stateTitle(const std::string& fieldName, int64_t state);

@@ -62,6 +62,8 @@ namespace S2Plugin
         void showLogger();
         void showVirtualFunctions(size_t offset, const std::string& typeName);
         void showOnline();
+        void showStdVector(size_t offset, const std::string& typeName);
+        void showJournalPage(size_t offset, const std::string& pageType);
         void clearLabels();
         void reloadConfig();
 

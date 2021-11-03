@@ -154,6 +154,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::LevelGenRoomsPointer:
         case MemoryFieldType::LevelGenRoomsMetaPointer:
+        case MemoryFieldType::JournalPagePointer:
         case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::Vector:
         case MemoryFieldType::UTF16Char:
@@ -1516,6 +1517,12 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             // no comparison in Entity
             break;
         }
+        case MemoryFieldType::JournalPagePointer:
+        {
+            itemValue->setData("<font color='blue'><u>Show journal page</u></font>", Qt::DisplayRole);
+            // no comparison in Entity
+            break;
+        }
         case MemoryFieldType::ThemeInfoName:
         {
             if (memoryOffset == 0)
@@ -1535,6 +1542,22 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 }
             }
             // no comparison in Entity
+            break;
+        }
+        case MemoryFieldType::StdVector:
+        {
+            itemValue->setData("<font color='blue'><u>Show contents</u></font>", Qt::DisplayRole);
+            itemValue->setData(memoryOffset, gsRoleRawValue);
+            itemValue->setData(QString::fromStdString(field.vectorType), gsRoleFieldType);
+            // no comparison in Entity
+
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
+                }
+            }
             break;
         }
         case MemoryFieldType::Skip:
@@ -1760,6 +1783,16 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     }
                     break;
                 }
+                case MemoryFieldType::StdVector:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    auto fieldType = clickedItem->data(gsRoleFieldType).toString().toStdString();
+                    if (offset != 0)
+                    {
+                        mToolbar->showStdVector(offset, fieldType);
+                    }
+                    break;
+                }
                 case MemoryFieldType::ParticleDBPointer:
                 {
                     auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
@@ -1841,6 +1874,12 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::LevelGenRoomsMetaPointer:
                 {
                     emit levelGenRoomsPointerClicked(clickedItem->data(gsRoleFieldName).toString());
+                    break;
+                }
+                case MemoryFieldType::JournalPagePointer:
+                {
+                    auto address = Script::Memory::ReadQword(clickedItem->data(gsRoleMemoryOffset).toULongLong());
+                    mToolbar->showJournalPage(address, "JournalPage");
                     break;
                 }
             }

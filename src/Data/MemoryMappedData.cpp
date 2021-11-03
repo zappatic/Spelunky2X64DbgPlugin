@@ -58,6 +58,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::LevelGenPointer:          // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::LevelGenRoomsPointer:     // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::LevelGenRoomsMetaPointer: // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::JournalPagePointer:       // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::ThemeInfoName:            // not shown inline in the treeview, so just skip sizeof(size_t)
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
@@ -120,4 +121,19 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         }
     }
     return offset;
+}
+
+size_t S2Plugin::MemoryMappedData::sizeOf(const std::string& typeName)
+{
+    if (mConfiguration->isPointer(typeName))
+    {
+        return sizeof(size_t);
+    }
+
+    MemoryField tmp;
+    tmp.type = gsJSONStringToMemoryFieldTypeMapping.at(typeName); // if not pointer, only works with the built-in types
+
+    std::unordered_map<std::string, size_t> offsetsDummy;
+
+    return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
 }
