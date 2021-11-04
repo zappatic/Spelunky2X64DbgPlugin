@@ -951,7 +951,8 @@
     "OnlinePlayerShort",
     "OnlineLobby",
     "OnlineLobbyScreenPlayer",
-    "StdList"
+    "StdList",
+    "SomeUnknownArray"
   ],
   "refs": {
     "screen_states": {
@@ -12224,11 +12225,7 @@
         "comment": "for some reason accesses as Qword?, only updated when the position changes drastically"
       },
       { "field": "y_pos?", "type": "Float" },
-      {
-        "field": "liquid_id_list_pointer",
-        "type": "StdListIteratorPointer",
-        "comment": "is it called, iterator?"
-      },
+      { "field": "liquid_id_list_pointer", "type": "StdListIteratorPointer" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "unknown_timer1", "type": "Byte" },
@@ -13486,7 +13483,7 @@
       {
         "field": "resize_value",
         "type": "UnsignedDword",
-        "comment": "used to resive the arrays"
+        "comment": "used to resize the arrays"
       },
       {
         "field": "unk3b",
@@ -13501,32 +13498,24 @@
       },
       {
         "field": "list",
-        "type": "DataPointer",
+        "type": "SomeUnknownArray",
         "comment": "array of all iterators of liquid_ids?"
       },
-      { "field": "unknown45a", "type": "Dword" },
-      { "field": "unknown45b", "type": "Dword", "comment": "probably padding" },
       {
         "field": "liquid_flags_array",
-        "type": "DataPointer",
+        "type": "SomeUnknownArray",
         "comment": "uint32_t*"
       },
-      { "field": "unknown47a", "type": "Dword" },
-      { "field": "unknown47b", "type": "Dword", "comment": "probably padding" },
       {
         "field": "entity_coordinates",
-        "type": "DataPointer",
+        "type": "SomeUnknownArray",
         "comment": "std::pair<float, float>*"
       },
-      { "field": "unknown49a", "type": "Dword" },
-      { "field": "unknown49b", "type": "Dword", "comment": "probably padding" },
       {
         "field": "entity_velocities",
-        "type": "DataPointer",
+        "type": "SomeUnknownArray",
         "comment": "std::pair<float, float>*"
       },
-      { "field": "unknown51a", "type": "Dword" },
-      { "field": "unknown51b", "type": "Dword", "comment": "probably padding" },
       {
         "field": "unknown52",
         "type": "DataPointer",
@@ -13545,7 +13534,178 @@
       },
       { "field": "unknown56", "type": "Qword" },
       { "field": "unknown57", "type": "Qword" },
-      { "field": "unknown58", "type": "Qword" }
+      { "field": "unknown58", "type": "Qword" },
+      { "field": "unknown59", "type": "Qword" },
+      { "field": "unknown60", "type": "DataPointer" },
+      {
+        "field": "unknown61",
+        "type": "SomeUnknownArray",
+        "comment": "array of some pointers, amongst them is MysteryLiquidPointer2? maybe?"
+      },
+      { "field": "unknown63a", "type": "Dword" },
+      { "field": "unknown63b", "type": "Dword" },
+      { "field": "unknown64", "type": "SomeUnknownArray", "comment": "array?" },
+      { "field": "unknown66", "type": "SomeUnknownArray", "comment": "array?" },
+      { "field": "unknown68", "type": "SomeUnknownArray", "comment": "array?" },
+      { "field": "unknown70", "type": "SomeUnknownArray", "comment": "array?" },
+      { "field": "unknown72", "type": "DataPointer" },
+      { "field": "unknown73", "type": "DataPointer" },
+      { "field": "entity_count_again?", "type": "Dword" },
+      { "field": "allocated_size_again?", "type": "Dword" },
+      { "field": "unknown75", "type": "DataPointer" },
+      { "field": "unknown76", "type": "DataPointer" },
+      {
+        "field": "unknown77a",
+        "type": "Dword",
+        "comment": "number of liquid particles?"
+      },
+      {
+        "field": "unknown77b",
+        "type": "Dword",
+        "comment": "allocated size related to above one?"
+      },
+      { "field": "unknown78", "type": "DataPointer" },
+      { "field": "unknown79", "type": "DataPointer" },
+      { "field": "unknown80", "type": "Dword" },
+      { "field": "unknown80", "type": "Dword" },
+      { "field": "unknown81", "type": "DataPointer" },
+      { "field": "unknown82", "type": "Qword" },
+      { "field": "unknown83", "type": "Qword" },
+      { "field": "unknown84", "type": "DataPointer" },
+      { "field": "unknown85", "type": "Qword" },
+      { "field": "unknown86", "type": "Qword" },
+      { "field": "unknown87", "type": "DataPointer" },
+      { "field": "unknown88", "type": "SomeUnknownArray", "comment": "array?" },
+      {
+        "field": "unknown90",
+        "type": "SomeUnknownArray",
+        "comment": "array of id's?"
+      },
+      { "field": "unknown92", "type": "Qword" },
+      { "field": "unknown93a", "type": "Byte" },
+      { "field": "unknown93b", "type": "Byte", "comment": "padding probably" },
+      { "field": "unknown93c", "type": "Byte", "comment": "padding probably" },
+      { "field": "unknown93d", "type": "Byte", "comment": "padding probably" },
+      { "field": "unknown93e", "type": "Dword", "comment": "padding probably" },
+      { "field": "unknown94", "type": "Qword" },
+      {
+        "field": "unknown95",
+        "type": "Float",
+        "comment": "LiquidParam->unknown3"
+      },
+      {
+        "field": "unknown95e",
+        "type": "Float",
+        "comment": "LiquidParam->cohesion?, surface tension? setting it to -1 makes the blobs repel each other"
+      },
+      {
+        "field": "current_gavity",
+        "type": "Float",
+        "comment": "LiquidParam->gravity"
+      },
+      {
+        "field": "unknown96",
+        "type": "Float",
+        "comment": "LiquidParam->unknown6"
+      },
+      {
+        "field": "unknown97a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown7"
+      },
+      {
+        "field": "unknown97b",
+        "type": "Float",
+        "comment": "LiquidParam->agitation"
+      },
+      {
+        "field": "unknown98a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown9"
+      },
+      {
+        "field": "unknown98b",
+        "type": "Float",
+        "comment": "LiquidParam->unknown10"
+      },
+      {
+        "field": "unknown99a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown11"
+      },
+      {
+        "field": "unknown99b",
+        "type": "Float",
+        "comment": "LiquidParam->unknown12"
+      },
+      {
+        "field": "unknown100a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown13"
+      },
+      {
+        "field": "unknown100b",
+        "type": "Float",
+        "comment": "LiquidParam->unknown14"
+      },
+      {
+        "field": "unknown101a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown15"
+      },
+      {
+        "field": "unknown101b",
+        "type": "Float",
+        "comment": "LiquidParam->unknown16"
+      },
+      {
+        "field": "unknown102a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown17"
+      },
+      {
+        "field": "unknown102b",
+        "type": "Float",
+        "comment": "LiquidParam->unknown18"
+      },
+      {
+        "field": "unknown103a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown19"
+      },
+      {
+        "field": "unknown103b",
+        "type": "Dword",
+        "comment": "LiquidParam->unknown20"
+      },
+      {
+        "field": "unknown104a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown21"
+      },
+      {
+        "field": "unknown104b",
+        "type": "Dword",
+        "comment": "LiquidParam->unknown22"
+      },
+      {
+        "field": "unknown105a",
+        "type": "Float",
+        "comment": "LiquidParam->unknown23"
+      },
+      {
+        "field": "unknown105b",
+        "type": "Dword",
+        "comment": "LiquidParam->unknown24"
+      },
+      { "field": "unknown106", "type": "DataPointer" },
+      { "field": "unknown107", "type": "DataPointer" },
+      { "field": "unknown108", "type": "Qword" },
+      {
+        "field": "unknown109",
+        "type": "Qword",
+        "comment": "lower is MysteryLiquidPointer3 for coarsewater "
+      }
     ],
     "MysteryLiquidPointer1": [
       {
@@ -13575,6 +13735,11 @@
     "MysteryLiquidPointer2": [
       { "field": "last_spawn_liquid", "type": "EntityPointer" },
       { "field": "unknown2", "type": "Qword", "comment": "counter? offset?" }
+    ],
+    "SomeUnknownArray": [
+      { "field": "array_pointer", "type": "DataPointer" },
+      { "field": "unknown1", "type": "Dword", "comment": "resizing related" },
+      { "field": "padding?", "type": "Dword" }
     ]
   }
 }
