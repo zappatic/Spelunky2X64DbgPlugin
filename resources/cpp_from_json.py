@@ -5,12 +5,15 @@ import urllib.request
 print("Preparing ...")
 
 
-# Download Spelunky2.json from the x64dbg github repo
-#url = "https://gitcdn.link/repo/spelunky-fyi/Spelunky2X64DbgPlugin/master/resources/Spelunky2.json"
-url = "https://raw.githubusercontent.com/spelunky-fyi/Spelunky2X64DbgPlugin/master/resources/Spelunky2.json"
-response = urllib.request.urlopen(url)
-spelunky2json = response.read().decode('utf-8')
-j = json.loads(re.sub("//.*", "", spelunky2json, flags=re.MULTILINE))
+# # Download Spelunky2.json from the x64dbg github repo
+# #url = "https://gitcdn.link/repo/spelunky-fyi/Spelunky2X64DbgPlugin/master/resources/Spelunky2.json"
+# url = "https://raw.githubusercontent.com/spelunky-fyi/Spelunky2X64DbgPlugin/master/resources/Spelunky2.json"
+# response = urllib.request.urlopen(url)
+# spelunky2json = response.read().decode('utf-8')
+# j = json.loads(re.sub("//.*", "", spelunky2json, flags=re.MULTILINE))
+
+json_file = open("Spelunky2.json", "r").read()
+j = json.loads(re.sub("//.*", "", json_file, flags=re.MULTILINE))
 
 
 #default_entity_types = j["default_entity_types"]
@@ -19,7 +22,6 @@ pointer_types = j["pointer_types"]
 inline_struct_types = j["inline_struct_types"]
 all_types = j["fields"]
 
-inline_struct_types.append("PointerList") #fix for the internal PointerList
 entity_class_hierarchy["Entity"]="Entity" #add missing Entity for convenience
 
 # ent_base_types = [  "FLOOR_",
