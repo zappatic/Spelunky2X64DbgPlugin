@@ -21,7 +21,7 @@ bool S2Plugin::State::loadState()
     instructionOffset = Script::Pattern::FindMem(instructionOffset - 25, afterBundleSize, "48 8B");
     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
     auto heapOffsetPtr = instructionOffset + pcOffset + 7;
-    auto heapOffset = Script::Memory::ReadDword(heapOffsetPtr);
+    mHeapOffset = Script::Memory::ReadDword(heapOffsetPtr);
 
     THREADLIST threadList;
     DbgGetThreadList(&threadList);
@@ -33,14 +33,31 @@ bool S2Plugin::State::loadState()
             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
             auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
-            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x120);
-            mStatePtr = heapBase + heapOffset;
+            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + TEBOffset());
+            mStatePtr = heapBase + mHeapOffset;
             break;
         }
     }
 
     refreshOffsets();
     return true;
+}
+
+void S2Plugin::State::loadThreadSpecificState(size_t offset)
+{
+    mStatePtr = offset;
+    refreshOffsets();
+}
+
+uint32_t S2Plugin::State::heapOffset()
+{
+    loadState();
+    return mHeapOffset;
+}
+
+uint32_t S2Plugin::State::TEBOffset() const
+{
+    return 0x120;
 }
 
 std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()

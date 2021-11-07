@@ -13,6 +13,10 @@ namespace S2Plugin
       public:
         explicit State(Configuration* config);
         bool loadState();
+        void loadThreadSpecificState(size_t offset);
+
+        uint32_t heapOffset();
+        uint32_t TEBOffset() const;
 
         std::unordered_map<std::string, size_t>& offsets();
         void refreshOffsets();
@@ -24,6 +28,7 @@ namespace S2Plugin
 
       private:
         size_t mStatePtr = 0;
+        uint32_t mHeapOffset = 0;
         std::unordered_map<std::string, size_t> mMemoryOffsets; // fieldname -> offset of field value in memory
     };
 } // namespace S2Plugin

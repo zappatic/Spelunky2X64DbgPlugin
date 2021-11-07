@@ -18,7 +18,7 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ViewState(ViewToolbar* toolbar, QWidget* parent = nullptr);
+        ViewState(ViewToolbar* toolbar, State* state, QWidget* parent = nullptr);
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -33,6 +33,9 @@ namespace S2Plugin
         void label();
 
       private:
+        ViewToolbar* mToolbar;
+        State* mState;
+
         QVBoxLayout* mMainLayout;
         QHBoxLayout* mRefreshLayout;
         TreeViewMemoryFields* mMainTreeView;
@@ -40,8 +43,6 @@ namespace S2Plugin
         QCheckBox* mAutoRefreshCheckBox;
         QLineEdit* mAutoRefreshIntervalLineEdit;
         std::unique_ptr<QTimer> mAutoRefreshTimer;
-
-        ViewToolbar* mToolbar;
 
         void initializeUI();
     };

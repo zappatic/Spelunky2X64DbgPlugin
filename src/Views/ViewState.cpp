@@ -6,7 +6,7 @@
 #include <QHeaderView>
 #include <QLabel>
 
-S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewState::ViewState(ViewToolbar* toolbar, State* state, QWidget* parent) : QWidget(parent), mToolbar(toolbar), mState(state)
 {
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
@@ -53,7 +53,7 @@ void S2Plugin::ViewState::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewState::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->state(), this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, mState, this);
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
     {
         mMainTreeView->addMemoryField(field, "State." + field.name);
@@ -77,8 +77,8 @@ void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewState::refreshState()
 {
-    mToolbar->state()->refreshOffsets();
-    auto& offsets = mToolbar->state()->offsets();
+    mState->refreshOffsets();
+    auto& offsets = mState->offsets();
     auto deltaReference = offsets.at("State.p00");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
     {
@@ -126,7 +126,7 @@ QSize S2Plugin::ViewState::minimumSizeHint() const
 
 void S2Plugin::ViewState::label()
 {
-    for (const auto& [fieldName, offset] : mToolbar->state()->offsets())
+    for (const auto& [fieldName, offset] : mState->offsets())
     {
         DbgSetAutoLabelAt(offset, fieldName.c_str());
     }

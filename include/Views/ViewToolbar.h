@@ -31,6 +31,7 @@ namespace S2Plugin
         ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl,
                     StringsTable* stbl, Online* online, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
         void showEntity(size_t offset);
+        void showState(State* state);
 
         State* state();
         SaveGame* savegame();
@@ -51,7 +52,7 @@ namespace S2Plugin
         ViewEntityDB* showEntityDB();
         ViewParticleDB* showParticleDB();
         ViewTextureDB* showTextureDB();
-        void showState();
+        void showMainThreadState();
         void showGameManager();
         void showLevelGen();
         void showEntities();
@@ -64,6 +65,7 @@ namespace S2Plugin
         void showOnline();
         void showStdVector(size_t offset, const std::string& typeName);
         void showJournalPage(size_t offset, const std::string& pageType);
+        void showThreads();
         void clearLabels();
         void reloadConfig();
 

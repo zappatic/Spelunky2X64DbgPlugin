@@ -1581,6 +1581,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             if (value == 0)
             {
                 itemValue->setData("<font color='#aaa'>nullptr</font>", Qt::DisplayRole);
+                itemValueHex->setData("", Qt::DisplayRole);
             }
             else
             {

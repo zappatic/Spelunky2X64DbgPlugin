@@ -84,6 +84,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewOnline.h
 	include/Views/ViewStdVector.h
 	include/Views/ViewJournalPage.h
+	include/Views/ViewThreads.h
 	include/QtHelpers/StyledItemDelegateHTML.h
 	include/QtHelpers/StyledItemDelegateColorPicker.h
 	include/QtHelpers/TreeViewMemoryFields.h
@@ -143,6 +144,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewOnline.cpp
 	src/Views/ViewStdVector.cpp
 	src/Views/ViewJournalPage.cpp
+	src/Views/ViewThreads.cpp
 	src/QtHelpers/StyledItemDelegateHTML.cpp
 	src/QtHelpers/StyledItemDelegateColorPicker.cpp
 	src/QtHelpers/TreeViewMemoryFields.cpp

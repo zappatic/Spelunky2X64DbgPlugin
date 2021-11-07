@@ -14,6 +14,7 @@
 #include "Views/ViewStdVector.h"
 #include "Views/ViewStringsTable.h"
 #include "Views/ViewTextureDB.h"
+#include "Views/ViewThreads.h"
 #include "Views/ViewVirtualFunctions.h"
 #include "Views/ViewVirtualTable.h"
 #include "pluginmain.h"
@@ -67,7 +68,7 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     auto btnState = new QPushButton(this);
     btnState->setText("State");
     mMainLayout->addWidget(btnState);
-    QObject::connect(btnState, &QPushButton::clicked, this, &ViewToolbar::showState);
+    QObject::connect(btnState, &QPushButton::clicked, this, &ViewToolbar::showMainThreadState);
 
     auto btnEntities = new QPushButton(this);
     btnEntities->setText("Entities");
@@ -108,6 +109,11 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
     btnLogger->setText("Logger");
     mMainLayout->addWidget(btnLogger);
     QObject::connect(btnLogger, &QPushButton::clicked, this, &ViewToolbar::showLogger);
+
+    auto btnThreads = new QPushButton(this);
+    btnThreads->setText("Threads");
+    mMainLayout->addWidget(btnThreads);
+    QObject::connect(btnThreads, &QPushButton::clicked, this, &ViewToolbar::showThreads);
 
     mMainLayout->addStretch();
 
@@ -170,11 +176,16 @@ S2Plugin::ViewCharacterDB* S2Plugin::ViewToolbar::showCharacterDB()
     return nullptr;
 }
 
-void S2Plugin::ViewToolbar::showState()
+void S2Plugin::ViewToolbar::showMainThreadState()
+{
+    showState(mState);
+}
+
+void S2Plugin::ViewToolbar::showState(State* state)
 {
     if (mState->loadState())
     {
-        auto w = new ViewState(this);
+        auto w = new ViewState(this, state);
         mMDIArea->addSubWindow(w);
         w->setVisible(true);
     }
@@ -283,6 +294,13 @@ void S2Plugin::ViewToolbar::showStdVector(size_t offset, const std::string& type
 void S2Plugin::ViewToolbar::showJournalPage(size_t offset, const std::string& pageType)
 {
     auto w = new ViewJournalPage(this, offset, pageType, this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
+}
+
+void S2Plugin::ViewToolbar::showThreads()
+{
+    auto w = new ViewThreads(this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }
