@@ -10,10 +10,9 @@ print("Preparing ...")
 # url = "https://raw.githubusercontent.com/spelunky-fyi/Spelunky2X64DbgPlugin/master/resources/Spelunky2.json"
 # response = urllib.request.urlopen(url)
 # spelunky2json = response.read().decode('utf-8')
-# j = json.loads(re.sub("//.*", "", spelunky2json, flags=re.MULTILINE))
 
-json_file = open("Spelunky2.json", "r").read()
-j = json.loads(re.sub("//.*", "", json_file, flags=re.MULTILINE))
+spelunky2json = open("Spelunky2.json", "r").read()
+j = json.loads(re.sub("//.*", "", spelunky2json, flags=re.MULTILINE))
 
 
 #default_entity_types = j["default_entity_types"]
@@ -22,7 +21,15 @@ pointer_types = j["pointer_types"]
 inline_struct_types = j["inline_struct_types"]
 all_types = j["fields"]
 
-entity_class_hierarchy["Entity"]="Entity" #add missing Entity for convenience
+entity_class_hierarchy["Entity"]="Entity" #add missing 'Entity' type for convenience
+
+# Remove the standard types
+inline_struct_types.remove("Map")
+inline_struct_types.remove("UnorderedMap")
+inline_struct_types.remove("StdVector")
+inline_struct_types.remove("StdList")
+pointer_types.remove("StdListIteratorPointer")
+pointer_types.remove("UnorderedMapBucketPointer")
 
 # ent_base_types = [  "FLOOR_",
                     # "FLOORSTYLED_",
@@ -74,6 +81,14 @@ cpp_types = {
     "UTF16Char": "char16_t",
     "StringsTableID": "STRINGID",
     "CharacterDBID": "uint8_t",
+    "Map": "std::map<?,?>",
+    "UnorderedMap": "std::unordered_map<?,?>",
+    "StdVector": "std::vector<?>",
+    "StdList": "std::list<?>",
+    "StdListIteratorPointer": "std::list<?>::const_iterator",
+    
+    
+    #"UnorderedMapBucketPointer": "",
 }
 
 main_structs = [
