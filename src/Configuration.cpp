@@ -5,6 +5,7 @@
 #include <QFileInfo>
 #include <QString>
 #include <fstream>
+#include <regex>
 
 S2Plugin::Configuration::Configuration()
 {
@@ -280,6 +281,32 @@ const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::ent
 const std::vector<std::pair<std::string, std::string>>& S2Plugin::Configuration::defaultEntityClassTypes() const noexcept
 {
     return mDefaultEntityClassTypes;
+}
+
+std::vector<std::string> S2Plugin::Configuration::classHierarchyOfEntity(const std::string& entityName) const
+{
+    std::vector<std::string> returnSet;
+    std::string entityClass = "";
+    for (const auto& [regexStr, entityClassType] : mDefaultEntityClassTypes)
+    {
+        auto r = std::regex(regexStr);
+        if (std::regex_match(entityName, r))
+        {
+            entityClass = entityClassType;
+            break;
+        }
+    }
+    if (!entityClass.empty())
+    {
+        auto p = entityClass;
+        while (p != "Entity" && p != "")
+        {
+            returnSet.emplace_back(p);
+            p = mEntityClassHierarchy.at(p);
+        }
+    }
+    returnSet.emplace_back("Entity");
+    return returnSet;
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfPointer(const std::string& type) const

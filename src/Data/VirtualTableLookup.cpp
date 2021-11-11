@@ -74,6 +74,11 @@ size_t S2Plugin::VirtualTableLookup::count() const noexcept
     return gsAmountOfPointers;
 }
 
+size_t S2Plugin::VirtualTableLookup::tableStartAddress() const noexcept
+{
+    return mTableStartAddress;
+}
+
 size_t S2Plugin::VirtualTableLookup::tableAddressForEntry(const VirtualTableEntry& entry)
 {
     return mTableStartAddress + (entry.offset * sizeof(size_t));

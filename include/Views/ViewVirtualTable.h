@@ -1,13 +1,15 @@
 #pragma once
 
 #include "Data/VirtualTableLookup.h"
+#include "QtHelpers/ItemModelGatherVirtualData.h"
 #include "QtHelpers/ItemModelVirtualTable.h"
 #include "QtHelpers/StyledItemDelegateHTML.h"
 #include "Views/ViewToolbar.h"
+#include <QCheckBox>
+#include <QLabel>
 #include <QTableView>
 #include <QTableWidget>
 #include <memory>
-
 
 namespace S2Plugin
 {
@@ -17,6 +19,7 @@ namespace S2Plugin
       public:
         ViewVirtualTable(ViewToolbar* toolbar, QWidget* parent = nullptr);
         void showLookupAddress(size_t address);
+        void updateGatherProgress();
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -31,6 +34,13 @@ namespace S2Plugin
         void showSymbollessEntriesCheckBoxStateChanged(int state);
         void filterTextChanged(const QString& text);
         void processLookupAddressText();
+        void gatherEntities();
+        void gatherExtraObjects();
+        void gatherAvailableVirtuals();
+        void exportGatheredData();
+        void exportVirtTable();
+        void exportCppEnum();
+        void showGatherHideCompletedCheckBoxStateChanged(int state);
 
       private:
         ViewToolbar* mToolbar;
@@ -39,6 +49,7 @@ namespace S2Plugin
         QTabWidget* mMainTabWidget;
         QWidget* mTabData;
         QWidget* mTabLookup;
+        QWidget* mTabGather;
 
         // DATA
         QTableView* mDataTable;
@@ -49,6 +60,13 @@ namespace S2Plugin
         // LOOKUP
         QLineEdit* mLookupAddressLineEdit;
         QTableWidget* mLookupResultsTable;
+
+        // GATHER
+        QTableView* mGatherTable;
+        std::unique_ptr<ItemModelGatherVirtualData> mGatherModel;
+        std::unique_ptr<SortFilterProxyModelGatherVirtualData> mGatherSortFilterProxy;
+        QLabel* mGatherProgressLabel;
+        QCheckBox* mHideCompletedCheckbox;
 
         void initializeUI();
         void lookupAddress(size_t address);

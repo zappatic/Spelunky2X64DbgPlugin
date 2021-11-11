@@ -20,6 +20,7 @@ namespace S2Plugin
 
         const std::unordered_map<std::string, std::string>& entityClassHierarchy() const noexcept;
         const std::vector<std::pair<std::string, std::string>>& defaultEntityClassTypes() const noexcept;
+        std::vector<std::string> classHierarchyOfEntity(const std::string& entityName) const;
 
         const std::vector<MemoryField>& typeFields(const MemoryFieldType& type) const;
         const std::vector<MemoryField>& typeFieldsOfEntitySubclass(const std::string& type) const;

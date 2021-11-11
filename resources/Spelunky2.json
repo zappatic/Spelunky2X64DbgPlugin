@@ -8859,7 +8859,7 @@
             "return": "void"
           },
           "2": {
-            "name": "unknown (NEW1.23.3)",
+            "name": "handle_state_machine",
             "params": "",
             "return": "void"
           },
@@ -8962,10 +8962,9 @@
           },
           "23": { "name": "v23", "params": "", "return": "" },
           "24": {
-            "name": "on_check_is_looking_up_while_thrown",
-            "params": "Entity* thrower",
-            "return": "bool",
-            "comment": "used for crates and presents: checks whether looking up to open rather than throw"
+            "name": "on_open",
+            "params": "Entity* opener",
+            "return": "bool"
           },
           "25": {
             "name": "on_attempt_shop_purchase",

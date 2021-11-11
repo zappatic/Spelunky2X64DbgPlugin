@@ -30,6 +30,7 @@ namespace S2Plugin
         void setSymbolNameForOffsetAddress(size_t offsetAddress, const std::string& name);
 
         size_t count() const noexcept;
+        size_t tableStartAddress() const noexcept;
         void reset();
 
       private:

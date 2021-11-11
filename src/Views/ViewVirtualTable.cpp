@@ -2,15 +2,23 @@
 #include "QtHelpers/TableWidgetItemNumeric.h"
 #include "pluginmain.h"
 #include <QCheckBox>
+#include <QClipBoard>
+#include <QFileDialog>
+#include <QGuiApplication>
 #include <QHeaderView>
 #include <QLineEdit>
+#include <QMessageBox>
 #include <QPushButton>
+#include <fstream>
 
 S2Plugin::ViewVirtualTable::ViewVirtualTable(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     mModel = std::make_unique<ItemModelVirtualTable>(toolbar->virtualTableLookup(), this);
     mSortFilterProxy = std::make_unique<SortFilterProxyModelVirtualTable>(toolbar->virtualTableLookup(), this);
+    mGatherModel = std::make_unique<ItemModelGatherVirtualData>(toolbar, this);
+    mGatherSortFilterProxy = std::make_unique<SortFilterProxyModelGatherVirtualData>(toolbar, this);
+    mGatherSortFilterProxy->sort(gsColGatherID);
 
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
@@ -39,8 +47,15 @@ void S2Plugin::ViewVirtualTable::initializeUI()
     mTabLookup->setObjectName("lookupwidget");
     mTabLookup->setStyleSheet("QWidget#lookupwidget {border: 1px solid #999;}");
 
+    mTabGather = new QWidget();
+    mTabGather->setLayout(new QVBoxLayout(mTabGather));
+    mTabGather->layout()->setMargin(10);
+    mTabGather->setObjectName("gatherwidget");
+    mTabGather->setStyleSheet("QWidget#gatherwidget {border: 1px solid #999;}");
+
     mMainTabWidget->addTab(mTabData, "Data");
     mMainTabWidget->addTab(mTabLookup, "Lookup");
+    mMainTabWidget->addTab(mTabGather, "Gather");
 
     // TAB DATA
     {
@@ -123,6 +138,65 @@ void S2Plugin::ViewVirtualTable::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addWidget(mLookupResultsTable);
     }
+
+    // TAB GATHER
+    {
+        auto topLayout = new QHBoxLayout(this);
+
+        auto gatherEntitiesBtn = new QPushButton("Gather entities", this);
+        QObject::connect(gatherEntitiesBtn, &QPushButton::clicked, this, &ViewVirtualTable::gatherEntities);
+        topLayout->addWidget(gatherEntitiesBtn);
+
+        auto gatherExtraObjectsBtn = new QPushButton("Gather extra", this);
+        QObject::connect(gatherExtraObjectsBtn, &QPushButton::clicked, this, &ViewVirtualTable::gatherExtraObjects);
+        topLayout->addWidget(gatherExtraObjectsBtn);
+
+        auto gatherVirtsBtn = new QPushButton("Gather virts", this);
+        QObject::connect(gatherVirtsBtn, &QPushButton::clicked, this, &ViewVirtualTable::gatherAvailableVirtuals);
+        topLayout->addWidget(gatherVirtsBtn);
+
+        mGatherProgressLabel = new QLabel("", this);
+        topLayout->addWidget(mGatherProgressLabel);
+
+        mHideCompletedCheckbox = new QCheckBox("Hide completed", this);
+        QObject::connect(mHideCompletedCheckbox, &QCheckBox::stateChanged, this, &ViewVirtualTable::showGatherHideCompletedCheckBoxStateChanged);
+        topLayout->addWidget(mHideCompletedCheckbox);
+
+        topLayout->addStretch();
+
+        auto exportJSONBtn = new QPushButton("Export JSON", this);
+        QObject::connect(exportJSONBtn, &QPushButton::clicked, this, &ViewVirtualTable::exportGatheredData);
+        topLayout->addWidget(exportJSONBtn);
+
+        auto exportVirtTableBtn = new QPushButton("Export Virt Table", this);
+        QObject::connect(exportVirtTableBtn, &QPushButton::clicked, this, &ViewVirtualTable::exportVirtTable);
+        topLayout->addWidget(exportVirtTableBtn);
+
+        auto exportCppEnumBtn = new QPushButton("Export C++ enum", this);
+        QObject::connect(exportCppEnumBtn, &QPushButton::clicked, this, &ViewVirtualTable::exportCppEnum);
+        topLayout->addWidget(exportCppEnumBtn);
+
+        dynamic_cast<QVBoxLayout*>(mTabGather->layout())->addLayout(topLayout);
+
+        mGatherTable = new QTableView(this);
+        mGatherSortFilterProxy->setSourceModel(mGatherModel.get());
+        mGatherTable->setModel(mGatherSortFilterProxy.get());
+        mGatherTable->setAlternatingRowColors(true);
+        mGatherTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+        mGatherTable->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
+        mGatherTable->verticalHeader()->setDefaultSectionSize(19);
+        mGatherTable->verticalHeader()->setVisible(false);
+        mGatherTable->setItemDelegate(mHTMLDelegate.get());
+        mGatherTable->setColumnWidth(gsColGatherID, 50);
+        mGatherTable->setColumnWidth(gsColGatherName, 200);
+        mGatherTable->setColumnWidth(gsColGatherVirtualTableOffset, 125);
+        mGatherTable->setColumnWidth(gsColGatherCollision1Present, 75);
+        mGatherTable->setColumnWidth(gsColGatherCollision2Present, 75);
+        mGatherTable->horizontalHeader()->setStretchLastSection(true);
+
+        dynamic_cast<QVBoxLayout*>(mTabGather->layout())->addWidget(mGatherTable);
+        updateGatherProgress();
+    }
 }
 
 void S2Plugin::ViewVirtualTable::closeEvent(QCloseEvent* event)
@@ -132,7 +206,7 @@ void S2Plugin::ViewVirtualTable::closeEvent(QCloseEvent* event)
 
 QSize S2Plugin::ViewVirtualTable::sizeHint() const
 {
-    return QSize(550, 650);
+    return QSize(800, 650);
 }
 
 QSize S2Plugin::ViewVirtualTable::minimumSizeHint() const
@@ -278,4 +352,82 @@ void S2Plugin::ViewVirtualTable::lookupAddress(size_t address)
     }
     mLookupResultsTable->setSortingEnabled(true);
     mLookupResultsTable->sortItems(2);
+}
+
+void S2Plugin::ViewVirtualTable::gatherEntities()
+{
+    mGatherModel->gatherEntities();
+    updateGatherProgress();
+}
+
+void S2Plugin::ViewVirtualTable::gatherExtraObjects()
+{
+    mGatherModel->gatherExtraObjects();
+    updateGatherProgress();
+}
+
+void S2Plugin::ViewVirtualTable::gatherAvailableVirtuals()
+{
+    mGatherModel->gatherAvailableVirtuals();
+}
+
+void S2Plugin::ViewVirtualTable::updateGatherProgress()
+{
+    auto progress = mGatherModel->completionPercentage();
+    mGatherProgressLabel->setText(QString("%1% complete").arg(progress));
+}
+
+void S2Plugin::ViewVirtualTable::exportGatheredData()
+{
+    auto fileName = QFileDialog::getSaveFileName(this, "Save gathered data", "Spelunky2VirtualTableData.json", "JSON files (*.json)");
+    if (!fileName.isEmpty())
+    {
+        try
+        {
+            auto fp = std::ofstream(fileName.toStdString());
+            fp << mGatherModel->dumpJSON();
+        }
+        catch (...)
+        {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
+            msgBox.setText("The file could not be written");
+            msgBox.setWindowTitle("Spelunky2");
+            msgBox.exec();
+        }
+    }
+}
+
+void S2Plugin::ViewVirtualTable::exportVirtTable()
+{
+    auto tbl = mGatherModel->dumpVirtTable();
+    auto clipboard = QGuiApplication::clipboard();
+    clipboard->setText(QString::fromStdString(tbl));
+
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
+    msgBox.setText("The table was copied to the clipboard");
+    msgBox.setWindowTitle("Spelunky2");
+    msgBox.exec();
+}
+
+void S2Plugin::ViewVirtualTable::exportCppEnum()
+{
+    auto tbl = mGatherModel->dumpCppEnum();
+    auto clipboard = QGuiApplication::clipboard();
+    clipboard->setText(QString::fromStdString(tbl));
+
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
+    msgBox.setText("The C++ enum was copied to the clipboard");
+    msgBox.setWindowTitle("Spelunky2");
+    msgBox.exec();
+}
+
+void S2Plugin::ViewVirtualTable::showGatherHideCompletedCheckBoxStateChanged(int state)
+{
+    mGatherSortFilterProxy->setHideCompleted(state == Qt::Checked);
 }

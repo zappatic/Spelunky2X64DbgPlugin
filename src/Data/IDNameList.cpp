@@ -81,3 +81,8 @@ size_t S2Plugin::IDNameList::count() const noexcept
 {
     return mEntries.size();
 }
+
+const std::unordered_map<uint32_t, std::string>& S2Plugin::IDNameList::entries() const
+{
+    return mEntries;
+}

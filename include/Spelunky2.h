@@ -285,6 +285,17 @@ namespace S2Plugin
         std::string type;
     };
 
+    enum class VIRT_FUNC
+    {
+        ENTITY_STATEMACHINE = 2,
+        ENTITY_KILL = 3,
+        ENTITY_COLLISION1 = 4,
+        ENTITY_DESTROY = 5,
+        ENTITY_OPEN = 24,
+        ENTITY_COLLISION2 = 26,
+        MOVABLE_DAMAGE = 48,
+    };
+
     struct MemoryField
     {
         std::string name;

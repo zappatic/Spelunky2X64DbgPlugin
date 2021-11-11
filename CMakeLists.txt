@@ -99,6 +99,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/ItemModelVirtualFunctions.h
 	include/QtHelpers/ItemModelStringsTable.h
 	include/QtHelpers/ItemModelStates.h
+	include/QtHelpers/ItemModelGatherVirtualData.h
 	include/QtHelpers/CPPSyntaxHighlighter.h
 	include/QtHelpers/TableViewLogger.h
 	include/QtHelpers/ItemModelLoggerFields.h
@@ -159,6 +160,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/ItemModelVirtualFunctions.cpp
 	src/QtHelpers/ItemModelStringsTable.cpp
 	src/QtHelpers/ItemModelStates.cpp
+	src/QtHelpers/ItemModelGatherVirtualData.cpp
 	src/QtHelpers/CPPSyntaxHighlighter.cpp
 	src/QtHelpers/TableViewLogger.cpp
 	src/QtHelpers/ItemModelLoggerFields.cpp
@@ -205,5 +207,10 @@ add_custom_command(	TARGET deploy-auxfiles
 add_custom_command(	TARGET deploy-auxfiles
 					PRE_BUILD
 					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2RoomCodes.json" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2VirtualTableData.json to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2VirtualTableData.json" ${X64DBG_PLUGINS_ROOT})
 
 add_dependencies(${PROJECT_NAME} deploy-auxfiles)

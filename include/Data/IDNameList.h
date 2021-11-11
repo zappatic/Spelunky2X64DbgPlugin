@@ -20,6 +20,7 @@ namespace S2Plugin
         size_t count() const noexcept;
         QStringList names() const noexcept;
         bool isValidID(uint32_t id);
+        const std::unordered_map<uint32_t, std::string>& entries() const;
 
       private:
         std::unordered_map<uint32_t, std::string> mEntries;
