@@ -10164,7 +10164,7 @@
       { "field": "timer", "type": "UnsignedDword" },
       {
         "field": "flags",
-        "type": "Flags32",
+        "type": "Flags16",
         "flags": {
           "1": "Disable light1",
           "2": "Enable light2",
@@ -10181,25 +10181,11 @@
           "13": "",
           "14": "",
           "15": "",
-          "16": "",
-          "17": "Back layer",
-          "18": "",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "Enabled",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
+          "16": ""
         }
-      }
+      },
+      { "field": "layer", "type": "UnsignedByte" },
+      { "field": "Enabled", "type": "Bool" }
     ],
     "Rect": [
       { "field": "offsetx", "type": "Float" },
