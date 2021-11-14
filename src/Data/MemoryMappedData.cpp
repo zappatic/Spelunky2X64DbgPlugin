@@ -46,6 +46,7 @@ size_t S2Plugin::MemoryMappedData::setOffsetForField(const MemoryField& field, c
         case MemoryFieldType::EntityUID:
         case MemoryFieldType::TextureDBID:
         case MemoryFieldType::StringsTableID:
+        case MemoryFieldType::IPv4Address:
             offset += 4;
             break;
         case MemoryFieldType::CodePointer:
@@ -129,11 +130,23 @@ size_t S2Plugin::MemoryMappedData::sizeOf(const std::string& typeName)
     {
         return sizeof(size_t);
     }
-
-    MemoryField tmp;
-    tmp.type = gsJSONStringToMemoryFieldTypeMapping.at(typeName); // if not pointer, only works with the built-in types
-
-    std::unordered_map<std::string, size_t> offsetsDummy;
-
-    return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
+    else if (mConfiguration->isBuiltInType(typeName))
+    {
+        MemoryField tmp;
+        tmp.type = gsJSONStringToMemoryFieldTypeMapping.at(typeName);
+        std::unordered_map<std::string, size_t> offsetsDummy;
+        return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
+    }
+    else if (mConfiguration->isInlineStruct(typeName))
+    {
+        MemoryField tmp;
+        tmp.type = MemoryFieldType::InlineStructType;
+        tmp.jsonName = typeName;
+        std::unordered_map<std::string, size_t> offsetsDummy;
+        return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
+    }
+    else
+    {
+        return 0;
+    }
 }

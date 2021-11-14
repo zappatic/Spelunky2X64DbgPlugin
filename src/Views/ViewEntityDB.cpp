@@ -377,7 +377,6 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
 
 std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const std::string& prefix, const MemoryField& field, size_t entityDBIndex)
 {
-    dprintf("req: %s\n", ("EntityDB." + prefix + field.name).c_str());
     auto offset = mToolbar->entityDB()->offsetsForIndex(entityDBIndex).at("EntityDB." + prefix + field.name);
     switch (field.type)
     {

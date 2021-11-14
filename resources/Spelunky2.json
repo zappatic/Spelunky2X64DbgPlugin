@@ -839,7 +839,6 @@
     "ArenaLooseBombsPointer",
     "LiquidPhysicsPointer",
     "CameraPointer",
-    "ShopOwnerInfoList",
     "UnorderedMapPointer",
     "UnorderedMapBucketPointer",
     "UnorderedMapRecordPointer",
@@ -948,7 +947,7 @@
     "ArenaConfigItems",
     "ArenaConfigEquippedItems",
     "ShopsInfo",
-    "ShopOwnerInfoDetails",
+    "ShopOwnerDetails",
     "AITarget",
     "Dialogue",
     "DialogueDetails",
@@ -970,6 +969,9 @@
     "OnlinePlayerShort",
     "OnlineLobby",
     "OnlineLobbyScreenPlayer",
+    "OnlineServers",
+    "OnlineServer",
+    "SockAddrIn",
     "StdList",
     "SomeUnknownArray"
   ],
@@ -4498,19 +4500,9 @@
       },
       { "field": "restricted_item_count", "type": "UnsignedQword" },
       {
-        "field": "shop_owners_list",
-        "type": "ShopOwnerInfoList",
-        "comment": "variable sized list of shopkeeper info"
-      },
-      {
-        "field": "shop_owners_list_end",
-        "type": "DataPointer",
-        "comment": "points to 1 after the end of the list, like an end iterator"
-      },
-      {
-        "field": "shop_owners_list_alloc_end",
-        "type": "DataPointer",
-        "comment": "points to 1 after the allocated space for the list?"
+        "field": "shop_owners",
+        "type": "StdVector",
+        "vectortype": "ShopOwnerDetails"
       }
     ],
     "ShopRestrictedItemPointer1": [
@@ -4583,15 +4575,7 @@
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" }
     ],
-    "ShopOwnerInfoList": [
-      { "field": "0", "type": "ShopOwnerInfoDetails" },
-      { "field": "1", "type": "ShopOwnerInfoDetails" },
-      { "field": "2", "type": "ShopOwnerInfoDetails" },
-      { "field": "3", "type": "ShopOwnerInfoDetails" },
-      { "field": "4", "type": "ShopOwnerInfoDetails" },
-      { "field": "5", "type": "ShopOwnerInfoDetails" }
-    ],
-    "ShopOwnerInfoDetails": [
+    "ShopOwnerDetails": [
       { "field": "layer", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
@@ -8743,7 +8727,7 @@
       { "field": "unknown12", "type": "UnsignedDword" },
       { "field": "unknown13", "type": "UnsignedDword" },
       { "field": "unknown14", "type": "UnsignedDword" },
-      { "field": "unknown15", "type": "UnsignedDword" },
+      { "field": "socket", "type": "UnsignedDword" },
       { "field": "unknown16", "type": "UnsignedDword" },
       { "field": "unknown17", "type": "UnsignedDword" },
       { "field": "unknown18", "type": "UnsignedDword" },
@@ -8751,10 +8735,12 @@
       { "field": "unknown20", "type": "UnsignedDword" },
       { "field": "unknown21", "type": "UnsignedDword" },
       { "field": "unknown22", "type": "UnsignedDword" },
-      { "field": "unknown23", "type": "UnsignedDword" },
-      { "field": "unknown24", "type": "UnsignedDword" },
-      { "field": "unknown25", "type": "UnsignedDword" },
-      { "field": "unknown26", "type": "UnsignedDword" },
+      { "field": "sockaddr_unknown1", "type": "SockAddrIn" },
+      {
+        "field": "sockaddr_unknown2",
+        "type": "SockAddrIn",
+        "comment": "to edge server"
+      },
       { "field": "unknown27", "type": "UnsignedDword" },
       { "field": "unknown28", "type": "UnsignedDword" },
       { "field": "unknown29", "type": "UnsignedDword" },
@@ -8774,7 +8760,69 @@
       { "field": "online_player_4", "type": "OnlinePlayer" },
       { "field": "local_player", "type": "OnlinePlayerShort" },
       { "field": "lobby", "type": "OnlineLobby" },
-      { "field": "lobby_dupe", "type": "OnlineLobby" }
+      { "field": "lobby_dupe", "type": "OnlineLobby" },
+      { "field": "servers", "type": "OnlineServers" },
+      { "field": "unknown40", "type": "UnsignedDword" },
+      { "field": "unknown41", "type": "UnsignedDword" },
+      { "field": "unknown42", "type": "DataPointer" },
+      { "field": "unknown43", "type": "UnsignedDword" },
+      { "field": "unknown44", "type": "UnsignedDword" },
+      { "field": "unknown45", "type": "UnsignedDword" },
+      { "field": "unknown46", "type": "UnsignedDword" },
+      { "field": "sockaddr_game", "type": "SockAddrIn" },
+      { "field": "unknown47", "type": "DataPointer" },
+      { "field": "unknown48", "type": "DataPointer" },
+      { "field": "unknown49", "type": "DataPointer" },
+      { "field": "unknown50", "type": "DataPointer" },
+      { "field": "unknown51", "type": "DataPointer" },
+      { "field": "unknown52", "type": "DataPointer" },
+      { "field": "unknown53", "type": "DataPointer" },
+      { "field": "unknown54", "type": "DataPointer" },
+      { "field": "unknown55", "type": "DataPointer" }
+    ],
+    "OnlineServers": [
+      { "field": "server1", "type": "OnlineServer" },
+      { "field": "server2", "type": "OnlineServer" },
+      { "field": "server3", "type": "OnlineServer" },
+      { "field": "server4", "type": "OnlineServer" },
+      { "field": "server5", "type": "OnlineServer" },
+      { "field": "server6", "type": "OnlineServer" },
+      { "field": "server7", "type": "OnlineServer" },
+      { "field": "server8", "type": "OnlineServer" },
+      { "field": "server9", "type": "OnlineServer" },
+      { "field": "server10", "type": "OnlineServer" },
+      { "field": "server11", "type": "OnlineServer" },
+      { "field": "server12", "type": "OnlineServer" },
+      { "field": "server13", "type": "OnlineServer" },
+      { "field": "server14", "type": "OnlineServer" },
+      { "field": "server15", "type": "OnlineServer" },
+      { "field": "server16", "type": "OnlineServer" },
+      { "field": "server17", "type": "OnlineServer" },
+      { "field": "server18", "type": "OnlineServer" },
+      { "field": "server19", "type": "OnlineServer" },
+      { "field": "server20", "type": "OnlineServer" },
+      { "field": "server21", "type": "OnlineServer" },
+      { "field": "server22", "type": "OnlineServer" },
+      { "field": "server23", "type": "OnlineServer" },
+      { "field": "server24", "type": "OnlineServer" },
+      { "field": "server25", "type": "OnlineServer" },
+      { "field": "server26", "type": "OnlineServer" },
+      { "field": "server27", "type": "OnlineServer" },
+      { "field": "server28", "type": "OnlineServer" },
+      { "field": "server29", "type": "OnlineServer" },
+      { "field": "server30", "type": "OnlineServer" },
+      { "field": "server31", "type": "OnlineServer" },
+      { "field": "server32", "type": "OnlineServer" }
+    ],
+    "OnlineServer": [
+      { "field": "sockaddr", "type": "SockAddrIn" },
+      { "field": "unknown_query", "type": "Qword" },
+      { "field": "unknown_response", "type": "Qword" }
+    ],
+    "SockAddrIn": [
+      { "field": "family", "type": "Word" },
+      { "field": "port", "type": "UnsignedWord" },
+      { "field": "address", "type": "IPv4Address" }
     ],
     "OnlinePlayer": [
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -10485,8 +10533,8 @@
         "field": "state",
         "type": "State8",
         "states": {
-          "0": "non_borrowed",
-          "2": "borrowed",
+          "0": "non_burrowed",
+          "2": "burrowed",
           "3": "state_change"
         }
       }

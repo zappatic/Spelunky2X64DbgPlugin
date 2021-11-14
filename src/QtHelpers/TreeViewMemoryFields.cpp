@@ -164,6 +164,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::State16:
         case MemoryFieldType::State32:
         case MemoryFieldType::VirtualFunctionTable:
+        case MemoryFieldType::IPv4Address:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
             break;
@@ -1540,6 +1541,26 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 {
                     itemValue->setData(QString::fromStdString(mToolbar->levelGen()->themeNameOfOffset(themeInfoPointer)), Qt::DisplayRole);
                 }
+            }
+            // no comparison in Entity
+            break;
+        }
+        case MemoryFieldType::IPv4Address:
+        {
+            if (memoryOffset == 0)
+            {
+                itemValue->setData("n/a", Qt::DisplayRole);
+            }
+            else
+            {
+                uint32_t ipaddr = Script::Memory::ReadDword(memoryOffset);
+                auto ipaddrString = QString("%1.%2.%3.%4")
+                                        .arg((unsigned char)(ipaddr & 0xFF))
+                                        .arg((unsigned char)(ipaddr >> 8 & 0xFF))
+                                        .arg((unsigned char)(ipaddr >> 16 & 0xFF))
+                                        .arg((unsigned char)(ipaddr >> 24 & 0xFF));
+
+                itemValue->setData(ipaddrString, Qt::DisplayRole);
             }
             // no comparison in Entity
             break;

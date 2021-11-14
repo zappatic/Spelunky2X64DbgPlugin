@@ -93,12 +93,18 @@ void S2Plugin::ViewStdVector::refreshVectorContents()
             field.type = MemoryFieldType::PointerType;
             field.jsonName = mVectorType;
         }
+        else if (config->isInlineStruct(mVectorType))
+        {
+            field.type = MemoryFieldType::InlineStructType;
+            field.jsonName = mVectorType;
+        }
         else if (config->isBuiltInType(mVectorType))
         {
             field.type = gsJSONStringToMemoryFieldTypeMapping.at(mVectorType);
         }
         else
         {
+            dprintf("%s is UNKNOWN\n", mVectorType.c_str());
             // not implemented
         }
         mMemoryFields.emplace_back(field);

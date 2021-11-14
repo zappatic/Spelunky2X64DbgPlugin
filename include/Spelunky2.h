@@ -111,6 +111,7 @@ namespace S2Plugin
         CharacterDBID,
         VirtualFunctionTable,
         Online,
+        IPv4Address,
     };
 
     // for display purposes
@@ -170,6 +171,7 @@ namespace S2Plugin
         {MemoryFieldType::CharacterDBID, "CharacterDBID"},
         {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable"},
         {MemoryFieldType::Online, "Online"},
+        {MemoryFieldType::IPv4Address, "IPv4Address"},
     };
 
     // for C++ header generation
@@ -274,6 +276,7 @@ namespace S2Plugin
         {"CharacterDBID", MemoryFieldType::CharacterDBID},
         {"VirtualFunctionTable", MemoryFieldType::VirtualFunctionTable},
         {"Online", MemoryFieldType::Online},
+        {"IPv4Address", MemoryFieldType::IPv4Address},
     };
 
     struct VirtualFunction
