@@ -1955,11 +1955,19 @@
       { "field": "inside_sunken_city_pipe", "type": "MusicTrackPointer" },
       { "field": "pause_menu", "type": "MusicTrackPointer" },
       { "field": "unknown15", "type": "DataPointer" },
-      { "field": "unknown16", "type": "DataPointer" },
+      { "field": "sunken_city_duat_transition", "type": "MusicTrackPointer" },
       { "field": "unknown17", "type": "UnsignedByte" },
       { "field": "unknown18", "type": "UnsignedByte" },
       { "field": "unknown19", "type": "UnsignedByte" },
-      { "field": "unknown20", "type": "UnsignedByte" }
+      { "field": "unknown20", "type": "UnsignedByte" },
+      {
+        "field": "floats",
+        "type": "Skip",
+        "offset": 2400,
+        "comment": "600 floats, mostly seem to be 1.0"
+      },
+      { "field": "idle_counter", "type": "Float" },
+      { "field": "unknown22", "type": "UnsignedDword" }
     ],
     "MusicTrackPointer": [
       {
@@ -1986,7 +1994,13 @@
       },
       { "field": "unknown49", "type": "Bool" },
       { "field": "music_on", "type": "Bool" },
-      { "field": "unknown51", "type": "UnsignedByte" }
+      { "field": "unknown51", "type": "UnsignedByte" },
+      { "field": "garbage1", "type": "UnsignedDword" },
+      { "field": "fadeout_music_and_crash", "type": "Bool" },
+      { "field": "padding1", "type": "Bool" },
+      { "field": "padding2", "type": "Bool" },
+      { "field": "padding3", "type": "Bool" },
+      { "field": "garbage2", "type": "UnsignedDword" }
     ],
     "AudioChannelParams": [
       { "field": "unknown1", "type": "UnsignedQword" },
