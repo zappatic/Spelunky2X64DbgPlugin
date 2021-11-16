@@ -880,7 +880,7 @@
     "SpeechBubbleLayoutPointer",
     "SpeechBubbleLayoutDataPointer",
     "StdListIteratorPointer",
-    "MysteryLiquidPointer3",
+    "LiquidPhysicsEngine",
     "GetEntitiesResultPointer",
     "EntitiesResultEntitiesPointer",
     "EntitiesResultEntityUIDsPointer",
@@ -900,6 +900,7 @@
     "PlayerSlot",
     "PlayerSlotSettings",
     "LiquidPhysicsParams",
+    "LiquidTileSpawnData",
     "CameraBounds",
     "WaddlerStorage",
     "WaddlerStorageMeta",
@@ -5288,11 +5289,43 @@
     ],
     "LiquidPhysicsPointer": [
       { "field": "unknown1", "type": "MysteryLiquidPointer1" },
-      { "field": "water_physics", "type": "LiquidPhysicsParams" },
-      { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
-      { "field": "lava_physics", "type": "LiquidPhysicsParams" },
-      { "field": "coarse_lava_physics", "type": "LiquidPhysicsParams" },
-      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" }
+      { "field": "water_physics_defaults", "type": "LiquidPhysicsParams" },
+      { "field": "water_physics_engine", "type": "LiquidPhysicsEngine" },
+      { "field": "water_tile_spawn_data", "type": "LiquidTileSpawnData" },
+
+      {
+        "field": "coarse_water_physics_defaults",
+        "type": "LiquidPhysicsParams"
+      },
+      { "field": "coarse_water_physics_engine", "type": "LiquidPhysicsEngine" },
+      {
+        "field": "coarse_water_tile_spawn_data",
+        "type": "LiquidTileSpawnData"
+      },
+
+      { "field": "lava_physics_defaults", "type": "LiquidPhysicsParams" },
+      { "field": "lava_physics_engine", "type": "LiquidPhysicsEngine" },
+      { "field": "lava_tile_spawn_data", "type": "LiquidTileSpawnData" },
+
+      {
+        "field": "coarse_lava_physics_defaults",
+        "type": "LiquidPhysicsParams"
+      },
+      { "field": "coarse_lava_physics_engine", "type": "LiquidPhysicsEngine" },
+      { "field": "coarse_lava_tile_spawn_data", "type": "LiquidTileSpawnData" },
+
+      {
+        "field": "stagnant_lava_physics_defaults",
+        "type": "LiquidPhysicsParams"
+      },
+      {
+        "field": "stagnant_lava_physics_engine",
+        "type": "LiquidPhysicsEngine"
+      },
+      {
+        "field": "stagnant_lava_tile_spawn_data",
+        "type": "LiquidTileSpawnData"
+      }
     ],
     "LiquidPhysicsParams": [
       {
@@ -5349,12 +5382,9 @@
       { "field": "unknown21", "type": "Float" },
       { "field": "unknown22", "type": "UnsignedDword" },
       { "field": "unknown23", "type": "Float" },
-      { "field": "unknown24", "type": "UnsignedDword" },
-      {
-        "field": "unknown25",
-        "type": "MysteryLiquidPointer3",
-        "comment": "resets each level"
-      },
+      { "field": "unknown24", "type": "UnsignedDword" }
+    ],
+    "LiquidTileSpawnData": [
       {
         "field": "liquid_flags?",
         "type": "Flags32",
@@ -9618,7 +9648,7 @@
       { "field": "linked_companion_parent", "type": "EntityUID" },
       { "field": "ai_func", "type": "Ai_func" },
       { "field": "input_ptr", "type": "PlayerInputs" },
-      { "field": "basecamp_button_entity_pointer", "type": "EntityPointer" },
+      { "field": "basecamp_button", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
       { "field": "y_pos?", "type": "Float" },
@@ -14254,7 +14284,7 @@
       },
       { "field": "value", "type": "Dword", "comment": "type can varray" }
     ],
-    "MysteryLiquidPointer3": [
+    "LiquidPhysicsEngine": [
       { "field": "pause_physics", "type": "Bool" },
       { "field": "padding1?", "type": "Byte" },
       { "field": "padding2?", "type": "Byte" },
@@ -14504,11 +14534,7 @@
       { "field": "unknown106", "type": "DataPointer" },
       { "field": "unknown107", "type": "DataPointer" },
       { "field": "unknown108", "type": "Qword" },
-      {
-        "field": "unknown109",
-        "type": "Qword",
-        "comment": "lower is MysteryLiquidPointer3 for coarsewater "
-      }
+      { "field": "unknown109", "type": "Qword" }
     ],
     "MysteryLiquidPointer1": [
       {
