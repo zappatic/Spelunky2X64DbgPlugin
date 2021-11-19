@@ -3903,16 +3903,21 @@
       { "field": "kali_favor", "type": "Byte" },
       { "field": "kali_status", "type": "Byte" },
       { "field": "kali_altars_destroyed", "type": "Byte" },
-      { "field": "b4f", "type": "UnsignedByte" },
-      { "field": "i50a", "type": "Byte" },
-      { "field": "padding7", "type": "UnsignedByte" },
-      { "field": "padding8", "type": "UnsignedByte" },
-      { "field": "padding9", "type": "UnsignedByte" },
+      {
+        "field": "kali_gifts",
+        "type": "State8",
+        "states": {
+          "0": "None",
+          "1": "Item",
+          "3": "Kapala"
+        }
+      },
+      { "field": "kali_related?", "type": "Dword" },
       { "field": "money_shop_total", "type": "Dword" },
       { "field": "world_start", "type": "UnsignedByte" },
       { "field": "level_start", "type": "UnsignedByte" },
       { "field": "theme_start", "type": "UnsignedByte" },
-      { "field": "b5f", "type": "UnsignedByte" },
+      { "field": "b5f", "type": "UnsignedByte", "comment": "padding probably" },
       { "field": "seed", "type": "UnsignedDword" },
       { "field": "time_total", "type": "UnsignedDword" },
       { "field": "world", "type": "UnsignedByte" },
@@ -3948,10 +3953,9 @@
       { "field": "level_count", "type": "UnsignedByte" },
       {
         "field": "damage_taken",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "total amount of damage taken, excluding cause of death"
       },
-      { "field": "unknown1b", "type": "UnsignedByte" },
       {
         "field": "world2_coffin_spawned",
         "type": "Bool",
