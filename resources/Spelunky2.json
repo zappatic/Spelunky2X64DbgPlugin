@@ -10206,7 +10206,7 @@
       { "field": "timer", "type": "UnsignedDword" },
       {
         "field": "flags",
-        "type": "Flags16",
+        "type": "Flags8",
         "flags": {
           "1": "Disable light1",
           "2": "Enable light2",
@@ -10215,16 +10215,23 @@
           "5": "",
           "6": "",
           "7": "Modulate brightness_multiplier",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": ""
+          "8": ""
         }
+      },
+      {
+        "field": "type_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Follow camera",
+          "2": "Follow entity",
+          "3": "Static, Rectangle, Full brightness",
+          "4": "unused",
+          "5": "unused",
+          "6": "unused",
+          "7": "unused",
+          "8": "unused"
+        },
+        "comment": "only one can be chosen, Rectangle always uses light1, even when it's disabled in flags"
       },
       { "field": "layer", "type": "UnsignedByte" },
       { "field": "Enabled", "type": "Bool" }
