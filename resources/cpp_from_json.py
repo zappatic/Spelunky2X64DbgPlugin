@@ -26,7 +26,7 @@ entity_class_hierarchy["Entity"]="Entity" #add missing 'Entity' type for conveni
 # Remove the standard types
 inline_struct_types.remove("Map")
 inline_struct_types.remove("UnorderedMap")
-inline_struct_types.remove("StdVector")
+#inline_struct_types.remove("StdVector")
 inline_struct_types.remove("StdList")
 pointer_types.remove("StdListIteratorPointer")
 pointer_types.remove("UnorderedMapBucketPointer")

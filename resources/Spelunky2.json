@@ -879,7 +879,7 @@
     "SpeechBubbleLayoutPointer",
     "SpeechBubbleLayoutDataPointer",
     "StdListIteratorPointer",
-    "MysteryLiquidPointer3",
+    "LiquidPhysicsEngine",
     "GetEntitiesResultPointer",
     "EntitiesResultEntitiesPointer",
     "EntitiesResultEntityUIDsPointer",
@@ -899,6 +899,7 @@
     "PlayerSlot",
     "PlayerSlotSettings",
     "LiquidPhysicsParams",
+    "LiquidTileSpawnData",
     "CameraBounds",
     "WaddlerStorage",
     "WaddlerStorageMeta",
@@ -1650,7 +1651,9 @@
       { "field": "unknown21", "type": "DataPointer" },
       { "field": "unknown22", "type": "DataPointer" },
       { "field": "unknown23", "type": "DataPointer" },
-      { "field": "unknown24", "type": "DataPointer" },
+      { "field": "unknown24a", "type": "Word" },
+      { "field": "unknown24b", "type": "Word" },
+      { "field": "unknown24c", "type": "Dword" },
       { "field": "unknown25", "type": "DataPointer" },
       { "field": "unknown26", "type": "DataPointer" },
       { "field": "unknown27", "type": "DataPointer" },
@@ -3936,16 +3939,21 @@
       { "field": "kali_favor", "type": "Byte" },
       { "field": "kali_status", "type": "Byte" },
       { "field": "kali_altars_destroyed", "type": "Byte" },
-      { "field": "b4f", "type": "UnsignedByte" },
-      { "field": "i50a", "type": "Byte" },
-      { "field": "padding7", "type": "UnsignedByte" },
-      { "field": "padding8", "type": "UnsignedByte" },
-      { "field": "padding9", "type": "UnsignedByte" },
+      {
+        "field": "kali_gifts",
+        "type": "State8",
+        "states": {
+          "0": "None",
+          "1": "Item",
+          "3": "Kapala"
+        }
+      },
+      { "field": "kali_related?", "type": "Dword" },
       { "field": "money_shop_total", "type": "Dword" },
       { "field": "world_start", "type": "UnsignedByte" },
       { "field": "level_start", "type": "UnsignedByte" },
       { "field": "theme_start", "type": "UnsignedByte" },
-      { "field": "b5f", "type": "UnsignedByte" },
+      { "field": "b5f", "type": "UnsignedByte", "comment": "padding probably" },
       { "field": "seed", "type": "UnsignedDword" },
       { "field": "time_total", "type": "UnsignedDword" },
       { "field": "world", "type": "UnsignedByte" },
@@ -3981,10 +3989,9 @@
       { "field": "level_count", "type": "UnsignedByte" },
       {
         "field": "damage_taken",
-        "type": "UnsignedByte",
+        "type": "UnsignedWord",
         "comment": "total amount of damage taken, excluding cause of death"
       },
-      { "field": "unknown1b", "type": "UnsignedByte" },
       {
         "field": "world2_coffin_spawned",
         "type": "Bool",
@@ -4081,7 +4088,7 @@
           "16": "Angry Waddler",
           "17": "Shop level?",
           "18": "Dark level (draw halo)",
-          "19": "",
+          "19": "Altar destroyed",
           "20": "Allow pause",
           "21": "Hide hud, transition",
           "22": "Hide hud, camp",
@@ -5306,11 +5313,43 @@
     ],
     "LiquidPhysicsPointer": [
       { "field": "unknown1", "type": "MysteryLiquidPointer1" },
-      { "field": "water_physics", "type": "LiquidPhysicsParams" },
-      { "field": "coarse_water_physics", "type": "LiquidPhysicsParams" },
-      { "field": "lava_physics", "type": "LiquidPhysicsParams" },
-      { "field": "coarse_lava_physics", "type": "LiquidPhysicsParams" },
-      { "field": "stagnant_lava_physics", "type": "LiquidPhysicsParams" }
+      { "field": "water_physics_defaults", "type": "LiquidPhysicsParams" },
+      { "field": "water_physics_engine", "type": "LiquidPhysicsEngine" },
+      { "field": "water_tile_spawn_data", "type": "LiquidTileSpawnData" },
+
+      {
+        "field": "coarse_water_physics_defaults",
+        "type": "LiquidPhysicsParams"
+      },
+      { "field": "coarse_water_physics_engine", "type": "LiquidPhysicsEngine" },
+      {
+        "field": "coarse_water_tile_spawn_data",
+        "type": "LiquidTileSpawnData"
+      },
+
+      { "field": "lava_physics_defaults", "type": "LiquidPhysicsParams" },
+      { "field": "lava_physics_engine", "type": "LiquidPhysicsEngine" },
+      { "field": "lava_tile_spawn_data", "type": "LiquidTileSpawnData" },
+
+      {
+        "field": "coarse_lava_physics_defaults",
+        "type": "LiquidPhysicsParams"
+      },
+      { "field": "coarse_lava_physics_engine", "type": "LiquidPhysicsEngine" },
+      { "field": "coarse_lava_tile_spawn_data", "type": "LiquidTileSpawnData" },
+
+      {
+        "field": "stagnant_lava_physics_defaults",
+        "type": "LiquidPhysicsParams"
+      },
+      {
+        "field": "stagnant_lava_physics_engine",
+        "type": "LiquidPhysicsEngine"
+      },
+      {
+        "field": "stagnant_lava_tile_spawn_data",
+        "type": "LiquidTileSpawnData"
+      }
     ],
     "LiquidPhysicsParams": [
       {
@@ -5367,12 +5406,9 @@
       { "field": "unknown21", "type": "Float" },
       { "field": "unknown22", "type": "UnsignedDword" },
       { "field": "unknown23", "type": "Float" },
-      { "field": "unknown24", "type": "UnsignedDword" },
-      {
-        "field": "unknown25",
-        "type": "MysteryLiquidPointer3",
-        "comment": "resets each level"
-      },
+      { "field": "unknown24", "type": "UnsignedDword" }
+    ],
+    "LiquidTileSpawnData": [
       {
         "field": "liquid_flags?",
         "type": "Flags32",
@@ -9700,7 +9736,7 @@
       { "field": "linked_companion_parent", "type": "EntityUID" },
       { "field": "ai_func", "type": "Ai_func" },
       { "field": "input_ptr", "type": "PlayerInputs" },
-      { "field": "basecamp_button_entity_pointer", "type": "EntityPointer" },
+      { "field": "basecamp_button", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
       { "field": "y_pos?", "type": "Float" },
@@ -10190,13 +10226,19 @@
       { "field": "select_player2_slot", "type": "SelectPlayerSlot" },
       { "field": "select_player3_slot", "type": "SelectPlayerSlot" },
       { "field": "select_player4_slot", "type": "SelectPlayerSlot" },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedByte" },
+      { "field": "saved_pet1", "type": "EntityDBID" },
+      { "field": "saved_pet2", "type": "EntityDBID" },
+      { "field": "saved_pet3", "type": "EntityDBID" },
+      { "field": "saved_pet4", "type": "EntityDBID" },
+      { "field": "is_pet_cursed1", "type": "Bool" },
+      { "field": "is_pet_cursed2", "type": "Bool" },
+      { "field": "is_pet_cursed3", "type": "Bool" },
+      { "field": "is_pet_cursed4", "type": "Bool" },
+      { "field": "is_pet_poisoned1", "type": "Bool" },
+      { "field": "is_pet_poisoned2", "type": "Bool" },
+      { "field": "is_pet_poisoned3", "type": "Bool" },
+      { "field": "is_pet_poisoned4", "type": "Bool" },
+      { "field": "saved_pets_count", "type": "UnsignedByte" },
       {
         "field": "active_player_count?",
         "type": "UnsignedByte",
@@ -10246,7 +10288,7 @@
       { "field": "timer", "type": "UnsignedDword" },
       {
         "field": "flags",
-        "type": "Flags32",
+        "type": "Flags8",
         "flags": {
           "1": "Disable light1",
           "2": "Enable light2",
@@ -10255,33 +10297,26 @@
           "5": "",
           "6": "",
           "7": "Modulate brightness_multiplier",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "Back layer",
-          "18": "",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "Enabled",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
+          "8": ""
         }
-      }
+      },
+      {
+        "field": "type_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Follow camera",
+          "2": "Follow entity",
+          "3": "Static, Rectangle, Full brightness",
+          "4": "unused",
+          "5": "unused",
+          "6": "unused",
+          "7": "unused",
+          "8": "unused"
+        },
+        "comment": "only one can be chosen, Rectangle always uses light1, even when it's disabled in flags"
+      },
+      { "field": "layer", "type": "UnsignedByte" },
+      { "field": "Enabled", "type": "Bool" }
     ],
     "Rect": [
       { "field": "offsetx", "type": "Float" },
@@ -11056,11 +11091,7 @@
         "comment": "accessed as byte and word, so, flags?, changed mostly when breaking floors"
       },
       { "field": "unknown_timer", "type": "UnsignedByte" },
-      {
-        "field": "unknown3",
-        "type": "UnsignedByte",
-        "comment": "forced to 1 when rolling, otherwise compared with 0"
-      }
+      { "field": "seen_player", "type": "Bool" }
     ],
     "HornedLizard": [
       { "field": "eaten_uid", "type": "EntityUID" },
@@ -14350,7 +14381,7 @@
       },
       { "field": "value", "type": "Dword", "comment": "type can varray" }
     ],
-    "MysteryLiquidPointer3": [
+    "LiquidPhysicsEngine": [
       { "field": "pause_physics", "type": "Bool" },
       { "field": "padding1?", "type": "Byte" },
       { "field": "padding2?", "type": "Byte" },
@@ -14600,11 +14631,7 @@
       { "field": "unknown106", "type": "DataPointer" },
       { "field": "unknown107", "type": "DataPointer" },
       { "field": "unknown108", "type": "Qword" },
-      {
-        "field": "unknown109",
-        "type": "Qword",
-        "comment": "lower is MysteryLiquidPointer3 for coarsewater "
-      }
+      { "field": "unknown109", "type": "Qword" }
     ],
     "MysteryLiquidPointer1": [
       {
