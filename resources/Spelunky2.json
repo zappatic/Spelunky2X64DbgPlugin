@@ -332,7 +332,8 @@
     "PalaceSign": "Entity",
     "DecoRegeneratingBlock": "Entity",
     "DestructibleBG": "Entity",
-    "EggShipDoorS": "EggShipDoor"
+    "EggShipDoorS": "EggShipDoor",
+    "PrizeDispenser": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -555,6 +556,7 @@
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
     "ITEM_PLAYERGHOST": "PlayerGhost",
     "ITEM_PLAYERGHOST_BREATH": "GhostBreath",
+    "ITEM_DICE_PRIZE_DISPENSER": "PrizeDispenser",
     "ITEM_LASERBEAM": "LaserBeam",
     "ITEM_HORIZONTALLASERBEAM": "LaserBeam",
     "ITEM_EGGSHIP_HOOK": "TreasureHook",
@@ -4813,10 +4815,26 @@
       { "field": "player2_won", "type": "Bool" },
       { "field": "player3_won", "type": "Bool" },
       { "field": "player4_won", "type": "Bool" },
-      { "field": "player1_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
-      { "field": "player2_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
-      { "field": "player3_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
-      { "field": "player4_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
+      {
+        "field": "player1_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
+      {
+        "field": "player2_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
+      {
+        "field": "player3_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
+      {
+        "field": "player4_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
       { "field": "unknown14e", "type": "UnsignedByte" },
       {
         "field": "timer",
@@ -4830,7 +4848,11 @@
       },
       { "field": "wins", "type": "UnsignedByte" },
       { "field": "lives", "type": "UnsignedByte" },
-      { "field": "time_to_win", "type": "State8", "ref": "arena_time_to_win_states" },
+      {
+        "field": "time_to_win",
+        "type": "State8",
+        "ref": "arena_time_to_win_states"
+      },
       { "field": "unknown16", "type": "UnsignedByte" },
       { "field": "player1_idolheld_countdown", "type": "UnsignedWord" },
       { "field": "player2_idolheld_countdown", "type": "UnsignedWord" },
@@ -14364,6 +14386,20 @@
       { "field": "unknown2", "type": "Bool" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }],
+    "PrizeDispenser": [
+      {
+        "field": "itemid_1",
+        "type": "UnsignedByte",
+        "comment": "ids (0 - 24) for the table with items, all set on spawn"
+      },
+      { "field": "itemid_2", "type": "UnsignedByte" },
+      { "field": "itemid_3", "type": "UnsignedByte" },
+      { "field": "itemid_4", "type": "UnsignedByte" },
+      { "field": "itemid_5", "type": "UnsignedByte" },
+      { "field": "itemid_6", "type": "UnsignedByte", "comment": "unused" },
+      { "field": "prizes_spawned", "type": "UnsignedByte" },
+      { "field": "padding", "type": "Byte" }
+    ],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
