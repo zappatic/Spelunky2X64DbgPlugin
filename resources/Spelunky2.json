@@ -1125,6 +1125,14 @@
       "18": "Guy Spelunky",
       "19": "Classic Guy"
     },
+    "arena_bot_ai_states": {
+      "0": "Chill",
+      "1": "Normal",
+      "2": "Aggro",
+      "3": "Turtle",
+      "4": "Tactical",
+      "5": "Random"
+    },
     "arena_timer_states": {
       "0": "0:30",
       "1": "1:00",
@@ -1155,6 +1163,18 @@
       "3": "Loose Bombs",
       "4": "Ghost",
       "5": "Random"
+    },
+    "arena_time_to_win_states": {
+      "0": "10",
+      "1": "20",
+      "2": "30",
+      "3": "40",
+      "4": "50",
+      "5": "60",
+      "6": "70",
+      "7": "80",
+      "8": "90",
+      "9": "99"
     },
     "arena_stun_time_states": {
       "0": "x0.00",
@@ -4786,10 +4806,10 @@
       { "field": "player2_won", "type": "Bool" },
       { "field": "player3_won", "type": "Bool" },
       { "field": "player4_won", "type": "Bool" },
-      { "field": "unknown14a", "type": "UnsignedByte" },
-      { "field": "unknown14b", "type": "UnsignedByte" },
-      { "field": "unknown14c", "type": "UnsignedByte" },
-      { "field": "unknown14d", "type": "UnsignedByte" },
+      { "field": "player1_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
+      { "field": "player2_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
+      { "field": "player3_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
+      { "field": "player4_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
       { "field": "unknown14e", "type": "UnsignedByte" },
       {
         "field": "timer",
@@ -4803,7 +4823,7 @@
       },
       { "field": "wins", "type": "UnsignedByte" },
       { "field": "lives", "type": "UnsignedByte" },
-      { "field": "unknown15", "type": "UnsignedByte" },
+      { "field": "time_to_win", "type": "State8", "ref": "arena_time_to_win_states" },
       { "field": "unknown16", "type": "UnsignedByte" },
       { "field": "player1_idolheld_countdown", "type": "UnsignedWord" },
       { "field": "player2_idolheld_countdown", "type": "UnsignedWord" },
@@ -9699,12 +9719,12 @@
         "flags": {
           "1": "is overlaying something or is attached to something or who the hell knowns sometimes",
           "2": "changing layer",
-          "3": "unkown, stays on when switching on",
-          "4": "unkown, stays on when switching on",
-          "5": "unkown, stays on when switching on",
-          "6": "unkown, stays on when switching on",
-          "7": "unkown, stays on when switching on",
-          "8": "unkown, stays on when switching on"
+          "3": "unknown, stays on when switching on",
+          "4": "unknown, stays on when switching on",
+          "5": "unknown, stays on when switching on",
+          "6": "unknown, stays on when switching on",
+          "7": "unknown, stays on when switching on",
+          "8": "unknown, stays on when switching on"
         },
         "comment": "is compared with bit numbers, so probably flags"
       }
@@ -12977,7 +12997,7 @@
       { "field": "unknown_timer4", "type": "UnsignedByte" }
     ],
     "Pipe": [
-      { "field": "unkown1", "type": "UnknownPointerGroup" },
+      { "field": "unknown1", "type": "UnknownPointerGroup" },
       {
         "field": "direction_type",
         "type": "State8",
