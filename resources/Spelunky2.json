@@ -9123,14 +9123,14 @@
             "comment": "needs investigating, difference between this and on_collision1"
           },
           "27": {
-            "name": "on_save_level_transition_data",
+            "name": "get_metadata",
             "params": "",
-            "return": "uint64_t",
+            "return": "uint16_t",
             "comment": "e.g. for turkey: stores health, poison/curse state, for mattock: remaining swings (returned value is transferred)"
           },
           "28": {
-            "name": "on_restore_level_transition_data",
-            "params": "uint64_t data",
+            "name": "apply_metadata",
+            "params": "uint16_t metadata",
             "return": "void"
           },
           "29": {
@@ -9817,11 +9817,11 @@
       },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "held_item", "type": "EntityDBID" },
-      { "field": "held_item_metadata?", "type": "Word" },
+      { "field": "held_item_metadata", "type": "Word" },
       { "field": "unknown5c", "type": "UnsignedByte", "comment": "padding?" },
       { "field": "player_slot", "type": "Byte" },
       { "field": "mount_type", "type": "EntityDBID" },
-      { "field": "mount_metadata?", "type": "Word" },
+      { "field": "mount_metadata", "type": "Word" },
       { "field": "unknown_mount_ralated", "type": "Word" },
       {
         "field": "collected_money",
