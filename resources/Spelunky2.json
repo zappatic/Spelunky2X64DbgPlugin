@@ -10141,7 +10141,11 @@
       { "field": "unknown2", "type": "DataPointer" },
       { "field": "unknown3", "type": "DataPointer" },
       { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
+      {
+        "field": "unknown5",
+        "type": "DataPointer",
+        "comment": "pointer to a map?"
+      },
       { "field": "unknown6", "type": "DataPointer" },
       { "field": "unknown7", "type": "DataPointer" },
       { "field": "unknown8", "type": "UnsignedByte" },
@@ -11603,7 +11607,7 @@
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "Float" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
@@ -11615,15 +11619,28 @@
       { "field": "x_dupe2", "type": "Float" },
       { "field": "y_dupe2", "type": "Float" },
       { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "UnsignedDword" },
-      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown12a", "type": "UnsignedByte" },
+      { "field": "unknown12b", "type": "UnsignedByte" },
+      { "field": "unknown12c", "type": "Bool" },
+      { "field": "unknown12d", "type": "Bool" },
+      { "field": "unknown13a", "type": "Bool" },
+      { "field": "unknown13b", "type": "UnsignedByte" },
+      { "field": "unknown13c", "type": "UnsignedByte" },
+      { "field": "unknown13d", "type": "UnsignedByte" },
       { "field": "unknown14", "type": "UnsignedDword" },
       { "field": "unknown15_counter", "type": "UnsignedByte" },
       { "field": "unknown16_counter", "type": "UnsignedByte" },
       { "field": "unknown17", "type": "Bool" },
       { "field": "unknown18", "type": "Bool" },
       { "field": "unknown19", "type": "UnsignedDword" },
-      { "field": "shader", "type": "UnsignedDword" },
+      {
+        "field": "shader",
+        "type": "UnsignedByte",
+        "comment": "0 - 36, game crash at around 55"
+      },
+      { "field": "unknown20a", "type": "UnsignedByte" },
+      { "field": "unknown20b", "type": "UnsignedByte" },
+      { "field": "unknown20c", "type": "UnsignedByte" },
       {
         "field": "destination_bottom_left_x",
         "type": "Float",
@@ -11671,7 +11688,6 @@
       { "field": "unknown42", "type": "UnsignedQword" },
       { "field": "unknown43", "type": "UnsignedQword" },
       { "field": "unknown44", "type": "UnsignedQword" },
-      { "field": "unknown45", "type": "UnsignedQword" },
       {
         "field": "render_as_non_liquid",
         "type": "Bool",
@@ -11696,7 +11712,13 @@
         "type": "Float",
         "comment": "0.0 = completely black ; 1.0 = normal (dark effect like when on fire)"
       },
-      { "field": "unknown56", "type": "UnsignedDword" }
+      { "field": "unknown56", "type": "UnsignedDword" },
+      { "field": "unknown57", "type": "UnsignedDword" },
+      {
+        "field": "unknown58",
+        "type": "UnsignedDword",
+        "comment": "end, next RenderInfo below"
+      }
     ],
     "YetiQueen": [
       {
