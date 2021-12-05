@@ -11619,11 +11619,19 @@
       { "field": "x_dupe2", "type": "Float" },
       { "field": "y_dupe2", "type": "Float" },
       { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12a", "type": "UnsignedByte" },
-      { "field": "unknown12b", "type": "UnsignedByte" },
+      { "field": "unknown_timer1", "type": "UnsignedByte" },
+      {
+        "field": "unknown_timer2",
+        "type": "UnsignedByte",
+        "comment": "for some entities this stops when the entity is not on screen but the above one don't"
+      },
       { "field": "unknown12c", "type": "Bool" },
       { "field": "unknown12d", "type": "Bool" },
-      { "field": "unknown13a", "type": "Bool" },
+      {
+        "field": "stop_render",
+        "type": "Bool",
+        "comment": "stops all the rendering stuff"
+      },
       { "field": "unknown13b", "type": "UnsignedByte" },
       { "field": "unknown13c", "type": "UnsignedByte" },
       { "field": "unknown13d", "type": "UnsignedByte" },
