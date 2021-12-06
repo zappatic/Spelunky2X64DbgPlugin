@@ -13230,7 +13230,12 @@
     "Coffin": [
       { "field": "inside", "type": "EntityDBID" },
       { "field": "timer", "type": "UnsignedByte" },
-      { "field": "shake_state?", "type": "Byte" }
+      { "field": "shake_state?", "type": "Byte" },
+      {
+        "field": "player_respawn",
+        "type": "Bool",
+        "comment": "if true, will respawn dead player instead of HH, doesn't work with anubis coffin"
+      }
     ],
     "SpecialShot": [
       { "field": "target_x", "type": "Float" },
