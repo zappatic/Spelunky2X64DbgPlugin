@@ -9815,7 +9815,11 @@
         "type": "UnsignedByte",
         "comment": "Used in level transition to transfer to new player entity"
       },
-      { "field": "unknown3", "type": "UnsignedDword" },
+      {
+        "field": "time_of_death",
+        "type": "UnsignedDword",
+        "comment": "is set to state.time_total when player dies"
+      },
       { "field": "held_item", "type": "EntityDBID" },
       { "field": "held_item_metadata", "type": "Word" },
       { "field": "unknown5c", "type": "UnsignedByte", "comment": "padding?" },
