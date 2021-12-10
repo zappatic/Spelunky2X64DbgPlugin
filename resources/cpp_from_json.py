@@ -75,7 +75,7 @@ cpp_types = {
     "ParticleDBID": "uint32_t",
     "TextureDBPointer": "Texture*",
     "TextureDBID": "int64_t",
-    "Vector": "Vector",
+    "Vector": "Vector*",
     "ConstCharPointer": "const char*",
     "ConstCharPointerPointer": "const char**",
     "UTF16Char": "char16_t",

@@ -976,7 +976,8 @@
     "OnlineServer",
     "SockAddrIn",
     "StdList",
-    "SomeUnknownArray"
+    "SomeUnknownArray",
+    "EntitiesList"
   ],
   "refs": {
     "screen_states": {
@@ -10139,39 +10140,26 @@
       { "field": "end_capacity", "type": "DataPointer" }
     ],
     "LayerPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
-      { "field": "first_entity*", "type": "DataPointer" },
-      { "field": "b", "type": "DataPointer" },
-      { "field": "capacity", "type": "Dword" },
-      { "field": "size", "type": "Dword" },
+      { "field": "is_back_layer", "type": "Bool" },
+      { "field": "-", "type": "Skip", "offset": 7, "comment": "skip padding" },
+      { "field": "all_entities", "type": "EntitiesList" },
+      { "field": "unknown_entities1", "type": "EntitiesList" },
+      { "field": "unkn3", "type": "DataPointer" },
+      { "field": "unkn4", "type": "Map" },
       {
         "field": "-",
         "type": "Skip",
-        "offset": 410656,
-        "comment": "skip 0x64440 - 4 * sizeof(size_t) for the fields above"
+        "offset": 410584,
+        "comment": "skip 62560, then 126*86*8 grid entities, then skip 261392"
       },
-      { "field": "unknown_entities", "type": "MysteryEntitiesListPointer" },
-      {
-        "field": "unknown_entity_uids",
-        "type": "MysteryEntityUIDsListPointer"
-      },
-      { "field": "unknown1a", "type": "UnsignedDword" },
-      { "field": "unknown1b", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown1", "type": "EntitiesList" },
+      { "field": "unknown2", "type": "EntitiesList" },
+
       { "field": "unknown3", "type": "DataPointer" },
       { "field": "unknown4", "type": "DataPointer" },
-      {
-        "field": "unknown5",
-        "type": "DataPointer",
-        "comment": "pointer to a map?"
-      },
+      { "field": "unknown5", "type": "DataPointer" },
       { "field": "unknown6", "type": "DataPointer" },
-      { "field": "unknown7", "type": "DataPointer" },
-      { "field": "unknown8", "type": "UnsignedByte" },
-      { "field": "unknown9", "type": "UnsignedByte" },
-      { "field": "unknown10", "type": "UnsignedByte" },
-      { "field": "unknown11", "type": "UnsignedByte" },
-      { "field": "unknown12", "type": "UnsignedDword" },
+      { "field": "expired_entities", "type": "EntitiesList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },
       { "field": "unknown15", "type": "UnsignedByte" },
@@ -10209,29 +10197,21 @@
       { "field": "unknown43", "type": "UnsignedQword" },
       { "field": "unknown44", "type": "UnsignedQword" },
       { "field": "unknown45", "type": "UnsignedQword" },
-      { "field": "unknown46", "type": "UnsignedQword" },
-      { "field": "unknown47", "type": "Bool" },
-      { "field": "unknown48", "type": "UnsignedByte" },
-      { "field": "unknown49", "type": "UnsignedByte" },
-      { "field": "unknown50", "type": "UnsignedByte" },
-      { "field": "unknown51", "type": "UnsignedDword" },
-      { "field": "unknown52", "type": "MysteryEntitiesListPointer" },
-      { "field": "unknown53", "type": "MysteryEntityUIDsListPointer" },
-      { "field": "unknown54", "type": "UnsignedByte" },
-      { "field": "unknown55", "type": "UnsignedByte" },
-      { "field": "unknown56", "type": "UnsignedByte" },
-      { "field": "unknown57", "type": "UnsignedByte" },
-      { "field": "unknown58", "type": "UnsignedDword", "comment": "garbage?" },
-      { "field": "unknown59", "type": "MysteryEntitiesListPointer" },
-      { "field": "unknown60", "type": "MysteryEntityUIDsListPointer" },
-      { "field": "unknown61", "type": "UnsignedByte" },
-      { "field": "unknown62", "type": "UnsignedByte" },
-      { "field": "unknown63", "type": "UnsignedByte" },
-      { "field": "unknown64", "type": "UnsignedByte" },
-      { "field": "unknown65", "type": "UnsignedDword" },
-      { "field": "unknown66", "type": "DataPointer" },
-      { "field": "unknown67", "type": "DataPointer" },
-      { "field": "unknown68", "type": "UnsignedDword" }
+      {
+        "field": "unknown46",
+        "type": "UnsignedQword",
+        "comment": "next layer below"
+      }
+    ],
+    "EntitiesList": [
+      {
+        "field": "entities",
+        "type": "MysteryEntitiesListPointer",
+        "comment": "Entity**"
+      },
+      { "field": "udis", "type": "DataPointer", "comment": "int32_t*" },
+      { "field": "capacity", "type": "UnsignedDword" },
+      { "field": "size", "type": "UnsignedDword" }
     ],
     "MysteryEntitiesListPointer": [
       { "field": "entity_1", "type": "EntityPointer" },
