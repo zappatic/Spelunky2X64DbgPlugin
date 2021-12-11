@@ -10144,16 +10144,16 @@
       { "field": "-", "type": "Skip", "offset": 7, "comment": "skip padding" },
       { "field": "all_entities", "type": "EntitiesList" },
       { "field": "unknown_entities1", "type": "EntitiesList" },
-      { "field": "unkn3", "type": "DataPointer" },
-      { "field": "unkn4", "type": "Map" },
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "Map" },
       {
         "field": "-",
         "type": "Skip",
         "offset": 410584,
         "comment": "skip 62512, then 126*86*8 grid entities, then skip 261384"
       },
-      { "field": "unknown1", "type": "EntitiesList" },
-      { "field": "unknown2", "type": "EntitiesList" },
+      { "field": "unknown_entities2", "type": "EntitiesList" },
+      { "field": "unknown_entities3", "type": "EntitiesList" },
 
       { "field": "unknown3", "type": "DataPointer" },
       { "field": "unknown4", "type": "DataPointer" },
