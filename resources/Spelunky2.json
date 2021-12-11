@@ -10150,7 +10150,7 @@
         "field": "-",
         "type": "Skip",
         "offset": 410584,
-        "comment": "skip 62560, then 126*86*8 grid entities, then skip 261392"
+        "comment": "skip 62512, then 126*86*8 grid entities, then skip 261384"
       },
       { "field": "unknown1", "type": "EntitiesList" },
       { "field": "unknown2", "type": "EntitiesList" },
