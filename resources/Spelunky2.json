@@ -10143,7 +10143,11 @@
       { "field": "is_back_layer", "type": "Bool" },
       { "field": "-", "type": "Skip", "offset": 7, "comment": "skip padding" },
       { "field": "all_entities", "type": "EntitiesList" },
-      { "field": "unknown_entities1", "type": "EntitiesList" },
+      {
+        "field": "unknown_entities1",
+        "type": "EntitiesList",
+        "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
+      },
       { "field": "unknown1", "type": "DataPointer" },
       { "field": "unknown2", "type": "Map" },
       {
@@ -10152,8 +10156,16 @@
         "offset": 410584,
         "comment": "skip 62512, then 126*86*8 grid entities, then skip 261384"
       },
-      { "field": "unknown_entities2", "type": "EntitiesList" },
-      { "field": "unknown_entities3", "type": "EntitiesList" },
+      {
+        "field": "unknown_entities2",
+        "type": "EntitiesList",
+        "comment": "debris, explosions, laserbeams etc. ?"
+      },
+      {
+        "field": "unknown_entities3",
+        "type": "EntitiesList",
+        "comment": "explosions, laserbeams, BG_LEVEL_*_SOOT ? only for short time while there are spawned?"
+      },
 
       { "field": "unknown3", "type": "DataPointer" },
       { "field": "unknown4", "type": "DataPointer" },
@@ -10209,7 +10221,11 @@
         "type": "MysteryEntitiesListPointer",
         "comment": "Entity**"
       },
-      { "field": "udis", "type": "DataPointer", "comment": "int32_t*" },
+      {
+        "field": "udis",
+        "type": "MysteryEntityUIDsListPointer",
+        "comment": "int32_t*"
+      },
       { "field": "capacity", "type": "UnsignedDword" },
       { "field": "size", "type": "UnsignedDword" }
     ],
