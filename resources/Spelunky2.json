@@ -10015,7 +10015,7 @@
       { "field": "size", "type": "UnsignedQword" }
     ],
     "UnorderedMap": [
-      { "field": "unknown1", "type": "Float" },
+      { "field": "max_load_factor", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedDword" },
       {
         "field": "end",
@@ -11696,7 +11696,11 @@
       { "field": "tileh", "type": "Float" },
       { "field": "x_dupe3", "type": "Float" },
       { "field": "y_dupe3", "type": "Float" },
-      { "field": "x_dupe4", "type": "Float" },
+      {
+        "field": "x_dupe4",
+        "type": "Float",
+        "comment": "this will be writen into x next refresh"
+      },
       { "field": "y_dupe4", "type": "Float" },
       { "field": "angle1", "type": "Float" },
       { "field": "angle2", "type": "Float" },
