@@ -13695,9 +13695,14 @@
     "Ai_func": [
       { "field": "unknown1a", "type": "Flags32", "comment": "flags?" },
       { "field": "unknown1b", "type": "Flags32", "comment": "flags?" },
-      { "field": "unknown2", "type": "Dword" },
-      { "field": "unknown3", "type": "Dword", "comment": "garbage?" },
-      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown2a", "type": "Word" },
+      { "field": "unknown2b", "type": "Word", "comment": "garbage/padding?" },
+      { "field": "unknown3", "type": "Dword", "comment": "garbage/padding?" },
+      {
+        "field": "unknown4",
+        "type": "DataPointer",
+        "comment": "array of targets? (uids)"
+      },
       { "field": "button_sequence?", "type": "DataPointer" },
       { "field": "self_pointer", "type": "EntityPointer" },
       { "field": "unknown7", "type": "DataPointer" },
