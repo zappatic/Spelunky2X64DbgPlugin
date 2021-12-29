@@ -10179,7 +10179,11 @@
       { "field": "unknown17", "type": "UnsignedDword" },
       { "field": "unknown18", "type": "UnsignedDword" },
       { "field": "unknown19", "type": "UnsignedDword" },
-      { "field": "unknown20", "type": "DataPointer" },
+      {
+        "field": "entity_items_begin",
+        "type": "DataPointer",
+        "comment": "begin of the memory that holds the items of entities"
+      },
       { "field": "unknown21", "type": "DataPointer" },
       { "field": "unknown22", "type": "DataPointer" },
       { "field": "unknown23", "type": "Bool" },
