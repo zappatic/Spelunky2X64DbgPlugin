@@ -333,7 +333,8 @@
     "DecoRegeneratingBlock": "Entity",
     "DestructibleBG": "Entity",
     "EggShipDoorS": "EggShipDoor",
-    "PrizeDispenser": "Movable"
+    "PrizeDispenser": "Movable",
+    "JungleSpearTrap": "Floor"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -350,6 +351,7 @@
     "FLOOR_DOOR_.*": "Door",
     "FLOOR_.*ARROW_TRAP": "Arrowtrap",
     "FLOOR_TOTEM_TRAP": "TotemTrap",
+    "FLOOR_JUNGLE_SPEAR_TRAP": "JungleSpearTrap",
     "FLOOR_LION_TRAP": "TotemTrap",
     "FLOOR_LASER_TRAP": "LaserTrap",
     "FLOOR_SPARK_TRAP": "SparkTrap",
@@ -14463,6 +14465,7 @@
       { "field": "prizes_spawned", "type": "UnsignedByte" },
       { "field": "padding", "type": "Byte" }
     ],
+    "JungleSpearTrap": [],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
