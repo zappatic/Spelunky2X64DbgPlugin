@@ -10784,6 +10784,12 @@
             ]
           },
           "108": {
+            "name": "unknown_v108",
+            "params": "",
+            "return": "",
+            "comment": [""]
+          },
+          "109": {
             "name": "on_death_treasure_drop",
             "params": "",
             "return": "",
