@@ -9124,7 +9124,7 @@
           },
           "23": { "name": "v23", "params": "", "return": "" },
           "24": {
-            "name": "on_open",
+            "name": "trigger_action",
             "params": "Entity* opener",
             "return": "bool"
           },
