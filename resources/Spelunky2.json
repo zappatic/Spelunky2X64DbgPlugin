@@ -4561,9 +4561,12 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      {
+        "field": "unknown6",
+        "type": "Qword",
+        "comment": "pretty sure this is some map/set internal stuff"
+      }
     ],
     "ShopRestrictedItemPointer2": [
       { "field": "prev", "type": "ShopRestrictedItemPointer3" },
@@ -4575,9 +4578,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopRestrictedItemPointer3": [
       { "field": "prev", "type": "ShopRestrictedItemPointer4" },
@@ -4589,9 +4591,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopRestrictedItemPointer4": [
       { "field": "prev", "type": "ShopRestrictedItemPointer5" },
@@ -4603,9 +4604,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopRestrictedItemPointer5": [
       { "field": "prev", "type": "DataPointer" },
@@ -4617,9 +4617,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopOwnerDetails": [
       { "field": "layer", "type": "UnsignedByte" },
