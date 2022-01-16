@@ -887,6 +887,9 @@
     "GetEntitiesResultPointer",
     "EntitiesResultEntitiesPointer",
     "EntitiesResultEntityUIDsPointer",
+    "MapBucket",
+    "MapBucket1",
+    "MapBucket2",
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2"
   ],
@@ -10028,8 +10031,68 @@
       { "field": "slot_10", "type": "UnsignedDword" }
     ],
     "Map": [
-      { "field": "items", "type": "DataPointer" },
+      { "field": "items", "type": "MapBucket" },
       { "field": "size", "type": "UnsignedQword" }
+    ],
+    "MapBucket": [
+      { "field": "unknown1", "type": "MapBucket1" },
+      { "field": "unknown2", "type": "MapBucket1" },
+      { "field": "unknown3", "type": "MapBucket1" },
+      {
+        "field": "unknown4",
+        "type": "Bool",
+        "comment": "if both bools are set true the bucket is marked as deleted"
+      },
+      { "field": "unknown5", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3?", "type": "Dword" },
+      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary, at the end there is always Qword with small number"
+      }
+    ],
+    "MapBucket1": [
+      { "field": "unknown1", "type": "MapBucket2" },
+      { "field": "unknown2", "type": "MapBucket2" },
+      { "field": "unknown3", "type": "MapBucket2" },
+      {
+        "field": "unknown4",
+        "type": "Bool",
+        "comment": "if both bools are set true the bucket is marked as deleted"
+      },
+      { "field": "unknown5", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3?", "type": "Dword" },
+      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary"
+      }
+    ],
+    "MapBucket2": [
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown3", "type": "DataPointer" },
+      {
+        "field": "unknown4",
+        "type": "Bool",
+        "comment": "if both bools are set true the bucket is marked as deleted"
+      },
+      { "field": "unknown5", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3?", "type": "Dword" },
+      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary"
+      }
     ],
     "UnorderedMap": [
       { "field": "max_load_factor", "type": "Float" },
