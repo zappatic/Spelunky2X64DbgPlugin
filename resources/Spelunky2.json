@@ -4544,7 +4544,11 @@
         "type": "ShopRestrictedItemPointer1",
         "comment": "the items in a shop that set off the shopkeeper if you walk off with them"
       },
-      { "field": "restricted_item_count", "type": "UnsignedQword" },
+      {
+        "field": "restricted_item_count",
+        "type": "UnsignedQword",
+        "comment": "this is a std::map <int32_t, std::pair<int32_t, ENT_TYPE>> or set with a struct, uid of the item as a key, uid and type of the shopkeeper as value"
+      },
       {
         "field": "shop_owners",
         "type": "StdVector",
@@ -9129,7 +9133,11 @@
             "params": "Entity*",
             "return": "void"
           },
-          "23": { "name": "v23", "params": "", "return": "" },
+          "23": {
+            "name": "v23",
+            "params": "Entity* logical_trigger, Entity* who_triggered_it",
+            "return": ""
+          },
           "24": {
             "name": "trigger_action",
             "params": "Entity* opener",
