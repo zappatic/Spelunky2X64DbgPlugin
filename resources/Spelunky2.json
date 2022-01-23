@@ -10229,7 +10229,7 @@
         "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
       },
       { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "Map" },
+      { "field": "entities_by_mask", "type": "Map" },
       {
         "field": "-",
         "type": "Skip",
