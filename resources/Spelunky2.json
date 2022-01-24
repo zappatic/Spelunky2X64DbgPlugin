@@ -4258,9 +4258,10 @@
       { "field": "unknown27", "type": "MysteryPointer4" },
       {
         "field": "uid_to_entity_mask",
-        "type": "UnsignedQword",
+        "type": "UnsignedDword",
         "comment": "RobinHoodTable mask"
       },
+      { "field": "padding13", "type": "UnsignedDword" },
       {
         "field": "uid_to_entity_data",
         "type": "DataPointer",
