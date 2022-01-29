@@ -9642,22 +9642,29 @@
             "return": ""
           },
           "87": { "name": "v87", "params": "", "return": "" },
-          "88": {
+          "88": { "name": "v88", "params": "", "return": "" },
+          "89": {
             "name": "stack_plus_28_is_0",
             "params": "",
             "return": "",
             "comment": "triggers on item_rubble"
           },
-          "89": {
+          "90": {
             "name": "on_crushed_by",
             "params": "Entity*",
             "return": "",
             "comment": "e.g. crushed by elevator, punishball, pushblock, crushtrap (not quillback or boulder)"
           },
-          "90": {
+          "91": {
             "name": "on_fall_onto",
             "params": "uint32_t unknown, Entity* fell_on_entity",
             "return": ""
+          },
+          "92": {
+            "name": "on_instakill_death",
+            "params": "",
+            "return": "",
+            "comment": "seems to only trigger for enemies that die in one hit"
           }
         }
       },
@@ -9758,20 +9765,14 @@
     "PowerupCapable": [
       {
         "vftablefunctions": {
-          "91": {
-            "name": "on_instakill_death",
-            "params": "",
-            "return": "",
-            "comment": "seems to only trigger for enemies that die in one hit"
-          },
-          "92": {
+          "93": {
             "name": "on_blood_collision",
             "params": "",
             "return": "",
             "comment": "only triggers when player has kapala"
           },
-          "93": {
-            "name": "unknown_v93",
+          "94": {
+            "name": "unknown_v94",
             "params": "",
             "return": "",
             "comment": ""
@@ -14021,12 +14022,6 @@
     "Powerup": [
       {
         "vftablefunctions": {
-          "87": { "name": "unknown_v87", "params": "", "return": "" },
-          "88": { "name": "unknown_v89", "params": "", "return": "" },
-          "89": { "name": "unknown_v89", "params": "", "return": "" },
-          "90": { "name": "unknown_v90", "params": "", "return": "" },
-          "91": { "name": "unknown_v91", "params": "", "return": "" },
-          "92": { "name": "unknown_v92", "params": "", "return": "" },
           "93": {
             "name": "apply_to_player",
             "params": "Player* player",
