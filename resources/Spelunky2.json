@@ -13917,7 +13917,11 @@
       },
       { "field": "unknown11", "type": "Byte" },
       { "field": "padding3", "type": "Word" },
-      { "field": "unknown12", "type": "Qword" }
+      {
+        "field": "unknown12",
+        "type": "CodePointer",
+        "comment": "used in basecamp with buttons attached to BG_TUTORIAL_SING"
+      }
     ],
     "SoundInfoPointer": [
       { "field": "unknown1", "type": "Qword" },
