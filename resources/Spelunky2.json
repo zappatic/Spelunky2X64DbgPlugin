@@ -9456,7 +9456,7 @@
           },
           "53": {
             "name": "light_on_fire",
-            "params": "",
+            "params": "uint8_t time",
             "return": "void"
           },
           "54": {
@@ -9777,7 +9777,7 @@
             "name": "unknown_v94",
             "params": "",
             "return": "",
-            "comment": ""
+            "comment": "some post damage related? triggers for some monsters that don't die after one hit"
           }
         }
       },
