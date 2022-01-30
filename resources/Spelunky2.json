@@ -334,7 +334,8 @@
     "DestructibleBG": "Entity",
     "EggShipDoorS": "EggShipDoor",
     "PrizeDispenser": "Movable",
-    "JungleSpearTrap": "Floor"
+    "JungleSpearTrap": "Floor",
+    "MegaJellyfishEye": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -671,6 +672,7 @@
     "FX_STORAGE_INDICATOR": "MovingIcon",
     "FX_VAT_BUBBLE": "FxVatBubble",
     "FX_HUNDUN_NECK_PIECE": "FxHundunNeckPiece",
+    "FX_MEGAJELLYFISH_EYE": "MegaJellyfishEye",
     "FX_MEGAJELLYFISH_STAR": "FxJellyfishStar",
     "FX_QUICKSAND_DUST": "FxQuickSand",
     "FX_QUICKSAND_RUBBLE": "FxQuickSand",
@@ -14550,6 +14552,7 @@
       { "field": "padding", "type": "Byte" }
     ],
     "JungleSpearTrap": [],
+    "MegaJellyfishEye": [{ "field": "timer", "type": "UnsignedByte" }],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
