@@ -5399,8 +5399,7 @@
       { "field": "unknown6", "type": "DataPointer" },
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
-      { "field": "unknown10", "type": "UnsignedDword" },
+      { "field": "unknown9", "type": "DataPointer" },
       { "field": "unknown11", "type": "UnsignedDword" },
       { "field": "unknown12", "type": "UnsignedDword" },
       { "field": "unknown13", "type": "UnsignedDword" },
@@ -9065,7 +9064,7 @@
             "return": "void"
           },
           "7": {
-            "name": "hiredhand_description",
+            "name": "format_shopitem_name",
             "params": "char*",
             "return": "void"
           },
