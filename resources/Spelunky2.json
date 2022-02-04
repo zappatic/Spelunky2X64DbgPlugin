@@ -10467,7 +10467,19 @@
       { "field": "hitboxx", "type": "Float" },
       { "field": "hitboxy", "type": "Float" }
     ],
-    "Arrowtrap": [{ "field": "arrow_shot", "type": "Bool" }],
+    "Arrowtrap": [
+      {
+        "vftablefunctions": {
+          "40": {
+            "name": "spawn_arrow",
+            "params": "float x, float y",
+            "return": "Entity*",
+            "comment": "nothing fancy, all the flags and velocities are done by the logical trigger i believe"
+          }
+        }
+      },
+      { "field": "arrow_shot", "type": "Bool" }
+    ],
     "Container": [{ "field": "inside", "type": "EntityDBID" }],
     "Gun": [
       { "field": "cooldown", "type": "UnsignedByte" },
@@ -12814,6 +12826,16 @@
       { "field": "shine_timer", "type": "UnsignedByte" }
     ],
     "Generator": [
+      {
+        "vftablefunctions": {
+          "40": {
+            "name": "randomize_timer",
+            "params": "",
+            "return": "",
+            "comment": "called after it spawns entity and it's 'ready' (have proper flags set etc.)"
+          }
+        }
+      },
       { "field": "spawned_uid", "type": "EntityUID" },
       { "field": "set_timer", "type": "UnsignedWord" },
       { "field": "timer", "type": "UnsignedWord" },
@@ -13090,14 +13112,14 @@
           },
           "38": {
             "name": "on_neighbor_destroyed",
-            "params": "-",
-            "return": "-",
-            "comment": "called for every neighbor of destroyed floor (probably to decorate it)"
+            "params": "",
+            "return": "",
+            "comment": "called for every neighbor of destroyed floor (to decorate it, maybe somehting else)"
           },
           "39": {
             "name": "get_floor_type",
-            "params": "-",
-            "return": "Dword (TypeID)",
+            "params": "",
+            "return": "uint32_t",
             "comment": "Returns it's ENT_TYPE except for FLOOR_PEN (returns FLOORSTYLED_MINEWOOD) and FLOOR_QUICKSAND, FLOOR_TOMB, FLOOR_EMPRESS_GRAVE which return FLOOR_GENERIC. Used for spawning decorations"
           }
         }
@@ -13114,46 +13136,46 @@
       {
         "vftablefunctions": {
           "40": {
-            "name": "v40",
-            "params": "",
+            "name": "on_enter_attempt",
+            "params": "Entity*",
             "return": "",
-            "comment": ""
+            "comment": "this function doesnt do much, checks if it's CHAR_*, checks if hes holding anything (if yes calls some function), then checks if Player.can_use is equal to 4 calls some other function, can't be bother to look into the functions"
           },
           "41": {
-            "name": "v41",
-            "params": "",
+            "name": "hide_ui",
+            "params": "Entity*",
             "return": "",
-            "comment": ""
+            "comment": "check if it's CHAR_*, then sets State.level_flags -> 21 (Hide hud, transition)"
           },
           "42": {
             "name": "enter",
-            "params": "Entity* who",
-            "return": "byte",
+            "params": "Entity*",
+            "return": "uint8_t",
             "comment": ""
           },
           "43": {
-            "name": "v43",
-            "params": "",
-            "return": "",
-            "comment": ""
+            "name": "entered_from_front_layer",
+            "params": "Entity*",
+            "return": "bool",
+            "comment": "checks layer of the Entity entering, except for FLOOR_DOOR_EGGSHIP_ROOM which gets the overlay (BG_EGGSHIP_ROOM) and returns BGEggshipRoom.player_in"
           },
           "44": {
             "name": "v44",
             "params": "",
-            "return": "",
-            "comment": ""
+            "return": "float",
+            "comment": "returns 0.0 except for eggship doors, for example: FLOOR_DOOR_EGGSHIP_ROOM returns 0.75 when entering the room, and 1.0 when exiting, runs every frame while entering/exiting"
           },
           "45": {
-            "name": "v45",
+            "name": "is_door_unlocked",
             "params": "",
-            "return": "",
+            "return": "bool",
             "comment": ""
           },
           "46": {
             "name": "v46",
             "params": "",
-            "return": "",
-            "comment": ""
+            "return": "bool",
+            "comment": "dunno, runs every frame when player overlays door"
           }
         }
       },
