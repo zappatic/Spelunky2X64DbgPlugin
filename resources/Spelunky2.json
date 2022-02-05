@@ -794,7 +794,6 @@
     "RenderInfoPointer",
     "ParticleEmitterInfoPointer",
     "TextRenderingInfoPointer",
-    "DoorCoordsPointer",
     "ScreenPointer",
     "ScreenTransitionPointer",
     "ScreenWinPointer",
@@ -984,7 +983,8 @@
     "SockAddrIn",
     "StdList",
     "SomeUnknownArray",
-    "EntitiesList"
+    "EntitiesList",
+    "XY"
   ],
   "refs": {
     "screen_states": {
@@ -1273,6 +1273,22 @@
       "7": "1.75",
       "8": "2.0",
       "9": "Breath Off"
+    },
+    "shop_types": {
+      "0": "General store",
+      "1": "Clothing shop",
+      "2": "Weapon shop",
+      "3": "Specialty shop",
+      "4": "Hired hand shop",
+      "5": "Pet shop",
+      "6": "Dice shop",
+      "7": "Unknown shop",
+      "8": "Hedjet shop",
+      "9": "Tun shop",
+      "10": "Caveman shop",
+      "11": "Yang Turkey shop",
+      "12": "Ghist shop",
+      "13": "Tusk dice shop"
     }
   },
 
@@ -8692,50 +8708,67 @@
       { "field": "spawn_room_y", "type": "UnsignedDword" },
       { "field": "spawn_x", "type": "Float" },
       { "field": "spawn_y", "type": "Float" },
-      { "field": "exit_doors_locations", "type": "DoorCoordsPointer" },
-      { "field": "unknown37", "type": "DataPointer" },
-      { "field": "unknown38", "type": "DataPointer" },
+      {
+        "field": "exit_doors_locations",
+        "type": "StdVector",
+        "vectortype": "XY"
+      },
       {
         "field": "flags",
         "type": "Flags8",
         "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
+          "1": "unknown",
+          "2": "unknown",
+          "3": "unknown",
+          "4": "unknown",
+          "5": "unknown",
           "6": "Apply ambient occlusion",
-          "7": "",
-          "8": ""
+          "7": "unknown",
+          "8": "unknown"
         }
       },
-      { "field": "unknown39", "type": "UnsignedByte" },
-      { "field": "unknown40", "type": "UnsignedByte" },
       {
-        "field": "shop_type",
-        "type": "State8",
-        "states": {
-          "0": "General store",
-          "1": "Clothing shop",
-          "2": "Weapon shop",
-          "3": "Specialty shop",
-          "4": "Hired hand shop",
-          "5": "Pet shop",
-          "6": "Dice shop",
-          "13": "Tusk dice shop"
+        "field": "flags2",
+        "type": "Flags8",
+        "flags": {
+          "1": "unknown",
+          "2": "unknown",
+          "3": "unknown",
+          "4": "unknown",
+          "5": "unknown",
+          "6": "unknown",
+          "7": "unknown",
+          "8": "unknown"
         }
       },
-      { "field": "unknown42", "type": "UnsignedByte" },
-      { "field": "unknown43", "type": "UnsignedByte" },
-      { "field": "unknown44", "type": "UnsignedByte" },
+      {
+        "field": "flags3",
+        "type": "Flags8",
+        "flags": {
+          "1": "unknown",
+          "2": "unknown",
+          "3": "unknown",
+          "4": "unknown",
+          "5": "unknown",
+          "6": "unknown",
+          "7": "unknown",
+          "8": "unknown"
+        }
+      },
+      { "field": "shop_type", "type": "State8", "ref": "shop_types" },
+      { "field": "backlayer_shop_type", "type": "State8", "ref": "shop_types" },
       { "field": "unknown45", "type": "UnsignedByte" },
       { "field": "unknown46", "type": "UnsignedByte" },
-      { "field": "unknown47", "type": "UnsignedByte" },
-      { "field": "unknown48", "type": "UnsignedByte" },
+      {
+        "field": "unknown47",
+        "type": "UnsignedByte",
+        "comment": "set to 0 at the start of level gen, nothing check it thou"
+      },
+      { "field": "unknown48", "type": "Bool" },
       { "field": "unknown49", "type": "UnsignedByte" },
-      { "field": "unknown50", "type": "UnsignedDword" },
-      { "field": "unknown51", "type": "UnsignedDword" },
-      { "field": "unknown52", "type": "UnsignedDword" }
+      { "field": "padding1?", "type": "UnsignedWord" },
+      { "field": "padding2?", "type": "UnsignedDword" },
+      { "field": "unknown50", "type": "UnsignedQword" }
     ],
     "LevelGenDataPointer": [
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -8835,16 +8868,6 @@
       { "field": "unknown48", "type": "UnsignedByte" },
       { "field": "unknown49", "type": "UnsignedDword" },
       { "field": "unknown50", "type": "UnsignedDword" }
-    ],
-    "DoorCoordsPointer": [
-      { "field": "door1_x", "type": "Float" },
-      { "field": "door1_y", "type": "Float" },
-      {
-        "field": "door2_x",
-        "type": "Float",
-        "comment": "door2 only valid when there are two in the level, like Volcana drill, Olmec, ..."
-      },
-      { "field": "door2_y", "type": "Float" }
     ],
     "Online": [
       {
@@ -9080,7 +9103,7 @@
           },
           "7": {
             "name": "format_shopitem_name",
-            "params": "char*",
+            "params": "char16_t*",
             "return": "void"
           },
           "8": {
@@ -9095,28 +9118,27 @@
             "return": "float"
           },
           "10": {
-            "name": "block_pushing_related",
+            "name": "can_be_pushed",
             "params": "",
             "return": "bool",
-            "comment": "does a bittest for the 14 entities starting at pushblock, function hits when player pushes entity"
+            "comment": "(runs only for activefloors?) checks if entity type is pushblock, for chained push block checks ChainedPushBlock.is_chained, is only a check that allows for the pushing animation"
           },
           "11": {
             "name": "v11",
             "params": "",
-            "return": "",
-            "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
+            "return": "bool",
+            "comment": "for arrows: returns true if it's moving (for y possibily checks for some speed as well?)"
           },
           "12": {
-            "name": "v12",
+            "name": "is_in_liquid",
             "params": "",
-            "return": "",
-            "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
+            "return": "bool"
           },
           "13": {
             "name": "check_type_properties_flags_19",
             "params": "",
             "return": "bool",
-            "comment": "checks (properties_flags >> 0x12) & 1; can't get it to trigger"
+            "comment": "checks (properties_flags >> 0x12) & 1; for hermitcrab checks if he's invisible; can't get it to trigger"
           },
           "14": {
             "name": "get_type_field_60",
@@ -9160,14 +9182,14 @@
           },
           "24": {
             "name": "trigger_action",
-            "params": "Entity* opener",
+            "params": "Entity* user",
             "return": "bool"
           },
           "25": {
-            "name": "on_attempt_shop_purchase",
-            "params": "Entity* buyer",
+            "name": "activate",
+            "params": "Entity* activator",
             "return": "void",
-            "comment": "checks if you have sufficient money, performs the sale if so"
+            "comment": "Activates a button prompt (with the Use door/Buy button), e.g. buy shop item, activate drill, read sign, interact in camp ..."
           },
           "26": {
             "name": "on_collision2",
@@ -9199,9 +9221,10 @@
             "comment": "hits when monster/player walks off a floor, it checks whether the walker has floor as overlay, and if so, removes walker from floor's items by calling virtual 20 (remove_item_ptr)"
           },
           "31": {
-            "name": "v31",
-            "params": "",
-            "return": ""
+            "name": "on_ledge_grab",
+            "params": "Entity* who",
+            "return": "",
+            "comment": "only ACTIVEFLOOR_FALLING_PLATFORM, does something with game menager"
           },
           "32": {
             "name": "on_stood_on_by",
@@ -9213,12 +9236,13 @@
             "name": "toggle_backlayer_illumination",
             "params": "",
             "return": "",
-            "comment": "for the player: when going to the backlayer, turns on player emitted light"
+            "comment": "only for CHAR_*, when going to the backlayer, turns on player emitted light"
           },
           "34": {
             "name": "v34",
             "params": "",
-            "return": ""
+            "return": "",
+            "comment": "only ITEM_TORCH, calls Torch.light_up(false), can't get it to trigger"
           },
           "35": {
             "name": "liberate_from_shop",
@@ -9471,7 +9495,8 @@
           "53": {
             "name": "light_on_fire",
             "params": "uint8_t time",
-            "return": "void"
+            "return": "void",
+            "comment": "Does not damage entity"
           },
           "54": {
             "name": "set_cursed",
@@ -14957,6 +14982,10 @@
       { "field": "array_pointer", "type": "DataPointer" },
       { "field": "unknown1", "type": "Dword", "comment": "resizing related" },
       { "field": "padding?", "type": "Dword" }
+    ],
+    "XY": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" }
     ]
   }
 }
