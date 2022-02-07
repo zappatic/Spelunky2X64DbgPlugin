@@ -892,7 +892,8 @@
     "MapBucket1",
     "MapBucket2",
     "MysteryLiquidPointer1",
-    "MysteryLiquidPointer2"
+    "MysteryLiquidPointer2",
+    "MysteryLayerPointer1"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -1289,6 +1290,34 @@
       "11": "Yang Turkey shop",
       "12": "Ghist shop",
       "13": "Tusk dice shop"
+    },
+    "buttons_entity": {
+      "1": "Jump",
+      "2": "Attack",
+      "3": "Bomb",
+      "4": "Rope",
+      "5": "Run",
+      "6": "Use door/buy",
+      "7": "-",
+      "8": "-"
+    },
+    "buttons_player": {
+      "1": "Jump",
+      "2": "Attack",
+      "3": "Bomb",
+      "4": "Rope",
+      "5": "Run",
+      "6": "Use door/buy",
+      "7": "Pause/Menu",
+      "8": "Journal",
+      "9": "Left",
+      "10": "Right",
+      "11": "Up",
+      "12": "Down",
+      "13": "-",
+      "14": "-",
+      "15": "-",
+      "16": "-"
     }
   },
 
@@ -1308,7 +1337,7 @@
           "3": "Monster",
           "4": "Item",
           "5": "Explosion",
-          "6": "",
+          "6": "Rope",
           "7": "FX",
           "8": "ACTIVEFLOOR",
           "9": "FLOOR",
@@ -6699,47 +6728,13 @@
       {
         "field": "buttons_gameplay",
         "type": "Flags16",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause",
-          "8": "Journal",
-          "9": "Left",
-          "10": "Right",
-          "11": "Up",
-          "12": "Down",
-          "13": "-",
-          "14": "-",
-          "15": "-",
-          "16": "-"
-        },
+        "ref": "buttons_player",
         "comment": "does not work in pause menu"
       },
       {
         "field": "buttons",
         "type": "Flags16",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause?",
-          "8": "Journal",
-          "9": "Left",
-          "10": "Right",
-          "11": "Up",
-          "12": "Down",
-          "13": "-",
-          "14": "-",
-          "15": "-",
-          "16": "-"
-        },
+        "ref": "buttons_player",
         "comment": "works everywhere, including in pause menu"
       },
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -7003,24 +6998,7 @@
       {
         "field": "buttons",
         "type": "Flags16",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause?",
-          "8": "Journal",
-          "9": "Left",
-          "10": "Right",
-          "11": "Up",
-          "12": "Down",
-          "13": "-",
-          "14": "-",
-          "15": "-",
-          "16": "-"
-        }
+        "ref": "buttons_player"
       },
       { "field": "padding1", "type": "UnsignedWord" },
       { "field": "brick_background", "type": "TextureRenderingInfo" },
@@ -9715,33 +9693,11 @@
       { "field": "ic8", "type": "Qword" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
-      {
-        "field": "buttons",
-        "type": "Flags8",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "-",
-          "8": "-"
-        }
-      },
+      { "field": "buttons", "type": "Flags8", "ref": "buttons_entity" },
       {
         "field": "buttons_previous",
         "type": "Flags8",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "-",
-          "8": "-"
-        }
+        "ref": "buttons_entity"
       },
       { "field": "unknown_padding", "type": "Word", "comment": "garbage?" },
       { "field": "stand_counter", "type": "UnsignedDword" },
@@ -10271,29 +10227,43 @@
         "type": "EntitiesList",
         "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
       },
-      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown1", "type": "MysteryLayerPointer1" },
       { "field": "entities_by_mask", "type": "Map" },
+
+      { "field": "-", "type": "Skip", "offset": 62512, "comment": "unknown?" },
+      { "field": "grid_entities_begin", "type": "Qword" },
       {
         "field": "-",
         "type": "Skip",
-        "offset": 410584,
-        "comment": "skip 62512, then 126*86*8 grid entities, then skip 261384"
+        "offset": 86680,
+        "comment": "grid_entities 126*86*8 minus the one above"
       },
+      { "field": "-", "type": "Skip", "offset": 260064, "comment": "unknown?" },
+      { "field": "unknown_entities2", "type": "EntitiesList" },
+      { "field": "entities_by_draw_depth_0", "type": "EntitiesList" },
       {
-        "field": "unknown_entities2",
-        "type": "EntitiesList",
-        "comment": "debris, explosions, laserbeams etc. ?"
+        "field": "-",
+        "type": "Skip",
+        "offset": 1272,
+        "comment": "entities_by_draw_depth 53 * EntitiesList minus one above"
       },
       {
         "field": "unknown_entities3",
         "type": "EntitiesList",
+        "comment": "debris, explosions, laserbeams etc. ?"
+      },
+      {
+        "field": "unknown_entities4",
+        "type": "EntitiesList",
         "comment": "explosions, laserbeams, BG_LEVEL_*_SOOT ? only for short time while there are spawned?"
       },
 
-      { "field": "unknown3", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
+      {
+        "field": "unknown3",
+        "type": "StdVector",
+        "vectortype": "EntityPointer"
+      },
+      { "field": "unknown6", "type": "MysteryLayerPointer1" },
       { "field": "expired_entities", "type": "EntitiesList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },
@@ -10355,6 +10325,32 @@
       },
       { "field": "capacity", "type": "UnsignedDword" },
       { "field": "size", "type": "UnsignedDword" }
+    ],
+    "MysteryLayerPointer1": [
+      {
+        "field": "unknown1",
+        "type": "DataPointer",
+        "comment": "points to 4 EntitiesList?"
+      },
+      { "field": "unknown2a", "type": "UnsignedByte" },
+      { "field": "unknown2b", "type": "UnsignedByte" },
+      {
+        "field": "unknown2c",
+        "type": "UnsignedByte",
+        "comment": "padding probably"
+      },
+      {
+        "field": "unknown2d",
+        "type": "UnsignedByte",
+        "comment": "padding probably"
+      },
+      {
+        "field": "unknown3",
+        "type": "UnsignedDword",
+        "comment": "padding probably"
+      },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" }
     ],
     "MysteryEntitiesListPointer": [
       { "field": "entity_1", "type": "EntityPointer" },
