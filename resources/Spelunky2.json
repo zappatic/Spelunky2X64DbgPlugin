@@ -784,8 +784,8 @@
   "pointer_types": [
     "StateItemsPointer",
     "LayerPointer",
-    "MysteryEntitiesListPointer",
-    "MysteryEntityUIDsListPointer",
+    "EntityListPointer",
+    "EntityUIDsListPointer",
     "PlayerInventoryPointer",
     "SoundPositionPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
@@ -886,8 +886,6 @@
     "StdListIteratorPointer",
     "LiquidPhysicsEngine",
     "GetEntitiesResultPointer",
-    "EntitiesResultEntitiesPointer",
-    "EntitiesResultEntityUIDsPointer",
     "MapBucket",
     "MapBucket1",
     "MapBucket2",
@@ -984,7 +982,7 @@
     "SockAddrIn",
     "StdList",
     "SomeUnknownArray",
-    "EntitiesList",
+    "EntityList",
     "XY"
   ],
   "refs": {
@@ -5595,9 +5593,9 @@
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "unknown2", "type": "DataPointer" },
       { "field": "unknown3", "type": "UnsignedQword" },
-      { "field": "unknown4", "type": "Vector" },
-      { "field": "unknown5", "type": "Vector" },
-      { "field": "unknown6", "type": "Vector" },
+      { "field": "unknown4", "type": "EntityList" },
+      { "field": "unknown5", "type": "EntityList" },
+      { "field": "unknown6", "type": "EntityList" },
       { "field": "unknown13", "type": "DataPointer" },
       { "field": "unknown14", "type": "DataPointer" },
       { "field": "unknown15", "type": "DataPointer" },
@@ -5614,45 +5612,7 @@
       { "field": "unknown26", "type": "UnsignedDword" }
     ],
     "GetEntitiesResultPointer": [
-      {
-        "field": "entities",
-        "type": "EntitiesResultEntitiesPointer",
-        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
-      },
-      {
-        "field": "entity_uids",
-        "type": "EntitiesResultEntityUIDsPointer",
-        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
-      },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "count", "type": "UnsignedDword" }
-    ],
-    "EntitiesResultEntitiesPointer": [
-      { "field": "entity0", "type": "EntityPointer" },
-      { "field": "entity1", "type": "EntityPointer" },
-      { "field": "entity2", "type": "EntityPointer" },
-      { "field": "entity3", "type": "EntityPointer" },
-      { "field": "entity4", "type": "EntityPointer" },
-      { "field": "entity5", "type": "EntityPointer" },
-      { "field": "entity6", "type": "EntityPointer" },
-      { "field": "entity7", "type": "EntityPointer" },
-      { "field": "entity8", "type": "EntityPointer" },
-      { "field": "entity9", "type": "EntityPointer" }
-    ],
-    "EntitiesResultEntityUIDsPointer": [
-      { "field": "entity_uid0", "type": "EntityUID" },
-      { "field": "entity_uid1", "type": "EntityUID" },
-      { "field": "entity_uid2", "type": "EntityUID" },
-      { "field": "entity_uid3", "type": "EntityUID" },
-      { "field": "entity_uid4", "type": "EntityUID" },
-      { "field": "entity_uid5", "type": "EntityUID" },
-      { "field": "entity_uid6", "type": "EntityUID" },
-      { "field": "entity_uid7", "type": "EntityUID" },
-      { "field": "entity_uid8", "type": "EntityUID" },
-      { "field": "entity_uid9", "type": "EntityUID" }
+      { "field": "entities", "type": "EntityList" }
     ],
     "LogicPointer": [
       { "field": "tutorial", "type": "TutorialPointer" },
@@ -10221,16 +10181,35 @@
     "LayerPointer": [
       { "field": "is_back_layer", "type": "Bool" },
       { "field": "-", "type": "Skip", "offset": 7, "comment": "skip padding" },
-      { "field": "all_entities", "type": "EntitiesList" },
+      { "field": "all_entities", "type": "EntityList" },
       {
         "field": "unknown_entities1",
-        "type": "EntitiesList",
+        "type": "EntityList",
         "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
       },
       { "field": "unknown1", "type": "MysteryLayerPointer1" },
       { "field": "entities_by_mask", "type": "Map" },
 
-      { "field": "-", "type": "Skip", "offset": 62512, "comment": "unknown?" },
+      { "field": "entities_by_unknown", "type": "EntityList" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 15504,
+        "comment": "647*EntityList (minus on above)"
+      },
+
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 46968,
+        "comment": "unknown, maybe more of the array above?"
+      },
+
+      {
+        "field": "unknown_map/set",
+        "type": "Map",
+        "comment": "some movable and liquids and something else maybe?"
+      },
       { "field": "grid_entities_begin", "type": "Qword" },
       {
         "field": "-",
@@ -10238,23 +10217,29 @@
         "offset": 86680,
         "comment": "grid_entities 126*86*8 minus the one above"
       },
-      { "field": "-", "type": "Skip", "offset": 260064, "comment": "unknown?" },
-      { "field": "unknown_entities2", "type": "EntitiesList" },
-      { "field": "entities_by_draw_depth_0", "type": "EntitiesList" },
+      { "field": "entities_overlaping_grid_begin", "type": "Qword" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 260056,
+        "comment": "126*86*EntityList (minus the Qword above)"
+      },
+      { "field": "unknown_entities2", "type": "EntityList" },
+      { "field": "entities_by_draw_depth_0", "type": "EntityList" },
       {
         "field": "-",
         "type": "Skip",
         "offset": 1272,
-        "comment": "entities_by_draw_depth 53 * EntitiesList minus one above"
+        "comment": "entities_by_draw_depth 53 * EntityList (minus one above)"
       },
       {
         "field": "unknown_entities3",
-        "type": "EntitiesList",
+        "type": "EntityList",
         "comment": "debris, explosions, laserbeams etc. ?"
       },
       {
         "field": "unknown_entities4",
-        "type": "EntitiesList",
+        "type": "EntityList",
         "comment": "explosions, laserbeams, BG_LEVEL_*_SOOT ? only for short time while there are spawned?"
       },
 
@@ -10264,7 +10249,7 @@
         "vectortype": "EntityPointer"
       },
       { "field": "unknown6", "type": "MysteryLayerPointer1" },
-      { "field": "expired_entities", "type": "EntitiesList" },
+      { "field": "expired_entities", "type": "EntityList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },
       { "field": "unknown15", "type": "UnsignedByte" },
@@ -10312,15 +10297,15 @@
         "comment": "next layer below"
       }
     ],
-    "EntitiesList": [
+    "EntityList": [
       {
         "field": "entities",
-        "type": "MysteryEntitiesListPointer",
+        "type": "EntityListPointer",
         "comment": "Entity**"
       },
       {
         "field": "udis",
-        "type": "MysteryEntityUIDsListPointer",
+        "type": "EntityUIDsListPointer",
         "comment": "int32_t*"
       },
       { "field": "capacity", "type": "UnsignedDword" },
@@ -10330,7 +10315,7 @@
       {
         "field": "unknown1",
         "type": "DataPointer",
-        "comment": "points to 4 EntitiesList?"
+        "comment": "points to 4 EntityList?"
       },
       { "field": "unknown2a", "type": "UnsignedByte" },
       { "field": "unknown2b", "type": "UnsignedByte" },
@@ -10352,7 +10337,7 @@
       { "field": "unknown4", "type": "UnsignedQword" },
       { "field": "unknown5", "type": "UnsignedQword" }
     ],
-    "MysteryEntitiesListPointer": [
+    "EntityListPointer": [
       { "field": "entity_1", "type": "EntityPointer" },
       { "field": "entity_2", "type": "EntityPointer" },
       { "field": "entity_3", "type": "EntityPointer" },
@@ -10364,7 +10349,7 @@
       { "field": "entity_9", "type": "EntityPointer" },
       { "field": "entity_10", "type": "EntityPointer" }
     ],
-    "MysteryEntityUIDsListPointer": [
+    "EntityUIDsListPointer": [
       { "field": "entity_uid_1", "type": "EntityUID" },
       { "field": "entity_uid_2", "type": "EntityUID" },
       { "field": "entity_uid_3", "type": "EntityUID" },
