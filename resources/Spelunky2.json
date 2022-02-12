@@ -5611,9 +5611,7 @@
       { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "UnsignedDword" }
     ],
-    "GetEntitiesResultPointer": [
-      { "field": "entities", "type": "EntityList" }
-    ],
+    "GetEntitiesResultPointer": [{ "field": "entities", "type": "EntityList" }],
     "LogicPointer": [
       { "field": "tutorial", "type": "TutorialPointer" },
       { "field": "ouroboros", "type": "OuroborosPointer" },
@@ -9743,6 +9741,48 @@
       }
     ],
     "Monster": [
+      {
+        "vftablefunctions": {
+          "95": {
+            "name": "increase_killcount",
+            "params": "",
+            "return": "",
+            "comment": "increases state.kills_npc, is not called for normal monsters but they all have the same function"
+          },
+          "96": {
+            "name": "on_aggro",
+            "params": "uint8_t, bool",
+            "return": "",
+            "comment": "updates state.quests in case of npc"
+          },
+          "97": {
+            "name": "unknown_v97",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger it"
+          },
+          "98": {
+            "name": "on_shop_entered",
+            "params": "",
+            "return": "",
+            "comment": ""
+          },
+          "99": {
+            "name": "attack_logic_related",
+            "params": "",
+            "return": "",
+            "comment": [
+              "shopkeeper will walk towards you (doesn't work for Yang, even though he has the same virtual)",
+              "if disabled some monster will stop moving (like bats, jiangshi) some wont attack (crabman), shopkeeper can still kick you but won't fire hes weapon"
+            ]
+          },
+          "100": {
+            "name": "update_target",
+            "params": "Entity*",
+            "return": "bool"
+          }
+        }
+      },
       { "field": "chased_target_uid", "type": "EntityUID" },
       { "field": "target_selection_timer", "type": "UnsignedDword" }
     ],
@@ -10770,6 +10810,27 @@
       }
     ],
     "Spider": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "spawn_offset_related",
+            "params": "",
+            "return": "",
+            "comment": "disabling this function makes the spider spawn in wierd position"
+          },
+          "102": {
+            "name": "v_102",
+            "params": "",
+            "return": "float",
+            "comment": "for spider returns 0.02, for giant spider 0.025, game does some calculations with this when triggered by player"
+          },
+          "103": {
+            "name": "on_ceiling",
+            "params": "",
+            "return": "bool"
+          }
+        }
+      },
       { "field": "ceiling_pos_x", "type": "Float" },
       { "field": "ceiling_pos_y", "type": "Float" },
       {
@@ -10794,62 +10855,22 @@
     "RoomOwner": [
       {
         "vftablefunctions": {
-          "94": {
-            "name": "increase_killcount",
-            "params": "",
-            "return": "",
-            "comment": "increases state.kills_npc"
-          },
-          "95": {
-            "name": "on_aggro",
-            "params": "",
-            "return": "",
-            "comment": ["updates state.quests in case of npc"]
-          },
-          "96": {
-            "name": "unknown_v96",
-            "params": "",
-            "return": "",
-            "comment": [""]
-          },
-          "97": {
-            "name": "on_shop_entered",
-            "params": "",
-            "return": "",
-            "comment": ["shows welcome message"]
-          },
-          "98": {
-            "name": "on_player_picked_up_shopitem",
-            "params": "",
-            "return": "",
-            "comment": [
-              "shopkeeper will walk towards you (doesn't work for Yang, even though he has the same virtual)"
-            ]
-          },
-          "99": {
-            "name": "on_fire_weapon",
-            "params": "",
-            "return": "",
-            "comment": [
-              "if deactivated, they can pick up weapons but won't shoot them"
-            ]
-          },
-          "100": {
+          "101": {
             "name": "on_criminal_act_committed",
-            "params": "",
+            "params": "uint8_t",
             "return": "",
             "comment": ["shows the appropriate message (vandal, cheater, ...)"]
           },
-          "101": {
+          "102": {
             "name": "should_attack_on_sight",
             "params": "",
             "return": "bool",
             "comment": [
-              "for shopkeepers: checks state.shoppie_aggro_levels",
+              "for shopkeepers: checks state.shoppie_aggro_levels, for waddler checks the state.quest_flags",
               "if you return false, but you have attacked them before, they will be patrolling but won't attack you on sight"
             ]
           },
-          "102": {
+          "103": {
             "name": "is_angry_flag_set",
             "params": "",
             "return": "bool",
@@ -10857,7 +10878,7 @@
               "checks state.level_flags 10-16 depending on the monster"
             ]
           },
-          "103": {
+          "104": {
             "name": "set_initial_attack_delay",
             "params": "",
             "return": "",
@@ -10867,7 +10888,7 @@
               "does nothing for yang, waddler, tun"
             ]
           },
-          "104": {
+          "105": {
             "name": "on_spawn_weapon",
             "params": "",
             "return": "Entity*",
@@ -10875,7 +10896,7 @@
               "return the weapon entity that will be used to attack the player"
             ]
           },
-          "105": {
+          "106": {
             "name": "weapon_type",
             "params": "",
             "return": "uint32_t",
@@ -10883,33 +10904,25 @@
               "the entity type of the weapon that will be spawned to attack the player"
             ]
           },
-          "106": {
-            "name": "unknown_v106_attack_weapon_related",
-            "params": "",
-            "return": "",
-            "comment": [""]
-          },
           "107": {
-            "name": "unknown_v107",
+            "name": "can_attack",
+            "params": "",
+            "return": "bool",
+            "comment": "parameter is some struct that contains the target"
+          },
+          "108": {
+            "name": "unknown_v108",
             "params": "",
             "return": "",
             "comment": [
               "for shopkeepers, it loops over (some of) the items for sale"
             ]
           },
-          "108": {
-            "name": "unknown_v108",
-            "params": "",
-            "return": "",
-            "comment": [""]
-          },
           "109": {
             "name": "on_death_treasure_drop",
             "params": "",
             "return": "",
-            "comment": [
-              "random number calc, e.g. whether the shopkeeper drops gold bars on death"
-            ]
+            "comment": ["coins and if you're lucky, gold bar from shopkeeper"]
           }
         }
       },
@@ -11000,9 +11013,9 @@
         "comment": "can't shot when the timer is running"
       },
       {
-        "field": "unknown3",
-        "type": "UnsignedByte",
-        "comment": "accessed on stun/dmg? probably bool"
+        "field": "have_key",
+        "type": "Bool",
+        "comment": "will drop key after stun/kill"
       },
       {
         "field": "shop_owner",
@@ -11018,6 +11031,16 @@
       { "field": "padding3", "type": "UnsignedByte" }
     ],
     "Ghist": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "on_body_destroyed",
+            "params": "",
+            "return": "",
+            "comment": "clears level_flags [Angry ghist shopkeeper] and other stuff, then calls ->destroy()"
+          }
+        }
+      },
       { "field": "body_uid", "type": "EntityUID" },
       {
         "field": "idle_timer",
@@ -11082,6 +11105,21 @@
       }
     ],
     "WalkingMonster": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "can_aggro",
+            "params": "",
+            "return": "bool",
+            "comment": "Aggro or calm, if forced to return 0 it will not aggro unless you overlap his hitbox. For caveman this is called when he wakes up (from sleep or stun)"
+          },
+          "102": {
+            "name": "v_102",
+            "params": "some_struct?",
+            "return": "parameter is some struct, that it changes and returns it (looks like 3x bool at the start and more)"
+          }
+        }
+      },
       { "field": "chatting_to_uid", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
@@ -11313,6 +11351,54 @@
       { "field": "rotation_angle", "type": "Float" }
     ],
     "NPC": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "on_criminal_act_committed",
+            "params": "",
+            "return": ""
+          },
+          "102": {
+            "name": "should_attack_on_sight",
+            "params": "",
+            "return": "bool"
+          },
+          "103": {
+            "name": "v_103",
+            "params": "some_struct?",
+            "return": "",
+            "comment": "take some struct as parameter, sets the first qword to some constant (also returns it?), the first thing in the struct is acutally two floats"
+          },
+          "104": {
+            "name": "on_interaction",
+            "params": "",
+            "return": "",
+            "comment": "does the quests stuff etc."
+          },
+          "105": {
+            "name": "on_spawn_weapon",
+            "params": "",
+            "return": "Entity*"
+          },
+          "106": {
+            "name": "weapon_type",
+            "params": "",
+            "return": "ENT_TYPE"
+          },
+          "107": {
+            "name": "can_attack",
+            "params": "some_struct?",
+            "return": "bool",
+            "comment": "parameter is some struct that contains the target"
+          },
+          "108": {
+            "name": "on_criminal_act_committed2",
+            "params": "",
+            "return": "",
+            "comment": "calls the on_criminal_act_committed except for bodyguard which calls the should_attack_on_sight and turns off any speechbubble"
+          }
+        }
+      },
       { "field": "climb_direction", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
@@ -11497,6 +11583,27 @@
       { "field": "player_seen_by_kingu?", "type": "Bool" }
     ],
     "Anubis": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "set_next_attack_timer",
+            "params": "",
+            "return": "",
+            "comment": "sets next_attack_timer based on the psychic_orbs_counter"
+          },
+          "102": {
+            "name": "attack",
+            "params": "",
+            "return": ""
+          },
+          "103": {
+            "name": "play_attack_sound",
+            "params": "",
+            "return": "",
+            "comment": "also calls virtual 20"
+          }
+        }
+      },
       { "field": "spawn_x", "type": "Float" },
       { "field": "spawn_y", "type": "Float" },
       { "field": "unknown1", "type": "Float" },
@@ -11875,6 +11982,40 @@
     ],
     "YetiQueen": [
       {
+        "vftablefunctions": {
+          "101": {
+            "name": "v_101",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger"
+          },
+          "102": {
+            "name": "attack_related",
+            "params": "some_struct?",
+            "return": "",
+            "comment": "parameter is some struct, if disabled it doesn't do jump attack, but still does the protect head thing"
+          },
+          "103": {
+            "name": "v_103",
+            "params": "",
+            "return": "",
+            "comment": "return"
+          },
+          "104": {
+            "name": "jump_related",
+            "params": "",
+            "return": "",
+            "comment": "if disabled she squads but never makes the jump"
+          },
+          "105": {
+            "name": "on_death",
+            "params": "",
+            "return": "",
+            "comment": "spawns the drops"
+          }
+        }
+      },
+      {
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
         "comment": "alternates between walking and pausing every time it reaches zero"
@@ -11882,6 +12023,40 @@
       { "field": "unknown_timer", "type": "UnsignedByte" }
     ],
     "YetiKing": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "v_101",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger"
+          },
+          "102": {
+            "name": "attack_related",
+            "params": "some_struct?",
+            "return": "",
+            "comment": "parameter is some struct, if disabled it doesn't do the attack, but still does the protect head thing"
+          },
+          "103": {
+            "name": "on_attack",
+            "params": "",
+            "return": "",
+            "comment": "freezes stuff when attacks and spawns particles"
+          },
+          "104": {
+            "name": "screem_related",
+            "params": "",
+            "return": "",
+            "comment": "if disabled he opens the mount but never screams"
+          },
+          "105": {
+            "name": "on_death",
+            "params": "",
+            "return": "",
+            "comment": "spawns the drops"
+          }
+        }
+      },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
@@ -12308,6 +12483,15 @@
       { "field": "unknown1", "type": "UnsignedByte" }
     ],
     "CritterSnail": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "get_speed",
+            "params": "",
+            "return": "float"
+          }
+        }
+      },
       { "field": "x_direction", "type": "Float" },
       { "field": "y_direction", "type": "Float" },
       { "field": "pos_x", "type": "Float" },
@@ -12361,6 +12545,15 @@
       { "field": "move_timer", "type": "UnsignedByte" }
     ],
     "CritterSlime": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "get_speed",
+            "params": "",
+            "return": "float"
+          }
+        }
+      },
       { "field": "x_direction", "type": "Float" },
       { "field": "y_direction", "type": "Float" },
       { "field": "pos_x", "type": "Float" },
@@ -13223,7 +13416,11 @@
     ],
     "LockedDoor": [{ "field": "unlocked", "type": "Bool" }],
     "MainExit": [
-      { "field": "unknown", "type": "Qword" },
+      {
+        "field": "door_blocker",
+        "type": "EntityPointer",
+        "comment": "normally FX_MAIN_EXIT_DOOR , but any value will block the door"
+      },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "top_value?", "type": "Float" },
       { "field": "value?", "type": "Float" }
