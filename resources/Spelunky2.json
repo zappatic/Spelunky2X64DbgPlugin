@@ -143,7 +143,7 @@
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
     "GiantClamTop": "Movable",
-    "CookFire": "Movable",
+    "CookFire": "Torch",
     "Floor": "Entity",
     "Door": "Floor",
     "ExitDoor": "Door",
@@ -12974,6 +12974,80 @@
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "Mount": [
+      {
+        "vftablefunctions": {
+          "95": {
+            "name": "get_special_offset",
+            "params": "std::pair<float, float>& offset",
+            "return": "std::pair<float, float>&",
+            "comment": "when jumping on mount"
+          },
+          "96": {
+            "name": "v96",
+            "params": "std::pair<float, float>& value",
+            "return": "std::pair<float, float>&",
+            "comment": "gets something for when crouching on mount"
+          },
+          "97": {
+            "name": "used_double_jump",
+            "params": "",
+            "return": "bool",
+            "comment": "checks can_doublejump and unknown9b"
+          },
+          "98": {
+            "name": "v98",
+            "params": "bool",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "99": {
+            "name": "v99",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "100": {
+            "name": "play_jump_on_sound",
+            "params": "",
+            "return": ""
+          },
+          "101": {
+            "name": "remove_rider",
+            "params": "",
+            "return": ""
+          },
+          "102": {
+            "name": "v102",
+            "params": "",
+            "return": "float",
+            "comment": "get offset? mech returns 0.9, the rest 0.5"
+          },
+          "103": {
+            "name": "v103",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "104": {
+            "name": "v104",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "105": {
+            "name": "v105",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "106": {
+            "name": "can_play_mount_sound",
+            "params": "",
+            "return": "bool",
+            "comment": "called every frame, if returns true mount will make a sound"
+          }
+        }
+      },
       { "field": "rider_uid", "type": "EntityUID", "comment": "who rides it" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -13290,10 +13364,6 @@
       { "field": "open_timer", "type": "UnsignedByte" }
     ],
     "CookFire": [
-      { "field": "unknown1", "type": "Dword" },
-      { "field": "lit", "type": "Bool" },
-      { "field": "unused1", "type": "UnsignedByte" },
-      { "field": "unused2", "type": "UnsignedWord" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "particles_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
@@ -13857,6 +13927,25 @@
       }
     ],
     "Torch": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "light_up",
+            "params": "bool",
+            "return": ""
+          },
+          "94": {
+            "name": "v_94",
+            "params": "double& value",
+            "return": ""
+          },
+          "95": {
+            "name": "get_flame_type",
+            "params": "",
+            "return": "ENT_TYPE"
+          }
+        }
+      },
       { "field": "flame_uid", "type": "EntityUID" },
       { "field": "is_lit", "type": "Bool" },
       { "field": "unknown1", "type": "Byte" },
