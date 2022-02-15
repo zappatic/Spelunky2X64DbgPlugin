@@ -107,7 +107,7 @@
     "CritterFirefly": "Critter",
     "CritterDrone": "Critter",
     "CritterSlime": "Critter",
-    "Mount": "Movable",
+    "Mount": "PowerupCapable",
     "Rockdog": "Mount",
     "Axolotl": "Mount",
     "Mech": "Mount",
@@ -332,7 +332,10 @@
     "PalaceSign": "Entity",
     "DecoRegeneratingBlock": "Entity",
     "DestructibleBG": "Entity",
-    "EggShipDoorS": "EggShipDoor"
+    "EggShipDoorS": "EggShipDoor",
+    "PrizeDispenser": "Movable",
+    "JungleSpearTrap": "Floor",
+    "MegaJellyfishEye": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -349,6 +352,7 @@
     "FLOOR_DOOR_.*": "Door",
     "FLOOR_.*ARROW_TRAP": "Arrowtrap",
     "FLOOR_TOTEM_TRAP": "TotemTrap",
+    "FLOOR_JUNGLE_SPEAR_TRAP": "JungleSpearTrap",
     "FLOOR_LION_TRAP": "TotemTrap",
     "FLOOR_LASER_TRAP": "LaserTrap",
     "FLOOR_SPARK_TRAP": "SparkTrap",
@@ -555,6 +559,7 @@
     "ITEM_GIANTCLAM_TOP": "GiantClamTop",
     "ITEM_PLAYERGHOST": "PlayerGhost",
     "ITEM_PLAYERGHOST_BREATH": "GhostBreath",
+    "ITEM_DICE_PRIZE_DISPENSER": "PrizeDispenser",
     "ITEM_LASERBEAM": "LaserBeam",
     "ITEM_HORIZONTALLASERBEAM": "LaserBeam",
     "ITEM_EGGSHIP_HOOK": "TreasureHook",
@@ -667,6 +672,7 @@
     "FX_STORAGE_INDICATOR": "MovingIcon",
     "FX_VAT_BUBBLE": "FxVatBubble",
     "FX_HUNDUN_NECK_PIECE": "FxHundunNeckPiece",
+    "FX_MEGAJELLYFISH_EYE": "MegaJellyfishEye",
     "FX_MEGAJELLYFISH_STAR": "FxJellyfishStar",
     "FX_QUICKSAND_DUST": "FxQuickSand",
     "FX_QUICKSAND_RUBBLE": "FxQuickSand",
@@ -778,8 +784,8 @@
   "pointer_types": [
     "StateItemsPointer",
     "LayerPointer",
-    "MysteryEntitiesListPointer",
-    "MysteryEntityUIDsListPointer",
+    "EntityListPointer",
+    "EntityUIDsListPointer",
     "PlayerInventoryPointer",
     "SoundPositionPointer",
     "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
@@ -788,7 +794,6 @@
     "RenderInfoPointer",
     "ParticleEmitterInfoPointer",
     "TextRenderingInfoPointer",
-    "DoorCoordsPointer",
     "ScreenPointer",
     "ScreenTransitionPointer",
     "ScreenWinPointer",
@@ -881,10 +886,12 @@
     "StdListIteratorPointer",
     "LiquidPhysicsEngine",
     "GetEntitiesResultPointer",
-    "EntitiesResultEntitiesPointer",
-    "EntitiesResultEntityUIDsPointer",
+    "MapBucket",
+    "MapBucket1",
+    "MapBucket2",
     "MysteryLiquidPointer1",
-    "MysteryLiquidPointer2"
+    "MysteryLiquidPointer2",
+    "MysteryLayerPointer1"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -974,7 +981,9 @@
     "OnlineServer",
     "SockAddrIn",
     "StdList",
-    "SomeUnknownArray"
+    "SomeUnknownArray",
+    "EntityList",
+    "XY"
   ],
   "refs": {
     "screen_states": {
@@ -1263,6 +1272,50 @@
       "7": "1.75",
       "8": "2.0",
       "9": "Breath Off"
+    },
+    "shop_types": {
+      "0": "General store",
+      "1": "Clothing shop",
+      "2": "Weapon shop",
+      "3": "Specialty shop",
+      "4": "Hired hand shop",
+      "5": "Pet shop",
+      "6": "Dice shop",
+      "7": "Unknown shop",
+      "8": "Hedjet shop",
+      "9": "Tun shop",
+      "10": "Caveman shop",
+      "11": "Yang Turkey shop",
+      "12": "Ghist shop",
+      "13": "Tusk dice shop"
+    },
+    "buttons_entity": {
+      "1": "Jump",
+      "2": "Attack",
+      "3": "Bomb",
+      "4": "Rope",
+      "5": "Run",
+      "6": "Use door/buy",
+      "7": "-",
+      "8": "-"
+    },
+    "buttons_player": {
+      "1": "Jump",
+      "2": "Attack",
+      "3": "Bomb",
+      "4": "Rope",
+      "5": "Run",
+      "6": "Use door/buy",
+      "7": "Pause/Menu",
+      "8": "Journal",
+      "9": "Left",
+      "10": "Right",
+      "11": "Up",
+      "12": "Down",
+      "13": "-",
+      "14": "-",
+      "15": "-",
+      "16": "-"
     }
   },
 
@@ -1282,7 +1335,7 @@
           "3": "Monster",
           "4": "Item",
           "5": "Explosion",
-          "6": "",
+          "6": "Rope",
           "7": "FX",
           "8": "ACTIVEFLOOR",
           "9": "FLOOR",
@@ -4250,9 +4303,10 @@
       { "field": "unknown27", "type": "MysteryPointer4" },
       {
         "field": "uid_to_entity_mask",
-        "type": "UnsignedQword",
+        "type": "UnsignedDword",
         "comment": "RobinHoodTable mask"
       },
+      { "field": "padding13", "type": "UnsignedDword" },
       {
         "field": "uid_to_entity_data",
         "type": "DataPointer",
@@ -4539,7 +4593,11 @@
         "type": "ShopRestrictedItemPointer1",
         "comment": "the items in a shop that set off the shopkeeper if you walk off with them"
       },
-      { "field": "restricted_item_count", "type": "UnsignedQword" },
+      {
+        "field": "restricted_item_count",
+        "type": "UnsignedQword",
+        "comment": "this is a std::map <int32_t, std::pair<int32_t, ENT_TYPE>> or set with a struct, uid of the item as a key, uid and type of the shopkeeper as value"
+      },
       {
         "field": "shop_owners",
         "type": "StdVector",
@@ -4550,15 +4608,26 @@
       { "field": "prev", "type": "ShopRestrictedItemPointer2" },
       { "field": "next1", "type": "ShopRestrictedItemPointer2" },
       { "field": "next2", "type": "ShopRestrictedItemPointer2" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown2", "type": "Bool" },
+      {
+        "field": "unknown1",
+        "type": "Bool",
+        "comment": "seams to be some internal map/set stuff"
+      },
+      {
+        "field": "unknown2",
+        "type": "Bool",
+        "comment": "seams to be some internal map/set stuff"
+      },
       { "field": "unknown3_garbage?", "type": "UnsignedByte" },
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      {
+        "field": "unknown6",
+        "type": "Qword",
+        "comment": "pretty sure this is some standard map/set internal stuff"
+      }
     ],
     "ShopRestrictedItemPointer2": [
       { "field": "prev", "type": "ShopRestrictedItemPointer3" },
@@ -4570,9 +4639,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopRestrictedItemPointer3": [
       { "field": "prev", "type": "ShopRestrictedItemPointer4" },
@@ -4584,9 +4652,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopRestrictedItemPointer4": [
       { "field": "prev", "type": "ShopRestrictedItemPointer5" },
@@ -4598,9 +4665,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopRestrictedItemPointer5": [
       { "field": "prev", "type": "DataPointer" },
@@ -4612,9 +4678,8 @@
       { "field": "unknown4_garbage?", "type": "UnsignedByte" },
       { "field": "restricted_item", "type": "EntityUID" },
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" },
+      { "field": "unknown6", "type": "Qword" }
     ],
     "ShopOwnerDetails": [
       { "field": "layer", "type": "UnsignedByte" },
@@ -4813,10 +4878,26 @@
       { "field": "player2_won", "type": "Bool" },
       { "field": "player3_won", "type": "Bool" },
       { "field": "player4_won", "type": "Bool" },
-      { "field": "player1_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
-      { "field": "player2_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
-      { "field": "player3_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
-      { "field": "player4_bot_ai", "type": "State8", "ref": "arena_bot_ai_states" },
+      {
+        "field": "player1_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
+      {
+        "field": "player2_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
+      {
+        "field": "player3_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
+      {
+        "field": "player4_bot_ai",
+        "type": "State8",
+        "ref": "arena_bot_ai_states"
+      },
       { "field": "unknown14e", "type": "UnsignedByte" },
       {
         "field": "timer",
@@ -4830,7 +4911,11 @@
       },
       { "field": "wins", "type": "UnsignedByte" },
       { "field": "lives", "type": "UnsignedByte" },
-      { "field": "time_to_win", "type": "State8", "ref": "arena_time_to_win_states" },
+      {
+        "field": "time_to_win",
+        "type": "State8",
+        "ref": "arena_time_to_win_states"
+      },
       { "field": "unknown16", "type": "UnsignedByte" },
       { "field": "player1_idolheld_countdown", "type": "UnsignedWord" },
       { "field": "player2_idolheld_countdown", "type": "UnsignedWord" },
@@ -5349,7 +5434,33 @@
       {
         "field": "stagnant_lava_tile_spawn_data",
         "type": "LiquidTileSpawnData"
-      }
+      },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown6", "type": "DataPointer" },
+      {
+        "field": "total_liquid_spawned",
+        "type": "UnsignedDword",
+        "comment": "total number of spawned liquid entities, all types"
+      },
+      { "field": "unknown8", "type": "UnsignedDword" },
+      {
+        "field": "unknown9",
+        "type": "DataPointer",
+        "comment": "array byte* ?"
+      },
+      {
+        "field": "total_liquid_spawned2?",
+        "type": "UnsignedDword",
+        "comment": "same as total_liquid_spawned?"
+      },
+      { "field": "unknown12", "type": "Bool" },
+      { "field": "padding12a", "type": "Byte" },
+      { "field": "padding12b", "type": "Byte" },
+      { "field": "padding12c", "type": "Byte" },
+      { "field": "unknown13", "type": "UnsignedDword" }
     ],
     "LiquidPhysicsParams": [
       {
@@ -5472,16 +5583,19 @@
         "comment": "is the last 4 garbage? seams not accessed"
       },
       { "field": "unknown40", "type": "Float" },
-      { "field": "unknown41", "type": "Float" },
+      { "field": "unknown41", "type": "Byte" },
+      { "field": "padding41a", "type": "Byte" },
+      { "field": "padding41b", "type": "Byte" },
+      { "field": "padding41c", "type": "Byte" },
       { "field": "unknown42", "type": "UnsignedDword" }
     ],
     "MysteryPointer4": [
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "unknown2", "type": "DataPointer" },
       { "field": "unknown3", "type": "UnsignedQword" },
-      { "field": "unknown4", "type": "Vector" },
-      { "field": "unknown5", "type": "Vector" },
-      { "field": "unknown6", "type": "Vector" },
+      { "field": "unknown4", "type": "EntityList" },
+      { "field": "unknown5", "type": "EntityList" },
+      { "field": "unknown6", "type": "EntityList" },
       { "field": "unknown13", "type": "DataPointer" },
       { "field": "unknown14", "type": "DataPointer" },
       { "field": "unknown15", "type": "DataPointer" },
@@ -5497,47 +5611,7 @@
       { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "UnsignedDword" }
     ],
-    "GetEntitiesResultPointer": [
-      {
-        "field": "entities",
-        "type": "EntitiesResultEntitiesPointer",
-        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
-      },
-      {
-        "field": "entity_uids",
-        "type": "EntitiesResultEntityUIDsPointer",
-        "comment": "only 10 are shown in the plugin, it's a dynamic list (see count)"
-      },
-      { "field": "unknown1", "type": "UnsignedByte" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "count", "type": "UnsignedDword" }
-    ],
-    "EntitiesResultEntitiesPointer": [
-      { "field": "entity0", "type": "EntityPointer" },
-      { "field": "entity1", "type": "EntityPointer" },
-      { "field": "entity2", "type": "EntityPointer" },
-      { "field": "entity3", "type": "EntityPointer" },
-      { "field": "entity4", "type": "EntityPointer" },
-      { "field": "entity5", "type": "EntityPointer" },
-      { "field": "entity6", "type": "EntityPointer" },
-      { "field": "entity7", "type": "EntityPointer" },
-      { "field": "entity8", "type": "EntityPointer" },
-      { "field": "entity9", "type": "EntityPointer" }
-    ],
-    "EntitiesResultEntityUIDsPointer": [
-      { "field": "entity_uid0", "type": "EntityUID" },
-      { "field": "entity_uid1", "type": "EntityUID" },
-      { "field": "entity_uid2", "type": "EntityUID" },
-      { "field": "entity_uid3", "type": "EntityUID" },
-      { "field": "entity_uid4", "type": "EntityUID" },
-      { "field": "entity_uid5", "type": "EntityUID" },
-      { "field": "entity_uid6", "type": "EntityUID" },
-      { "field": "entity_uid7", "type": "EntityUID" },
-      { "field": "entity_uid8", "type": "EntityUID" },
-      { "field": "entity_uid9", "type": "EntityUID" }
-    ],
+    "GetEntitiesResultPointer": [{ "field": "entities", "type": "EntityList" }],
     "LogicPointer": [
       { "field": "tutorial", "type": "TutorialPointer" },
       { "field": "ouroboros", "type": "OuroborosPointer" },
@@ -6612,47 +6686,13 @@
       {
         "field": "buttons_gameplay",
         "type": "Flags16",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause",
-          "8": "Journal",
-          "9": "Left",
-          "10": "Right",
-          "11": "Up",
-          "12": "Down",
-          "13": "-",
-          "14": "-",
-          "15": "-",
-          "16": "-"
-        },
+        "ref": "buttons_player",
         "comment": "does not work in pause menu"
       },
       {
         "field": "buttons",
         "type": "Flags16",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause?",
-          "8": "Journal",
-          "9": "Left",
-          "10": "Right",
-          "11": "Up",
-          "12": "Down",
-          "13": "-",
-          "14": "-",
-          "15": "-",
-          "16": "-"
-        },
+        "ref": "buttons_player",
         "comment": "works everywhere, including in pause menu"
       },
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -6916,24 +6956,7 @@
       {
         "field": "buttons",
         "type": "Flags16",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause?",
-          "8": "Journal",
-          "9": "Left",
-          "10": "Right",
-          "11": "Up",
-          "12": "Down",
-          "13": "-",
-          "14": "-",
-          "15": "-",
-          "16": "-"
-        }
+        "ref": "buttons_player"
       },
       { "field": "padding1", "type": "UnsignedWord" },
       { "field": "brick_background", "type": "TextureRenderingInfo" },
@@ -8621,50 +8644,67 @@
       { "field": "spawn_room_y", "type": "UnsignedDword" },
       { "field": "spawn_x", "type": "Float" },
       { "field": "spawn_y", "type": "Float" },
-      { "field": "exit_doors_locations", "type": "DoorCoordsPointer" },
-      { "field": "unknown37", "type": "DataPointer" },
-      { "field": "unknown38", "type": "DataPointer" },
+      {
+        "field": "exit_doors_locations",
+        "type": "StdVector",
+        "vectortype": "XY"
+      },
       {
         "field": "flags",
         "type": "Flags8",
         "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
+          "1": "unknown",
+          "2": "unknown",
+          "3": "unknown",
+          "4": "unknown",
+          "5": "unknown",
           "6": "Apply ambient occlusion",
-          "7": "",
-          "8": ""
+          "7": "unknown",
+          "8": "unknown"
         }
       },
-      { "field": "unknown39", "type": "UnsignedByte" },
-      { "field": "unknown40", "type": "UnsignedByte" },
       {
-        "field": "shop_type",
-        "type": "State8",
-        "states": {
-          "0": "General store",
-          "1": "Clothing shop",
-          "2": "Weapon shop",
-          "3": "Specialty shop",
-          "4": "Hired hand shop",
-          "5": "Pet shop",
-          "6": "Dice shop",
-          "13": "Tusk dice shop"
+        "field": "flags2",
+        "type": "Flags8",
+        "flags": {
+          "1": "unknown",
+          "2": "unknown",
+          "3": "unknown",
+          "4": "unknown",
+          "5": "unknown",
+          "6": "unknown",
+          "7": "unknown",
+          "8": "unknown"
         }
       },
-      { "field": "unknown42", "type": "UnsignedByte" },
-      { "field": "unknown43", "type": "UnsignedByte" },
-      { "field": "unknown44", "type": "UnsignedByte" },
+      {
+        "field": "flags3",
+        "type": "Flags8",
+        "flags": {
+          "1": "unknown",
+          "2": "unknown",
+          "3": "unknown",
+          "4": "unknown",
+          "5": "unknown",
+          "6": "unknown",
+          "7": "unknown",
+          "8": "unknown"
+        }
+      },
+      { "field": "shop_type", "type": "State8", "ref": "shop_types" },
+      { "field": "backlayer_shop_type", "type": "State8", "ref": "shop_types" },
       { "field": "unknown45", "type": "UnsignedByte" },
       { "field": "unknown46", "type": "UnsignedByte" },
-      { "field": "unknown47", "type": "UnsignedByte" },
-      { "field": "unknown48", "type": "UnsignedByte" },
+      {
+        "field": "unknown47",
+        "type": "UnsignedByte",
+        "comment": "set to 0 at the start of level gen, nothing check it thou"
+      },
+      { "field": "unknown48", "type": "Bool" },
       { "field": "unknown49", "type": "UnsignedByte" },
-      { "field": "unknown50", "type": "UnsignedDword" },
-      { "field": "unknown51", "type": "UnsignedDword" },
-      { "field": "unknown52", "type": "UnsignedDword" }
+      { "field": "padding1?", "type": "UnsignedWord" },
+      { "field": "padding2?", "type": "UnsignedDword" },
+      { "field": "unknown50", "type": "UnsignedQword" }
     ],
     "LevelGenDataPointer": [
       { "field": "unknown1", "type": "UnsignedDword" },
@@ -8764,16 +8804,6 @@
       { "field": "unknown48", "type": "UnsignedByte" },
       { "field": "unknown49", "type": "UnsignedDword" },
       { "field": "unknown50", "type": "UnsignedDword" }
-    ],
-    "DoorCoordsPointer": [
-      { "field": "door1_x", "type": "Float" },
-      { "field": "door1_y", "type": "Float" },
-      {
-        "field": "door2_x",
-        "type": "Float",
-        "comment": "door2 only valid when there are two in the level, like Volcana drill, Olmec, ..."
-      },
-      { "field": "door2_y", "type": "Float" }
     ],
     "Online": [
       {
@@ -9008,8 +9038,8 @@
             "return": "void"
           },
           "7": {
-            "name": "hiredhand_description",
-            "params": "char*",
+            "name": "format_shopitem_name",
+            "params": "char16_t*",
             "return": "void"
           },
           "8": {
@@ -9024,28 +9054,27 @@
             "return": "float"
           },
           "10": {
-            "name": "block_pushing_related",
+            "name": "can_be_pushed",
             "params": "",
             "return": "bool",
-            "comment": "does a bittest for the 14 entities starting at pushblock, function hits when player pushes entity"
+            "comment": "(runs only for activefloors?) checks if entity type is pushblock, for chained push block checks ChainedPushBlock.is_chained, is only a check that allows for the pushing animation"
           },
           "11": {
             "name": "v11",
             "params": "",
-            "return": "",
-            "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
+            "return": "bool",
+            "comment": "for arrows: returns true if it's moving (for y possibily checks for some speed as well?)"
           },
           "12": {
-            "name": "v12",
+            "name": "is_in_liquid",
             "params": "",
-            "return": "",
-            "comment": "disabling this functions stops stomp damage, jump falling calculations, running"
+            "return": "bool"
           },
           "13": {
             "name": "check_type_properties_flags_19",
             "params": "",
             "return": "bool",
-            "comment": "checks (properties_flags >> 0x12) & 1; can't get it to trigger"
+            "comment": "checks (properties_flags >> 0x12) & 1; for hermitcrab checks if he's invisible; can't get it to trigger"
           },
           "14": {
             "name": "get_type_field_60",
@@ -9082,17 +9111,21 @@
             "params": "Entity*",
             "return": "void"
           },
-          "23": { "name": "v23", "params": "", "return": "" },
+          "23": {
+            "name": "v23",
+            "params": "Entity* logical_trigger, Entity* who_triggered_it",
+            "return": ""
+          },
           "24": {
-            "name": "on_open",
-            "params": "Entity* opener",
+            "name": "trigger_action",
+            "params": "Entity* user",
             "return": "bool"
           },
           "25": {
-            "name": "on_attempt_shop_purchase",
-            "params": "Entity* buyer",
+            "name": "activate",
+            "params": "Entity* activator",
             "return": "void",
-            "comment": "checks if you have sufficient money, performs the sale if so"
+            "comment": "Activates a button prompt (with the Use door/Buy button), e.g. buy shop item, activate drill, read sign, interact in camp ..."
           },
           "26": {
             "name": "on_collision2",
@@ -9101,14 +9134,14 @@
             "comment": "needs investigating, difference between this and on_collision1"
           },
           "27": {
-            "name": "on_save_level_transition_data",
+            "name": "get_metadata",
             "params": "",
-            "return": "uint64_t",
+            "return": "uint16_t",
             "comment": "e.g. for turkey: stores health, poison/curse state, for mattock: remaining swings (returned value is transferred)"
           },
           "28": {
-            "name": "on_restore_level_transition_data",
-            "params": "uint64_t data",
+            "name": "apply_metadata",
+            "params": "uint16_t metadata",
             "return": "void"
           },
           "29": {
@@ -9124,9 +9157,10 @@
             "comment": "hits when monster/player walks off a floor, it checks whether the walker has floor as overlay, and if so, removes walker from floor's items by calling virtual 20 (remove_item_ptr)"
           },
           "31": {
-            "name": "v31",
-            "params": "",
-            "return": ""
+            "name": "on_ledge_grab",
+            "params": "Entity* who",
+            "return": "",
+            "comment": "only ACTIVEFLOOR_FALLING_PLATFORM, does something with game menager"
           },
           "32": {
             "name": "on_stood_on_by",
@@ -9138,12 +9172,13 @@
             "name": "toggle_backlayer_illumination",
             "params": "",
             "return": "",
-            "comment": "for the player: when going to the backlayer, turns on player emitted light"
+            "comment": "only for CHAR_*, when going to the backlayer, turns on player emitted light"
           },
           "34": {
             "name": "v34",
             "params": "",
-            "return": ""
+            "return": "",
+            "comment": "only ITEM_TORCH, calls Torch.light_up(false), can't get it to trigger"
           },
           "35": {
             "name": "liberate_from_shop",
@@ -9395,8 +9430,9 @@
           },
           "53": {
             "name": "light_on_fire",
-            "params": "",
-            "return": "void"
+            "params": "uint8_t time",
+            "return": "void",
+            "comment": "Does not damage entity"
           },
           "54": {
             "name": "set_cursed",
@@ -9583,22 +9619,29 @@
             "return": ""
           },
           "87": { "name": "v87", "params": "", "return": "" },
-          "88": {
+          "88": { "name": "v88", "params": "", "return": "" },
+          "89": {
             "name": "stack_plus_28_is_0",
             "params": "",
             "return": "",
             "comment": "triggers on item_rubble"
           },
-          "89": {
+          "90": {
             "name": "on_crushed_by",
             "params": "Entity*",
             "return": "",
             "comment": "e.g. crushed by elevator, punishball, pushblock, crushtrap (not quillback or boulder)"
           },
-          "90": {
+          "91": {
             "name": "on_fall_onto",
             "params": "uint32_t unknown, Entity* fell_on_entity",
             "return": ""
+          },
+          "92": {
+            "name": "on_instakill_death",
+            "params": "",
+            "return": "",
+            "comment": "seems to only trigger for enemies that die in one hit"
           }
         }
       },
@@ -9608,33 +9651,11 @@
       { "field": "ic8", "type": "Qword" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
-      {
-        "field": "buttons",
-        "type": "Flags8",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "-",
-          "8": "-"
-        }
-      },
+      { "field": "buttons", "type": "Flags8", "ref": "buttons_entity" },
       {
         "field": "buttons_previous",
         "type": "Flags8",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "-",
-          "8": "-"
-        }
+        "ref": "buttons_entity"
       },
       { "field": "unknown_padding", "type": "Word", "comment": "garbage?" },
       { "field": "stand_counter", "type": "UnsignedDword" },
@@ -9699,23 +9720,17 @@
     "PowerupCapable": [
       {
         "vftablefunctions": {
-          "91": {
-            "name": "on_instakill_death",
-            "params": "",
-            "return": "",
-            "comment": "seems to only trigger for enemies that die in one hit"
-          },
-          "92": {
+          "93": {
             "name": "on_blood_collision",
             "params": "",
             "return": "",
             "comment": "only triggers when player has kapala"
           },
-          "93": {
-            "name": "unknown_v93",
+          "94": {
+            "name": "unknown_v94",
             "params": "",
             "return": "",
-            "comment": ""
+            "comment": "some post damage related? triggers for some monsters that don't die after one hit"
           }
         }
       },
@@ -9726,6 +9741,48 @@
       }
     ],
     "Monster": [
+      {
+        "vftablefunctions": {
+          "95": {
+            "name": "increase_killcount",
+            "params": "",
+            "return": "",
+            "comment": "increases state.kills_npc, is not called for normal monsters but they all have the same function"
+          },
+          "96": {
+            "name": "on_aggro",
+            "params": "uint8_t, bool",
+            "return": "",
+            "comment": "updates state.quests in case of npc"
+          },
+          "97": {
+            "name": "unknown_v97",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger it"
+          },
+          "98": {
+            "name": "on_shop_entered",
+            "params": "",
+            "return": "",
+            "comment": ""
+          },
+          "99": {
+            "name": "attack_logic_related",
+            "params": "",
+            "return": "",
+            "comment": [
+              "shopkeeper will walk towards you (doesn't work for Yang, even though he has the same virtual)",
+              "if disabled some monster will stop moving (like bats, jiangshi) some wont attack (crabman), shopkeeper can still kick you but won't fire hes weapon"
+            ]
+          },
+          "100": {
+            "name": "update_target",
+            "params": "Entity*",
+            "return": "bool"
+          }
+        }
+      },
       { "field": "chased_target_uid", "type": "EntityUID" },
       { "field": "target_selection_timer", "type": "UnsignedDword" }
     ],
@@ -9793,13 +9850,17 @@
         "type": "UnsignedByte",
         "comment": "Used in level transition to transfer to new player entity"
       },
-      { "field": "unknown3", "type": "UnsignedDword" },
+      {
+        "field": "time_of_death",
+        "type": "UnsignedDword",
+        "comment": "is set to state.time_total when player dies"
+      },
       { "field": "held_item", "type": "EntityDBID" },
-      { "field": "held_item_metadata?", "type": "Word" },
+      { "field": "held_item_metadata", "type": "Word" },
       { "field": "unknown5c", "type": "UnsignedByte", "comment": "padding?" },
       { "field": "player_slot", "type": "Byte" },
       { "field": "mount_type", "type": "EntityDBID" },
-      { "field": "mount_metadata?", "type": "Word" },
+      { "field": "mount_metadata", "type": "Word" },
       { "field": "unknown_mount_ralated", "type": "Word" },
       {
         "field": "collected_money",
@@ -9841,14 +9902,14 @@
       },
       { "field": "kills_level", "type": "UnsignedDword" },
       { "field": "kills_total", "type": "UnsignedDword" },
-      { "field": "unknown_companion_1", "type": "Word" },
-      { "field": "unknown_companion_2", "type": "Word" },
-      { "field": "unknown_companion_3", "type": "Word" },
-      { "field": "unknown_companion_4", "type": "Word" },
-      { "field": "unknown_companion_5", "type": "Word" },
-      { "field": "unknown_companion_6", "type": "Word" },
-      { "field": "unknown_companion_7", "type": "Word" },
-      { "field": "unknown_companion_8", "type": "Word" },
+      { "field": "companion1_held_item_metadata", "type": "Word" },
+      { "field": "companion2_held_item_metadata", "type": "Word" },
+      { "field": "companion3_held_item_metadata", "type": "Word" },
+      { "field": "companion4_held_item_metadata", "type": "Word" },
+      { "field": "companion5_held_item_metadata", "type": "Word" },
+      { "field": "companion6_held_item_metadata", "type": "Word" },
+      { "field": "companion7_held_item_metadata", "type": "Word" },
+      { "field": "companion8_held_item_metadata", "type": "Word" },
       { "field": "companion1_poison_tick_timer", "type": "Word" },
       { "field": "companion2_poison_tick_timer", "type": "Word" },
       { "field": "companion3_poison_tick_timer", "type": "Word" },
@@ -9969,11 +10030,71 @@
       { "field": "slot_10", "type": "UnsignedDword" }
     ],
     "Map": [
-      { "field": "items", "type": "DataPointer" },
+      { "field": "items", "type": "MapBucket" },
       { "field": "size", "type": "UnsignedQword" }
     ],
+    "MapBucket": [
+      { "field": "unknown1", "type": "MapBucket1" },
+      { "field": "unknown2", "type": "MapBucket1" },
+      { "field": "unknown3", "type": "MapBucket1" },
+      {
+        "field": "unknown4",
+        "type": "Bool",
+        "comment": "if both bools are set true the bucket is marked as deleted"
+      },
+      { "field": "unknown5", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3?", "type": "Dword" },
+      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary, at the end there is always Qword with small number"
+      }
+    ],
+    "MapBucket1": [
+      { "field": "unknown1", "type": "MapBucket2" },
+      { "field": "unknown2", "type": "MapBucket2" },
+      { "field": "unknown3", "type": "MapBucket2" },
+      {
+        "field": "unknown4",
+        "type": "Bool",
+        "comment": "if both bools are set true the bucket is marked as deleted"
+      },
+      { "field": "unknown5", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3?", "type": "Dword" },
+      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary"
+      }
+    ],
+    "MapBucket2": [
+      { "field": "unknown1", "type": "DataPointer" },
+      { "field": "unknown2", "type": "DataPointer" },
+      { "field": "unknown3", "type": "DataPointer" },
+      {
+        "field": "unknown4",
+        "type": "Bool",
+        "comment": "if both bools are set true the bucket is marked as deleted"
+      },
+      { "field": "unknown5", "type": "Bool" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Byte" },
+      { "field": "padding3?", "type": "Dword" },
+      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary"
+      }
+    ],
     "UnorderedMap": [
-      { "field": "unknown1", "type": "Float" },
+      { "field": "max_load_factor", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedDword" },
       {
         "field": "end",
@@ -10098,35 +10219,77 @@
       { "field": "end_capacity", "type": "DataPointer" }
     ],
     "LayerPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
-      { "field": "first_entity*", "type": "DataPointer" },
-      { "field": "b", "type": "DataPointer" },
-      { "field": "capacity", "type": "Dword" },
-      { "field": "size", "type": "Dword" },
+      { "field": "is_back_layer", "type": "Bool" },
+      { "field": "-", "type": "Skip", "offset": 7, "comment": "skip padding" },
+      { "field": "all_entities", "type": "EntityList" },
+      {
+        "field": "unknown_entities1",
+        "type": "EntityList",
+        "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
+      },
+      { "field": "unknown1", "type": "MysteryLayerPointer1" },
+      { "field": "entities_by_mask", "type": "Map" },
+
+      { "field": "entities_by_unknown", "type": "EntityList" },
       {
         "field": "-",
         "type": "Skip",
-        "offset": 410656,
-        "comment": "skip 0x64440 - 4 * sizeof(size_t) for the fields above"
+        "offset": 15504,
+        "comment": "647*EntityList (minus on above)"
       },
-      { "field": "unknown_entities", "type": "MysteryEntitiesListPointer" },
+
       {
-        "field": "unknown_entity_uids",
-        "type": "MysteryEntityUIDsListPointer"
+        "field": "-",
+        "type": "Skip",
+        "offset": 46968,
+        "comment": "unknown, maybe more of the array above?"
       },
-      { "field": "unknown1a", "type": "UnsignedDword" },
-      { "field": "unknown1b", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "unknown3", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
-      { "field": "unknown7", "type": "DataPointer" },
-      { "field": "unknown8", "type": "UnsignedByte" },
-      { "field": "unknown9", "type": "UnsignedByte" },
-      { "field": "unknown10", "type": "UnsignedByte" },
-      { "field": "unknown11", "type": "UnsignedByte" },
-      { "field": "unknown12", "type": "UnsignedDword" },
+
+      {
+        "field": "unknown_map/set",
+        "type": "Map",
+        "comment": "some movable and liquids and something else maybe?"
+      },
+      { "field": "grid_entities_begin", "type": "Qword" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 86680,
+        "comment": "grid_entities 126*86*8 minus the one above"
+      },
+      { "field": "entities_overlaping_grid_begin", "type": "Qword" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 260056,
+        "comment": "126*86*EntityList (minus the Qword above)"
+      },
+      { "field": "unknown_entities2", "type": "EntityList" },
+      { "field": "entities_by_draw_depth_0", "type": "EntityList" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 1272,
+        "comment": "entities_by_draw_depth 53 * EntityList (minus one above)"
+      },
+      {
+        "field": "unknown_entities3",
+        "type": "EntityList",
+        "comment": "debris, explosions, laserbeams etc. ?"
+      },
+      {
+        "field": "unknown_entities4",
+        "type": "EntityList",
+        "comment": "explosions, laserbeams, BG_LEVEL_*_SOOT ? only for short time while there are spawned?"
+      },
+
+      {
+        "field": "unknown3",
+        "type": "StdVector",
+        "vectortype": "EntityPointer"
+      },
+      { "field": "unknown6", "type": "MysteryLayerPointer1" },
+      { "field": "expired_entities", "type": "EntityList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },
       { "field": "unknown15", "type": "UnsignedByte" },
@@ -10134,7 +10297,11 @@
       { "field": "unknown17", "type": "UnsignedDword" },
       { "field": "unknown18", "type": "UnsignedDword" },
       { "field": "unknown19", "type": "UnsignedDword" },
-      { "field": "unknown20", "type": "DataPointer" },
+      {
+        "field": "entity_items_begin",
+        "type": "DataPointer",
+        "comment": "begin of the memory that holds the items of entities"
+      },
       { "field": "unknown21", "type": "DataPointer" },
       { "field": "unknown22", "type": "DataPointer" },
       { "field": "unknown23", "type": "Bool" },
@@ -10164,31 +10331,53 @@
       { "field": "unknown43", "type": "UnsignedQword" },
       { "field": "unknown44", "type": "UnsignedQword" },
       { "field": "unknown45", "type": "UnsignedQword" },
-      { "field": "unknown46", "type": "UnsignedQword" },
-      { "field": "unknown47", "type": "Bool" },
-      { "field": "unknown48", "type": "UnsignedByte" },
-      { "field": "unknown49", "type": "UnsignedByte" },
-      { "field": "unknown50", "type": "UnsignedByte" },
-      { "field": "unknown51", "type": "UnsignedDword" },
-      { "field": "unknown52", "type": "MysteryEntitiesListPointer" },
-      { "field": "unknown53", "type": "MysteryEntityUIDsListPointer" },
-      { "field": "unknown54", "type": "UnsignedByte" },
-      { "field": "unknown55", "type": "UnsignedByte" },
-      { "field": "unknown56", "type": "UnsignedByte" },
-      { "field": "unknown57", "type": "UnsignedByte" },
-      { "field": "unknown58", "type": "UnsignedDword", "comment": "garbage?" },
-      { "field": "unknown59", "type": "MysteryEntitiesListPointer" },
-      { "field": "unknown60", "type": "MysteryEntityUIDsListPointer" },
-      { "field": "unknown61", "type": "UnsignedByte" },
-      { "field": "unknown62", "type": "UnsignedByte" },
-      { "field": "unknown63", "type": "UnsignedByte" },
-      { "field": "unknown64", "type": "UnsignedByte" },
-      { "field": "unknown65", "type": "UnsignedDword" },
-      { "field": "unknown66", "type": "DataPointer" },
-      { "field": "unknown67", "type": "DataPointer" },
-      { "field": "unknown68", "type": "UnsignedDword" }
+      {
+        "field": "unknown46",
+        "type": "UnsignedQword",
+        "comment": "next layer below"
+      }
     ],
-    "MysteryEntitiesListPointer": [
+    "EntityList": [
+      {
+        "field": "entities",
+        "type": "EntityListPointer",
+        "comment": "Entity**"
+      },
+      {
+        "field": "udis",
+        "type": "EntityUIDsListPointer",
+        "comment": "int32_t*"
+      },
+      { "field": "capacity", "type": "UnsignedDword" },
+      { "field": "size", "type": "UnsignedDword" }
+    ],
+    "MysteryLayerPointer1": [
+      {
+        "field": "unknown1",
+        "type": "DataPointer",
+        "comment": "points to 4 EntityList?"
+      },
+      { "field": "unknown2a", "type": "UnsignedByte" },
+      { "field": "unknown2b", "type": "UnsignedByte" },
+      {
+        "field": "unknown2c",
+        "type": "UnsignedByte",
+        "comment": "padding probably"
+      },
+      {
+        "field": "unknown2d",
+        "type": "UnsignedByte",
+        "comment": "padding probably"
+      },
+      {
+        "field": "unknown3",
+        "type": "UnsignedDword",
+        "comment": "padding probably"
+      },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" }
+    ],
+    "EntityListPointer": [
       { "field": "entity_1", "type": "EntityPointer" },
       { "field": "entity_2", "type": "EntityPointer" },
       { "field": "entity_3", "type": "EntityPointer" },
@@ -10200,7 +10389,7 @@
       { "field": "entity_9", "type": "EntityPointer" },
       { "field": "entity_10", "type": "EntityPointer" }
     ],
-    "MysteryEntityUIDsListPointer": [
+    "EntityUIDsListPointer": [
       { "field": "entity_uid_1", "type": "EntityUID" },
       { "field": "entity_uid_2", "type": "EntityUID" },
       { "field": "entity_uid_3", "type": "EntityUID" },
@@ -10324,7 +10513,19 @@
       { "field": "hitboxx", "type": "Float" },
       { "field": "hitboxy", "type": "Float" }
     ],
-    "Arrowtrap": [{ "field": "arrow_shot", "type": "Bool" }],
+    "Arrowtrap": [
+      {
+        "vftablefunctions": {
+          "40": {
+            "name": "spawn_arrow",
+            "params": "float x, float y",
+            "return": "Entity*",
+            "comment": "nothing fancy, all the flags and velocities are done by the logical trigger i believe"
+          }
+        }
+      },
+      { "field": "arrow_shot", "type": "Bool" }
+    ],
     "Container": [{ "field": "inside", "type": "EntityDBID" }],
     "Gun": [
       { "field": "cooldown", "type": "UnsignedByte" },
@@ -10609,6 +10810,27 @@
       }
     ],
     "Spider": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "spawn_offset_related",
+            "params": "",
+            "return": "",
+            "comment": "disabling this function makes the spider spawn in wierd position"
+          },
+          "102": {
+            "name": "v_102",
+            "params": "",
+            "return": "float",
+            "comment": "for spider returns 0.02, for giant spider 0.025, game does some calculations with this when triggered by player"
+          },
+          "103": {
+            "name": "on_ceiling",
+            "params": "",
+            "return": "bool"
+          }
+        }
+      },
       { "field": "ceiling_pos_x", "type": "Float" },
       { "field": "ceiling_pos_y", "type": "Float" },
       {
@@ -10633,62 +10855,22 @@
     "RoomOwner": [
       {
         "vftablefunctions": {
-          "94": {
-            "name": "increase_killcount",
-            "params": "",
-            "return": "",
-            "comment": "increases state.kills_npc"
-          },
-          "95": {
-            "name": "on_aggro",
-            "params": "",
-            "return": "",
-            "comment": ["updates state.quests in case of npc"]
-          },
-          "96": {
-            "name": "unknown_v96",
-            "params": "",
-            "return": "",
-            "comment": [""]
-          },
-          "97": {
-            "name": "on_shop_entered",
-            "params": "",
-            "return": "",
-            "comment": ["shows welcome message"]
-          },
-          "98": {
-            "name": "on_player_picked_up_shopitem",
-            "params": "",
-            "return": "",
-            "comment": [
-              "shopkeeper will walk towards you (doesn't work for Yang, even though he has the same virtual)"
-            ]
-          },
-          "99": {
-            "name": "on_fire_weapon",
-            "params": "",
-            "return": "",
-            "comment": [
-              "if deactivated, they can pick up weapons but won't shoot them"
-            ]
-          },
-          "100": {
+          "101": {
             "name": "on_criminal_act_committed",
-            "params": "",
+            "params": "uint8_t",
             "return": "",
             "comment": ["shows the appropriate message (vandal, cheater, ...)"]
           },
-          "101": {
+          "102": {
             "name": "should_attack_on_sight",
             "params": "",
             "return": "bool",
             "comment": [
-              "for shopkeepers: checks state.shoppie_aggro_levels",
+              "for shopkeepers: checks state.shoppie_aggro_levels, for waddler checks the state.quest_flags",
               "if you return false, but you have attacked them before, they will be patrolling but won't attack you on sight"
             ]
           },
-          "102": {
+          "103": {
             "name": "is_angry_flag_set",
             "params": "",
             "return": "bool",
@@ -10696,7 +10878,7 @@
               "checks state.level_flags 10-16 depending on the monster"
             ]
           },
-          "103": {
+          "104": {
             "name": "set_initial_attack_delay",
             "params": "",
             "return": "",
@@ -10706,7 +10888,7 @@
               "does nothing for yang, waddler, tun"
             ]
           },
-          "104": {
+          "105": {
             "name": "on_spawn_weapon",
             "params": "",
             "return": "Entity*",
@@ -10714,7 +10896,7 @@
               "return the weapon entity that will be used to attack the player"
             ]
           },
-          "105": {
+          "106": {
             "name": "weapon_type",
             "params": "",
             "return": "uint32_t",
@@ -10722,27 +10904,25 @@
               "the entity type of the weapon that will be spawned to attack the player"
             ]
           },
-          "106": {
-            "name": "unknown_v106_attack_weapon_related",
-            "params": "",
-            "return": "",
-            "comment": [""]
-          },
           "107": {
-            "name": "unknown_v107",
+            "name": "can_attack",
+            "params": "",
+            "return": "bool",
+            "comment": "parameter is some struct that contains the target"
+          },
+          "108": {
+            "name": "unknown_v108",
             "params": "",
             "return": "",
             "comment": [
               "for shopkeepers, it loops over (some of) the items for sale"
             ]
           },
-          "108": {
+          "109": {
             "name": "on_death_treasure_drop",
             "params": "",
             "return": "",
-            "comment": [
-              "random number calc, e.g. whether the shopkeeper drops gold bars on death"
-            ]
+            "comment": ["coins and if you're lucky, gold bar from shopkeeper"]
           }
         }
       },
@@ -10833,9 +11013,9 @@
         "comment": "can't shot when the timer is running"
       },
       {
-        "field": "unknown3",
-        "type": "UnsignedByte",
-        "comment": "accessed on stun/dmg? probably bool"
+        "field": "have_key",
+        "type": "Bool",
+        "comment": "will drop key after stun/kill"
       },
       {
         "field": "shop_owner",
@@ -10851,6 +11031,16 @@
       { "field": "padding3", "type": "UnsignedByte" }
     ],
     "Ghist": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "on_body_destroyed",
+            "params": "",
+            "return": "",
+            "comment": "clears level_flags [Angry ghist shopkeeper] and other stuff, then calls ->destroy()"
+          }
+        }
+      },
       { "field": "body_uid", "type": "EntityUID" },
       {
         "field": "idle_timer",
@@ -10915,6 +11105,21 @@
       }
     ],
     "WalkingMonster": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "can_aggro",
+            "params": "",
+            "return": "bool",
+            "comment": "Aggro or calm, if forced to return 0 it will not aggro unless you overlap his hitbox. For caveman this is called when he wakes up (from sleep or stun)"
+          },
+          "102": {
+            "name": "v_102",
+            "params": "some_struct?",
+            "return": "parameter is some struct, that it changes and returns it (looks like 3x bool at the start and more)"
+          }
+        }
+      },
       { "field": "chatting_to_uid", "type": "EntityUID" },
       {
         "field": "walk_pause_timer",
@@ -11146,6 +11351,54 @@
       { "field": "rotation_angle", "type": "Float" }
     ],
     "NPC": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "on_criminal_act_committed",
+            "params": "",
+            "return": ""
+          },
+          "102": {
+            "name": "should_attack_on_sight",
+            "params": "",
+            "return": "bool"
+          },
+          "103": {
+            "name": "v_103",
+            "params": "some_struct?",
+            "return": "",
+            "comment": "take some struct as parameter, sets the first qword to some constant (also returns it?), the first thing in the struct is acutally two floats"
+          },
+          "104": {
+            "name": "on_interaction",
+            "params": "",
+            "return": "",
+            "comment": "does the quests stuff etc."
+          },
+          "105": {
+            "name": "on_spawn_weapon",
+            "params": "",
+            "return": "Entity*"
+          },
+          "106": {
+            "name": "weapon_type",
+            "params": "",
+            "return": "ENT_TYPE"
+          },
+          "107": {
+            "name": "can_attack",
+            "params": "some_struct?",
+            "return": "bool",
+            "comment": "parameter is some struct that contains the target"
+          },
+          "108": {
+            "name": "on_criminal_act_committed2",
+            "params": "",
+            "return": "",
+            "comment": "calls the on_criminal_act_committed except for bodyguard which calls the should_attack_on_sight and turns off any speechbubble"
+          }
+        }
+      },
       { "field": "climb_direction", "type": "Float" },
       { "field": "unknown1", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
@@ -11330,6 +11583,27 @@
       { "field": "player_seen_by_kingu?", "type": "Bool" }
     ],
     "Anubis": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "set_next_attack_timer",
+            "params": "",
+            "return": "",
+            "comment": "sets next_attack_timer based on the psychic_orbs_counter"
+          },
+          "102": {
+            "name": "attack",
+            "params": "",
+            "return": ""
+          },
+          "103": {
+            "name": "play_attack_sound",
+            "params": "",
+            "return": "",
+            "comment": "also calls virtual 20"
+          }
+        }
+      },
       { "field": "spawn_x", "type": "Float" },
       { "field": "spawn_y", "type": "Float" },
       { "field": "unknown1", "type": "Float" },
@@ -11581,7 +11855,7 @@
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown4", "type": "Float" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
       { "field": "unknown7", "type": "UnsignedDword" },
@@ -11593,15 +11867,36 @@
       { "field": "x_dupe2", "type": "Float" },
       { "field": "y_dupe2", "type": "Float" },
       { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "UnsignedDword" },
-      { "field": "unknown13", "type": "UnsignedDword" },
+      { "field": "unknown_timer1", "type": "UnsignedByte" },
+      {
+        "field": "unknown_timer2",
+        "type": "UnsignedByte",
+        "comment": "for some entities this stops when the entity is not on screen but the above one don't"
+      },
+      { "field": "unknown12c", "type": "Bool" },
+      { "field": "unknown12d", "type": "Bool" },
+      {
+        "field": "stop_render",
+        "type": "Bool",
+        "comment": "stops all the rendering stuff"
+      },
+      { "field": "unknown13b", "type": "UnsignedByte" },
+      { "field": "unknown13c", "type": "UnsignedByte" },
+      { "field": "unknown13d", "type": "UnsignedByte" },
       { "field": "unknown14", "type": "UnsignedDword" },
       { "field": "unknown15_counter", "type": "UnsignedByte" },
       { "field": "unknown16_counter", "type": "UnsignedByte" },
       { "field": "unknown17", "type": "Bool" },
       { "field": "unknown18", "type": "Bool" },
       { "field": "unknown19", "type": "UnsignedDword" },
-      { "field": "shader", "type": "UnsignedDword" },
+      {
+        "field": "shader",
+        "type": "UnsignedByte",
+        "comment": "0 - 36, game crash at around 55"
+      },
+      { "field": "unknown20a", "type": "UnsignedByte" },
+      { "field": "unknown20b", "type": "UnsignedByte" },
+      { "field": "unknown20c", "type": "UnsignedByte" },
       {
         "field": "destination_bottom_left_x",
         "type": "Float",
@@ -11634,7 +11929,11 @@
       { "field": "tileh", "type": "Float" },
       { "field": "x_dupe3", "type": "Float" },
       { "field": "y_dupe3", "type": "Float" },
-      { "field": "x_dupe4", "type": "Float" },
+      {
+        "field": "x_dupe4",
+        "type": "Float",
+        "comment": "this will be writen into x next refresh"
+      },
       { "field": "y_dupe4", "type": "Float" },
       { "field": "angle1", "type": "Float" },
       { "field": "angle2", "type": "Float" },
@@ -11649,7 +11948,6 @@
       { "field": "unknown42", "type": "UnsignedQword" },
       { "field": "unknown43", "type": "UnsignedQword" },
       { "field": "unknown44", "type": "UnsignedQword" },
-      { "field": "unknown45", "type": "UnsignedQword" },
       {
         "field": "render_as_non_liquid",
         "type": "Bool",
@@ -11674,9 +11972,49 @@
         "type": "Float",
         "comment": "0.0 = completely black ; 1.0 = normal (dark effect like when on fire)"
       },
-      { "field": "unknown56", "type": "UnsignedDword" }
+      { "field": "unknown56", "type": "UnsignedDword" },
+      { "field": "unknown57", "type": "UnsignedDword" },
+      {
+        "field": "unknown58",
+        "type": "UnsignedDword",
+        "comment": "end, next RenderInfo below"
+      }
     ],
     "YetiQueen": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "v_101",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger"
+          },
+          "102": {
+            "name": "attack_related",
+            "params": "some_struct?",
+            "return": "",
+            "comment": "parameter is some struct, if disabled it doesn't do jump attack, but still does the protect head thing"
+          },
+          "103": {
+            "name": "v_103",
+            "params": "",
+            "return": "",
+            "comment": "return"
+          },
+          "104": {
+            "name": "jump_related",
+            "params": "",
+            "return": "",
+            "comment": "if disabled she squads but never makes the jump"
+          },
+          "105": {
+            "name": "on_death",
+            "params": "",
+            "return": "",
+            "comment": "spawns the drops"
+          }
+        }
+      },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
@@ -11685,6 +12023,40 @@
       { "field": "unknown_timer", "type": "UnsignedByte" }
     ],
     "YetiKing": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "v_101",
+            "params": "",
+            "return": "",
+            "comment": "can't trigger"
+          },
+          "102": {
+            "name": "attack_related",
+            "params": "some_struct?",
+            "return": "",
+            "comment": "parameter is some struct, if disabled it doesn't do the attack, but still does the protect head thing"
+          },
+          "103": {
+            "name": "on_attack",
+            "params": "",
+            "return": "",
+            "comment": "freezes stuff when attacks and spawns particles"
+          },
+          "104": {
+            "name": "screem_related",
+            "params": "",
+            "return": "",
+            "comment": "if disabled he opens the mount but never screams"
+          },
+          "105": {
+            "name": "on_death",
+            "params": "",
+            "return": "",
+            "comment": "spawns the drops"
+          }
+        }
+      },
       {
         "field": "walk_pause_timer",
         "type": "UnsignedDword",
@@ -12111,6 +12483,15 @@
       { "field": "unknown1", "type": "UnsignedByte" }
     ],
     "CritterSnail": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "get_speed",
+            "params": "",
+            "return": "float"
+          }
+        }
+      },
       { "field": "x_direction", "type": "Float" },
       { "field": "y_direction", "type": "Float" },
       { "field": "pos_x", "type": "Float" },
@@ -12164,6 +12545,15 @@
       { "field": "move_timer", "type": "UnsignedByte" }
     ],
     "CritterSlime": [
+      {
+        "vftablefunctions": {
+          "101": {
+            "name": "get_speed",
+            "params": "",
+            "return": "float"
+          }
+        }
+      },
       { "field": "x_direction", "type": "Float" },
       { "field": "y_direction", "type": "Float" },
       { "field": "pos_x", "type": "Float" },
@@ -12584,8 +12974,6 @@
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "Mount": [
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "rider_uid", "type": "EntityUID", "comment": "who rides it" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -12637,6 +13025,16 @@
       { "field": "shine_timer", "type": "UnsignedByte" }
     ],
     "Generator": [
+      {
+        "vftablefunctions": {
+          "40": {
+            "name": "randomize_timer",
+            "params": "",
+            "return": "",
+            "comment": "called after it spawns entity and it's 'ready' (have proper flags set etc.)"
+          }
+        }
+      },
       { "field": "spawned_uid", "type": "EntityUID" },
       { "field": "set_timer", "type": "UnsignedWord" },
       { "field": "timer", "type": "UnsignedWord" },
@@ -12903,6 +13301,28 @@
       { "field": "sound_pos", "type": "SoundPositionPointer" }
     ],
     "Floor": [
+      {
+        "vftablefunctions": {
+          "37": {
+            "name": "decorate_internal",
+            "params": "",
+            "return": "",
+            "comment": "decorates undecorated floor and floorstyled, doesn't remove old decorations, runs only on level gen"
+          },
+          "38": {
+            "name": "on_neighbor_destroyed",
+            "params": "",
+            "return": "",
+            "comment": "called for every neighbor of destroyed floor (to decorate it, maybe somehting else)"
+          },
+          "39": {
+            "name": "get_floor_type",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "Returns it's ENT_TYPE except for FLOOR_PEN (returns FLOORSTYLED_MINEWOOD) and FLOOR_QUICKSAND, FLOOR_TOMB, FLOOR_EMPRESS_GRAVE which return FLOOR_GENERIC. Used for spawning decorations"
+          }
+        }
+      },
       { "field": "deco_top", "type": "EntityUID" },
       { "field": "deco_bottom", "type": "EntityUID" },
       { "field": "deco_left", "type": "EntityUID" },
@@ -12912,6 +13332,52 @@
       { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
     "Door": [
+      {
+        "vftablefunctions": {
+          "40": {
+            "name": "on_enter_attempt",
+            "params": "Entity*",
+            "return": "",
+            "comment": "this function doesnt do much, checks if it's CHAR_*, checks if hes holding anything (if yes calls some function), then checks if Player.can_use is equal to 4 calls some other function, can't be bother to look into the functions"
+          },
+          "41": {
+            "name": "hide_ui",
+            "params": "Entity*",
+            "return": "",
+            "comment": "check if it's CHAR_*, then sets State.level_flags -> 21 (Hide hud, transition)"
+          },
+          "42": {
+            "name": "enter",
+            "params": "Entity*",
+            "return": "uint8_t",
+            "comment": ""
+          },
+          "43": {
+            "name": "entered_from_front_layer",
+            "params": "Entity*",
+            "return": "bool",
+            "comment": "checks layer of the Entity entering, except for FLOOR_DOOR_EGGSHIP_ROOM which gets the overlay (BG_EGGSHIP_ROOM) and returns BGEggshipRoom.player_in"
+          },
+          "44": {
+            "name": "v44",
+            "params": "",
+            "return": "float",
+            "comment": "returns 0.0 except for eggship doors, for example: FLOOR_DOOR_EGGSHIP_ROOM returns 0.75 when entering the room, and 1.0 when exiting, runs every frame while entering/exiting"
+          },
+          "45": {
+            "name": "is_door_unlocked",
+            "params": "",
+            "return": "bool",
+            "comment": ""
+          },
+          "46": {
+            "name": "v46",
+            "params": "",
+            "return": "bool",
+            "comment": "dunno, runs every frame when player overlays door"
+          }
+        }
+      },
       {
         "field": "counter",
         "type": "UnsignedByte",
@@ -12950,7 +13416,11 @@
     ],
     "LockedDoor": [{ "field": "unlocked", "type": "Bool" }],
     "MainExit": [
-      { "field": "unknown", "type": "Qword" },
+      {
+        "field": "door_blocker",
+        "type": "EntityPointer",
+        "comment": "normally FX_MAIN_EXIT_DOOR , but any value will block the door"
+      },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
       { "field": "top_value?", "type": "Float" },
       { "field": "value?", "type": "Float" }
@@ -13178,7 +13648,12 @@
     "Coffin": [
       { "field": "inside", "type": "EntityDBID" },
       { "field": "timer", "type": "UnsignedByte" },
-      { "field": "shake_state?", "type": "Byte" }
+      { "field": "shake_state?", "type": "Byte" },
+      {
+        "field": "player_respawn",
+        "type": "Bool",
+        "comment": "if true, will respawn dead player instead of HH, doesn't work with anubis coffin"
+      }
     ],
     "SpecialShot": [
       { "field": "target_x", "type": "Float" },
@@ -13619,9 +14094,14 @@
     "Ai_func": [
       { "field": "unknown1a", "type": "Flags32", "comment": "flags?" },
       { "field": "unknown1b", "type": "Flags32", "comment": "flags?" },
-      { "field": "unknown2", "type": "Dword" },
-      { "field": "unknown3", "type": "Dword", "comment": "garbage?" },
-      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown2a", "type": "Word" },
+      { "field": "unknown2b", "type": "Word", "comment": "garbage/padding?" },
+      { "field": "unknown3", "type": "Dword", "comment": "garbage/padding?" },
+      {
+        "field": "unknown4",
+        "type": "DataPointer",
+        "comment": "array of targets? (uids)"
+      },
       { "field": "button_sequence?", "type": "DataPointer" },
       { "field": "self_pointer", "type": "EntityPointer" },
       { "field": "unknown7", "type": "DataPointer" },
@@ -13745,7 +14225,11 @@
       },
       { "field": "unknown11", "type": "Byte" },
       { "field": "padding3", "type": "Word" },
-      { "field": "unknown12", "type": "Qword" }
+      {
+        "field": "unknown12",
+        "type": "CodePointer",
+        "comment": "used in basecamp with buttons attached to BG_TUTORIAL_SING"
+      }
     ],
     "SoundInfoPointer": [
       { "field": "unknown1", "type": "Qword" },
@@ -13845,12 +14329,6 @@
     "Powerup": [
       {
         "vftablefunctions": {
-          "87": { "name": "unknown_v87", "params": "", "return": "" },
-          "88": { "name": "unknown_v89", "params": "", "return": "" },
-          "89": { "name": "unknown_v89", "params": "", "return": "" },
-          "90": { "name": "unknown_v90", "params": "", "return": "" },
-          "91": { "name": "unknown_v91", "params": "", "return": "" },
-          "92": { "name": "unknown_v92", "params": "", "return": "" },
           "93": {
             "name": "apply_to_player",
             "params": "Player* player",
@@ -14364,6 +14842,22 @@
       { "field": "unknown2", "type": "Bool" }
     ],
     "EggShipDoorS": [{ "field": "entered", "type": "Bool" }],
+    "PrizeDispenser": [
+      {
+        "field": "itemid_1",
+        "type": "UnsignedByte",
+        "comment": "ids (0 - 24) for the table with items, all set on spawn"
+      },
+      { "field": "itemid_2", "type": "UnsignedByte" },
+      { "field": "itemid_3", "type": "UnsignedByte" },
+      { "field": "itemid_4", "type": "UnsignedByte" },
+      { "field": "itemid_5", "type": "UnsignedByte" },
+      { "field": "itemid_6", "type": "UnsignedByte", "comment": "unused" },
+      { "field": "prizes_spawned", "type": "UnsignedByte" },
+      { "field": "padding", "type": "Byte" }
+    ],
+    "JungleSpearTrap": [],
+    "MegaJellyfishEye": [{ "field": "timer", "type": "UnsignedByte" }],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
@@ -14666,6 +15160,10 @@
       { "field": "array_pointer", "type": "DataPointer" },
       { "field": "unknown1", "type": "Dword", "comment": "resizing related" },
       { "field": "padding?", "type": "Dword" }
+    ],
+    "XY": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" }
     ]
   }
 }

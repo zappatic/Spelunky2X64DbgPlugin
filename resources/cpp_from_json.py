@@ -24,6 +24,7 @@ all_types = j["fields"]
 entity_class_hierarchy["Entity"]="Entity" #add missing 'Entity' type for convenience
 
 # Remove the standard types
+inline_struct_types.append("Vector")
 inline_struct_types.remove("Map")
 inline_struct_types.remove("UnorderedMap")
 #inline_struct_types.remove("StdVector")
@@ -75,7 +76,6 @@ cpp_types = {
     "ParticleDBID": "uint32_t",
     "TextureDBPointer": "Texture*",
     "TextureDBID": "int64_t",
-    "Vector": "Vector",
     "ConstCharPointer": "const char*",
     "ConstCharPointerPointer": "const char**",
     "UTF16Char": "char16_t",
