@@ -28,7 +28,7 @@ bool S2Plugin::State::loadState()
     for (auto x = 0; x < threadList.count; ++x)
     {
         auto threadAllInfo = threadList.list[x];
-        if (strncmp(threadAllInfo.BasicInfo.threadName, "MainThrd", 8) == 0)
+        if (strncmp(threadAllInfo.BasicInfo.threadName, "Main Thread", 11) == 0)
         {
             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
