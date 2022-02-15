@@ -1164,7 +1164,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::EntityUID:
         {
             int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
-            if (value <= 0)
+            if (value < 0)
             {
                 itemValue->setData("Nothing", Qt::DisplayRole);
             }
@@ -1188,7 +1188,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
-            if (comparisonValue <= 0)
+            if (comparisonValue < 0)
             {
                 itemComparisonValue->setData("Nothing", Qt::DisplayRole);
             }
@@ -1215,7 +1215,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::EntityUIDPointer:
         {
             int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(Script::Memory::ReadQword(memoryOffset)));
-            if (value <= 0)
+            if (value < 0)
             {
                 itemValue->setData("Nothing", Qt::DisplayRole);
             }
@@ -1239,7 +1239,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(Script::Memory::ReadQword(comparisonMemoryOffset)));
-            if (comparisonValue <= 0)
+            if (comparisonValue < 0)
             {
                 itemComparisonValue->setData("Nothing", Qt::DisplayRole);
             }
