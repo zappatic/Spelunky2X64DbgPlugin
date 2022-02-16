@@ -7,9 +7,9 @@
     "Player": "PowerupCapable",
     "Arrowtrap": "Floor",
     "Container": "Movable",
-    "Gun": "Purchesable",
+    "Gun": "Purchasable",
     "CrushTrap": "Movable",
-    "Mattock": "Purchesable",
+    "Mattock": "Purchasable",
     "Bomb": "Movable",
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
@@ -174,7 +174,7 @@
     "Liquid": "Entity",
     "Lava": "Liquid",
     "ClimbableRope": "Movable",
-    "Pot": "Purchesable",
+    "Pot": "Purchasable",
     "Coffin": "Movable",
     "SpecialShot": "LightEmitter",
     "Idol": "Movable",
@@ -184,7 +184,7 @@
     "LightEmitter": "Movable",
     "HangAnchor": "Movable",
     "HangStrand": "Movable",
-    "Arrow": "Purchesable",
+    "Arrow": "Purchasable",
     "LightArrow": "Arrow",
     "LightShot": "Projectile",
     "ScepterShot": "LightEmitter",
@@ -235,10 +235,10 @@
     "ParachutePowerup": "Powerup",
     "TrueCrownPowerup": "Powerup",
     "AnkhPowerup": "Powerup",
-    "Teleporter": "Purchesable",
-    "Boomerang": "Purchesable",
+    "Teleporter": "Purchasable",
+    "Boomerang": "Purchasable",
     "Excalibur": "Movable",
-    "Shield": "Purchesable",
+    "Shield": "Purchasable",
     "Bat": "Monster",
     "Terra": "Monster",
     "CritterBeetle": "Critter",
@@ -338,9 +338,9 @@
     "JungleSpearTrap": "Floor",
     "MegaJellyfishEye": "Movable",
     "Bow": "Movable",
-    "Purchesable": "Movable",
-    "DummyPurchesableEntity": "Purchesable",
-    "Present": "Purchesable"
+    "Purchasable": "Movable",
+    "DummyPurchasableEntity": "Purchasable",
+    "Present": "Purchasable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -490,9 +490,9 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
-    "ITEM_ROCK": "Purchesable",
-    "ITEM_SKULL": "Purchesable",
-    "ITEM_MACHETE": "Purchesable",
+    "ITEM_ROCK": "Purchasable",
+    "ITEM_SKULL": "Purchasable",
+    "ITEM_MACHETE": "Purchasable",
     "ITEM_WHIP_FLAME": "FlameSize",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
@@ -626,11 +626,11 @@
     "ITEM_CLONEGUN": "Gun",
     "ITEM_WOODEN_SHIELD": "Shield",
     "ITEM_METAL_SHIELD": "Shield",
-    "ITEM_PURCHASABLE_CAPE": "DummyPurchesableEntity",
-    "ITEM_PURCHASABLE_JETPACK": "DummyPurchesableEntity",
-    "ITEM_PURCHASABLE_TELEPORTER_BACKPACK": "DummyPurchesableEntity",
-    "ITEM_PURCHASABLE_HOVERPACK": "DummyPurchesableEntity",
-    "ITEM_PURCHASABLE_POWERPACK": "DummyPurchesableEntity",
+    "ITEM_PURCHASABLE_CAPE": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_JETPACK": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_TELEPORTER_BACKPACK": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_HOVERPACK": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_POWERPACK": "DummyPurchasableEntity",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "WoodenlogTrap",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -15042,7 +15042,7 @@
         }
       }
     ],
-    "Purchesable": [
+    "Purchasable": [
       {
         "vftablefunctions": {
           "93": {
@@ -15053,7 +15053,7 @@
         }
       }
     ],
-    "DummyPurchesableEntity": [
+    "DummyPurchasableEntity": [
       {
         "vftablefunctions": {
           "94": {
