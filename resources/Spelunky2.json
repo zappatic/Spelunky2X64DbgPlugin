@@ -7,9 +7,9 @@
     "Player": "PowerupCapable",
     "Arrowtrap": "Floor",
     "Container": "Movable",
-    "Gun": "Movable",
+    "Gun": "Purchesable",
     "CrushTrap": "Movable",
-    "Mattock": "Movable",
+    "Mattock": "Purchesable",
     "Bomb": "Movable",
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
@@ -121,6 +121,7 @@
     "StickyTrap": "Floor",
     "SpikeballTrap": "Floor",
     "SlidingWallCeiling": "Floor",
+    "Projectile": "Movable",
     "Backpack": "Movable",
     "Jetpack": "Backpack",
     "TeleporterBackpack": "Backpack",
@@ -173,24 +174,24 @@
     "Liquid": "Entity",
     "Lava": "Liquid",
     "ClimbableRope": "Movable",
-    "Pot": "Movable",
+    "Pot": "Purchesable",
     "Coffin": "Movable",
     "SpecialShot": "LightEmitter",
     "Idol": "Movable",
     "Spear": "Movable",
     "JungleSpearCosmetic": "Movable",
-    "WebShot": "Movable",
+    "WebShot": "Projectile",
     "LightEmitter": "Movable",
     "HangAnchor": "Movable",
     "HangStrand": "Movable",
-    "Arrow": "Movable",
+    "Arrow": "Purchesable",
     "LightArrow": "Arrow",
-    "LightShot": "Movable",
+    "LightShot": "Projectile",
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
     "CloneGunShot": "LightShot",
-    "Bullet": "Movable",
+    "Bullet": "Projectile",
     "Spark": "Flame",
     "TiamatShot": "LightEmitter",
     "Fireball": "SoundShot",
@@ -211,11 +212,11 @@
     "Landmine": "LightEmitter",
     "Honey": "Movable",
     "PlayerGhost": "LightEmitter",
-    "GhostBreath": "Movable",
+    "GhostBreath": "Projectile",
     "PlayerBag": "Movable",
     "LaserBeam": "Movable",
     "TreasureHook": "Movable",
-    "AxolotlShot": "Movable",
+    "AxolotlShot": "Projectile",
     "SkullDropTrap": "Movable",
     "FrozenLiquid": "Movable",
     "Switch": "Movable",
@@ -234,10 +235,10 @@
     "ParachutePowerup": "Powerup",
     "TrueCrownPowerup": "Powerup",
     "AnkhPowerup": "Powerup",
-    "Teleporter": "Movable",
-    "Boomerang": "Movable",
+    "Teleporter": "Purchesable",
+    "Boomerang": "Purchesable",
     "Excalibur": "Movable",
-    "Shield": "Movable",
+    "Shield": "Purchesable",
     "Bat": "Monster",
     "Terra": "Monster",
     "CritterBeetle": "Critter",
@@ -335,7 +336,11 @@
     "EggShipDoorS": "EggShipDoor",
     "PrizeDispenser": "Movable",
     "JungleSpearTrap": "Floor",
-    "MegaJellyfishEye": "Movable"
+    "MegaJellyfishEye": "Movable",
+    "Bow": "Movable",
+    "Purchesable": "Movable",
+    "DummyPurchesableEntity": "Purchesable",
+    "Present": "Purchesable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -485,6 +490,9 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
+    "ITEM_ROCK": "Purchesable",
+    "ITEM_SKULL": "Purchesable",
+    "ITEM_MACHETE": "Purchesable",
     "ITEM_WHIP_FLAME": "FlameSize",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
@@ -497,6 +505,7 @@
     "ITEM_LION_SPEAR": "Spear",
     "ITEM_BIG_SPEAR": "Spear",
     "ITEM_WEBSHOT": "WebShot",
+    "ITEM_GIANTSPIDER_WEBSHOT": "Projectile",
     "ITEM_HANGSTRAND": "HangStrand",
     "ITEM_HANGANCHOR": "HangAnchor",
     "ITEM_WOODEN_ARROW": "Arrow",
@@ -537,8 +546,8 @@
     "ITEM_LAMPFLAME": "LampFlame",
     "ITEM_REDLANTERN": "Torch",
     "ITEM_REDLANTERNFLAME": "LightEmitter",
-    "ITEM_PRESENT": "Container",
-    "ITEM_GHIST_PRESENT": "Container",
+    "ITEM_PRESENT": "Present",
+    "ITEM_GHIST_PRESENT": "Present",
     "ITEM_BULLET": "Bullet",
     "ITEM_FREEZERAYSHOT": "TimedShot",
     "ITEM_CLONEGUNSHOT": "CloneGunShot",
@@ -587,7 +596,11 @@
     "ITEM_EGGSAC": "EggSac",
     "ITEM_GOLDBAR.*": "Goldbar",
     "ITEM_GOLDCOIN": "Coin",
+    "ITEM_CROSSBOW": "Bow",
+    "ITEM_HOUYIBOW": "Bow",
     "ITEM_PICKUP_PLAYERBAG": "PlayerBag",
+    "ITEM_PICKUP_12BAG": "PlayerBag",
+    "ITEM_PICKUP_24BAG": "PlayerBag",
     "ITEM_PICKUP_.*": "RollingItem",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_POWERUP_PARACHUTE": "ParachutePowerup",
@@ -613,6 +626,11 @@
     "ITEM_CLONEGUN": "Gun",
     "ITEM_WOODEN_SHIELD": "Shield",
     "ITEM_METAL_SHIELD": "Shield",
+    "ITEM_PURCHASABLE_CAPE": "DummyPurchesableEntity",
+    "ITEM_PURCHASABLE_JETPACK": "DummyPurchesableEntity",
+    "ITEM_PURCHASABLE_TELEPORTER_BACKPACK": "DummyPurchesableEntity",
+    "ITEM_PURCHASABLE_HOVERPACK": "DummyPurchesableEntity",
+    "ITEM_PURCHASABLE_POWERPACK": "DummyPurchesableEntity",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "WoodenlogTrap",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -10574,6 +10592,45 @@
     ],
     "Mattock": [{ "field": "remaining", "type": "UnsignedByte" }],
     "Backpack": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "93",
+            "params": "",
+            "return": ""
+          },
+          "94": {
+            "name": "94",
+            "params": "",
+            "return": ""
+          },
+          "95": {
+            "name": "95",
+            "params": "",
+            "return": ""
+          },
+          "96": {
+            "name": "96",
+            "params": "",
+            "return": ""
+          },
+          "97": {
+            "name": "97",
+            "params": "",
+            "return": ""
+          },
+          "98": {
+            "name": "98",
+            "params": "",
+            "return": ""
+          },
+          "99": {
+            "name": "99",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "explosion_trigger", "type": "Bool" },
       {
         "field": "explosion_timer",
@@ -10638,6 +10695,15 @@
       { "field": "on_breaking", "type": "Bool" }
     ],
     "Cape": [
+      {
+        "vftablefunctions": {
+          "100": {
+            "name": "100",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "floating_down", "type": "Bool" },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
@@ -12973,6 +13039,24 @@
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
+    "Projectile": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "v93",
+            "params": "",
+            "return": "",
+            "comment": ""
+          },
+          "94": {
+            "name": "v94",
+            "params": "",
+            "return": "",
+            "comment": ""
+          }
+        }
+      }
+    ],
     "Mount": [
       {
         "vftablefunctions": {
@@ -14947,6 +15031,41 @@
     ],
     "JungleSpearTrap": [],
     "MegaJellyfishEye": [{ "field": "timer", "type": "UnsignedByte" }],
+    "Bow": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "get_arrow_special_offset",
+            "params": "",
+            "return": "float"
+          }
+        }
+      }
+    ],
+    "Purchesable": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "buy",
+            "params": "",
+            "return": ""
+          }
+        }
+      }
+    ],
+    "DummyPurchesableEntity": [
+      {
+        "vftablefunctions": {
+          "94": {
+            "name": "switch_entities",
+            "params": "void*",
+            "return": "Entity*",
+            "comment": "switches the purchasable cape with normal one, parameter is particle?? maybe?"
+          }
+        }
+      }
+    ],
+    "Present": [{ "field": "inside", "type": "EntityDBID" }],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
