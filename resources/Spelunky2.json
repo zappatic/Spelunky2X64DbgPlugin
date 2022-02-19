@@ -231,7 +231,7 @@
     "EggSac": "Movable",
     "Goldbar": "Movable",
     "Coin": "Movable",
-    "RollingItem": "Movable",
+    "RollingItem": "Purchasable",
     "ParachutePowerup": "Powerup",
     "TrueCrownPowerup": "Powerup",
     "AnkhPowerup": "Powerup",
@@ -14086,8 +14086,8 @@
       }
     ],
     "PlayerBag": [
-      { "field": "bombs", "type": "UnsignedByte" },
-      { "field": "ropes", "type": "UnsignedByte" }
+      { "field": "bombs", "type": "Byte" },
+      { "field": "ropes", "type": "Byte" }
     ],
     "LaserBeam": [
       { "field": "sparks", "type": "ParticleEmitterInfoPointer" },
@@ -14182,6 +14182,15 @@
     ],
     "Coin": [{ "field": "nominal_price", "type": "UnsignedDword" }],
     "RollingItem": [
+      {
+        "vftablefunctions": {
+          "94": {
+            "name": "on_purches",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       {
         "field": "roll_speed",
         "type": "Float",
@@ -14503,13 +14512,19 @@
       {
         "vftablefunctions": {
           "93": {
-            "name": "apply_to_player",
-            "params": "Player* player",
-            "return": ""
+            "name": "v93",
+            "params": "size_t&",
+            "return": "size_t&",
+            "comment": "get powerup id/type?"
           },
           "94": {
+            "name": "apply_to_player",
+            "params": "PowerupCapable* player",
+            "return": ""
+          },
+          "95": {
             "name": "remove_from_player",
-            "params": "Player* player",
+            "params": "PowerupCapable* player",
             "return": ""
           }
         }
