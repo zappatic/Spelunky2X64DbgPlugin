@@ -7,9 +7,9 @@
     "Player": "PowerupCapable",
     "Arrowtrap": "Floor",
     "Container": "Movable",
-    "Gun": "Movable",
+    "Gun": "Purchasable",
     "CrushTrap": "Movable",
-    "Mattock": "Movable",
+    "Mattock": "Purchasable",
     "Bomb": "Movable",
     "Olmec": "Movable",
     "OlmecFloater": "Movable",
@@ -121,6 +121,7 @@
     "StickyTrap": "Floor",
     "SpikeballTrap": "Floor",
     "SlidingWallCeiling": "Floor",
+    "Projectile": "Movable",
     "Backpack": "Movable",
     "Jetpack": "Backpack",
     "TeleporterBackpack": "Backpack",
@@ -143,7 +144,7 @@
     "ClamBase": "Movable",
     "RegenBlock": "Movable",
     "GiantClamTop": "Movable",
-    "CookFire": "Movable",
+    "CookFire": "Torch",
     "Floor": "Entity",
     "Door": "Floor",
     "ExitDoor": "Door",
@@ -173,24 +174,24 @@
     "Liquid": "Entity",
     "Lava": "Liquid",
     "ClimbableRope": "Movable",
-    "Pot": "Movable",
+    "Pot": "Purchasable",
     "Coffin": "Movable",
     "SpecialShot": "LightEmitter",
     "Idol": "Movable",
     "Spear": "Movable",
     "JungleSpearCosmetic": "Movable",
-    "WebShot": "Movable",
+    "WebShot": "Projectile",
     "LightEmitter": "Movable",
     "HangAnchor": "Movable",
     "HangStrand": "Movable",
-    "Arrow": "Movable",
+    "Arrow": "Purchasable",
     "LightArrow": "Arrow",
-    "LightShot": "Movable",
+    "LightShot": "Projectile",
     "ScepterShot": "LightEmitter",
     "SoundShot": "LightShot",
     "TimedShot": "LightShot",
     "CloneGunShot": "LightShot",
-    "Bullet": "Movable",
+    "Bullet": "Projectile",
     "Spark": "Flame",
     "TiamatShot": "LightEmitter",
     "Fireball": "SoundShot",
@@ -211,11 +212,11 @@
     "Landmine": "LightEmitter",
     "Honey": "Movable",
     "PlayerGhost": "LightEmitter",
-    "GhostBreath": "Movable",
+    "GhostBreath": "Projectile",
     "PlayerBag": "Movable",
     "LaserBeam": "Movable",
     "TreasureHook": "Movable",
-    "AxolotlShot": "Movable",
+    "AxolotlShot": "Projectile",
     "SkullDropTrap": "Movable",
     "FrozenLiquid": "Movable",
     "Switch": "Movable",
@@ -230,14 +231,14 @@
     "EggSac": "Movable",
     "Goldbar": "Movable",
     "Coin": "Movable",
-    "RollingItem": "Movable",
+    "RollingItem": "Purchasable",
     "ParachutePowerup": "Powerup",
     "TrueCrownPowerup": "Powerup",
     "AnkhPowerup": "Powerup",
-    "Teleporter": "Movable",
-    "Boomerang": "Movable",
+    "Teleporter": "Purchasable",
+    "Boomerang": "Purchasable",
     "Excalibur": "Movable",
-    "Shield": "Movable",
+    "Shield": "Purchasable",
     "Bat": "Monster",
     "Terra": "Monster",
     "CritterBeetle": "Critter",
@@ -335,7 +336,11 @@
     "EggShipDoorS": "EggShipDoor",
     "PrizeDispenser": "Movable",
     "JungleSpearTrap": "Floor",
-    "MegaJellyfishEye": "Movable"
+    "MegaJellyfishEye": "Movable",
+    "Bow": "Movable",
+    "Purchasable": "Movable",
+    "DummyPurchasableEntity": "Purchasable",
+    "Present": "Purchasable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -485,6 +490,9 @@
     "MONS_CRITTERFIREFLY": "CritterFirefly",
     "MONS_CRITTERDRONE": "CritterDrone",
     "MONS_CRITTERSLIME": "CritterSlime",
+    "ITEM_ROCK": "Purchasable",
+    "ITEM_SKULL": "Purchasable",
+    "ITEM_MACHETE": "Purchasable",
     "ITEM_WHIP_FLAME": "FlameSize",
     "ITEM_BOMB": "Bomb",
     "ITEM_PASTEBOMB": "Bomb",
@@ -497,6 +505,7 @@
     "ITEM_LION_SPEAR": "Spear",
     "ITEM_BIG_SPEAR": "Spear",
     "ITEM_WEBSHOT": "WebShot",
+    "ITEM_GIANTSPIDER_WEBSHOT": "Projectile",
     "ITEM_HANGSTRAND": "HangStrand",
     "ITEM_HANGANCHOR": "HangAnchor",
     "ITEM_WOODEN_ARROW": "Arrow",
@@ -537,8 +546,8 @@
     "ITEM_LAMPFLAME": "LampFlame",
     "ITEM_REDLANTERN": "Torch",
     "ITEM_REDLANTERNFLAME": "LightEmitter",
-    "ITEM_PRESENT": "Container",
-    "ITEM_GHIST_PRESENT": "Container",
+    "ITEM_PRESENT": "Present",
+    "ITEM_GHIST_PRESENT": "Present",
     "ITEM_BULLET": "Bullet",
     "ITEM_FREEZERAYSHOT": "TimedShot",
     "ITEM_CLONEGUNSHOT": "CloneGunShot",
@@ -587,7 +596,11 @@
     "ITEM_EGGSAC": "EggSac",
     "ITEM_GOLDBAR.*": "Goldbar",
     "ITEM_GOLDCOIN": "Coin",
+    "ITEM_CROSSBOW": "Bow",
+    "ITEM_HOUYIBOW": "Bow",
     "ITEM_PICKUP_PLAYERBAG": "PlayerBag",
+    "ITEM_PICKUP_12BAG": "PlayerBag",
+    "ITEM_PICKUP_24BAG": "PlayerBag",
     "ITEM_PICKUP_.*": "RollingItem",
     "ITEM_POWERUP_KAPALA": "KapalaPowerup",
     "ITEM_POWERUP_PARACHUTE": "ParachutePowerup",
@@ -613,6 +626,11 @@
     "ITEM_CLONEGUN": "Gun",
     "ITEM_WOODEN_SHIELD": "Shield",
     "ITEM_METAL_SHIELD": "Shield",
+    "ITEM_PURCHASABLE_CAPE": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_JETPACK": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_TELEPORTER_BACKPACK": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_HOVERPACK": "DummyPurchasableEntity",
+    "ITEM_PURCHASABLE_POWERPACK": "DummyPurchasableEntity",
     "ACTIVEFLOOR_WOODENLOG_TRAP": "WoodenlogTrap",
     "ACTIVEFLOOR_BOULDER": "Boulder",
     "ACTIVEFLOOR_PUSHBLOCK": "PushBlock",
@@ -10574,6 +10592,45 @@
     ],
     "Mattock": [{ "field": "remaining", "type": "UnsignedByte" }],
     "Backpack": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "93",
+            "params": "",
+            "return": ""
+          },
+          "94": {
+            "name": "94",
+            "params": "",
+            "return": ""
+          },
+          "95": {
+            "name": "95",
+            "params": "",
+            "return": ""
+          },
+          "96": {
+            "name": "96",
+            "params": "",
+            "return": ""
+          },
+          "97": {
+            "name": "97",
+            "params": "",
+            "return": ""
+          },
+          "98": {
+            "name": "98",
+            "params": "",
+            "return": ""
+          },
+          "99": {
+            "name": "99",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "explosion_trigger", "type": "Bool" },
       {
         "field": "explosion_timer",
@@ -10638,6 +10695,15 @@
       { "field": "on_breaking", "type": "Bool" }
     ],
     "Cape": [
+      {
+        "vftablefunctions": {
+          "100": {
+            "name": "100",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       { "field": "floating_down", "type": "Bool" },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
@@ -12973,7 +13039,99 @@
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
+    "Projectile": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "v93",
+            "params": "",
+            "return": "",
+            "comment": ""
+          },
+          "94": {
+            "name": "v94",
+            "params": "",
+            "return": "",
+            "comment": ""
+          }
+        }
+      }
+    ],
     "Mount": [
+      {
+        "vftablefunctions": {
+          "95": {
+            "name": "get_special_offset",
+            "params": "std::pair<float, float>& offset",
+            "return": "std::pair<float, float>&",
+            "comment": "when jumping on mount"
+          },
+          "96": {
+            "name": "v96",
+            "params": "std::pair<float, float>& value",
+            "return": "std::pair<float, float>&",
+            "comment": "gets something for when crouching on mount"
+          },
+          "97": {
+            "name": "used_double_jump",
+            "params": "",
+            "return": "bool",
+            "comment": "checks can_doublejump and unknown9b"
+          },
+          "98": {
+            "name": "v98",
+            "params": "bool",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "99": {
+            "name": "v99",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "100": {
+            "name": "play_jump_on_sound",
+            "params": "",
+            "return": ""
+          },
+          "101": {
+            "name": "remove_rider",
+            "params": "",
+            "return": ""
+          },
+          "102": {
+            "name": "v102",
+            "params": "",
+            "return": "float",
+            "comment": "get offset? mech returns 0.9, the rest 0.5"
+          },
+          "103": {
+            "name": "v103",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "104": {
+            "name": "v104",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "105": {
+            "name": "v105",
+            "params": "",
+            "return": "uint32_t",
+            "comment": "returns some constant value"
+          },
+          "106": {
+            "name": "can_play_mount_sound",
+            "params": "",
+            "return": "bool",
+            "comment": "called every frame, if returns true mount will make a sound"
+          }
+        }
+      },
       { "field": "rider_uid", "type": "EntityUID", "comment": "who rides it" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "sound_pos", "type": "SoundPositionPointer" },
@@ -13290,10 +13448,6 @@
       { "field": "open_timer", "type": "UnsignedByte" }
     ],
     "CookFire": [
-      { "field": "unknown1", "type": "Dword" },
-      { "field": "lit", "type": "Bool" },
-      { "field": "unused1", "type": "UnsignedByte" },
-      { "field": "unused2", "type": "UnsignedWord" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "particles_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
@@ -13857,6 +14011,25 @@
       }
     ],
     "Torch": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "light_up",
+            "params": "bool",
+            "return": ""
+          },
+          "94": {
+            "name": "v_94",
+            "params": "double& value",
+            "return": ""
+          },
+          "95": {
+            "name": "get_flame_type",
+            "params": "",
+            "return": "ENT_TYPE"
+          }
+        }
+      },
       { "field": "flame_uid", "type": "EntityUID" },
       { "field": "is_lit", "type": "Bool" },
       { "field": "unknown1", "type": "Byte" },
@@ -13913,8 +14086,8 @@
       }
     ],
     "PlayerBag": [
-      { "field": "bombs", "type": "UnsignedByte" },
-      { "field": "ropes", "type": "UnsignedByte" }
+      { "field": "bombs", "type": "Byte" },
+      { "field": "ropes", "type": "Byte" }
     ],
     "LaserBeam": [
       { "field": "sparks", "type": "ParticleEmitterInfoPointer" },
@@ -14009,6 +14182,15 @@
     ],
     "Coin": [{ "field": "nominal_price", "type": "UnsignedDword" }],
     "RollingItem": [
+      {
+        "vftablefunctions": {
+          "94": {
+            "name": "on_purches",
+            "params": "",
+            "return": ""
+          }
+        }
+      },
       {
         "field": "roll_speed",
         "type": "Float",
@@ -14330,13 +14512,19 @@
       {
         "vftablefunctions": {
           "93": {
-            "name": "apply_to_player",
-            "params": "Player* player",
-            "return": ""
+            "name": "v93",
+            "params": "size_t&",
+            "return": "size_t&",
+            "comment": "get powerup id/type?"
           },
           "94": {
+            "name": "apply_to_player",
+            "params": "PowerupCapable* player",
+            "return": ""
+          },
+          "95": {
             "name": "remove_from_player",
-            "params": "Player* player",
+            "params": "PowerupCapable* player",
             "return": ""
           }
         }
@@ -14858,6 +15046,41 @@
     ],
     "JungleSpearTrap": [],
     "MegaJellyfishEye": [{ "field": "timer", "type": "UnsignedByte" }],
+    "Bow": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "get_arrow_special_offset",
+            "params": "",
+            "return": "float"
+          }
+        }
+      }
+    ],
+    "Purchasable": [
+      {
+        "vftablefunctions": {
+          "93": {
+            "name": "buy",
+            "params": "",
+            "return": ""
+          }
+        }
+      }
+    ],
+    "DummyPurchasableEntity": [
+      {
+        "vftablefunctions": {
+          "94": {
+            "name": "switch_entities",
+            "params": "void*",
+            "return": "Entity*",
+            "comment": "switches the purchasable cape with normal one, parameter is particle?? maybe?"
+          }
+        }
+      }
+    ],
+    "Present": [{ "field": "inside", "type": "EntityDBID" }],
     "StdList": [
       { "field": "back", "type": "StdListIteratorPointer" },
       { "field": "front", "type": "StdListIteratorPointer" }
