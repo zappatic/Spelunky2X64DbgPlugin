@@ -9663,9 +9663,17 @@
           }
         }
       },
-      { "field": "pa0", "type": "Map" },
+      {
+        "field": "behavior_map",
+        "type": "Map",
+        "comment": "map of avaible behaviors for this entity"
+      },
       { "field": "pb0", "type": "Map" },
-      { "field": "anim_func", "type": "DataPointer" },
+      {
+        "field": "behavior",
+        "type": "DataPointer",
+        "comment": "pointer to array element, that array is list of pointers that point to a list of code pointers (funcitons)"
+      },
       { "field": "ic8", "type": "Qword" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
