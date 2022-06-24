@@ -1759,7 +1759,7 @@
       { "field": "y", "type": "Float" },
       { "field": "offset_x", "type": "Float" },
       { "field": "offset_y", "type": "Float" },
-      { "field": "unknown54a", "type": "UnsignedByte" },
+      { "field": "layer", "type": "UnsignedByte" },
       { "field": "unknown54b", "type": "UnsignedByte" },
       { "field": "unknown54c", "type": "UnsignedByte" },
       { "field": "unknown54d", "type": "UnsignedByte" },
@@ -10696,7 +10696,20 @@
       { "field": "move_direction", "type": "Byte" },
       { "field": "jump_timer", "type": "UnsignedByte" },
       { "field": "phase1_amount_of_bomb_salvos", "type": "UnsignedByte" },
-      { "field": "unknown_attack_state", "type": "UnsignedByte" }
+      {
+        "field": "attack_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Hasn't Stomped (Phase 2, set when spawning UFOs, cleared when stomping first time)",
+          "2": "Has Broken Layer (Phase 1, cleared when floaters broken, set when breaking the first layer)",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        }
+      }
     ],
     "OlmecFloater": [
       { "field": "both_floaters_intact", "type": "Bool" },
@@ -10730,13 +10743,13 @@
         "type": "UnsignedWord",
         "comment": "for SMALL_HAPPY this is also the sequence timer of its various states"
       },
-      { "field": "unknown1_timer", "type": "UnsignedByte" },
+      { "field": "wobble_timer", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
       { "field": "velocity_multiplier", "type": "Float" },
       {
-        "field": "unknown3",
+        "field": "pace_timer",
         "type": "UnsignedWord",
-        "comment": "layer change related"
+        "comment": "Controls ghost pacing when all players are dead."
       },
       {
         "field": "ghost_behaviour",
@@ -10748,15 +10761,25 @@
           "3": "SMALL_HAPPY",
           "4": "will move up and down, moving slightly more in one direction"
         },
-        "comment": "everything above 4 seams to be the same as 4"
+        "comment": "everything above 4 seems to be the same as 4"
       },
-      { "field": "unknown6", "type": "UnsignedByte" },
-      { "field": "unknown7", "type": "Bool" },
+      { "field": "blown_by_player", "type": "Bool" },
+      { "field": "happy_dancing_clockwise", "type": "Bool", "comment": "Randomly set at the start of happy's dance phase to determine the dance rotation direction." },
       { "field": "unknown8", "type": "UnsignedByte" },
       { "field": "unknown9", "type": "UnsignedByte" },
       { "field": "unknown10", "type": "UnsignedByte" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "linked_ghost", "type": "EntityPointer" },
+      {
+        "field": "target_dist_visibility_factor",
+        "type": "Float",
+        "comment": "Value from 0.5 to 1, based on the distance to the ghost's target, multiplied by the target_layer_visibility_factor to set the transparency and illumination of the ghost."
+      },
+      {
+        "field": "target_layer_visibility_factor",
+        "type": "Float",
+        "comment": "Value from 0 to 1, based on how long the ghost has been in the same layer as its target, multiplied by the target_dist_visibility_factor to set the transparency and illumination of the ghost."
+      },
       { "field": "sound_info", "type": "SoundPositionPointer" }
     ],
     "Monkey": [
