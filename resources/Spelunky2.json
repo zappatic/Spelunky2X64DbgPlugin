@@ -10709,7 +10709,7 @@
           "7": "",
           "8": ""
         }
-	  }
+      }
     ],
     "OlmecFloater": [
       { "field": "both_floaters_intact", "type": "Bool" },
@@ -10764,7 +10764,7 @@
         "comment": "everything above 4 seems to be the same as 4"
       },
       { "field": "blown_by_player", "type": "Bool" },
-      { "field": "happy_dancing_clockwise", "type": "Bool", "comment": "Randomly set during happy's dance phase to determine the dance rotation direction." },
+      { "field": "happy_dancing_clockwise", "type": "Bool", "comment": "Randomly set at the start of happy's dance phase to determine the dance rotation direction." },
       { "field": "unknown8", "type": "UnsignedByte" },
       { "field": "unknown9", "type": "UnsignedByte" },
       { "field": "unknown10", "type": "UnsignedByte" },
