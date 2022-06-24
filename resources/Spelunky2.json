@@ -10764,22 +10764,22 @@
         "comment": "everything above 4 seems to be the same as 4"
       },
       { "field": "blown_by_player", "type": "Bool" },
-      { "field": "happy_dancing_clockwise", "type": "Bool", "comment": "Randomly set during happy's dance phase to determine the dance rotation direction."},
+      { "field": "happy_dancing_clockwise", "type": "Bool", "comment": "Randomly set during happy's dance phase to determine the dance rotation direction." },
       { "field": "unknown8", "type": "UnsignedByte" },
       { "field": "unknown9", "type": "UnsignedByte" },
       { "field": "unknown10", "type": "UnsignedByte" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "linked_ghost", "type": "EntityPointer" },
-	  {
-		"field": "target_dist_visibility_factor",
-		"type": "Float",
-		"comment": "Value from 0.5 to 1, based on the distance to the ghost's target, multiplied by the target_layer_visibility_factor to set the transparency and illumination of the ghost."
-	  },
-	  {
-	    "field": "target_layer_visibility_factor",
-		"type": "Float",
-		"comment": "Value from 0 to 1, based on how long the ghost has been in the same layer as its target, multiplied by the target_dist_visibility_factor to set the transparency and illumination of the ghost."
-	  },
+      {
+        "field": "target_dist_visibility_factor",
+        "type": "Float",
+        "comment": "Value from 0.5 to 1, based on the distance to the ghost's target, multiplied by the target_layer_visibility_factor to set the transparency and illumination of the ghost."
+      },
+      {
+        "field": "target_layer_visibility_factor",
+        "type": "Float",
+        "comment": "Value from 0 to 1, based on how long the ghost has been in the same layer as its target, multiplied by the target_dist_visibility_factor to set the transparency and illumination of the ghost."
+      },
       { "field": "sound_info", "type": "SoundPositionPointer" }
     ],
     "Monkey": [
