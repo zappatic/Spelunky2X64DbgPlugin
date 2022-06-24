@@ -1759,7 +1759,7 @@
       { "field": "y", "type": "Float" },
       { "field": "offset_x", "type": "Float" },
       { "field": "offset_y", "type": "Float" },
-      { "field": "unknown54a", "type": "UnsignedByte" },
+      { "field": "layer", "type": "UnsignedByte" },
       { "field": "unknown54b", "type": "UnsignedByte" },
       { "field": "unknown54c", "type": "UnsignedByte" },
       { "field": "unknown54d", "type": "UnsignedByte" },
