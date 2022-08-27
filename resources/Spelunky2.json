@@ -909,7 +909,8 @@
     "MapBucket2",
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2",
-    "MysteryLayerPointer1"
+    "MysteryLayerPointer1",
+    "PointerToMap"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -5437,19 +5438,19 @@
         "field": "stagnant_lava_tile_spawn_data",
         "type": "LiquidTileSpawnData"
       },
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "floors", "type": "PointerToMap", "comment": "pointer to map/list that contains all floor uids that the liquid interact with" },
+      { "field": "activefloors", "type": "PointerToMap", "comment": "pointer to map/list that contains all activefloor uids that the liquid interact with" },
       { "field": "impostors", "type": "StdVector", "vectortype": "LiquidLake" },
       {
         "field": "total_liquid_spawned",
         "type": "UnsignedDword",
         "comment": "total number of spawned liquid entities, all types"
       },
-      { "field": "unknown8", "type": "UnsignedDword" },
+      { "field": "unknown8", "type": "UnsignedDword", "comment": "padding probably" },
       {
         "field": "unknown9",
         "type": "DataPointer",
-        "comment": "array byte* ?"
+        "comment": "array byte* ? game allocates 0x2F9E8 bytes for it, (0x2F9E8 / g_level_max_x * g_level_max_y = 18) which is weird, but i still think it's position based index, maybe it's 16 and accounts for more rows (grater level height), always allocates after the LiquidPhysics"
       },
       {
         "field": "total_liquid_spawned2?",
@@ -5461,6 +5462,10 @@
       { "field": "padding12b", "type": "Byte" },
       { "field": "padding12c", "type": "Byte" },
       { "field": "unknown13", "type": "UnsignedDword" }
+    ],
+    "PointerToMap":
+    [
+    { "field": "unknown", "type": "Map" }
     ],
     "LiquidLake":
     [
