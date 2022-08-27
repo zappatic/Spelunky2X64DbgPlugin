@@ -1002,7 +1002,8 @@
     "StdList",
     "SomeUnknownArray",
     "EntityList",
-    "XY"
+    "XY",
+    "LiquidLake"
   ],
   "refs": {
     "screen_states": {
@@ -5438,9 +5439,7 @@
       },
       { "field": "unknown2", "type": "DataPointer" },
       { "field": "unknown3", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
+      { "field": "impostors", "type": "StdVector", "vectortype": "LiquidLake" },
       {
         "field": "total_liquid_spawned",
         "type": "UnsignedDword",
@@ -5462,6 +5461,14 @@
       { "field": "padding12b", "type": "Byte" },
       { "field": "padding12c", "type": "Byte" },
       { "field": "unknown13", "type": "UnsignedDword" }
+    ],
+    "LiquidLake":
+    [
+      { "field": "position1", "type": "UnsignedDword" },
+      { "field": "position2", "type": "UnsignedDword" },
+      { "field": "position3", "type": "UnsignedDword" },
+      { "field": "lake_type", "type": "UnsignedDword" },
+      { "field": "impostor_lake", "type": "EntityPointer" }
     ],
     "LiquidPhysicsParams": [
       {
