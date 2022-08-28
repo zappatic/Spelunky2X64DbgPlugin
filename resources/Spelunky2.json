@@ -806,7 +806,6 @@
     "EntityUIDsListPointer",
     "PlayerInventoryPointer",
     "SoundPositionPointer",
-    "PlayerTrackerPointer", // used by Lahamu's eyeball, to point at the player
     "IlluminationPointer",
     "ThemeInfoPointer",
     "RenderInfoPointer",
@@ -11736,72 +11735,13 @@
     ],
     "Lahamu": [
       { "field": "sound_pos", "type": "SoundPositionPointer" },
-      { "field": "eyeball_positioner", "type": "PlayerTrackerPointer" },
+      { "field": "eyeball", "type": "EntityPointer" },
       { "field": "attack_cooldown_timer", "type": "UnsignedWord" },
       {
         "field": "unknown_proximity_related",
         "type": "Bool",
         "comment": "gets set to true when you get close to Lahamu"
       }
-    ],
-    "PlayerTrackerPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~PlayerTrackerPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "unknown1",
-        "type": "DataPointer",
-        "comment": "points to a CodePointer"
-      },
-      { "field": "parent_entity_pointer", "type": "EntityPointer" },
-      { "field": "unknown3", "type": "UnsignedQword" },
-      { "field": "unknown4", "type": "UnsignedQword" },
-      { "field": "unknown5", "type": "UnsignedQword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "affected_entity_uid", "type": "EntityUID" },
-      {
-        "field": "animation_frame?",
-        "type": "UnsignedWord",
-        "comment": "changes the color of the eyeball on Lahamu"
-      },
-      { "field": "unknown9c", "type": "UnsignedByte" },
-      { "field": "unknown9d", "type": "UnsignedByte" },
-      { "field": "offset_x", "type": "Float" },
-      { "field": "offset_y", "type": "Float" },
-      { "field": "scale_x", "type": "Float" },
-      { "field": "scale_y", "type": "Float" },
-      { "field": "unknown_dupe_offset_x", "type": "Float" },
-      { "field": "unknown_dupe_offset_y", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
-      { "field": "unknown11", "type": "Float" },
-      { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Float" },
-      { "field": "unknown15", "type": "Float" },
-      { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "Float" },
-      {
-        "field": "unknown18",
-        "type": "UnsignedByte",
-        "comment": "related to unknown14,15,16,17"
-      },
-      { "field": "unknown19", "type": "UnsignedByte" },
-      { "field": "unknown20", "type": "UnsignedByte" },
-      { "field": "unknown21", "type": "UnsignedByte" },
-      { "field": "unknown22", "type": "UnsignedDword" },
-      { "field": "unknown23", "type": "RenderInfoPointer" },
-      { "field": "texture", "type": "TextureDBPointer" },
-      { "field": "texture_offset_x", "type": "Float" },
-      { "field": "texture_offset_y", "type": "Float" }
     ],
     "RenderInfoPointer": [
       {
