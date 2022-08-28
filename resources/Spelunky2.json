@@ -894,12 +894,10 @@
     "PauseUIPointer",
     "JournalUIPointer",
     "BackgroundMusicManagerPointer",
-    "MusicTrackPointer",
     "Ai_func",
     "SoundInfoPointer",
-    "SpeechBubblePointer",
-    "SpeechBubbleTimerPointer",
-    "SpeechBubbleLayoutPointer",
+    "OnScreenMessage",
+    "OnScreenMessageTimerPointer",
     "StdListIteratorPointer",
     "LiquidPhysicsEngine",
     "GetEntitiesResultPointer",
@@ -1003,7 +1001,8 @@
     "SomeUnknownArray",
     "EntityList",
     "XY",
-    "LiquidLake"
+    "LiquidLake",
+    "BackLayerRelated"
   ],
   "refs": {
     "screen_states": {
@@ -2030,22 +2029,22 @@
       { "field": "unknown29", "type": "Float" }
     ],
     "BackgroundMusicManagerPointer": [
-      { "field": "game_startup", "type": "MusicTrackPointer" },
-      { "field": "main_backgroundtrack", "type": "MusicTrackPointer" },
-      { "field": "basecamp", "type": "MusicTrackPointer" },
-      { "field": "win_scene", "type": "MusicTrackPointer" },
-      { "field": "arena", "type": "MusicTrackPointer" },
-      { "field": "arena_intro_and_win", "type": "MusicTrackPointer" },
-      { "field": "level_gameplay", "type": "MusicTrackPointer" },
-      { "field": "dark_level", "type": "MusicTrackPointer" },
-      { "field": "level_transition", "type": "MusicTrackPointer" },
-      { "field": "backlayer", "type": "MusicTrackPointer" },
-      { "field": "shop", "type": "MusicTrackPointer" },
-      { "field": "angered_shopkeeper", "type": "MusicTrackPointer" },
-      { "field": "inside_sunken_city_pipe", "type": "MusicTrackPointer" },
-      { "field": "pause_menu", "type": "MusicTrackPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "sunken_city_duat_transition", "type": "MusicTrackPointer" },
+      { "field": "game_startup", "type": "SoundPositionPointer" },
+      { "field": "main_backgroundtrack", "type": "SoundPositionPointer" },
+      { "field": "basecamp", "type": "SoundPositionPointer" },
+      { "field": "win_scene", "type": "SoundPositionPointer" },
+      { "field": "arena", "type": "SoundPositionPointer" },
+      { "field": "arena_intro_and_win", "type": "SoundPositionPointer" },
+      { "field": "level_gameplay", "type": "SoundPositionPointer" },
+      { "field": "dark_level", "type": "SoundPositionPointer" },
+      { "field": "level_transition", "type": "SoundPositionPointer" },
+      { "field": "backlayer", "type": "SoundPositionPointer" },
+      { "field": "shop", "type": "SoundPositionPointer" },
+      { "field": "angered_shopkeeper", "type": "SoundPositionPointer" },
+      { "field": "inside_sunken_city_pipe", "type": "SoundPositionPointer" },
+      { "field": "pause_menu", "type": "SoundPositionPointer" },
+      { "field": "unknown15", "type": "SoundPositionPointer" },
+      { "field": "sunken_city_duat_transition", "type": "SoundPositionPointer" },
       { "field": "unknown17", "type": "UnsignedByte" },
       { "field": "unknown18", "type": "UnsignedByte" },
       { "field": "unknown19", "type": "UnsignedByte" },
@@ -2059,70 +2058,57 @@
       { "field": "idle_counter", "type": "Float" },
       { "field": "unknown22", "type": "UnsignedDword" }
     ],
-    "MusicTrackPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~MusicTrackPointer", "params": "", "return": "" }
-        }
-      },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "music_track?", "type": "DataPointer" },
-      {
-        "field": "fmod_param",
-        "type": "UnsignedQword",
-        "comment": "param to FMOD::Studio::EventInstance::setParameterByID"
-      },
-      { "field": "left_channel", "type": "AudioChannelParams" },
-      { "field": "right_channel", "type": "AudioChannelParams" },
-      {
-        "field": "music_start_over",
-        "type": "Bool",
-        "comment": "when false, current track starts from the beginning"
-      },
-      { "field": "unknown49", "type": "Bool" },
-      { "field": "music_on", "type": "Bool" },
-      { "field": "unknown51", "type": "UnsignedByte" },
-      { "field": "garbage1", "type": "UnsignedDword" },
-      { "field": "fadeout_music_and_crash", "type": "Bool" },
-      { "field": "padding1", "type": "Bool" },
-      { "field": "padding2", "type": "Bool" },
-      { "field": "padding3", "type": "Bool" },
-      { "field": "garbage2", "type": "UnsignedDword" }
-    ],
     "AudioChannelParams": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "UnsignedQword" },
-      { "field": "unknown3", "type": "UnsignedQword" },
-      { "field": "unknown4", "type": "UnsignedQword" },
-      { "field": "unknown5", "type": "Float" },
       {
-        "field": "unknown6",
+        "field": "POS_SCREEN_X",
         "type": "Float",
-        "comment": "triggers on ghost (music distortion)"
+        "comment": "VANILLA_SOUND_PARAM names, for now"
       },
-      { "field": "unknown7a", "type": "Float" },
-      { "field": "unknown7b", "type": "Float" },
-      { "field": "unknown8", "type": "UnsignedQword" },
-      { "field": "unknown9", "type": "UnsignedQword" },
-      { "field": "unknown10", "type": "UnsignedQword" },
-      { "field": "unknown11", "type": "UnsignedQword" },
+      { "field": "DIST_CENTER_X", "type": "Float" },
+      { "field": "DIST_CENTER_Y", "type": "Float" },
+      { "field": "DIST_Z", "type": "Float" },
+      {
+        "field": "DIST_PLAYER",
+        "type": "Float",
+        "comment": "seams to be always here, even you you get nil in lua"
+      },
+      { "field": "SUBMERGED", "type": "Float" },
+      { "field": "LIQUID_STREAM", "type": "Float" },
+      {
+        "field": "unknown8",
+        "type": "Float",
+        "comment": "LIQUID_STREAM related? , maybe LIQUID_INTENSITY?"
+      },
+      { "field": "VALUE", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
       { "field": "unknown12", "type": "Float" },
       { "field": "unknown13", "type": "Float" },
       { "field": "unknown14", "type": "Float" },
       { "field": "unknown15", "type": "Float" },
       { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "UnsignedDword" },
-      { "field": "unknown18", "type": "UnsignedQword" },
-      { "field": "unknown19", "type": "UnsignedQword" },
-      { "field": "unknown20", "type": "UnsignedQword" },
-      { "field": "unknown21", "type": "UnsignedQword" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
+      { "field": "unknown19", "type": "Float" },
+      { "field": "unknown20", "type": "Float" },
+      { "field": "unknown21", "type": "Float" },
       { "field": "unknown22", "type": "Float" },
       { "field": "unknown23", "type": "Float" },
       { "field": "unknown24", "type": "Float" },
-      { "field": "unknown25", "type": "UnsignedDword" }
+      { "field": "unknown25", "type": "Float" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "unknown27", "type": "Float" },
+      { "field": "unknown28", "type": "Float" },
+      { "field": "unknown29", "type": "Float" },
+      { "field": "POISONED", "type": "Float" },
+      { "field": "CURSED", "type": "Float" },
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "Float" },
+      { "field": "unknown34", "type": "Float" },
+      { "field": "unknown35", "type": "Float" },
+      { "field": "unknown36", "type": "Float" },
+      { "field": "unknown37", "type": "Float" },
+      { "field": "unknown38", "type": "Float" }
     ],
     "GamePropsPointer": [
       {
@@ -4232,8 +4218,8 @@
       { "field": "padding12", "type": "UnsignedByte" },
       { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
       { "field": "waddler_floor_storage", "type": "EntityUID", "comment": "entity uid of the first floor_storage entity" },
-      { "field": "toast", "type": "SpeechBubblePointer" },
-      { "field": "speechbubble", "type": "SpeechBubblePointer" },
+      { "field": "toast", "type": "OnScreenMessage" },
+      { "field": "speechbubble", "type": "OnScreenMessage" },
       { "field": "speechbubble_timer", "type": "UnsignedDword" },
       { "field": "toast_timer", "type": "UnsignedDword" },
       { "field": "speechbubble_owner", "type": "EntityUID" },
@@ -4326,9 +4312,7 @@
         "type": "DataPointer",
         "comment": "RobinHoodTable entries"
       },
-      { "field": "backlayer_player_related1", "type": "DataPointer" },
-      { "field": "backlayer_player_related2", "type": "DataPointer" },
-      { "field": "unknown30", "type": "DataPointer" },
+      { "field": "backlayer_player_related1", "type": "StdVector", "vectortype": "BackLayerRelated" },
       { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
       { "field": "camera_layer", "type": "UnsignedByte" },
       { "field": "unknown31a", "type": "UnsignedByte" },
@@ -4386,25 +4370,32 @@
       { "field": "unknown44", "type": "UnsignedDword" },
       { "field": "unknown45", "type": "UnsignedQword" }
     ],
-    "SpeechBubblePointer": [
-      { "field": "timer", "type": "SpeechBubbleTimerPointer" },
-      { "field": "layout", "type": "SpeechBubbleLayoutPointer" },
-      { "field": "unknown3", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "Float" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "UnsignedDword" }
+    "BackLayerRelated": [
+      { "field": "player", "type": "EntityPointer" },
+      { "field": "layer_dest?", "type": "UnsignedByte" },
+      { "field": "padding", "type": "Skip", "offset": 7 }
     ],
-    "SpeechBubbleTimerPointer": [
+    "OnScreenMessage": [
+      { "field": "timer", "type": "OnScreenMessageTimerPointer" },
+      { "field": "layout", "type": "StdVector", "vectortype": "TextRenderingInfoPointer" },
+      { "field": "x", "type": "Float" },
+      { "field": "z", "type": "Float" }
+    ],
+    "OnScreenMessageTimerPointer": [
       {
         "field": "value",
         "type": "UnsignedDword",
-        "comment": "touch this and the game freezes"
-      }
-    ],
-    "SpeechBubbleLayoutPointer": [
-      { "field": "data", "type": "TextRenderingInfoPointer" }
+        "comment": "touch only one value and the game freezes"
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "Qword" },
+      { "field": "unknown3", "type": "Qword" },
+      { "field": "unknown4", "type": "Qword" },
+      { "field": "unknown5", "type": "Qword" },
+      { "field": "unknown6", "type": "Qword" },
+      { "field": "unknown7", "type": "Qword" },
+      { "field": "unknown8", "type": "Qword" },
+      { "field": "value2", "type": "UnsignedDword", "comment": "get's incremented with a `lock'" }
     ],
     "AITargetsPointer": [
       { "field": "target1", "type": "AITarget" },
@@ -7433,18 +7424,22 @@
       { "field": "text_length", "type": "UnsignedDword" },
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "DataPointer" },
+      { "field": "unknown3", "type": "UnsignedDword", "comment": "padding probably" },
+      { "field": "unknown4", "type": "DataPointer", "comment": "unknown4 + letter_textures + unknown5 is most likely a vector" },
       { 
         "field": "letter_textures",
         "type": "DataPointer",
         "comment": "a bunch of float representing the matrix transformations (?) of the individual letters of the text"
       },
-      { "field": "alphabet_mapping?", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer" },
       { "field": "unknown7", "type": "UnsignedWord" },
-      { "field": "unknown8", "type": "UnsignedWord" },
+      { "field": "unknown8", "type": "UnsignedWord", "comment": "padding probably" },
       { "field": "unknown9", "type": "Dword" },
-      { "field": "unknown10", "type": "UnsignedQword" },
+      { "field": "shader", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "padding4", "type": "Dword" },
       { "field": "font", "type": "TextureDBPointer" },
       { "field": "unknown13", "type": "Float" },
       { "field": "unknown14", "type": "Word" },
@@ -10713,11 +10708,12 @@
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": {
-            "name": "~SoundPositionPointer",
-            "params": "",
-            "return": ""
-          }
+          "0": { "name": "play", "params": "", "return": "", "comment": "sets music_on to true" },
+          "1": { "name": "fade_out", "params": "uint8_t", "return": "", "comment": "unsure, parameter sets the unknown49" },
+          "2": { "name": "get_name?", "params": "void* buttor, uint32_t size", "return": "", "comment": "" },
+          "3": { "name": "~SoundPositionPointer", "params": "", "return": "" },
+          "4": { "name": "update", "params": "", "return": "", "comment": "disabling this function does not progresses the track, does not stop it at the end level etc." },
+          "5": { "name": "v4", "params": "", "return": "bool" }
         }
       },
       { "field": "x", "type": "Float" },
@@ -10732,69 +10728,18 @@
         "type": "UnsignedQword",
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID"
       },
+      { "field": "left_channel", "type": "AudioChannelParams" },
+      { "field": "right_channel", "type": "AudioChannelParams" },
       {
-        "field": "POS_SCREEN_X",
-        "type": "Float",
-        "comment": "VANILLA_SOUND_PARAM names, for now"
+        "field": "music_start_over",
+        "type": "Bool",
+        "comment": "when false, current track starts from the beginning"
       },
-      { "field": "DIST_CENTER_X", "type": "Float" },
-      { "field": "DIST_CENTER_Y", "type": "Float" },
-      { "field": "DIST_Z", "type": "Float" },
-      {
-        "field": "DIST_PLAYER",
-        "type": "Float",
-        "comment": "seams to be always here, even you you get nil in lua"
-      },
-      { "field": "SUBMERGED", "type": "Float" },
-      { "field": "LIQUID_STREAM", "type": "Float" },
-      {
-        "field": "unknown10",
-        "type": "Float",
-        "comment": "LIQUID_STREAM related? , maybe LIQUID_INTENSITY?"
-      },
-      { "field": "VALUE", "type": "Float" },
-      { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Float" },
-      { "field": "unknown15", "type": "Float" },
-      { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "Float" },
-      { "field": "unknown18", "type": "Float" },
-      { "field": "unknown19", "type": "Float" },
-      { "field": "unknown20", "type": "Float" },
-      { "field": "unknown21", "type": "Float" },
-      { "field": "unknown22", "type": "Float" },
-      { "field": "unknown23", "type": "Float" },
-      { "field": "unknown24", "type": "Float" },
-      { "field": "unknown25", "type": "Float" },
-      { "field": "unknown26", "type": "Float" },
-      { "field": "unknown27", "type": "Float" },
-      { "field": "unknown28", "type": "Float" },
-      { "field": "unknown29", "type": "Float" },
-      { "field": "POISONED", "type": "Float" },
-      { "field": "CURSED", "type": "Float" },
-      { "field": "unknown32", "type": "Float" },
-      { "field": "unknown33", "type": "Float" },
-      { "field": "unknown34", "type": "Float" },
-      { "field": "unknown35", "type": "Float" },
-      { "field": "unknown36", "type": "Float" },
-      { "field": "unknown37", "type": "Float" },
-      { "field": "unknown38", "type": "Float" },
-      { "field": "unknown39", "type": "Float" },
-      { "field": "unknown40", "type": "Float" },
-      {
-        "field": "repeat?",
-        "type": "Float",
-        "comment": "even if it's something else, it's probably good to mark the size, which fits with my predition of up to unknown38"
-      },
-      { "field": "unknown42", "type": "Float" },
-      { "field": "unknown43", "type": "Float" },
-      { "field": "unknown44", "type": "Float" },
-      { "field": "unknown45", "type": "Float" },
-      { "field": "unknown46", "type": "Float" },
-      { "field": "unknown47", "type": "Float" },
-      { "field": "unknown48", "type": "Float" },
-      { "field": "unknown49", "type": "Float" }
+      { "field": "unknown49", "type": "Bool" },
+      { "field": "music_on", "type": "Bool" },
+      { "field": "unknown51", "type": "UnsignedByte" },
+      { "field": "garbage1", "type": "UnsignedDword" },
+      { "field": "fadeout_music_and_crash", "type": "Bool", "comment": "only backgound music" }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedByte" },
