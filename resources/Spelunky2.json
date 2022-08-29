@@ -10533,22 +10533,22 @@
             "return": ""
           },
           "96": {
-            "name": "96",
-            "params": "",
+            "name": "on_putting_on",
+            "params": "Entity* who",
             "return": ""
           },
           "97": {
-            "name": "97",
-            "params": "",
+            "name": "on_putting_off",
+            "params": "Entity* who",
             "return": ""
           },
           "98": {
-            "name": "98",
+            "name": "is_active",
             "params": "",
-            "return": ""
+            "return": "bool"
           },
           "99": {
-            "name": "99",
+            "name": "play_warning_sound",
             "params": "",
             "return": ""
           }
