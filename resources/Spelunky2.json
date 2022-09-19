@@ -7289,12 +7289,8 @@
         "type": "ScrollingCreditsProgressionPointer",
         "comment": "points to float timer that indicates how far in the scrolling credits we are"
       },
-      { "field": "unknown37", "type": "DataPointer" },
-      {
-        "field": "bg_music_info?",
-        "type": "DataPointer",
-        "comment": "points to object that has pointer related to BGM/BGM_credits"
-      },
+      { "field": "explosion_loop", "type": "SoundPositionPointer" },
+      { "field": "bg_music", "type": "SoundPositionPointer" },
       { "field": "unknown30", "type": "UnsignedQword" },
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" }
@@ -9103,7 +9099,7 @@
             "comment": "works on entities with ai_func != 0; runs when companions are let go from being held"
           },
           "19": { "name": "friction", "params": "", "return": "float" },
-          "20": { "name": "v20", "params": "", "return": "" },
+          "20": { "name": "set_as_sound_source", "params": "SoundMeta*", "return": "" },
           "21": {
             "name": "remove_item_ptr",
             "params": "Entity*",
@@ -10347,7 +10343,11 @@
       { "field": "entity_uid_10", "type": "EntityUID" }
     ],
     "StateItemsPointer": [
-      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown_player1", "type": "Bool", "comment": "who the original leader was?" },
+      { "field": "unknown_player2", "type": "Bool" },
+      { "field": "unknown_player3", "type": "Bool" },
+      { "field": "unknown_player4", "type": "Bool" },
+      { "field": "padding?", "type": "Dword" },
       { "field": "player1", "type": "EntityPointer" },
       { "field": "player2", "type": "EntityPointer" },
       { "field": "player3", "type": "EntityPointer" },
@@ -10718,7 +10718,7 @@
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       {
-        "field": "sound_effect_info",
+        "field": "sound_info",
         "type": "SoundInfoPointer",
         "comment": "param to FMOD::Studio::EventInstance::SetParameterByID (this ptr + 0x30)"
       },
@@ -14254,10 +14254,10 @@
       { "field": "unknown1", "type": "Qword" },
       { "field": "sound_id", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "Dword" },
-      { "field": "sound_name", "type": "ConstCharPointer" },
+      { "field": "sound_name", "type": "ConstCharPointer", "comment": "it's std::string or something similair" },
       { "field": "unknown3", "type": "Qword" },
-      { "field": "unknown4", "type": "Qword" },
-      { "field": "unknown5", "type": "Qword" }
+      { "field": "unknown4", "type": "Qword", "comment": "length" },
+      { "field": "unknown5", "type": "Qword", "comment": "size" }
     ],
     "FxTornJournalPage": [
       { "field": "page_number", "type": "Dword", "comment": "only in tutorial" }
