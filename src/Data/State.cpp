@@ -57,7 +57,7 @@ uint32_t S2Plugin::State::heapOffset()
 
 uint32_t S2Plugin::State::TEBOffset() const
 {
-    return 0x190;
+    return 0x120;
 }
 
 std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()
