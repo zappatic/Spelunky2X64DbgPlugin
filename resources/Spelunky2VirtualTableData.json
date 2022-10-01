@@ -10519,7 +10519,7 @@
         "id": 1000,
         "kill": false,
         "name": "THEME_DWELLING",
-        "offset": 50798,
+        "offset": 50802,
         "open": false,
         "statemachine": false
     },
@@ -10531,7 +10531,7 @@
         "id": 1001,
         "kill": false,
         "name": "THEME_JUNGLE",
-        "offset": 50850,
+        "offset": 50854,
         "open": false,
         "statemachine": false
     },
@@ -10543,7 +10543,7 @@
         "id": 1002,
         "kill": false,
         "name": "THEME_VOLCANA",
-        "offset": 50902,
+        "offset": 50906,
         "open": false,
         "statemachine": false
     },
@@ -10555,7 +10555,7 @@
         "id": 1003,
         "kill": false,
         "name": "THEME_OLMEC",
-        "offset": 50954,
+        "offset": 50958,
         "open": false,
         "statemachine": false
     },
@@ -10567,7 +10567,7 @@
         "id": 1004,
         "kill": false,
         "name": "THEME_TIDEPOOL",
-        "offset": 51058,
+        "offset": 51062,
         "open": false,
         "statemachine": false
     },
@@ -10579,7 +10579,7 @@
         "id": 1005,
         "kill": false,
         "name": "THEME_TEMPLE",
-        "offset": 51006,
+        "offset": 51010,
         "open": false,
         "statemachine": false
     },
@@ -10591,7 +10591,7 @@
         "id": 1006,
         "kill": false,
         "name": "THEME_ICECAVES",
-        "offset": 51110,
+        "offset": 51114,
         "open": false,
         "statemachine": false
     },
@@ -10603,7 +10603,7 @@
         "id": 1007,
         "kill": false,
         "name": "THEME_NEOBABYLON",
-        "offset": 51162,
+        "offset": 51166,
         "open": false,
         "statemachine": false
     },
@@ -10615,7 +10615,7 @@
         "id": 1008,
         "kill": false,
         "name": "THEME_SUNKENCITY",
-        "offset": 51214,
+        "offset": 51218,
         "open": false,
         "statemachine": false
     },
@@ -10627,7 +10627,7 @@
         "id": 1009,
         "kill": false,
         "name": "THEME_COSMICOCEAN",
-        "offset": 51266,
+        "offset": 51270,
         "open": false,
         "statemachine": false
     },
@@ -10639,7 +10639,7 @@
         "id": 1010,
         "kill": false,
         "name": "THEME_CITY_OF_GOLD",
-        "offset": 51318,
+        "offset": 51322,
         "open": false,
         "statemachine": false
     },
@@ -10651,7 +10651,7 @@
         "id": 1011,
         "kill": false,
         "name": "THEME_DUAT",
-        "offset": 51370,
+        "offset": 51374,
         "open": false,
         "statemachine": false
     },
@@ -10663,7 +10663,7 @@
         "id": 1012,
         "kill": false,
         "name": "THEME_ABZU",
-        "offset": 51422,
+        "offset": 51426,
         "open": false,
         "statemachine": false
     },
@@ -10675,7 +10675,7 @@
         "id": 1013,
         "kill": false,
         "name": "THEME_TIAMAT",
-        "offset": 51474,
+        "offset": 51478,
         "open": false,
         "statemachine": false
     },
@@ -10687,7 +10687,7 @@
         "id": 1014,
         "kill": false,
         "name": "THEME_EGGPLANTWORLD",
-        "offset": 51526,
+        "offset": 51530,
         "open": false,
         "statemachine": false
     },
@@ -10699,7 +10699,7 @@
         "id": 1015,
         "kill": false,
         "name": "THEME_HUNDUN",
-        "offset": 51578,
+        "offset": 51582,
         "open": false,
         "statemachine": false
     },
@@ -10711,7 +10711,7 @@
         "id": 1016,
         "kill": false,
         "name": "THEME_BASECAMP",
-        "offset": 51630,
+        "offset": 51634,
         "open": false,
         "statemachine": false
     },
@@ -10723,7 +10723,7 @@
         "id": 1017,
         "kill": false,
         "name": "THEME_ARENA",
-        "offset": 51682,
+        "offset": 51686,
         "open": false,
         "statemachine": false
     },
@@ -10747,7 +10747,7 @@
         "id": 2001,
         "kill": false,
         "name": "LOGIC_OUROBOROS",
-        "offset": 52031,
+        "offset": 52035,
         "open": false,
         "statemachine": false
     },
@@ -10759,7 +10759,7 @@
         "id": 2002,
         "kill": false,
         "name": "LOGIC_BASECAMP_SPEEDRUN",
-        "offset": 52035,
+        "offset": 52039,
         "open": false,
         "statemachine": false
     },
@@ -10771,7 +10771,7 @@
         "id": 2003,
         "kill": false,
         "name": "LOGIC_GHOST_TRIGGER",
-        "offset": 52009,
+        "offset": 52013,
         "open": false,
         "statemachine": false
     },
@@ -10783,7 +10783,7 @@
         "id": 2004,
         "kill": false,
         "name": "LOGIC_GHOST_TOAST_TRIGGER",
-        "offset": 52011,
+        "offset": 52015,
         "open": false,
         "statemachine": false
     },
@@ -10795,7 +10795,7 @@
         "id": 2005,
         "kill": false,
         "name": "LOGIC_TUN_AGGRO",
-        "offset": 52019,
+        "offset": 52023,
         "open": false,
         "statemachine": false
     },
@@ -10807,7 +10807,7 @@
         "id": 2006,
         "kill": false,
         "name": "LOGIC_DICESHOP",
-        "offset": 51992,
+        "offset": 51996,
         "open": false,
         "statemachine": false
     },
@@ -10819,7 +10819,7 @@
         "id": 2007,
         "kill": false,
         "name": "LOGIC_TUN_PRE_CHALLENGE",
-        "offset": 51984,
+        "offset": 51988,
         "open": false,
         "statemachine": false
     },
@@ -10831,7 +10831,7 @@
         "id": 2008,
         "kill": false,
         "name": "LOGIC_TUN_MOON_CHALLENGE",
-        "offset": 52021,
+        "offset": 52025,
         "open": false,
         "statemachine": false
     },
@@ -10843,7 +10843,7 @@
         "id": 2009,
         "kill": false,
         "name": "LOGIC_TUN_STAR_CHALLENGE",
-        "offset": 52037,
+        "offset": 52041,
         "open": false,
         "statemachine": false
     },
@@ -10855,7 +10855,7 @@
         "id": 2010,
         "kill": false,
         "name": "LOGIC_TUN_SUN_CHALLENGE",
-        "offset": 52039,
+        "offset": 52043,
         "open": false,
         "statemachine": false
     },
@@ -10867,7 +10867,7 @@
         "id": 2011,
         "kill": false,
         "name": "LOGIC_VOLCANA_RELATED",
-        "offset": 52017,
+        "offset": 52021,
         "open": false,
         "statemachine": false
     },
@@ -10879,7 +10879,7 @@
         "id": 2012,
         "kill": false,
         "name": "LOGIC_WATER_RELATED",
-        "offset": 52015,
+        "offset": 52019,
         "open": false,
         "statemachine": false
     },
@@ -10891,7 +10891,7 @@
         "id": 2013,
         "kill": false,
         "name": "LOGIC_OLMEC_CUTSCENE",
-        "offset": 52023,
+        "offset": 52027,
         "open": false,
         "statemachine": false
     },
@@ -10903,7 +10903,7 @@
         "id": 2014,
         "kill": false,
         "name": "LOGIC_TIAMAT_CUTSCENE",
-        "offset": 52041,
+        "offset": 52045,
         "open": false,
         "statemachine": false
     },
@@ -10915,7 +10915,7 @@
         "id": 2015,
         "kill": false,
         "name": "LOGIC_APEP_TRIGGER",
-        "offset": 51976,
+        "offset": 51980,
         "open": false,
         "statemachine": false
     },
@@ -10927,7 +10927,7 @@
         "id": 2016,
         "kill": false,
         "name": "LOGIC_CITY_OF_GOLD_ANKH_SACRIFICE",
-        "offset": 51990,
+        "offset": 51994,
         "open": false,
         "statemachine": false
     },
@@ -10939,7 +10939,7 @@
         "id": 2017,
         "kill": false,
         "name": "LOGIC_DUAT_BOSSES_TRIGGER",
-        "offset": 51988,
+        "offset": 51992,
         "open": false,
         "statemachine": false
     },
@@ -10951,7 +10951,7 @@
         "id": 2018,
         "kill": false,
         "name": "LOGIC_TIAMAT",
-        "offset": 51982,
+        "offset": 51986,
         "open": false,
         "statemachine": false
     },
@@ -10963,7 +10963,7 @@
         "id": 2019,
         "kill": false,
         "name": "LOGIC_TUSK_PLEASURE_PALACE",
-        "offset": 52033,
+        "offset": 52037,
         "open": false,
         "statemachine": false
     },
@@ -10975,7 +10975,7 @@
         "id": 2020,
         "kill": false,
         "name": "LOGIC_DISCOVERY_INFO",
-        "offset": 51986,
+        "offset": 51990,
         "open": false,
         "statemachine": false
     },
@@ -10987,7 +10987,7 @@
         "id": 2021,
         "kill": false,
         "name": "LOGIC_BLACK_MARKET",
-        "offset": 51980,
+        "offset": 51984,
         "open": false,
         "statemachine": false
     },
@@ -10999,7 +10999,7 @@
         "id": 2022,
         "kill": false,
         "name": "LOGIC_COSMIC_OCEAN",
-        "offset": 52013,
+        "offset": 52017,
         "open": false,
         "statemachine": false
     },
@@ -11011,7 +11011,7 @@
         "id": 2023,
         "kill": false,
         "name": "LOGIC_ARENA_1",
-        "offset": 51996,
+        "offset": 52000,
         "open": false,
         "statemachine": false
     },
@@ -11035,7 +11035,7 @@
         "id": 2025,
         "kill": false,
         "name": "LOGIC_ARENA_3",
-        "offset": 52000,
+        "offset": 52004,
         "open": false,
         "statemachine": false
     },
@@ -11047,7 +11047,7 @@
         "id": 2026,
         "kill": false,
         "name": "LOGIC_ARENA_ALIEN_BLAST",
-        "offset": 52002,
+        "offset": 52006,
         "open": false,
         "statemachine": false
     },
@@ -11059,7 +11059,7 @@
         "id": 2027,
         "kill": false,
         "name": "LOGIC_ARENA_LOOSE_BOMBS",
-        "offset": 52004,
+        "offset": 52008,
         "open": false,
         "statemachine": false
     },
@@ -11071,7 +11071,7 @@
         "id": 3000,
         "kill": false,
         "name": "SCREEN_LOGO",
-        "offset": 52568,
+        "offset": 52572,
         "open": false,
         "statemachine": false
     },
@@ -11083,7 +11083,7 @@
         "id": 3001,
         "kill": false,
         "name": "SCREEN_INTRO",
-        "offset": 52480,
+        "offset": 52484,
         "open": false,
         "statemachine": false
     },
@@ -11095,7 +11095,7 @@
         "id": 3002,
         "kill": false,
         "name": "SCREEN_PROLOGUE",
-        "offset": 52528,
+        "offset": 52532,
         "open": false,
         "statemachine": false
     },
@@ -11107,7 +11107,7 @@
         "id": 3003,
         "kill": false,
         "name": "SCREEN_TITLE",
-        "offset": 52524,
+        "offset": 52528,
         "open": false,
         "statemachine": false
     },
@@ -11119,7 +11119,7 @@
         "id": 3004,
         "kill": false,
         "name": "SCREEN_MENU",
-        "offset": 52498,
+        "offset": 52502,
         "open": false,
         "statemachine": false
     },
@@ -11131,7 +11131,7 @@
         "id": 3005,
         "kill": false,
         "name": "SCREEN_OPTIONS",
-        "offset": 52532,
+        "offset": 52536,
         "open": false,
         "statemachine": false
     },
@@ -11155,7 +11155,7 @@
         "id": 3007,
         "kill": false,
         "name": "SCREEN_LEADERBOARDS",
-        "offset": 52484,
+        "offset": 52488,
         "open": false,
         "statemachine": false
     },
@@ -11167,7 +11167,7 @@
         "id": 3008,
         "kill": false,
         "name": "SCREEN_SEED_INPUT",
-        "offset": 50760,
+        "offset": 50764,
         "open": false,
         "statemachine": false
     },
@@ -11191,7 +11191,7 @@
         "id": 3010,
         "kill": false,
         "name": "SCREEN_LEVEL",
-        "offset": 52494,
+        "offset": 52498,
         "open": false,
         "statemachine": false
     },
@@ -11215,7 +11215,7 @@
         "id": 3012,
         "kill": false,
         "name": "SCREEN_ONLINE_LOBBY",
-        "offset": 50750,
+        "offset": 50754,
         "open": false,
         "statemachine": false
     },
@@ -11227,7 +11227,7 @@
         "id": 3500,
         "kill": false,
         "name": "SCREEN_CHARACTER_SELECT",
-        "offset": 52398,
+        "offset": 52402,
         "open": false,
         "statemachine": false
     },
@@ -11239,7 +11239,7 @@
         "id": 3501,
         "kill": false,
         "name": "SCREEN_TEAM_SELECT",
-        "offset": 52572,
+        "offset": 52576,
         "open": false,
         "statemachine": false
     },
@@ -11251,7 +11251,7 @@
         "id": 3502,
         "kill": false,
         "name": "SCREEN_TRANSITION",
-        "offset": 52580,
+        "offset": 52584,
         "open": false,
         "statemachine": false
     },
@@ -11263,7 +11263,7 @@
         "id": 3503,
         "kill": false,
         "name": "SCREEN_DEATH",
-        "offset": 52932,
+        "offset": 52936,
         "open": false,
         "statemachine": false
     },
@@ -11275,7 +11275,7 @@
         "id": 3504,
         "kill": false,
         "name": "SCREEN_WIN",
-        "offset": 52936,
+        "offset": 52940,
         "open": false,
         "statemachine": false
     },
@@ -11287,7 +11287,7 @@
         "id": 3505,
         "kill": false,
         "name": "SCREEN_CREDITS",
-        "offset": 52430,
+        "offset": 52434,
         "open": false,
         "statemachine": false
     },
@@ -11299,7 +11299,7 @@
         "id": 3506,
         "kill": false,
         "name": "SCREEN_SCORES",
-        "offset": 52434,
+        "offset": 52438,
         "open": false,
         "statemachine": false
     },
@@ -11311,7 +11311,7 @@
         "id": 3507,
         "kill": false,
         "name": "SCREEN_CONSTELLATION",
-        "offset": 52940,
+        "offset": 52944,
         "open": false,
         "statemachine": false
     },
@@ -11323,7 +11323,7 @@
         "id": 3508,
         "kill": false,
         "name": "SCREEN_RECAP",
-        "offset": 52944,
+        "offset": 52948,
         "open": false,
         "statemachine": false
     },
@@ -11335,7 +11335,7 @@
         "id": 3509,
         "kill": false,
         "name": "SCREEN_ARENA_MENU",
-        "offset": 52426,
+        "offset": 52430,
         "open": false,
         "statemachine": false
     },
@@ -11347,7 +11347,7 @@
         "id": 3510,
         "kill": false,
         "name": "SCREEN_ARENA_STAGES_SELECT1",
-        "offset": 52414,
+        "offset": 52418,
         "open": false,
         "statemachine": false
     },
@@ -11359,7 +11359,7 @@
         "id": 3511,
         "kill": false,
         "name": "SCREEN_ARENA_ITEMS",
-        "offset": 52406,
+        "offset": 52410,
         "open": false,
         "statemachine": false
     },
@@ -11371,7 +11371,7 @@
         "id": 3512,
         "kill": false,
         "name": "SCREEN_ARENA_INTRO",
-        "offset": 52418,
+        "offset": 52422,
         "open": false,
         "statemachine": false
     },
@@ -11383,7 +11383,7 @@
         "id": 3513,
         "kill": false,
         "name": "SCREEN_ARENA_LEVEL",
-        "offset": 52410,
+        "offset": 52414,
         "open": false,
         "statemachine": false
     },
@@ -11395,7 +11395,7 @@
         "id": 3514,
         "kill": false,
         "name": "SCREEN_ARENA_SCORE",
-        "offset": 52422,
+        "offset": 52426,
         "open": false,
         "statemachine": false
     },
@@ -11407,7 +11407,7 @@
         "id": 4000,
         "kill": false,
         "name": "QUEST_YANG",
-        "offset": 52386,
+        "offset": 52390,
         "open": false,
         "statemachine": false
     },
@@ -11419,7 +11419,7 @@
         "id": 4001,
         "kill": false,
         "name": "QUEST_JUNGLE_SISTERS",
-        "offset": 52394,
+        "offset": 52398,
         "open": false,
         "statemachine": false
     },
@@ -11431,7 +11431,7 @@
         "id": 4002,
         "kill": false,
         "name": "QUEST_VAN_HORSING",
-        "offset": 52382,
+        "offset": 52386,
         "open": false,
         "statemachine": false
     },
@@ -11443,7 +11443,7 @@
         "id": 4003,
         "kill": false,
         "name": "QUEST_SPARROW",
-        "offset": 52390,
+        "offset": 52394,
         "open": false,
         "statemachine": false
     },
@@ -11455,7 +11455,7 @@
         "id": 4004,
         "kill": false,
         "name": "QUEST_MADAME_TUSK",
-        "offset": 52378,
+        "offset": 52382,
         "open": false,
         "statemachine": false
     },
@@ -11467,7 +11467,7 @@
         "id": 4005,
         "kill": false,
         "name": "QUEST_BEG",
-        "offset": 52374,
+        "offset": 52378,
         "open": false,
         "statemachine": false
     }
