@@ -906,7 +906,8 @@
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2",
     "MysteryLayerPointer1",
-    "PointerToMap"
+    "PointerToMap",
+    "PlayerSlotPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -6687,6 +6688,9 @@
       { "field": "unknown5", "type": "UnsignedByte" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
+    "PlayerSlotPointer": [
+      { "field": "input", "type": "PlayerSlot" }
+    ],
     "PlayerSlotSettings": [
       { "field": "controller_vibration", "type": "Bool" },
       { "field": "auto_run_enabled", "type": "Bool" },
@@ -9733,7 +9737,7 @@
       { "field": "linked_companion_child", "type": "EntityUID" },
       { "field": "linked_companion_parent", "type": "EntityUID" },
       { "field": "ai_func", "type": "Ai_func" },
-      { "field": "input_ptr", "type": "PlayerInputs" },
+      { "field": "input_ptr", "type": "PlayerSlotPointer" },
       { "field": "basecamp_button", "type": "EntityPointer" },
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
@@ -13898,7 +13902,7 @@
     "Honey": [{ "field": "wiggle_timer", "type": "UnsignedByte" }],
     "PlayerGhost": [
       { "field": "sparkles_particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "player_inputs", "type": "PlayerInputs" },
+      { "field": "player_inputs", "type": "PlayerSlotPointer" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
       { "field": "sound", "type": "SoundPositionPointer" },
       { "field": "body", "type": "EntityUID" },
