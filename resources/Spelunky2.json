@@ -805,7 +805,7 @@
     "EntityListPointer",
     "EntityUIDsListPointer",
     "PlayerInventoryPointer",
-    "SoundPositionPointer",
+    "SoundMeta",
     "IlluminationPointer",
     "ThemeInfoPointer",
     "RenderInfoPointer",
@@ -2024,27 +2024,27 @@
       { "field": "screen_online_lobby", "type": "ScreenOnlineLobbyPointer" },
       { "field": "pause_ui", "type": "PauseUIPointer" },
       { "field": "journal_ui", "type": "JournalUIPointer" },
-      { "field": "unknown27", "type": "DataPointer" },
+      { "field": "main_menu_music", "type": "SoundMeta" },
       { "field": "unknown28", "type": "Float" },
       { "field": "unknown29", "type": "Float" }
     ],
     "BackgroundMusicManagerPointer": [
-      { "field": "game_startup", "type": "SoundPositionPointer" },
-      { "field": "main_backgroundtrack", "type": "SoundPositionPointer" },
-      { "field": "basecamp", "type": "SoundPositionPointer" },
-      { "field": "win_scene", "type": "SoundPositionPointer" },
-      { "field": "arena", "type": "SoundPositionPointer" },
-      { "field": "arena_intro_and_win", "type": "SoundPositionPointer" },
-      { "field": "level_gameplay", "type": "SoundPositionPointer" },
-      { "field": "dark_level", "type": "SoundPositionPointer" },
-      { "field": "level_transition", "type": "SoundPositionPointer" },
-      { "field": "backlayer", "type": "SoundPositionPointer" },
-      { "field": "shop", "type": "SoundPositionPointer" },
-      { "field": "angered_shopkeeper", "type": "SoundPositionPointer" },
-      { "field": "inside_sunken_city_pipe", "type": "SoundPositionPointer" },
-      { "field": "pause_menu", "type": "SoundPositionPointer" },
-      { "field": "unknown15", "type": "SoundPositionPointer" },
-      { "field": "sunken_city_duat_transition", "type": "SoundPositionPointer" },
+      { "field": "game_startup", "type": "SoundMeta" },
+      { "field": "main_backgroundtrack", "type": "SoundMeta" },
+      { "field": "basecamp", "type": "SoundMeta" },
+      { "field": "win_scene", "type": "SoundMeta" },
+      { "field": "arena", "type": "SoundMeta" },
+      { "field": "arena_intro_and_win", "type": "SoundMeta" },
+      { "field": "level_gameplay", "type": "SoundMeta" },
+      { "field": "dark_level", "type": "SoundMeta" },
+      { "field": "level_transition", "type": "SoundMeta" },
+      { "field": "backlayer", "type": "SoundMeta" },
+      { "field": "shop", "type": "SoundMeta" },
+      { "field": "angered_shopkeeper", "type": "SoundMeta" },
+      { "field": "inside_sunken_city_pipe", "type": "SoundMeta" },
+      { "field": "pause_menu", "type": "SoundMeta" },
+      { "field": "unknown15", "type": "SoundMeta" },
+      { "field": "sunken_city_duat_transition", "type": "SoundMeta" },
       { "field": "unknown17", "type": "UnsignedByte" },
       { "field": "unknown18", "type": "UnsignedByte" },
       { "field": "unknown19", "type": "UnsignedByte" },
@@ -2814,8 +2814,8 @@
       },
       { "field": "unknown7", "type": "UnsignedDword" },
       { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "DataPointer" },
-      { "field": "unknown10", "type": "DataPointer" },
+      { "field": "background_music", "type": "SoundMeta" },
+      { "field": "fire_sound", "type": "SoundMeta" },
       { "field": "unknown11", "type": "Float" },
       { "field": "unknown12", "type": "Float" },
       { "field": "unknown13", "type": "Float" },
@@ -2864,22 +2864,18 @@
       { "field": "unknown15", "type": "TextureRenderingInfo" },
       { "field": "unknown16a", "type": "UnsignedDword" },
       { "field": "unknown16b", "type": "UnsignedDword" },
-      { "field": "unknown16c", "type": "UnsignedDword" },
-      { "field": "unknown16d", "type": "UnsignedDword" },
+      { "field": "cthulhu_sound", "type": "SoundMeta" },
       { "field": "unknown16e", "type": "DataPointer" },
       { "field": "unknown16f", "type": "DataPointer" },
       { "field": "unknown16g", "type": "Float" },
       { "field": "unknown16h", "type": "Float" },
       { "field": "unknown16i", "type": "Float" },
-      { "field": "unknown16j", "type": "UnsignedDword" },
+      { "field": "unknown16j", "type": "Float" },
       { "field": "unknown16k", "type": "DataPointer" },
-      { "field": "unknown17", "type": "DataPointer" },
-      { "field": "unknown18", "type": "DataPointer" },
-      { "field": "unknown19", "type": "DataPointer" },
-      { "field": "unknown20", "type": "DataPointer" },
-      { "field": "unknown21", "type": "DataPointer" },
-      { "field": "unknown22", "type": "DataPointer" },
-      { "field": "buttons?", "type": "DataPointer" },
+      { "field": "unknown17", "type": "StdVector", "vectortype": "DataPointer" },
+      { "field": "unknown20", "type": "StdVector", "vectortype": "Dword" },
+      { "field": "buttons?", "type": "Flags32" },
+      { "field": "unknown22", "type": "Dword" },
       { "field": "unknown23", "type": "UnsignedDword" },
       { "field": "unknown24", "type": "UnsignedDword" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
@@ -2961,7 +2957,8 @@
       { "field": "cthulhu_disc_split_progress", "type": "Float" },
       { "field": "cthulhu_disc_y", "type": "Float" },
       { "field": "cthulhu_timer", "type": "Float" },
-      { "field": "cthulhu_animation", "type": "DataPointer" }
+      { "field": "unknown30", "type": "Float" },
+      { "field": "cthulhu_animation", "type": "Qword" }
     ],
     "ScreenOptionsPointer": [
       {
@@ -3603,7 +3600,7 @@
         "field": "particle_torchflame_flames4",
         "type": "ParticleEmitterInfoPointer"
       },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "FlyingThing": [
       { "field": "nodes", "type": "TextureRenderingInfo" },
@@ -4363,7 +4360,7 @@
       {
         "field": "unknown41",
         "type": "Byte",
-        "comment": "other character related (hired hand, basecamp characters)"
+        "comment": "other character related (hired hand, basecamp characters), loop thru player slots (+1 cuz 1-4)"
       },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
@@ -6572,9 +6569,7 @@
         }
       },
       { "field": "unknown13", "type": "UnsignedByte" },
-      { "field": "unknown14", "type": "UnsignedByte" },
-      { "field": "unknown15", "type": "UnsignedDword" },
-      { "field": "unknown16", "type": "UnsignedDword" }
+      { "field": "unknown14", "type": "UnsignedByte" }
     ],
     "QuestHandlerPointer": [
       {
@@ -7293,8 +7288,8 @@
         "type": "ScrollingCreditsProgressionPointer",
         "comment": "points to float timer that indicates how far in the scrolling credits we are"
       },
-      { "field": "explosion_loop", "type": "SoundPositionPointer" },
-      { "field": "bg_music", "type": "SoundPositionPointer" },
+      { "field": "explosion_loop", "type": "SoundMeta" },
+      { "field": "bg_music", "type": "SoundMeta" },
       { "field": "unknown30", "type": "UnsignedQword" },
       { "field": "unknown31", "type": "UnsignedDword" },
       { "field": "unknown32", "type": "UnsignedDword" }
@@ -10589,11 +10584,11 @@
       }
     ],
     "Hoverpack": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "is_on", "type": "Bool" }
     ],
     "Bomb": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "scale_hor",
         "type": "Float",
@@ -10607,7 +10602,7 @@
       }
     ],
     "Olmec": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "target_uid", "type": "EntityUID" },
       { "field": "attack_phase", "type": "UnsignedByte" },
       { "field": "attack_timer", "type": "UnsignedByte" },
@@ -10653,7 +10648,7 @@
         "comment": "it's per level, not per cape"
       }
     ],
-    "YellowCape": [{ "field": "sound", "type": "SoundPositionPointer" }],
+    "YellowCape": [{ "field": "sound", "type": "SoundMeta" }],
     "VladsCape": [{ "field": "can_double_jump", "type": "Bool" }],
     "KapalaPowerup": [{ "field": "amount_of_blood", "type": "UnsignedByte" }],
     "Ghost": [
@@ -10699,14 +10694,14 @@
         "type": "Float",
         "comment": "Value from 0 to 1, based on how long the ghost has been in the same layer as its target, multiplied by the target_dist_visibility_factor to set the transparency and illumination of the ghost."
       },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "Monkey": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "jump_timer", "type": "UnsignedByte" },
       { "field": "on_vine", "type": "Bool" }
     ],
-    "SoundPositionPointer": [
+    "SoundMeta": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
@@ -10714,7 +10709,7 @@
           "0": { "name": "play", "params": "", "return": "", "comment": "sets music_on to true" },
           "1": { "name": "fade_out", "params": "uint8_t", "return": "", "comment": "unsure, parameter sets the unknown49" },
           "2": { "name": "get_name?", "params": "void* buttor, uint32_t size", "return": "", "comment": "" },
-          "3": { "name": "~SoundPositionPointer", "params": "", "return": "" },
+          "3": { "name": "~SoundMeta", "params": "", "return": "" },
           "4": { "name": "update", "params": "", "return": "", "comment": "disabling this function does not progresses the track, does not stop it at the end level etc." },
           "5": { "name": "v4", "params": "", "return": "bool" }
         }
@@ -10738,11 +10733,11 @@
         "type": "Bool",
         "comment": "when false, current track starts from the beginning"
       },
-      { "field": "unknown49", "type": "Bool" },
+      { "field": "play_ending_sequence", "type": "Bool" },
       { "field": "music_on", "type": "Bool" },
       { "field": "unknown51", "type": "UnsignedByte" },
       { "field": "garbage1", "type": "UnsignedDword" },
-      { "field": "fadeout_music_and_crash", "type": "Bool", "comment": "only backgound music" }
+      { "field": "destroy_sound", "type": "Bool", "comment": "only backgound music" }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedByte" },
@@ -10751,8 +10746,8 @@
       { "field": "poop_count", "type": "UnsignedByte" }
     ],
     "Mole": [
-      { "field": "burrowing_sound", "type": "SoundPositionPointer" },
-      { "field": "nonburrowing_sound", "type": "SoundPositionPointer" },
+      { "field": "burrowing_sound", "type": "SoundMeta" },
+      { "field": "nonburrowing_sound", "type": "SoundMeta" },
       { "field": "burrowing_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "burrow_dir_x", "type": "Float" },
       { "field": "burrow_dir_y", "type": "Float" },
@@ -11015,7 +11010,7 @@
       },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedWord" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "movement_related_timer_1", "type": "UnsignedByte" },
       { "field": "movement_related_timer_2", "type": "UnsignedByte" },
       { "field": "transparency", "type": "UnsignedByte" },
@@ -11125,7 +11120,7 @@
         "comment": "position relative to the block the mosquito is stuck in"
       },
       { "field": "stuck_rel_pos_y", "type": "Float" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "Mantrap": [
@@ -11148,7 +11143,7 @@
       }
     ],
     "Scarab": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "emitted_light",
         "type": "IlluminationPointer",
@@ -11222,7 +11217,7 @@
       { "field": "padding2", "type": "UnsignedByte" }
     ],
     "Firebug": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "fire_timer",
         "type": "UnsignedWord",
@@ -11232,7 +11227,7 @@
       { "field": "detached_from_chain", "type": "Bool" }
     ],
     "FirebugUnchained": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "max_flight_height",
         "type": "Float",
@@ -11250,11 +11245,11 @@
       }
     ],
     "Robot": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "emitted_light_explosion", "type": "IlluminationPointer" }
     ],
     "Quillback": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       {
         "field": "unknown_state",
@@ -11278,11 +11273,11 @@
       },
       { "field": "blood_squirt_timer", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" }
     ],
     "Leprechaun": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "hump_timer", "type": "UnsignedByte" },
       { "field": "target_in_sight_timer", "type": "UnsignedByte" },
       {
@@ -11302,7 +11297,7 @@
       }
     ],
     "WitchDoctor": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "skull_regen_timer",
         "type": "UnsignedWord",
@@ -11313,7 +11308,7 @@
       { "field": "witch_doctor_uid", "type": "EntityUID" },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "rotation_angle", "type": "Float" }
     ],
     "NPC": [
@@ -11479,7 +11474,7 @@
     ],
     "Fish": [{ "field": "change_direction_timer", "type": "UnsignedDword" }],
     "GiantFish": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "change_direction_timer",
         "type": "UnsignedWord",
@@ -11524,12 +11519,12 @@
     "Kingu": [
       {
         "field": "sound1",
-        "type": "SoundPositionPointer",
+        "type": "SoundMeta",
         "comment": "initialized when breaking the shell (sliding down sound maybe?)"
       },
       {
         "field": "sound2",
-        "type": "SoundPositionPointer",
+        "type": "SoundMeta",
         "comment": "Turning into stone sound"
       },
       {
@@ -11609,12 +11604,12 @@
         "comment": "not the shot but the halo, try putting a color at 10"
       },
       { "field": "fx_entity", "type": "EntityPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "hover_timer?", "type": "UnsignedByte" }
     ],
     "MagmaMan": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       {
         "field": "jump_timer",
@@ -11632,7 +11627,7 @@
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedWord" },
       { "field": "padding3", "type": "UnsignedDword" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "fly_hang_timer",
         "type": "UnsignedWord",
@@ -11677,8 +11672,8 @@
       { "field": "particle_trail", "type": "ParticleEmitterInfoPointer" }
     ],
     "ApepHead": [
-      { "field": "sound1", "type": "SoundPositionPointer" },
-      { "field": "sound2", "type": "SoundPositionPointer" },
+      { "field": "sound1", "type": "SoundMeta" },
+      { "field": "sound2", "type": "SoundMeta" },
       { "field": "distance_traveled", "type": "Float" },
       { "field": "tail", "type": "EntityUID" },
       { "field": "fx_mouth_piece1", "type": "EntityUID" },
@@ -11724,7 +11719,7 @@
       }
     ],
     "UFO": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "patrol_distance",
         "type": "Word",
@@ -11738,7 +11733,7 @@
       }
     ],
     "Lahamu": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "eyeball", "type": "EntityPointer" },
       { "field": "attack_cooldown_timer", "type": "UnsignedWord" },
       {
@@ -11978,7 +11973,7 @@
       { "field": "particle_sparkles", "type": "ParticleEmitterInfoPointer" }
     ],
     "Lamassu": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "attack_effect_entity", "type": "EntityPointer" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -12034,7 +12029,7 @@
     "Tiamat": [
       {
         "field": "sound",
-        "type": "SoundPositionPointer",
+        "type": "SoundMeta",
         "comment": "Turning into stone sound"
       },
       { "field": "fx_tiamat_head_uid", "type": "EntityUID" },
@@ -12095,7 +12090,7 @@
       { "field": "pause", "type": "Bool", "comment": "not actually used?" },
       { "field": "padding", "type": "UnsignedWord" }
     ],
-    "FireFrog": [{ "field": "sound", "type": "SoundPositionPointer" }],
+    "FireFrog": [{ "field": "sound", "type": "SoundMeta" }],
     "Grub": [
       {
         "field": "rotation_delta",
@@ -12123,7 +12118,7 @@
       { "field": "turn_into_fly_timer", "type": "Word" },
       { "field": "padding2", "type": "UnsignedWord" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "Tadpole": [
       {
@@ -12135,7 +12130,7 @@
     ],
     "GiantFly": [
       { "field": "head_entity", "type": "EntityPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "sine_amplitude", "type": "Float" },
       { "field": "sine_frequency", "type": "Float" },
@@ -12161,7 +12156,7 @@
       }
     ],
     "EggplantMinister": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "unknown1",
         "type": "UnsignedByte",
@@ -12237,7 +12232,7 @@
     "MegaJellyfish": [
       { "field": "flipper1", "type": "EntityPointer" },
       { "field": "flipper2", "type": "EntityPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "orb_uid",
         "type": "EntityUID",
@@ -12299,7 +12294,7 @@
       }
     ],
     "Necromancer": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "red_skeleton_spawn_x", "type": "Float" },
       { "field": "red_skeleton_spawn_y", "type": "Float" },
       { "field": "resurrection_uid", "type": "EntityUID" },
@@ -12381,7 +12376,7 @@
       { "field": "vertical_flight_direction", "type": "Byte" }
     ],
     "CritterLocust": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "jump_timer",
         "type": "UnsignedByte",
@@ -12445,7 +12440,7 @@
     ],
     "CritterDrone": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "applied_hor_momentum", "type": "Float" },
       { "field": "applied_ver_momentum", "type": "Float" },
       { "field": "unknown1", "type": "Bool" },
@@ -12975,7 +12970,7 @@
       },
       { "field": "rider_uid", "type": "EntityUID", "comment": "who rides it" },
       { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "can_doublejump",
         "type": "Bool",
@@ -13003,8 +12998,8 @@
       { "field": "unknown", "type": "UnsignedByte" }
     ],
     "Mech": [
-      { "field": "sound", "type": "SoundPositionPointer" },
-      { "field": "explosion_sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
+      { "field": "explosion_sound", "type": "SoundMeta" },
       { "field": "unknown1", "type": "UnsignedQword" },
       { "field": "gun_cooldown", "type": "UnsignedByte" },
       { "field": "unknown2", "type": "UnsignedByte" },
@@ -13012,7 +13007,7 @@
       { "field": "breaking_wall", "type": "Bool" }
     ],
     "Qilin": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "attack_cooldown",
         "type": "UnsignedByte",
@@ -13055,7 +13050,7 @@
         "comment": "if killed, the whole beam goes out"
       },
       { "field": "fx", "type": "EntityPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "laser_bounce?", "type": "Float" },
       {
         "field": "timer",
@@ -13073,7 +13068,7 @@
       { "field": "fx", "type": "EntityPointer" },
       {
         "field": "sound",
-        "type": "SoundPositionPointer",
+        "type": "SoundMeta",
         "comment": "starts at timer 140"
       },
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -13095,7 +13090,7 @@
       { "field": "pause", "type": "Bool" }
     ],
     "StickyTrap": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "attached_piece_uid", "type": "EntityUID" },
       { "field": "ball_uid", "type": "EntityUID" },
@@ -13118,7 +13113,7 @@
       }
     ],
     "SpikeballTrap": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "chain", "type": "EntityPointer" },
       { "field": "end_piece", "type": "EntityPointer" },
       {
@@ -13164,8 +13159,8 @@
       },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
-      { "field": "ball_rise", "type": "SoundPositionPointer" },
-      { "field": "ball_drop", "type": "SoundPositionPointer" }
+      { "field": "ball_rise", "type": "SoundMeta" },
+      { "field": "ball_drop", "type": "SoundMeta" }
     ],
     "Elevator": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -13185,8 +13180,8 @@
       }
     ],
     "Drill": [
-      { "field": "sound1", "type": "SoundPositionPointer" },
-      { "field": "sound2", "type": "SoundPositionPointer" },
+      { "field": "sound1", "type": "SoundMeta" },
+      { "field": "sound2", "type": "SoundMeta" },
       { "field": "top_chain_piece", "type": "EntityPointer" },
       {
         "field": "unknown1",
@@ -13197,7 +13192,7 @@
     "UdjatSocket": [{ "field": "fx_button", "type": "EntityPointer" }],
     "PushBlock": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "dust_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "dest_pos_x", "type": "Float" },
       { "field": "unused", "type": "UnsignedDword" }
@@ -13293,7 +13288,7 @@
       { "field": "particles_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_flames", "type": "ParticleEmitterInfoPointer" },
       { "field": "particles_warp", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "Floor": [
       {
@@ -13416,7 +13411,7 @@
         "type": "EntityPointer",
         "comment": "normally FX_MAIN_EXIT_DOOR , but any value will block the door"
       },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "top_value?", "type": "Float" },
       { "field": "value?", "type": "Float" }
     ],
@@ -13546,7 +13541,7 @@
       }
     ],
     "Flame": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
     "TorchFlame": [
@@ -13702,9 +13697,9 @@
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
-    "SoundShot": [{ "field": "sound", "type": "SoundPositionPointer" }],
+    "SoundShot": [{ "field": "sound", "type": "SoundMeta" }],
     "ScepterShot": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "speed", "type": "Float" },
       {
         "field": "idle_timer",
@@ -13756,7 +13751,7 @@
         "comment": "very short timer before next size change, giving a pulsing effect"
       }
     ],
-    "TiamatShot": [{ "field": "sound", "type": "SoundPositionPointer" }],
+    "TiamatShot": [{ "field": "sound", "type": "SoundMeta" }],
     "Fireball": [{ "field": "particle", "type": "ParticleEmitterInfoPointer" }],
     "Leaf": [
       { "field": "unknown1", "type": "Qword" },
@@ -13832,7 +13827,7 @@
       { "field": "jump_state", "type": "UnsignedByte" }
     ],
     "TV": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "fx_button", "type": "EntityPointer" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       {
@@ -13904,7 +13899,7 @@
       { "field": "sparkles_particle", "type": "ParticleEmitterInfoPointer" },
       { "field": "player_inputs", "type": "PlayerSlotPointer" },
       { "field": "inventory", "type": "PlayerInventoryPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "body", "type": "EntityUID" },
       { "field": "unknown_timer", "type": "UnsignedWord" },
       { "field": "shake_timer", "type": "UnsignedByte" },
@@ -13934,7 +13929,7 @@
       { "field": "sparks", "type": "ParticleEmitterInfoPointer" },
       { "field": "emitted_light", "type": "IlluminationPointer" }
     ],
-    "TreasureHook": [{ "field": "sound", "type": "SoundPositionPointer" }],
+    "TreasureHook": [{ "field": "sound", "type": "SoundMeta" }],
     "AxolotlShot": [
       { "field": "unknown1", "type": "UnknownPointerGroup" },
       { "field": "trapped_uid", "type": "EntityUID" },
@@ -13955,7 +13950,7 @@
       { "field": "unknown4", "type": "UnsignedWord" }
     ],
     "SkullDropTrap": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "left_skull_uid", "type": "EntityUID" },
       { "field": "middle_skull_uid", "type": "EntityUID" },
       { "field": "right_skull_uid", "type": "EntityUID" },
@@ -13994,7 +13989,7 @@
     ],
     "Tentacle": [{ "field": "bottom", "type": "EntityPointer" }],
     "MiniGameShip": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "velocity_x", "type": "Float" },
       { "field": "velocity_y", "type": "Float" },
       { "field": "swing", "type": "Float", "comment": "angle change?" },
@@ -14010,7 +14005,7 @@
       { "field": "smoke2", "type": "ParticleEmitterInfoPointer" }
     ],
     "Orb": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "timer", "type": "UnsignedByte" }
     ],
     "EggSac": [{ "field": "timer", "type": "UnsignedByte" }],
@@ -14061,7 +14056,7 @@
     ],
     "TrueCrownPowerup": [{ "field": "timer", "type": "UnsignedWord" }],
     "AnkhPowerup": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "player", "type": "EntityPointer" },
       { "field": "fx_glow", "type": "EntityPointer" },
       { "field": "unknown1", "type": "Float" },
@@ -14078,7 +14073,7 @@
       }
     ],
     "Boomerang": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "trail", "type": "ParticleEmitterInfoPointer" },
       { "field": "distance", "type": "Float" },
       { "field": "rotation", "type": "Float" },
@@ -14168,7 +14163,7 @@
       }
     ],
     "EggshipCenterJetFlame": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "unknown2", "type": "Qword" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
@@ -14340,7 +14335,7 @@
       { "field": "unknown5", "type": "DataPointer" },
       { "field": "unknown6", "type": "DataPointer" },
       { "field": "emitted_light", "type": "IlluminationPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "unknown7", "type": "Float" },
       { "field": "transition_timer", "type": "UnsignedByte" },
       { "field": "level", "type": "UnsignedByte" },
@@ -14408,7 +14403,7 @@
     "FxJetpackFlame": [
       { "field": "particle_smoke", "type": "ParticleEmitterInfoPointer" },
       { "field": "particle_flame", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "illumination", "type": "IlluminationPointer" }
     ],
     "FxPlayerIndicator": [
@@ -14559,7 +14554,7 @@
       { "field": "relative_offset_y", "type": "Float" }
     ],
     "BGEggshipRoom": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       { "field": "fx_shell", "type": "EntityPointer" },
       { "field": "fx_door", "type": "EntityPointer" },
       { "field": "platform_left", "type": "EntityPointer" },
@@ -14634,10 +14629,10 @@
       {
         "field": "unknown",
         "type": "Float",
-        "comment": "soundpositionpointer unknown10"
+        "comment": "SoundMeta unknown10"
       }
     ],
-    "LogicalSound": [{ "field": "sound", "type": "SoundPositionPointer" }],
+    "LogicalSound": [{ "field": "sound", "type": "SoundMeta" }],
     "LogicalTrapTrigger": [
       {
         "field": "min_empty_distance",
@@ -14684,7 +14679,7 @@
     ],
     "CursedEffect": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "OuroboroCameraAnchor": [
       { "field": "target_x", "type": "Float" },
@@ -14706,7 +14701,7 @@
     ],
     "BurningRopeEffect": [
       { "field": "illumination", "type": "IlluminationPointer" },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "DustWallApep": [
       { "field": "particle", "type": "ParticleEmitterInfoPointer" }
@@ -14780,13 +14775,13 @@
         "comment": "can be set negative for longer time period, spawns boulder at 150, setting it higher with count to overflow"
       },
       { "field": "padding?", "type": "Dword" },
-      { "field": "sound", "type": "SoundPositionPointer" }
+      { "field": "sound", "type": "SoundMeta" }
     ],
     "PipeTravelerSound": [
       {
         "field": "sound_speed?",
         "type": "Float",
-        "comment": "soundpositionpointer -> VALUE"
+        "comment": "SoundMeta -> VALUE"
       },
       { "field": "counter?", "type": "Dword", "comment": "probably unsigned?" },
       {
@@ -14842,7 +14837,7 @@
       { "field": "attached_to_top_uid", "type": "EntityUID" }
     ],
     "PalaceSign": [
-      { "field": "sound", "type": "SoundPositionPointer" },
+      { "field": "sound", "type": "SoundMeta" },
       {
         "field": "illumination",
         "type": "IlluminationPointer",
