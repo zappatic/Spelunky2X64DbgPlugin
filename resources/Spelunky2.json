@@ -895,8 +895,7 @@
     "BackgroundMusicManagerPointer",
     "Ai_func",
     "SoundInfoPointer",
-    "OnScreenMessage",
-    "OnScreenMessageTimerPointer",
+    "RenderingTimerPointer",
     "StdListIteratorPointer",
     "LiquidPhysicsEngine",
     "GetEntitiesResultPointer",
@@ -907,7 +906,8 @@
     "MysteryLiquidPointer2",
     "MysteryLayerPointer1",
     "PointerToMap",
-    "PlayerSlotPointer"
+    "PlayerSlotPointer",
+    "MultiLineTextRenderingPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -2044,7 +2044,7 @@
       { "field": "inside_sunken_city_pipe", "type": "SoundMeta" },
       { "field": "pause_menu", "type": "SoundMeta" },
       { "field": "unknown15", "type": "SoundMeta" },
-      { "field": "sunken_city_duat_transition", "type": "SoundMeta" },
+      { "field": "death_transition", "type": "SoundMeta" },
       { "field": "unknown17", "type": "UnsignedByte" },
       { "field": "unknown18", "type": "UnsignedByte" },
       { "field": "unknown19", "type": "UnsignedByte" },
@@ -2217,7 +2217,8 @@
       {
         "field": "unknown3",
         "type": "StdVector",
-        "vectortype": "UnsignedQword"
+        "vectortype": "JournalPagePointer",
+        "comment": "pages are constructed, saved here and later moved to the pages vector"
       },
       { "field": "current_page", "type": "UnsignedDword" },
       { "field": "flipping_to_page", "type": "UnsignedDword" },
@@ -2415,7 +2416,7 @@
       { "field": "unknown9", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "Float" },
       { "field": "title_text_info", "type": "TextRenderingInfoPointer" },
-      { "field": "unknown12", "type": "DataPointer" },
+      { "field": "description_text_lines", "type": "MultiLineTextRenderingPointer" },
       { "field": "entry_text_info", "type": "TextRenderingInfoPointer" },
       {
         "field": "chapter_title_text_info",
@@ -2441,6 +2442,12 @@
       { "field": "unknown20", "type": "UnsignedDword" },
       { "field": "unknown21", "type": "UnsignedDword" },
       { "field": "unknown22", "type": "UnsignedDword" }
+    ],
+    "MultiLineTextRenderingPointer": [
+      { "field": "unknown20", "type": "RenderingTimerPointer" },
+      { "field": "text_lines", "type": "StdVector", "vectortype": "TextRenderingInfoPointer" },
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" }
     ],
     "JournalPageItems": [
       {
@@ -4215,8 +4222,8 @@
       { "field": "padding12", "type": "UnsignedByte" },
       { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
       { "field": "waddler_floor_storage", "type": "EntityUID", "comment": "entity uid of the first floor_storage entity" },
-      { "field": "toast", "type": "OnScreenMessage" },
-      { "field": "speechbubble", "type": "OnScreenMessage" },
+      { "field": "toast", "type": "MultiLineTextRenderingPointer" },
+      { "field": "speechbubble", "type": "MultiLineTextRenderingPointer" },
       { "field": "speechbubble_timer", "type": "UnsignedDword" },
       { "field": "toast_timer", "type": "UnsignedDword" },
       { "field": "speechbubble_owner", "type": "EntityUID" },
@@ -4372,27 +4379,20 @@
       { "field": "layer_dest?", "type": "UnsignedByte" },
       { "field": "padding", "type": "Skip", "offset": 7 }
     ],
-    "OnScreenMessage": [
-      { "field": "timer", "type": "OnScreenMessageTimerPointer" },
-      { "field": "layout", "type": "StdVector", "vectortype": "TextRenderingInfoPointer" },
-      { "field": "x", "type": "Float" },
-      { "field": "z", "type": "Float" }
-    ],
-    "OnScreenMessageTimerPointer": [
+    "RenderingTimerPointer": [
       {
         "field": "value",
-        "type": "UnsignedDword",
+        "type": "UnsignedQword",
         "comment": "touch only one value and the game freezes"
       },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown1", "type": "Qword" },
       { "field": "unknown2", "type": "Qword" },
       { "field": "unknown3", "type": "Qword" },
       { "field": "unknown4", "type": "Qword" },
       { "field": "unknown5", "type": "Qword" },
       { "field": "unknown6", "type": "Qword" },
       { "field": "unknown7", "type": "Qword" },
-      { "field": "unknown8", "type": "Qword" },
-      { "field": "value2", "type": "UnsignedDword", "comment": "get's incremented with a `lock'" }
+      { "field": "value2", "type": "UnsignedQword", "comment": "get's incremented with a `lock'" }
     ],
     "AITargetsPointer": [
       { "field": "target1", "type": "AITarget" },
@@ -10737,7 +10737,7 @@
       { "field": "music_on", "type": "Bool" },
       { "field": "unknown51", "type": "UnsignedByte" },
       { "field": "garbage1", "type": "UnsignedDword" },
-      { "field": "destroy_sound", "type": "Bool", "comment": "only backgound music" }
+      { "field": "destroy_sound", "type": "Bool", "comment": "only backgound music?" }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedByte" },
@@ -14250,13 +14250,13 @@
       }
     ],
     "SoundInfoPointer": [
-      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown1", "type": "Qword", "comment": "used to start/construct the sound in fmod" },
       { "field": "sound_id", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "Dword" },
-      { "field": "sound_name", "type": "ConstCharPointer", "comment": "it's std::string or something similair" },
+      { "field": "unknown2", "type": "Dword", "comment": "padding probably" },
+      { "field": "sound_name", "type": "ConstCharPointer", "comment": "std::string" },
       { "field": "unknown3", "type": "Qword" },
-      { "field": "unknown4", "type": "Qword", "comment": "length" },
-      { "field": "unknown5", "type": "Qword", "comment": "size" }
+      { "field": "length", "type": "Qword", "comment": "std::string.length()" },
+      { "field": "capacity", "type": "Qword", "comment": "std::string.capacity()" }
     ],
     "FxTornJournalPage": [
       { "field": "page_number", "type": "Dword", "comment": "only in tutorial" }
