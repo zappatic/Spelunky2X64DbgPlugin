@@ -10547,7 +10547,7 @@
             "return": "bool"
           },
           "99": {
-            "name": "play_warning_sound",
+            "name": "trigger_explosion",
             "params": "",
             "return": ""
           }
