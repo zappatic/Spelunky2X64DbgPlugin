@@ -10123,7 +10123,9 @@
         "field": "vector",
         "type": "StdVector",
         "vectortype": "IlluminationPointer"
-      }
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" }
     ],
     "TextureDB": [
       { "field": "id", "type": "UnsignedQword" },
