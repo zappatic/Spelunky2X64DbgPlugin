@@ -4385,13 +4385,13 @@
         "type": "UnsignedQword",
         "comment": "touch only one value and the game freezes"
       },
-      { "field": "unknown1", "type": "Qword" },
-      { "field": "unknown2", "type": "Qword" },
-      { "field": "unknown3", "type": "Qword" },
-      { "field": "unknown4", "type": "Qword" },
-      { "field": "unknown5", "type": "Qword" },
-      { "field": "unknown6", "type": "Qword" },
-      { "field": "unknown7", "type": "Qword" },
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" },
+      { "field": "unknown6", "type": "UnsignedQword" },
+      { "field": "unknown7", "type": "UnsignedQword" },
       { "field": "value2", "type": "UnsignedQword", "comment": "get's incremented with a `lock'" }
     ],
     "AITargetsPointer": [
@@ -14826,11 +14826,12 @@
       { "field": "timer", "type": "UnsignedByte" }
     ],
     "DMAlienBlast": [
-      {
-        "field": "unknown",
-        "type": "Dword",
-        "comment": "EntityUID? it's always -1"
-      }
+      { "field": "owner_uid", "type": "EntityUID" },
+      { "field": "unknown", "type": "Dword" },
+      { "field": "fx_internal_reticule", "type": "EntityPointer" },
+      { "field": "fx_external_reticule", "type": "EntityPointer" },
+      { "field": "sound", "type": "SoundMeta" },
+      { "field": "timer", "type": "UnsignedByte" }
     ],
     "CrossBeam": [
       { "field": "attached_to_side_uid", "type": "EntityUID" },
