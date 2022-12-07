@@ -1001,7 +1001,8 @@
     "EntityList",
     "XY",
     "LiquidLake",
-    "BackLayerRelated"
+    "BackLayerRelated",
+    "CollisionInfo"
   ],
   "refs": {
     "screen_states": {
@@ -1455,18 +1456,7 @@
       { "field": "draw_depth", "type": "UnsignedByte" },
       { "field": "default_b3f", "type": "Byte" },
       { "field": "field_26", "type": "Word" },
-      { "field": "rect_collision", "type": "Rect" },
-      {
-        "field": "default_shape",
-        "type": "State8",
-        "states" : {
-            "1": "Rectangle",
-            "2": "Circle"
-        }
-        },
-      { "field": "default_hitbox_enabled", "type": "Bool" },
-      { "field": "field_3A", "type": "Byte" },
-      { "field": "field_3B", "type": "Byte" },
+      { "field": "collision", "type": "CollisionInfo" },
       {
         "field": "field_3C",
         "type": "Flags32",
@@ -8971,6 +8961,21 @@
       { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "UnsignedDword" }
     ],
+    "CollisionInfo": [
+      { "field": "rect", "type": "Rect" },
+      { 
+        "field": "shape",
+        "type": "State8",
+        "states": {
+            "0": "NONE",
+            "1": "RECTANGLE",
+            "2": "CIRCLE"
+        }
+      },
+      { "field": "hitbox_enabled", "type": "Bool" },
+      { "field": "field_3A", "type": "UnsignedByte" },
+      { "field": "field_3B", "type": "UnsignedByte" }
+    ],
     "Entity": [
       {
         "field": "__vftable",
@@ -9195,48 +9200,7 @@
       { "field": "special_offsetx", "type": "Float" },
       { "field": "special_offsety", "type": "Float" },
       { "field": "color", "type": "Color" },
-      { "field": "offsetx", "type": "Float" },
-      { "field": "offsety", "type": "Float" },
-      { "field": "hitboxx", "type": "Float" },
-      { "field": "hitboxy", "type": "Float" },
-      {
-        "field": "duckmask",
-        "type": "Flags32",
-        "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
-          "6": "",
-          "7": "",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "",
-          "18": "",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
-        }
-      },
+      { "field": "collision", "type": "CollisionInfo" },
       { "field": "angle", "type": "Float" },
       { "field": "rendering_info", "type": "RenderInfoPointer" },
       { "field": "texture", "type": "TextureDBPointer" },
