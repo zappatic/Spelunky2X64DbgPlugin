@@ -991,7 +991,6 @@
     "SelectPlayerSlot",
     "UnknownPointerGroup",
     "OnlinePlayer",
-    "OnlinePlayerShort",
     "OnlineLobby",
     "OnlineLobbyScreenPlayer",
     "OnlineServers",
@@ -1002,7 +1001,8 @@
     "EntityList",
     "XY",
     "LiquidLake",
-    "BackLayerRelated"
+    "BackLayerRelated",
+    "CollisionInfo"
   ],
   "refs": {
     "screen_states": {
@@ -1456,18 +1456,7 @@
       { "field": "draw_depth", "type": "UnsignedByte" },
       { "field": "default_b3f", "type": "Byte" },
       { "field": "field_26", "type": "Word" },
-      { "field": "rect_collision", "type": "Rect" },
-      {
-        "field": "default_shape",
-        "type": "State8",
-        "states" : {
-            "1": "Rectangle",
-            "2": "Circle"
-        }
-        },
-      { "field": "default_hitbox_enabled", "type": "Bool" },
-      { "field": "field_3A", "type": "Byte" },
-      { "field": "field_3B", "type": "Byte" },
+      { "field": "collision", "type": "CollisionInfo" },
       {
         "field": "field_3C",
         "type": "Flags32",
@@ -4385,13 +4374,13 @@
         "type": "UnsignedQword",
         "comment": "touch only one value and the game freezes"
       },
-      { "field": "unknown1", "type": "Qword" },
-      { "field": "unknown2", "type": "Qword" },
-      { "field": "unknown3", "type": "Qword" },
-      { "field": "unknown4", "type": "Qword" },
-      { "field": "unknown5", "type": "Qword" },
-      { "field": "unknown6", "type": "Qword" },
-      { "field": "unknown7", "type": "Qword" },
+      { "field": "unknown1", "type": "UnsignedQword" },
+      { "field": "unknown2", "type": "UnsignedQword" },
+      { "field": "unknown3", "type": "UnsignedQword" },
+      { "field": "unknown4", "type": "UnsignedQword" },
+      { "field": "unknown5", "type": "UnsignedQword" },
+      { "field": "unknown6", "type": "UnsignedQword" },
+      { "field": "unknown7", "type": "UnsignedQword" },
       { "field": "value2", "type": "UnsignedQword", "comment": "get's incremented with a `lock'" }
     ],
     "AITargetsPointer": [
@@ -7419,30 +7408,23 @@
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
       { "field": "unknown3", "type": "UnsignedDword", "comment": "padding probably" },
-      { "field": "unknown4", "type": "DataPointer", "comment": "unknown4 + letter_textures + unknown5 is most likely a vector" },
+      { "field": "dest", "type": "DataPointer", "comment": "12 * wcslen(input_text)" },
       { 
-        "field": "letter_textures",
+        "field": "source",
         "type": "DataPointer",
-        "comment": "a bunch of float representing the matrix transformations (?) of the individual letters of the text"
+        "comment": "12 * wcslen(input_text), a bunch of float representing the matrix transformations (?) of the individual letters of the text"
       },
-      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer", "comment": "6 * wcslen(input_text)" },
       { "field": "unknown7", "type": "UnsignedWord" },
       { "field": "unknown8", "type": "UnsignedWord", "comment": "padding probably" },
-      { "field": "unknown9", "type": "Dword" },
+      { "field": "unknown9", "type": "TextureDBID" },
       { "field": "shader", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
       { "field": "padding4", "type": "Dword" },
       { "field": "font", "type": "TextureDBPointer" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Word" },
-      { "field": "unknown15", "type": "Word" },
-      { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "Float" },
-      { "field": "unknown18", "type": "Dword" },
-      { "field": "unknown19", "type": "Float" },
-      { "field": "unknown20", "type": "Float" }
+      { "field": "unknown13", "type": "Qword" }
     ],
     "SaveGame": [
       { "field": "places", "type": "SaveGamePlaces" },
@@ -8851,12 +8833,11 @@
       { "field": "unknown36", "type": "UnsignedDword" },
       { "field": "unknown37", "type": "UnsignedDword" },
       { "field": "unknown38", "type": "UnsignedDword" },
-      { "field": "unknown39", "type": "UnsignedDword" },
       { "field": "online_player_1", "type": "OnlinePlayer" },
       { "field": "online_player_2", "type": "OnlinePlayer" },
       { "field": "online_player_3", "type": "OnlinePlayer" },
       { "field": "online_player_4", "type": "OnlinePlayer" },
-      { "field": "local_player", "type": "OnlinePlayerShort" },
+      { "field": "local_player", "type": "OnlinePlayer" },
       { "field": "lobby", "type": "OnlineLobby" },
       { "field": "lobby_dupe", "type": "OnlineLobby" },
       { "field": "servers", "type": "OnlineServers" },
@@ -8868,15 +8849,9 @@
       { "field": "unknown45", "type": "UnsignedDword" },
       { "field": "unknown46", "type": "UnsignedDword" },
       { "field": "sockaddr_game", "type": "SockAddrIn" },
-      { "field": "unknown47", "type": "DataPointer" },
-      { "field": "unknown48", "type": "DataPointer" },
-      { "field": "unknown49", "type": "DataPointer" },
-      { "field": "unknown50", "type": "DataPointer" },
-      { "field": "unknown51", "type": "DataPointer" },
-      { "field": "unknown52", "type": "DataPointer" },
-      { "field": "unknown53", "type": "DataPointer" },
-      { "field": "unknown54", "type": "DataPointer" },
-      { "field": "unknown55", "type": "DataPointer" }
+      { "field": "unknown47", "type": "StdVector", "vectortype": "UnsignedQword" },
+      { "field": "unknown48", "type": "StdVector", "vectortype": "UnsignedQword" },
+      { "field": "unknown49", "type": "StdVector", "vectortype": "UnsignedQword" }
     ],
     "OnlineServers": [
       { "field": "server1", "type": "OnlineServer" },
@@ -8923,28 +8898,10 @@
       { "field": "address", "type": "IPv4Address" }
     ],
     "OnlinePlayer": [
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      {
-        "field": "ready_state",
-        "type": "State8",
-        "states": {
-          "0": "Unassigned",
-          "72": "Not ready",
-          "73": "Ready"
-        }
-      },
-      { "field": "character", "type": "State8", "ref": "character_states" },
-      {
-        "field": "player_name",
-        "type": "UTF8StringFixedSize",
-        "offset": 37
-      }
-    ],
-    "OnlinePlayerShort": [
+      { "field": "unknown39", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
@@ -8971,7 +8928,7 @@
       { "field": "unknown1", "type": "UnsignedDword" },
       { "field": "keys_pressed", "type": "UnsignedDword" },
       { "field": "keys_pressed_sync", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedByte" },
+      { "field": "local_player_slot", "type": "UnsignedByte" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "Byte" },
       { "field": "unknown5", "type": "Byte" },
@@ -8996,6 +8953,21 @@
       { "field": "unknown24", "type": "UnsignedByte" },
       { "field": "unknown25", "type": "UnsignedByte" },
       { "field": "unknown26", "type": "UnsignedDword" }
+    ],
+    "CollisionInfo": [
+      { "field": "rect", "type": "Rect" },
+      { 
+        "field": "shape",
+        "type": "State8",
+        "states": {
+            "0": "NONE",
+            "1": "RECTANGLE",
+            "2": "CIRCLE"
+        }
+      },
+      { "field": "hitbox_enabled", "type": "Bool" },
+      { "field": "field_3A", "type": "UnsignedByte" },
+      { "field": "field_3B", "type": "UnsignedByte" }
     ],
     "Entity": [
       {
@@ -9221,48 +9193,7 @@
       { "field": "special_offsetx", "type": "Float" },
       { "field": "special_offsety", "type": "Float" },
       { "field": "color", "type": "Color" },
-      { "field": "offsetx", "type": "Float" },
-      { "field": "offsety", "type": "Float" },
-      { "field": "hitboxx", "type": "Float" },
-      { "field": "hitboxy", "type": "Float" },
-      {
-        "field": "duckmask",
-        "type": "Flags32",
-        "flags": {
-          "1": "",
-          "2": "",
-          "3": "",
-          "4": "",
-          "5": "",
-          "6": "",
-          "7": "",
-          "8": "",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "",
-          "18": "",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
-        }
-      },
+      { "field": "collision", "type": "CollisionInfo" },
       { "field": "angle", "type": "Float" },
       { "field": "rendering_info", "type": "RenderInfoPointer" },
       { "field": "texture", "type": "TextureDBPointer" },
@@ -10123,7 +10054,9 @@
         "field": "vector",
         "type": "StdVector",
         "vectortype": "IlluminationPointer"
-      }
+      },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "unknown2", "type": "UnsignedDword" }
     ],
     "TextureDB": [
       { "field": "id", "type": "UnsignedQword" },
@@ -14826,11 +14759,12 @@
       { "field": "timer", "type": "UnsignedByte" }
     ],
     "DMAlienBlast": [
-      {
-        "field": "unknown",
-        "type": "Dword",
-        "comment": "EntityUID? it's always -1"
-      }
+      { "field": "owner_uid", "type": "EntityUID" },
+      { "field": "unknown", "type": "Dword" },
+      { "field": "fx_internal_reticule", "type": "EntityPointer" },
+      { "field": "fx_external_reticule", "type": "EntityPointer" },
+      { "field": "sound", "type": "SoundMeta" },
+      { "field": "timer", "type": "UnsignedByte" }
     ],
     "CrossBeam": [
       { "field": "attached_to_side_uid", "type": "EntityUID" },
