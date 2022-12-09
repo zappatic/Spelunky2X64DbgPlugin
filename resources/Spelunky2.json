@@ -7408,30 +7408,23 @@
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
       { "field": "unknown3", "type": "UnsignedDword", "comment": "padding probably" },
-      { "field": "unknown4", "type": "DataPointer", "comment": "unknown4 + letter_textures + unknown5 is most likely a vector" },
+      { "field": "dest", "type": "DataPointer", "comment": "12 * wcslen(input_text)" },
       { 
-        "field": "letter_textures",
+        "field": "source",
         "type": "DataPointer",
-        "comment": "a bunch of float representing the matrix transformations (?) of the individual letters of the text"
+        "comment": "12 * wcslen(input_text), a bunch of float representing the matrix transformations (?) of the individual letters of the text"
       },
-      { "field": "unknown5", "type": "DataPointer" },
+      { "field": "unknown5", "type": "DataPointer", "comment": "6 * wcslen(input_text)" },
       { "field": "unknown7", "type": "UnsignedWord" },
       { "field": "unknown8", "type": "UnsignedWord", "comment": "padding probably" },
-      { "field": "unknown9", "type": "Dword" },
+      { "field": "unknown9", "type": "TextureDBID" },
       { "field": "shader", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
       { "field": "padding4", "type": "Dword" },
       { "field": "font", "type": "TextureDBPointer" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Word" },
-      { "field": "unknown15", "type": "Word" },
-      { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "Float" },
-      { "field": "unknown18", "type": "Dword" },
-      { "field": "unknown19", "type": "Float" },
-      { "field": "unknown20", "type": "Float" }
+      { "field": "unknown13", "type": "Qword" }
     ],
     "SaveGame": [
       { "field": "places", "type": "SaveGamePlaces" },
