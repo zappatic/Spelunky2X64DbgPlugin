@@ -9675,15 +9675,15 @@
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
       { "field": "y_pos?", "type": "Float" },
-      { "field": "drop_through_timer", "type": "UnsignedByte", "comment": "Set when dropping off a ledge, through a platform, etc. Set to max value on normal jumps."},
+      { "field": "jump_lock_timer", "type": "UnsignedByte", "comment": "Increases when jump button is held, set to 0 when not held. Set to max value upon a jump. Unless this is at 0, a jump will only occur if the jump button was not held on the previous frame. "},
       {
         "field": "coyote_timer",
         "type": "Byte",
         "comment": "can jump while airborne if greater than 0"
       },
       { "field": "coyote_timer", "type": "UnsignedByte", "comment": "Set to 4 when on ground, 6 when grabbing a wall with climbing gloves or grabbing a tree."},
-      { "field": "jump_flags_c", "type": "UnsignedByte" },
-      { "field": "jump_flags_d", "type": "UnsignedByte" },
+      { "field": "hired_hand_name_index", "type": "UnsignedByte" },
+      { "field": "swim_timer", "type": "UnsignedByte", "comment": "45 frame delay between jumps when holding jump button in water." },
       {
         "field": "timer_since_last_jump",
         "type": "UnsignedByte",
