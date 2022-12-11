@@ -13855,7 +13855,7 @@
       { "field": "bombs_left", "type": "UnsignedByte" }
     ],
     "OlmecShip": [
-      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "sound_pos", "type": "SoundMeta" },
       { "field": "unknown138", "type": "DataPointer" },
       { "field": "door_fx", "type": "EntityPointer" },
       { "field": "smoke_particle", "type": "ParticleEmitterInfoPointer" },
