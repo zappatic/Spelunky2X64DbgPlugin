@@ -6521,6 +6521,8 @@
         "field": "sparrow_state",
         "type": "State8",
         "states": {
+          "-2": "Angry",
+          "-1": "Dead",
           "0": "Quest not started",
           "1": "Thief status",
           "2": "Finished level with thief status",
@@ -9669,7 +9671,11 @@
       { "field": "i16c", "type": "Dword" },
       { "field": "y_pos?", "type": "Float" },
       { "field": "jump_flags_a", "type": "UnsignedByte" },
-      { "field": "jump_flags_b", "type": "UnsignedByte" },
+      {
+        "field": "coyote_timer",
+        "type": "Byte",
+        "comment": "can jump while airborne if greater than 0"
+      },
       { "field": "jump_flags_c", "type": "UnsignedByte" },
       { "field": "jump_flags_d", "type": "UnsignedByte" },
       {
@@ -10996,6 +11002,11 @@
         "field": "active_state",
         "type": "Byte",
         "comment": "-1 = sitting and yelling; 0 = either running, dead or picked up"
+      },
+      {
+        "field": "petted_counter",
+        "type": "UnsignedByte",
+        "comment": "number of times petted in the camp"
       }
     ],
     "WalkingMonster": [
@@ -11313,6 +11324,11 @@
         "field": "show_text",
         "type": "Bool",
         "comment": "if set to true, he will say 'i've been hunting this fiend a long time!' when on screen"
+      },
+      {
+        "field": "special_message_shown",
+        "type": "Bool",
+        "comment": "one way door message has been shown"
       }
     ],
     "ForestSister": [
@@ -12299,7 +12315,12 @@
         "type": "UnsignedByte",
         "comment": "alternates between walking and pausing every time it reaches zero"
       },
-      { "field": "walking_left", "type": "Bool" }
+      { "field": "walking_left", "type": "Bool" },
+      {
+        "field": "unfriendly",
+        "type": "Bool",
+        "comment": "moves away from its target instead of towards it"
+      }
     ],
     "CritterButterfly": [
       { "field": "unknown1a", "type": "Qword" },
@@ -12376,7 +12397,11 @@
       { "field": "sound", "type": "SoundMeta" },
       { "field": "applied_hor_momentum", "type": "Float" },
       { "field": "applied_ver_momentum", "type": "Float" },
-      { "field": "unknown1", "type": "Bool" },
+      {
+        "field": "unfriendly",
+        "type": "Bool",
+        "comment": "moves away from its target instead of towards it"
+      },
       { "field": "move_timer", "type": "UnsignedByte" }
     ],
     "CritterSlime": [
@@ -13392,11 +13417,10 @@
     "LaserTrap": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
       {
-        "field": "reset_timer",
-        "type": "UnsignedByte",
-        "comment": "after triggering counts from 0 to 255, changes the 'phase_2' then counts from 0 to 104"
-      },
-      { "field": "phase_2", "type": "Bool" }
+        "field": "timer",
+        "type": "UnsignedWord",
+        "comment": "counts up from 0 after triggering, cannot shoot again until 360"
+      }
     ],
     "SparkTrap": [
       { "field": "emitted_light", "type": "IlluminationPointer" },
@@ -13499,7 +13523,11 @@
     ],
     "PunishBall": [
       { "field": "attached_to_uid", "type": "EntityUID" },
-      { "field": "state?", "type": "UnsignedByte" },
+      {
+        "field": "timer",
+        "type": "UnsignedByte",
+        "comment": "counts down from 20 while the ball is eligible to break a floor and tries to break it at 0"
+      },
       { "field": "unused1", "type": "UnsignedByte" },
       { "field": "unused2", "type": "UnsignedWord" },
       { "field": "x_pos", "type": "Float" },
