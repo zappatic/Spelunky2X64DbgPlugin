@@ -12440,7 +12440,7 @@
         "type": "VirtualFunctionTable",
         "functions": {
           "0": { "name": "~ThemeInfoPointer", "params": "", "return": "" },
-          "1": { "name": "get_unknown1", "params": "", "return": "bool" },
+          "1": { "name": "reset_theme_flags", "params": "", "return": "bool" },
           "2": {
             "name": "initialize_flags",
             "params": "",
@@ -12460,7 +12460,7 @@
             "comment": "does random calculations and calls function to determine the start room in most themes"
           },
           "4": {
-            "name": "unknown_v4",
+            "name": "init_rooms",
             "params": "",
             "return": "",
             "comment": "most themes call the same function, some check whether they are in CO"
@@ -12522,7 +12522,7 @@
             ]
           },
           "16": {
-            "name": "post_process_exitdoors",
+            "name": "post_process_exitdoors_and_spawn_traps",
             "params": "",
             "return": "",
             "comment": [
@@ -12633,10 +12633,10 @@
             ]
           },
           "30": {
-            "name": "unknown_v29",
+            "name": "transition_styled_floor",
             "params": "",
             "return": "bool",
-            "comment": "all return false, except olmec, temple, neobab, cog, duat"
+            "comment": "Whether transition tiles should be styled floor."
           },
           "31": {
             "name": "transition_tunnel_block_modifier",
@@ -12648,7 +12648,7 @@
             ]
           },
           "32": {
-            "name": "unknown_v31",
+            "name": "transition_styled_floor_ent_type",
             "params": "",
             "return": "uint32_t",
             "comment": ""
@@ -12694,10 +12694,10 @@
             ]
           },
           "38": {
-            "name": "unknown_v37",
+            "name": "should_spawn_soot",
             "params": "",
             "return": "bool",
-            "comment": "returns true by default, except CO, duat"
+            "comment": ""
           },
           "39": {
             "name": "backlayer_lut",
@@ -12735,7 +12735,7 @@
             ]
           },
           "43": {
-            "name": "get_unknown_1_or_2",
+            "name": "get_theme_flag_at",
             "params": "uint index",
             "return": "bool",
             "comment": "index == 0 ? return unknown1 : return unknown2"
@@ -12815,10 +12815,10 @@
             ]
           },
           "51": {
-            "name": "do_procedural_spawn",
+            "name": "do_procedural_enemy_spawn",
             "params": "",
             "return": "",
-            "comment": ""
+            "comment": "called at each position that can spawn a procedural enemy"
           }
         }
       },
@@ -15203,3 +15203,4 @@
     ]
   }
 }
+
