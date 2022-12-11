@@ -209,6 +209,7 @@
     "Chain": "Movable",
     "Fly": "Movable",
     "OlmecCannon": "Movable",
+    "OlmecShip": "Movable",
     "Landmine": "LightEmitter",
     "Honey": "Movable",
     "PlayerGhost": "LightEmitter",
@@ -561,6 +562,7 @@
     "ITEM_FLY": "Fly",
     "ITEM_OLMECCANNON_BOMBS": "OlmecCannon",
     "ITEM_OLMECCANNON_UFO": "OlmecCannon",
+    "ITEM_OLMECSHIP": "OlmecShip",
     "ITEM_LANDMINE": "Landmine",
     "ITEM_UDJAT_SOCKET": "UdjatSocket",
     "ITEM_USHABTI": "Ushabti",
@@ -1674,7 +1676,7 @@
       { "field": "tile_y", "type": "Dword" },
       { "field": "damage", "type": "UnsignedByte" },
       { "field": "life", "type": "UnsignedByte" },
-      { "field": "field_96", "type": "UnsignedByte" },
+      { "field": "sacrifice_value", "type": "UnsignedByte" },
       {
         "field": "death_blood_drops_count",
         "type": "UnsignedByte",
@@ -2755,7 +2757,10 @@
       { "field": "unknown3", "type": "UnsignedWord" },
       { "field": "line1", "type": "StringsTableID" },
       { "field": "line2", "type": "StringsTableID" },
-      { "field": "line3", "type": "StringsTableID" }
+      { "field": "line3", "type": "StringsTableID" },
+      { "field": "line1_alpha", "type": "Float" },
+      { "field": "line2_alpha", "type": "Float" },
+      { "field": "line3_alpha", "type": "Float" }
     ],
     "ScreenTitlePointer": [
       {
@@ -3994,7 +3999,7 @@
           "3": "Kapala"
         }
       },
-      { "field": "kali_related?", "type": "Dword" },
+      { "field": "outposts_spawned", "type": "Dword" },
       { "field": "money_shop_total", "type": "Dword" },
       { "field": "world_start", "type": "UnsignedByte" },
       { "field": "level_start", "type": "UnsignedByte" },
@@ -4119,7 +4124,7 @@
           "1": "Upbeat dwelling intro music played",
           "2": "", //once on, it stays on
           "3": "Running tutorial speedrun",
-          "4": "",
+          "4": "Pet has spawned",
           "5": "Level has Tun/shop?",
           "6": "Tun killed?",
           "7": "Ghost pot level?",
@@ -4139,7 +4144,7 @@
           "21": "Hide hud, transition",
           "22": "Hide hud, camp",
           "23": "Have clover",
-          "24": "", //ice caves and drill level, but only the first time?
+          "24": "You feel forgiven level", //ice caves and drill level, but only the first time?
           "25": "",
           "26": "",
           "27": "",
@@ -6149,7 +6154,7 @@
       { "field": "padding", "type": "UnsignedDword" },
       { "field": "spawn_cooldown", "type": "UnsignedDword" },
       { "field": "cooling_down", "type": "Bool" },
-      { "field": "unknown4b", "type": "Bool" },
+      { "field": "apep_journal_entry_logged", "type": "Bool" },
       { "field": "unknown4c", "type": "UnsignedByte" },
       { "field": "unknown4d", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedDword" },
@@ -6232,7 +6237,7 @@
         "comment": "array index into static.logic"
       },
       { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedByte" }
+      { "field": "bubble_spawn_timer", "type": "UnsignedByte" }
     ],
     "TuskPleasurePalacePointer": [
       {
@@ -8631,10 +8636,10 @@
         "field": "flags",
         "type": "Flags8",
         "flags": {
-          "1": "unknown",
+          "1": "Should generate path",
           "2": "unknown",
           "3": "unknown",
-          "4": "unknown",
+          "4": "Can have outpost?",
           "5": "unknown",
           "6": "Apply ambient occlusion",
           "7": "unknown",
@@ -8660,11 +8665,11 @@
         "type": "Flags8",
         "flags": {
           "1": "unknown",
-          "2": "unknown",
-          "3": "unknown",
+          "2": "Can echo",
+          "3": "Can spawn Dead are Restless",
           "4": "unknown",
-          "5": "unknown",
-          "6": "unknown",
+          "5": "Can have quests?",
+          "6": "Can spawn player coffins",
           "7": "unknown",
           "8": "unknown"
         }
@@ -9670,12 +9675,13 @@
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
       { "field": "y_pos?", "type": "Float" },
-      { "field": "jump_flags_a", "type": "UnsignedByte" },
+      { "field": "drop_through_timer", "type": "UnsignedByte", "comment": "Set when dropping off a ledge, through a platform, etc. Set to max value on normal jumps."},
       {
         "field": "coyote_timer",
         "type": "Byte",
         "comment": "can jump while airborne if greater than 0"
       },
+      { "field": "coyote_timer", "type": "UnsignedByte", "comment": "Set to 4 when on ground, 6 when grabbing a wall with climbing gloves or grabbing a tree."},
       { "field": "jump_flags_c", "type": "UnsignedByte" },
       { "field": "jump_flags_d", "type": "UnsignedByte" },
       {
@@ -10922,7 +10928,7 @@
         "type": "Bool"
       },
       {
-        "field": "unknown5a",
+        "field": "is_ear",
         "type": "Bool",
         "comment": "sometimes set to true"
       },
@@ -12459,7 +12465,7 @@
             "return": "",
             "comment": "most themes call the same function, some check whether they are in CO"
           },
-          "5": { "name": "unknown_v5", "params": "", "return": "" },
+          "5": { "name": "generate_path", "params": "", "return": "" },
           "6": {
             "name": "handle_level_specialities",
             "params": "",
@@ -12472,30 +12478,30 @@
             ]
           },
           "7": {
-            "name": "unknown_v7",
+            "name": "insert_player_coffin_rooms",
             "params": "",
             "return": "",
             "comment": "can't trigger, dwelling (quillback) and abzu do something special (arena just returns)"
           },
           "8": {
-            "name": "unknown_v8",
+            "name": "insert_7_3_dirk_coffin",
             "params": "",
             "return": "",
             "comment": "does something depending on levelgen.data.unknown7"
           },
           "9": {
-            "name": "insert_shopkeeper_vault",
+            "name": "insert_idol_room",
             "params": "",
             "return": ""
           },
-          "10": { "name": "insert_coffin", "params": "", "return": "" },
-          "11": {
+          "10": { "name": "insert_vault", "params": "", "return": "" },
+          "11": { "name": "insert_coffin", "params": "", "return": "" },
+          "12": {
             "name": "set_theme_specific_level_feeling",
             "params": "",
             "return": "",
             "comment": "metal clanking and air of oppression"
           },
-          "12": { "name": "v12", "params": "", "return": "" },
           "13": {
             "name": "populate_level",
             "params": "",
@@ -12762,7 +12768,7 @@
             ]
           },
           "46": {
-            "name": "get_zero_based_level_height",
+            "name": "get_exit_room_y_level",
             "params": "",
             "return": "uint32_t",
             "comment": [
@@ -12771,7 +12777,7 @@
             ]
           },
           "47": {
-            "name": "unknown_v46",
+            "name": "get_shop_chance",
             "params": "",
             "return": "uint32_t",
             "comment": "returns a value that appears to affect room generation and is based on current world,level"
@@ -12817,7 +12823,7 @@
         }
       },
       {
-        "field": "unknown1",
+        "field": "should_attempt_bee_spawn?",
         "type": "Bool",
         "comment": "gets set to false for the jungle and temple theme in the cosmic ocean"
       },
@@ -13847,6 +13853,15 @@
     "OlmecCannon": [
       { "field": "timer", "type": "UnsignedWord" },
       { "field": "bombs_left", "type": "UnsignedByte" }
+    ],
+    "OlmecShip": [
+      { "field": "sound_pos", "type": "SoundPositionPointer" },
+      { "field": "unknown138", "type": "DataPointer" },
+      { "field": "door_fx", "type": "EntityPointer" },
+      { "field": "smoke_particle", "type": "ParticleEmitterInfoPointer" },
+      { "field": "flight_time", "type": "UnsignedWord" },
+      { "field": "unknown152", "type": "Word" },
+      { "field": "has_spawned_jetflames", "type": "Bool" }
     ],
     "Landmine": [
       {
