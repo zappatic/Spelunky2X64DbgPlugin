@@ -868,7 +868,7 @@
     "UnorderedMapRecordPointer",
     "StdVectorPointerIllumination",
     "StdVectorPointerParticleEmitterInfo",
-    "MysteryPointer1",
+    "SpecialLevelGeneration",
     "LevelGenDataPointer",
     "ShopRestrictedItemPointer1",
     "ShopRestrictedItemPointer2",
@@ -8542,8 +8542,8 @@
       { "field": "theme_basecamp", "type": "ThemeInfoPointer" },
       { "field": "theme_arena", "type": "ThemeInfoPointer" },
       { "field": "unknown21", "type": "UnsignedQword" },
-      { "field": "unknown22", "type": "MysteryPointer1" },
-      { "field": "unknown23", "type": "MysteryPointer1" },
+      { "field": "bee_gen", "type": "SpecialLevelGeneration" },
+      { "field": "leprechaun_gen", "type": "SpecialLevelGeneration" },
       { "field": "rooms_frontlayer", "type": "LevelGenRoomsPointer" },
       { "field": "rooms_backlayer", "type": "LevelGenRoomsPointer" },
       { "field": "flipped_rooms", "type": "LevelGenRoomsMetaPointer" },
@@ -8592,14 +8592,14 @@
           "5": "unknown",
           "6": "unknown",
           "7": "unknown",
-          "8": "unknown"
+          "8": "Has ghost"
         }
       },
       {
         "field": "flags3",
         "type": "Flags8",
         "flags": {
-          "1": "unknown",
+          "1": "Can spawn angry Tun",
           "2": "Can echo",
           "3": "Can spawn Dead are Restless",
           "4": "unknown",
@@ -8611,8 +8611,8 @@
       },
       { "field": "shop_type", "type": "State8", "ref": "shop_types" },
       { "field": "backlayer_shop_type", "type": "State8", "ref": "shop_types" },
-      { "field": "unknown45", "type": "UnsignedByte" },
-      { "field": "unknown46", "type": "UnsignedByte" },
+      { "field": "frontlayer_shop_music", "type": "UnsignedByte" },
+      { "field": "backlayer_shop_music", "type": "UnsignedByte" },
       {
         "field": "unknown47",
         "type": "UnsignedByte",
@@ -8664,13 +8664,28 @@
         "comment": "unordered_map<uint16_t, RoomTemplateData"
       }
     ],
-    "MysteryPointer1": [
+    "SpecialLevelGeneration": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~MysteryPointer1",
+            "name": "~SpecialLevelGeneration",
+            "params": "",
+            "return": ""
+          },
+          "1": {
+            "name": "set_rooms",
+            "params": "",
+            "return": ""
+          },
+          "2": {
+            "name": "spawn_backgrounds",
+            "params": "",
+            "return": ""
+          },
+          "3": {
+            "name": "procedural_spawns",
             "params": "",
             "return": ""
           }
@@ -12758,11 +12773,11 @@
         }
       },
       {
-        "field": "should_attempt_bee_spawn?",
+        "field": "allow_bees",
         "type": "Bool",
-        "comment": "gets set to false for the jungle and temple theme in the cosmic ocean"
+        "comment": "will have a chance to change rooms to behive if true"
       },
-      { "field": "unknown2", "type": "Bool" },
+      { "field": "allow_leprechaun", "type": "Bool" },
       { "field": "padding1?", "type": "UnsignedByte" },
       { "field": "padding2?", "type": "UnsignedByte" },
       { "field": "padding3?", "type": "UnsignedDword" },
