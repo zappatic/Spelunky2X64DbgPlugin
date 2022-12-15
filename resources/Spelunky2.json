@@ -8589,10 +8589,10 @@
         "flags": {
           "1": "unknown",
           "2": "unknown",
-          "3": "unknown",
-          "4": "unknown",
+          "3": "Spawn entrance door background (Ignored in 7-1 to 7-2 transition)",
+          "4": "Procedural backlayer door indicator related",
           "5": "unknown",
-          "6": "unknown",
+          "6": "Should spawn procedural backlayers",
           "7": "unknown",
           "8": "Has ghost"
         }
@@ -9633,7 +9633,6 @@
         "type": "Byte",
         "comment": "can jump while airborne if greater than 0"
       },
-      { "field": "coyote_timer", "type": "UnsignedByte", "comment": "Set to 4 when on ground, 6 when grabbing a wall with climbing gloves or grabbing a tree."},
       { "field": "hired_hand_name_index", "type": "UnsignedByte" },
       { "field": "swim_timer", "type": "UnsignedByte", "comment": "45 frame delay between jumps when holding jump button in water." },
       {
@@ -11540,21 +11539,21 @@
         "type": "UnsignedWord",
         "comment": "alternates between hanging/sitting on the wall and flying every time it reaches zero"
       },
-      { "field": "ai_state", "type": "UnsignedByte" },
+      { "field": "wobble_timer", "type": "UnsignedByte" },
       {
         "field": "targeting_timer?",
         "type": "UnsignedByte",
         "comment": "counts when bee takes off and hasn't spotted a target yet"
       },
       {
-        "field": "unknown_rand1",
+        "field": "start_walking_time",
         "type": "UnsignedByte",
-        "comment": "looks to be a random number being put in here"
+        "comment": "When the fly_hang_timer gets to this value while in the standing state (move_state 9), the be will start walking."
       },
       {
-        "field": "unknown_rand2",
+        "field": "stop_walking_time",
         "type": "UnsignedByte",
-        "comment": "looks to be a random number being put in here, something related to other bees in a level?"
+        "comment": "When the fly_hang_timer gets to this value while in the standing state (move_state 9), the be will stop walking."
       },
       { "field": "padding4", "type": "UnsignedByte", "comment": "padding?" },
       {
