@@ -2967,12 +2967,8 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
-      { "field": "unknown7", "type": "DataPointer" },
-      { "field": "unknown8", "type": "DataPointer" },
-      { "field": "unknown9", "type": "DataPointer" },
+      { "field": "unknown4", "type": "StdVector", "vectortype": "DataPointer", "comment": "options pages?" },
+      { "field": "unknown7", "type": "StdVector", "vectortype": "Dword" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
       {
         "field": "key_press_timer",
@@ -7410,11 +7406,11 @@
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
       { "field": "unknown3", "type": "UnsignedDword", "comment": "padding probably" },
-      { "field": "dest", "type": "DataPointer", "comment": "12 * wcslen(input_text)" },
+      { "field": "dest", "type": "DataPointer", "comment": "it's letters, each letter is created from two triangles, coordinates relative to the x/y" },
       { 
         "field": "source",
         "type": "DataPointer",
-        "comment": "12 * wcslen(input_text), a bunch of float representing the matrix transformations (?) of the individual letters of the text"
+        "comment": "same as dest but coordinates in the texture"
       },
       { "field": "unknown5", "type": "DataPointer", "comment": "6 * wcslen(input_text)" },
       { "field": "unknown7", "type": "UnsignedWord" },
