@@ -341,7 +341,8 @@
     "Bow": "Movable",
     "Purchasable": "Movable",
     "DummyPurchasableEntity": "Purchasable",
-    "Present": "Purchasable"
+    "Present": "Purchasable",
+    "Web": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -505,6 +506,7 @@
     "ITEM_JUNGLE_SPEAR_COSMETIC": "JungleSpearCosmetic",
     "ITEM_LION_SPEAR": "Spear",
     "ITEM_BIG_SPEAR": "Spear",
+    "ITEM_WEB": "Web",
     "ITEM_WEBSHOT": "WebShot",
     "ITEM_GIANTSPIDER_WEBSHOT": "Projectile",
     "ITEM_HANGSTRAND": "HangStrand",
@@ -15147,6 +15149,13 @@
     "XY": [
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" }
+    ],
+    "Web": [
+      {
+        "field": "decay_rate",
+        "type": "Float",
+        "comment": "Is subtracted from the color alpha every frame after the `stand_counter` is more than 300"
+      }
     ]
   }
 }
