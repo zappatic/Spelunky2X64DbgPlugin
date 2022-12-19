@@ -341,7 +341,8 @@
     "Bow": "Movable",
     "Purchasable": "Movable",
     "DummyPurchasableEntity": "Purchasable",
-    "Present": "Purchasable"
+    "Present": "Purchasable",
+    "Web": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -505,6 +506,7 @@
     "ITEM_JUNGLE_SPEAR_COSMETIC": "JungleSpearCosmetic",
     "ITEM_LION_SPEAR": "Spear",
     "ITEM_BIG_SPEAR": "Spear",
+    "ITEM_WEB": "Web",
     "ITEM_WEBSHOT": "WebShot",
     "ITEM_GIANTSPIDER_WEBSHOT": "Projectile",
     "ITEM_HANGSTRAND": "HangStrand",
@@ -2909,12 +2911,8 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "DataPointer" },
-      { "field": "unknown7", "type": "DataPointer" },
-      { "field": "unknown8", "type": "DataPointer" },
-      { "field": "unknown9", "type": "DataPointer" },
+      { "field": "unknown4", "type": "StdVector", "vectortype": "DataPointer", "comment": "options pages?" },
+      { "field": "unknown7", "type": "StdVector", "vectortype": "Dword" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
       {
         "field": "key_press_timer",
@@ -7352,11 +7350,11 @@
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
       { "field": "unknown3", "type": "UnsignedDword", "comment": "padding probably" },
-      { "field": "dest", "type": "DataPointer", "comment": "12 * wcslen(input_text)" },
+      { "field": "dest", "type": "DataPointer", "comment": "it's letters, each letter is created from two triangles, coordinates relative to the x/y" },
       { 
         "field": "source",
         "type": "DataPointer",
-        "comment": "12 * wcslen(input_text), a bunch of float representing the matrix transformations (?) of the individual letters of the text"
+        "comment": "same as dest but coordinates in the texture"
       },
       { "field": "unknown5", "type": "DataPointer", "comment": "6 * wcslen(input_text)" },
       { "field": "unknown7", "type": "UnsignedWord" },
@@ -15151,6 +15149,13 @@
     "XY": [
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" }
+    ],
+    "Web": [
+      {
+        "field": "decay_rate",
+        "type": "Float",
+        "comment": "Is subtracted from the color alpha every frame after the `stand_counter` is more than 300"
+      }
     ]
   }
 }
