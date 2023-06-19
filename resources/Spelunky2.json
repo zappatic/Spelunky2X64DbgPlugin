@@ -10256,7 +10256,7 @@
       { "field": "entity_uid_10", "type": "EntityUID" }
     ],
     "StateItemsPointer": [
-      { "field": "unknown_player1", "type": "Bool", "comment": "who the original leader was?" },
+      { "field": "leader", "type": "UnsignedByte", "comment": "index of leader player in coop" },
       { "field": "unknown_player2", "type": "Bool" },
       { "field": "unknown_player3", "type": "Bool" },
       { "field": "unknown_player4", "type": "Bool" },
