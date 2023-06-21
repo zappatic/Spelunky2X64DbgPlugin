@@ -3879,7 +3879,7 @@
           "8": "Daily challenge mode",
           "9": "Caveman Shopkeeper aggroed",
           "10": "Waddler aggroed",
-          "11": "",
+          "11": "Shop bought out",
           "12": "Eggplant crown picked up",
           "13": "",
           "14": "",
@@ -6908,7 +6908,27 @@
       { "field": "grid_player_icon", "type": "TextureRenderingInfo" },
       { "field": "unknown30", "type": "Float" },
       { "field": "unknown31", "type": "Float" },
-      { "field": "unknown32", "type": "Float" }
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "UnsignedDword" },
+      { "field": "unknown34", "type": "UnsignedDword" },
+      { "field": "unknown35", "type": "UnsignedDword" },
+      { "field": "unknown36", "type": "UnsignedDword" },
+      { "field": "unknown37", "type": "UnsignedDword" },
+      { "field": "unknown38", "type": "UnsignedDword" },
+      { "field": "unknown39", "type": "UnsignedDword" },
+      { "field": "unknown40", "type": "UnsignedDword" },
+      { "field": "unknown41", "type": "UnsignedDword" },
+      { "field": "unknown42", "type": "UnsignedDword" },
+      { "field": "unknown43", "type": "UnsignedDword" },
+      { "field": "unknown44", "type": "UnsignedDword" },
+      { "field": "unknown45", "type": "UnsignedDword" },
+      { "field": "unknown46", "type": "UnsignedDword" },
+      { "field": "unknown47", "type": "UnsignedDword" },
+      { "field": "unknown48", "type": "UnsignedDword" },
+      { "field": "unknown49", "type": "UnsignedDword" },
+      { "field": "unknown50", "type": "UnsignedDword" },
+      { "field": "unknown51", "type": "UnsignedDword" },
+      { "field": "selected_stage_index", "type": "UnsignedDword" }
     ],
     "ScreenArenaLevelPointer": [
       {
@@ -10236,7 +10256,7 @@
       { "field": "entity_uid_10", "type": "EntityUID" }
     ],
     "StateItemsPointer": [
-      { "field": "unknown_player1", "type": "Bool", "comment": "who the original leader was?" },
+      { "field": "leader", "type": "UnsignedByte", "comment": "index of leader player in coop" },
       { "field": "unknown_player2", "type": "Bool" },
       { "field": "unknown_player3", "type": "Bool" },
       { "field": "unknown_player4", "type": "Bool" },
