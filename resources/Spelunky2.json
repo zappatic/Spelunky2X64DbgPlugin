@@ -3366,6 +3366,7 @@
         "type": "TextureRenderingInfo"
       },
       { "field": "quick_select_panel_related", "type": "TextureRenderingInfo" },
+      { "field": "unknown_texture_rendering", "type": "TextureRenderingInfo" },
       { "field": "player_1_shutter_timer", "type": "Float" },
       { "field": "player_2_shutter_timer", "type": "Float" },
       { "field": "player_3_shutter_timer", "type": "Float" },
