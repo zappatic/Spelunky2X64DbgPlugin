@@ -913,7 +913,8 @@
     "MysteryLayerPointer1",
     "PointerToMap",
     "PlayerSlotPointer",
-    "MultiLineTextRenderingPointer"
+    "MultiLineTextRenderingPointer",
+    "UnknownAiStuff"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -2681,7 +2682,10 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "TextureRenderingInfo" }
+      { "field": "unknown4", "type": "TextureRenderingInfo" },
+      { "field": "darkness", "type": "Float" },
+      { "field": "active", "type": "Bool" },
+      { "field": "skip_prologue", "type": "Bool" }
     ],
     "ScreenProloguePointer": [
       {
@@ -3366,6 +3370,7 @@
         "type": "TextureRenderingInfo"
       },
       { "field": "quick_select_panel_related", "type": "TextureRenderingInfo" },
+      { "field": "unknown_texture_rendering", "type": "TextureRenderingInfo" },
       { "field": "player_1_shutter_timer", "type": "Float" },
       { "field": "player_2_shutter_timer", "type": "Float" },
       { "field": "player_3_shutter_timer", "type": "Float" },
@@ -9496,7 +9501,7 @@
         "type": "DataPointer",
         "comment": "pointer to array element, that array is list of pointers that point to a list of code pointers (funcitons)"
       },
-      { "field": "ic8", "type": "Qword" },
+      { "field": "ic8", "type": "UnknownAiStuff" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
       { "field": "buttons", "type": "Flags8", "ref": "buttons_entity" },
@@ -15176,6 +15181,9 @@
         "type": "Float",
         "comment": "Is subtracted from the color alpha every frame after the `stand_counter` is more than 300"
       }
+    ],
+    "UnknownAiStuff": [
+      { "field": "__vftable", "type": "DataPointer" }
     ]
   }
 }
