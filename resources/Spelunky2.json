@@ -3998,7 +3998,7 @@
       { "field": "waddler_storage", "type": "WaddlerStorage" },
       { "field": "waddler_storage_meta", "type": "WaddlerStorageMeta" },
       { "field": "journal_progression", "type": "JournalProgression" },
-      { "field": "journal_progression_test", "type": "DeathScreenBlood" },
+      { "field": "death_screen_blood_splats", "type": "DeathScreenBlood" },
       { "field": "theme_progression", "type": "ThemeProgression" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedByte" },
