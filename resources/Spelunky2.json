@@ -1009,7 +1009,9 @@
     "XY",
     "LiquidLake",
     "BackLayerRelated",
-    "CollisionInfo"
+    "CollisionInfo",
+    "DeathScreenBlood",
+    "DeathScreenBloodSlot"
   ],
   "refs": {
     "screen_states": {
@@ -3996,12 +3998,7 @@
       { "field": "waddler_storage", "type": "WaddlerStorage" },
       { "field": "waddler_storage_meta", "type": "WaddlerStorageMeta" },
       { "field": "journal_progression", "type": "JournalProgression" },
-      {
-        "field": "-",
-        "type": "Skip",
-        "offset": 844,
-        "comment": "This allows for space of 40 structs of 21 bytes; it's accessed on the journal progression screen"
-      },
+      { "field": "death_screen_blood_splats", "type": "DeathScreenBlood" },
       { "field": "theme_progression", "type": "ThemeProgression" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedByte" },
@@ -7299,11 +7296,7 @@
         "type": "ScrollingCreditsProgressionPointer",
         "comment": "points to float timer that indicates how far in the scrolling credits we are"
       },
-      {
-        "field": "bg_music_info?",
-        "type": "DataPointer",
-        "comment": "points to object that has pointer related to BGM/BGM_credits"
-      },
+      { "field": "bg_music_info", "type": "SoundMeta" },
       { "field": "unknown4", "type": "UnsignedQword" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
@@ -15184,6 +15177,53 @@
     ],
     "UnknownAiStuff": [
       { "field": "__vftable", "type": "DataPointer" }
+    ],
+    "DeathScreenBlood": [
+      { "field": "count", "type": "Byte" },
+      { "field": "-", "type": "Skip", "offset": 3, "comment": "padding" },
+      { "field": "slot1", "type": "DeathScreenBloodSlot" },
+      { "field": "slot2", "type": "DeathScreenBloodSlot" },
+      { "field": "slot3", "type": "DeathScreenBloodSlot" },
+      { "field": "slot4", "type": "DeathScreenBloodSlot" },
+      { "field": "slot5", "type": "DeathScreenBloodSlot" },
+      { "field": "slot6", "type": "DeathScreenBloodSlot" },
+      { "field": "slot7", "type": "DeathScreenBloodSlot" },
+      { "field": "slot8", "type": "DeathScreenBloodSlot" },
+      { "field": "slot9", "type": "DeathScreenBloodSlot" },
+      { "field": "slot10", "type": "DeathScreenBloodSlot" },
+      { "field": "slot11", "type": "DeathScreenBloodSlot" },
+      { "field": "slot12", "type": "DeathScreenBloodSlot" },
+      { "field": "slot13", "type": "DeathScreenBloodSlot" },
+      { "field": "slot14", "type": "DeathScreenBloodSlot" },
+      { "field": "slot15", "type": "DeathScreenBloodSlot" },
+      { "field": "slot16", "type": "DeathScreenBloodSlot" },
+      { "field": "slot17", "type": "DeathScreenBloodSlot" },
+      { "field": "slot18", "type": "DeathScreenBloodSlot" },
+      { "field": "slot19", "type": "DeathScreenBloodSlot" },
+      { "field": "slot20", "type": "DeathScreenBloodSlot" },
+      { "field": "slot21", "type": "DeathScreenBloodSlot" },
+      { "field": "slot22", "type": "DeathScreenBloodSlot" },
+      { "field": "slot23", "type": "DeathScreenBloodSlot" },
+      { "field": "slot24", "type": "DeathScreenBloodSlot" },
+      { "field": "slot25", "type": "DeathScreenBloodSlot" },
+      { "field": "slot26", "type": "DeathScreenBloodSlot" },
+      { "field": "slot27", "type": "DeathScreenBloodSlot" },
+      { "field": "slot28", "type": "DeathScreenBloodSlot" },
+      { "field": "slot29", "type": "DeathScreenBloodSlot" },
+      { "field": "slot30", "type": "DeathScreenBloodSlot" }
+    ],
+    "DeathScreenBloodSlot": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "size_x?", "type": "Float" },
+      { "field": "size_y?", "type": "Float" },
+      { "field": "texture_column", "type": "Dword", "comment": "normally set to 4" },
+      { "field": "texture_row", "type": "Dword", "comment": "normally set to 5" },
+      {
+        "field": "texture_range",
+        "type": "Dword",
+        "comment": "most of the time set to 2, the texture_column can get +0, +1 or +2 (the 3 sprites for blood texture)"
+      }
     ]
   }
 }
