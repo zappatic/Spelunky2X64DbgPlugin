@@ -953,8 +953,11 @@
     "ConstellationLines",
     "ConstellationLine",
     "JournalPopupUI",
-    "JournalProgression",
-    "JournalProgressionSlot",
+    "JournalProgressStickerSlot",
+    "JournalProgressStickerSlots",
+    "JournalProgressStainSlot",
+    "JournalProgressStainSlots",
+    "JournalProgressThemeSlots",
     "JournalPage",
     "JournalPageProgress",
     "JournalPageJournalMenu",
@@ -970,7 +973,6 @@
     "JournalPageRecap",
     "JournalPagePlayerProfile",
     "JournalPageLastGamePlayed",
-    "ThemeProgression",
     "ArenaState",
     "ArenaConfigArenas",
     "ArenaConfigItems",
@@ -1007,8 +1009,6 @@
     "LiquidLake",
     "BackLayerRelated",
     "CollisionInfo",
-    "DeathScreenBlood",
-    "DeathScreenBloodSlot",
     "EntityRegions",
     "ItemOwnerDetails",
     "GridPosition"
@@ -1055,7 +1055,7 @@
       "28": "Online loading",
       "29": "Online lobby"
     },
-    "theme_progression_themes": {
+    "journal_progress_themes": {
       "0": "Unset",
       "1": "Dwelling",
       "2": "Jungle",
@@ -4053,9 +4053,21 @@
       { "field": "unknown2d", "type": "UnsignedByte" },
       { "field": "waddler_storage", "type": "WaddlerStorage" },
       { "field": "waddler_storage_meta", "type": "WaddlerStorageMeta" },
-      { "field": "journal_progression", "type": "JournalProgression" },
-      { "field": "death_screen_blood_splats", "type": "DeathScreenBlood" },
-      { "field": "theme_progression", "type": "ThemeProgression" },
+      {
+        "field": "journal_progress_sticker_slots",
+        "type": "JournalProgressStickerSlots",
+        "comment": "stickers for notable items and entities in journal progress page"
+      },
+      {
+        "field": "journal_progress_stain_slots",
+        "type": "JournalProgressStainSlots",
+        "comment": "blood splats and paw prints in journal progress page"
+      },
+      {
+        "field": "journal_progress_theme_slots",
+        "type": "JournalProgressThemeSlots",
+        "comment": "visited themes in journal progress page"
+      },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5a", "type": "UnsignedByte" },
@@ -4591,51 +4603,12 @@
       },
       { "field": "shop_owner", "type": "EntityUID" }
     ],
-    "JournalProgression": [
-      { "field": "count", "type": "UnsignedWord" },
-      { "field": "slot1", "type": "JournalProgressionSlot" },
-      { "field": "slot2", "type": "JournalProgressionSlot" },
-      { "field": "slot3", "type": "JournalProgressionSlot" },
-      { "field": "slot4", "type": "JournalProgressionSlot" },
-      { "field": "slot5", "type": "JournalProgressionSlot" },
-      { "field": "slot6", "type": "JournalProgressionSlot" },
-      { "field": "slot7", "type": "JournalProgressionSlot" },
-      { "field": "slot8", "type": "JournalProgressionSlot" },
-      { "field": "slot9", "type": "JournalProgressionSlot" },
-      { "field": "slot10", "type": "JournalProgressionSlot" },
-      { "field": "slot11", "type": "JournalProgressionSlot" },
-      { "field": "slot12", "type": "JournalProgressionSlot" },
-      { "field": "slot13", "type": "JournalProgressionSlot" },
-      { "field": "slot14", "type": "JournalProgressionSlot" },
-      { "field": "slot15", "type": "JournalProgressionSlot" },
-      { "field": "slot16", "type": "JournalProgressionSlot" },
-      { "field": "slot17", "type": "JournalProgressionSlot" },
-      { "field": "slot18", "type": "JournalProgressionSlot" },
-      { "field": "slot19", "type": "JournalProgressionSlot" },
-      { "field": "slot20", "type": "JournalProgressionSlot" },
-      { "field": "slot21", "type": "JournalProgressionSlot" },
-      { "field": "slot22", "type": "JournalProgressionSlot" },
-      { "field": "slot23", "type": "JournalProgressionSlot" },
-      { "field": "slot24", "type": "JournalProgressionSlot" },
-      { "field": "slot25", "type": "JournalProgressionSlot" },
-      { "field": "slot26", "type": "JournalProgressionSlot" },
-      { "field": "slot27", "type": "JournalProgressionSlot" },
-      { "field": "slot28", "type": "JournalProgressionSlot" },
-      { "field": "slot29", "type": "JournalProgressionSlot" },
-      { "field": "slot30", "type": "JournalProgressionSlot" },
-      { "field": "slot31", "type": "JournalProgressionSlot" },
-      { "field": "slot32", "type": "JournalProgressionSlot" },
-      { "field": "slot33", "type": "JournalProgressionSlot" },
-      { "field": "slot34", "type": "JournalProgressionSlot" },
-      { "field": "slot35", "type": "JournalProgressionSlot" },
-      { "field": "slot36", "type": "JournalProgressionSlot" },
-      { "field": "slot37", "type": "JournalProgressionSlot" },
-      { "field": "slot38", "type": "JournalProgressionSlot" },
-      { "field": "slot39", "type": "JournalProgressionSlot" },
-      { "field": "slot40", "type": "JournalProgressionSlot" }
-    ],
-    "JournalProgressionSlot": [
-      { "field": "unknown1", "type": "UnsignedByte" },
+    "JournalProgressStickerSlot": [
+      {
+        "field": "theme",
+        "type": "State8",
+        "ref": "journal_progress_themes"
+      },
       {
         "field": "grid_position",
         "type": "Byte",
@@ -4643,54 +4616,114 @@
       },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "entity", "type": "EntityDBID" },
+      { "field": "entity_type", "type": "EntityDBID" },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
       { "field": "angle", "type": "Float" }
     ],
-    "ThemeProgression": [
+    "JournalProgressStickerSlots": [
       { "field": "count", "type": "UnsignedByte" },
+      { "field": "padding", "type": "Skip", "offset": 1 },
+      { "field": "slot1", "type": "JournalProgressStickerSlot" },
+      { "field": "slot2", "type": "JournalProgressStickerSlot" },
+      { "field": "slot3", "type": "JournalProgressStickerSlot" },
+      { "field": "slot4", "type": "JournalProgressStickerSlot" },
+      { "field": "slot5", "type": "JournalProgressStickerSlot" },
+      { "field": "slot6", "type": "JournalProgressStickerSlot" },
+      { "field": "slot7", "type": "JournalProgressStickerSlot" },
+      { "field": "slot8", "type": "JournalProgressStickerSlot" },
+      { "field": "slot9", "type": "JournalProgressStickerSlot" },
+      { "field": "slot10", "type": "JournalProgressStickerSlot" },
+      { "field": "slot11", "type": "JournalProgressStickerSlot" },
+      { "field": "slot12", "type": "JournalProgressStickerSlot" },
+      { "field": "slot13", "type": "JournalProgressStickerSlot" },
+      { "field": "slot14", "type": "JournalProgressStickerSlot" },
+      { "field": "slot15", "type": "JournalProgressStickerSlot" },
+      { "field": "slot16", "type": "JournalProgressStickerSlot" },
+      { "field": "slot17", "type": "JournalProgressStickerSlot" },
+      { "field": "slot18", "type": "JournalProgressStickerSlot" },
+      { "field": "slot19", "type": "JournalProgressStickerSlot" },
+      { "field": "slot20", "type": "JournalProgressStickerSlot" },
+      { "field": "slot21", "type": "JournalProgressStickerSlot" },
+      { "field": "slot22", "type": "JournalProgressStickerSlot" },
+      { "field": "slot23", "type": "JournalProgressStickerSlot" },
+      { "field": "slot24", "type": "JournalProgressStickerSlot" },
+      { "field": "slot25", "type": "JournalProgressStickerSlot" },
+      { "field": "slot26", "type": "JournalProgressStickerSlot" },
+      { "field": "slot27", "type": "JournalProgressStickerSlot" },
+      { "field": "slot28", "type": "JournalProgressStickerSlot" },
+      { "field": "slot29", "type": "JournalProgressStickerSlot" },
+      { "field": "slot30", "type": "JournalProgressStickerSlot" },
+      { "field": "slot31", "type": "JournalProgressStickerSlot" },
+      { "field": "slot32", "type": "JournalProgressStickerSlot" },
+      { "field": "slot33", "type": "JournalProgressStickerSlot" },
+      { "field": "slot34", "type": "JournalProgressStickerSlot" },
+      { "field": "slot35", "type": "JournalProgressStickerSlot" },
+      { "field": "slot36", "type": "JournalProgressStickerSlot" },
+      { "field": "slot37", "type": "JournalProgressStickerSlot" },
+      { "field": "slot38", "type": "JournalProgressStickerSlot" },
+      { "field": "slot39", "type": "JournalProgressStickerSlot" },
+      { "field": "slot40", "type": "JournalProgressStickerSlot" }
+    ],
+    "JournalProgressStainSlot": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "angle", "type": "Float" },
+      { "field": "scale", "type": "Float" },
+      { "field": "texture_column", "type": "Dword" },
+      { "field": "texture_row", "type": "Dword" },
       {
-        "field": "theme1",
-        "type": "State8",
-        "ref": "theme_progression_themes"
+        "field": "texture_range",
+        "type": "UnsignedByte",
+        "comment": "when stain is first displayed, rolls [0, texture_range] and adds it to texture_column"
       },
-      {
-        "field": "theme2",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      {
-        "field": "theme3",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      {
-        "field": "theme4",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      {
-        "field": "theme5",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      {
-        "field": "theme6",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      {
-        "field": "theme7",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      {
-        "field": "theme8",
-        "type": "State8",
-        "ref": "theme_progression_themes"
-      },
-      { "field": "theme9", "type": "State8", "ref": "theme_progression_themes" }
+      { "field": "padding", "type": "Skip", "offset": 3 }
+    ],
+    "JournalProgressStainSlots": [
+      { "field": "count", "type": "UnsignedByte" },
+      { "field": "padding", "type": "Skip", "offset": 3 },
+      { "field": "slot1", "type": "JournalProgressStainSlot" },
+      { "field": "slot2", "type": "JournalProgressStainSlot" },
+      { "field": "slot3", "type": "JournalProgressStainSlot" },
+      { "field": "slot4", "type": "JournalProgressStainSlot" },
+      { "field": "slot5", "type": "JournalProgressStainSlot" },
+      { "field": "slot6", "type": "JournalProgressStainSlot" },
+      { "field": "slot7", "type": "JournalProgressStainSlot" },
+      { "field": "slot8", "type": "JournalProgressStainSlot" },
+      { "field": "slot9", "type": "JournalProgressStainSlot" },
+      { "field": "slot10", "type": "JournalProgressStainSlot" },
+      { "field": "slot11", "type": "JournalProgressStainSlot" },
+      { "field": "slot12", "type": "JournalProgressStainSlot" },
+      { "field": "slot13", "type": "JournalProgressStainSlot" },
+      { "field": "slot14", "type": "JournalProgressStainSlot" },
+      { "field": "slot15", "type": "JournalProgressStainSlot" },
+      { "field": "slot16", "type": "JournalProgressStainSlot" },
+      { "field": "slot17", "type": "JournalProgressStainSlot" },
+      { "field": "slot18", "type": "JournalProgressStainSlot" },
+      { "field": "slot19", "type": "JournalProgressStainSlot" },
+      { "field": "slot20", "type": "JournalProgressStainSlot" },
+      { "field": "slot21", "type": "JournalProgressStainSlot" },
+      { "field": "slot22", "type": "JournalProgressStainSlot" },
+      { "field": "slot23", "type": "JournalProgressStainSlot" },
+      { "field": "slot24", "type": "JournalProgressStainSlot" },
+      { "field": "slot25", "type": "JournalProgressStainSlot" },
+      { "field": "slot26", "type": "JournalProgressStainSlot" },
+      { "field": "slot27", "type": "JournalProgressStainSlot" },
+      { "field": "slot28", "type": "JournalProgressStainSlot" },
+      { "field": "slot29", "type": "JournalProgressStainSlot" },
+      { "field": "slot30", "type": "JournalProgressStainSlot" }
+    ],
+    "JournalProgressThemeSlots": [
+      { "field": "count", "type": "UnsignedByte" },
+      { "field": "slot1", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot2", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot3", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot4", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot5", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot6", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot7", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot8", "type": "State8", "ref": "journal_progress_themes" },
+      { "field": "slot9", "type": "State8", "ref": "journal_progress_themes" }
     ],
     "ArenaState": [
       {
@@ -15295,40 +15328,6 @@
       }
     ],
     "UnknownAiStuff": [{ "field": "__vftable", "type": "DataPointer" }],
-    "DeathScreenBlood": [
-      { "field": "count", "type": "Byte" },
-      { "field": "-", "type": "Skip", "offset": 3, "comment": "padding" },
-      { "field": "slot1", "type": "DeathScreenBloodSlot" },
-      { "field": "slot2", "type": "DeathScreenBloodSlot" },
-      { "field": "slot3", "type": "DeathScreenBloodSlot" },
-      { "field": "slot4", "type": "DeathScreenBloodSlot" },
-      { "field": "slot5", "type": "DeathScreenBloodSlot" },
-      { "field": "slot6", "type": "DeathScreenBloodSlot" },
-      { "field": "slot7", "type": "DeathScreenBloodSlot" },
-      { "field": "slot8", "type": "DeathScreenBloodSlot" },
-      { "field": "slot9", "type": "DeathScreenBloodSlot" },
-      { "field": "slot10", "type": "DeathScreenBloodSlot" },
-      { "field": "slot11", "type": "DeathScreenBloodSlot" },
-      { "field": "slot12", "type": "DeathScreenBloodSlot" },
-      { "field": "slot13", "type": "DeathScreenBloodSlot" },
-      { "field": "slot14", "type": "DeathScreenBloodSlot" },
-      { "field": "slot15", "type": "DeathScreenBloodSlot" },
-      { "field": "slot16", "type": "DeathScreenBloodSlot" },
-      { "field": "slot17", "type": "DeathScreenBloodSlot" },
-      { "field": "slot18", "type": "DeathScreenBloodSlot" },
-      { "field": "slot19", "type": "DeathScreenBloodSlot" },
-      { "field": "slot20", "type": "DeathScreenBloodSlot" },
-      { "field": "slot21", "type": "DeathScreenBloodSlot" },
-      { "field": "slot22", "type": "DeathScreenBloodSlot" },
-      { "field": "slot23", "type": "DeathScreenBloodSlot" },
-      { "field": "slot24", "type": "DeathScreenBloodSlot" },
-      { "field": "slot25", "type": "DeathScreenBloodSlot" },
-      { "field": "slot26", "type": "DeathScreenBloodSlot" },
-      { "field": "slot27", "type": "DeathScreenBloodSlot" },
-      { "field": "slot28", "type": "DeathScreenBloodSlot" },
-      { "field": "slot29", "type": "DeathScreenBloodSlot" },
-      { "field": "slot30", "type": "DeathScreenBloodSlot" }
-    ],
     "StdString": [
       {
         "field": "data1",
@@ -15356,27 +15355,6 @@
       },
       { "field": "length", "type": "UnsignedQword" },
       { "field": "capacity", "type": "UnsignedQword" }
-    ],
-    "DeathScreenBloodSlot": [
-      { "field": "x", "type": "Float" },
-      { "field": "y", "type": "Float" },
-      { "field": "size_x?", "type": "Float" },
-      { "field": "size_y?", "type": "Float" },
-      {
-        "field": "texture_column",
-        "type": "Dword",
-        "comment": "normally set to 4"
-      },
-      {
-        "field": "texture_row",
-        "type": "Dword",
-        "comment": "normally set to 5"
-      },
-      {
-        "field": "texture_range",
-        "type": "Dword",
-        "comment": "most of the time set to 2, the texture_column can get +0, +1 or +2 (the 3 sprites for blood texture)"
-      }
     ]
   }
 }
