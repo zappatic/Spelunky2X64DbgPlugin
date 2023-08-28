@@ -158,3 +158,18 @@ The table offset is the offset from the first entry in the table, D3Dcompile.
 ![Virtual table lookup](/resources/docs_virtual_table_lookup.png)
 
 To look up the offset of a specific function relative to the base _vftable of an entry, right click somewhere in the function (in the CPU tab) and choose Spelunky2 > Lookup in virtual table. A list will be shown with all preceding named symbols, and the relative offset this function has.
+
+## Build with Visual Studio Community
+
+Build requires QT 5.3.2, you can get the "installed" version from x64dbg repository [here](https://sourceforge.net/projects/x64dbg/files/qt/) (extract wherever you want with 7zip)
+
+After you clone the repository go to `Project->CMake Settings for Spelunky2`  
+Visual Studio should open/create **CMakeSettings.json** file, now:
+1. Change the **Configuration type** to `Release` and scroll down to **CMake Variables and cache**
+2. Make sure that **CMAKE_BUILD_TYPE** is set as `Release` here as well
+3. You need to set the **Qt5ROOT** as the path to a folder in the QT that contains folders: **bin**, **doc**, **include**, **lib** etc. example: `C:/Qt/Qt5.6.3/5.6.3/msvc2013_64`
+4. You also need to set **X64DBG_PLUGINS_ROOT** as the path to your x64dbg plugins folder, this is only to copy the plugin files over for you (after the build)
+5. If you get an error about the copy operation, you may need to change `/Release/Spelunky2.dp64"` to `/Spelunky2.dp64"` in **CMakeLists.txt**
+6. Save the json file
+
+After that CMake should re-generate and let you build
