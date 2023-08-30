@@ -324,8 +324,8 @@ namespace S2Plugin
       public:
         size_t spelunky2AfterBundle();
         size_t spelunky2AfterBundleSize();
-        std::string getEntityName(size_t offset, EntityDB* entityDB);
-        uint32_t getEntityTypeID(size_t offset);
+        std::string getEntityName(size_t offset, EntityDB* entityDB) const;
+        uint32_t getEntityTypeID(size_t offset) const;
 
         void displayError(const char* fmt, ...);
         void findSpelunky2InMemory();

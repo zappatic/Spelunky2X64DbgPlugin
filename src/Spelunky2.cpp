@@ -135,7 +135,7 @@ size_t S2Plugin::Spelunky2::spelunky2AfterBundleSize()
 //     return offset;
 // }
 
-std::string S2Plugin::Spelunky2::getEntityName(size_t offset, EntityDB* entityDB)
+std::string S2Plugin::Spelunky2::getEntityName(size_t offset, EntityDB* entityDB) const
 {
     std::string entityName = "";
     if (offset == 0)
@@ -156,7 +156,7 @@ std::string S2Plugin::Spelunky2::getEntityName(size_t offset, EntityDB* entityDB
     return entityName;
 }
 
-uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset)
+uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset) const
 {
     if (offset == 0)
     {
