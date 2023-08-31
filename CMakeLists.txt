@@ -85,6 +85,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Views/ViewStdVector.h
 	include/Views/ViewJournalPage.h
 	include/Views/ViewThreads.h
+	include/Views/ViewStdMap.h
 	include/QtHelpers/StyledItemDelegateHTML.h
 	include/QtHelpers/StyledItemDelegateColorPicker.h
 	include/QtHelpers/TreeViewMemoryFields.h
