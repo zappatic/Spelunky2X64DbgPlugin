@@ -157,7 +157,7 @@ void S2Plugin::ViewEntities::refreshEntities()
             }
         }
     }
-    post_entityuid_lookup:
+post_entityuid_lookup:
     // loop only thru entities with choosen masks
 
     StdMap<MASK, size_t> map0{layer0 + 0x40};
@@ -177,7 +177,7 @@ void S2Plugin::ViewEntities::refreshEntities()
                 auto pointers = Script::Memory::ReadQword(ent_list);
                 auto list_count = Script::Memory::ReadDword(ent_list + 20);
                 field_count += list_count;
-                if (!isUIDlookupSuccess && checkbox.mCheckbox->checkState() == Qt::Checked)
+                if (!isUIDlookupSuccess && totalEntities < 10000u && checkbox.mCheckbox->checkState() == Qt::Checked)
                 {
                     for (size_t i = 0; i < list_count; ++i)
                     {
@@ -196,7 +196,7 @@ void S2Plugin::ViewEntities::refreshEntities()
                 auto pointers = Script::Memory::ReadQword(ent_list);
                 auto list_count = Script::Memory::ReadDword(ent_list + 20);
                 field_count += list_count;
-                if (!isUIDlookupSuccess && checkbox.mCheckbox->checkState() == Qt::Checked)
+                if (!isUIDlookupSuccess && totalEntities < 10000u && checkbox.mCheckbox->checkState() == Qt::Checked)
                 {
                     for (size_t i = 0; i < list_count; ++i)
                     {
