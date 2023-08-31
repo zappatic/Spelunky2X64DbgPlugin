@@ -9884,9 +9884,9 @@
       { "field": "_Size", "type": "UnsignedQword" }
     ],
     "MapBucket": [
-      { "field": "_Left", "type": "MapBucket1" },
-      { "field": "_Parent", "type": "MapBucket1" },
-      { "field": "_Right", "type": "MapBucket1" },
+      { "field": "_Left", "type": "MapBucket1", "comment": "since this is head, point's to the `begin` bucket" },
+      { "field": "_Parent", "type": "MapBucket1", "comment": "since this is head, point's to the root bucket" },
+      { "field": "_Right", "type": "MapBucket1", "comment": "since this is head, point's to the last bucket" },
       { "field": "_Color", "type": "Bool", "comment": "true = black" },
       { "field": "_IsNil", "type": "Bool" },
       { "field": "padding1", "type": "Byte" },
