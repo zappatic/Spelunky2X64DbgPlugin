@@ -2823,7 +2823,7 @@
       { "field": "spear_dangler", "type": "TextureRenderingInfo" },
       { "field": "play_scroll", "type": "TextureRenderingInfo" },
       { "field": "info_toast", "type": "TextureRenderingInfo" },
-      { "field": "unknown15", "type": "TextureRenderingInfo" },
+      { "field": "username_scroll", "type": "TextureRenderingInfo" },
       { "field": "unknown16a", "type": "UnsignedDword" },
       { "field": "unknown16b", "type": "UnsignedDword" },
       { "field": "cthulhu_sound", "type": "SoundMeta" },
@@ -2834,7 +2834,7 @@
       { "field": "cthulhu_disc_y", "type": "Float" },
       { "field": "cthulhu_timer", "type": "Float" },
       { "field": "unknown16k", "type": "DataPointer" },
-      { "field": "unknown17", "type": "StdVector", "vectortype": "DataPointer" },
+      { "field": "unknown17", "type": "StdVector", "vectortype": "DataPointer", "comment": "possibly contains menu pages that don't have their separate screens" },
       { "field": "unknown20", "type": "StdVector", "vectortype": "Dword" },
       { "field": "buttons?", "type": "Flags32" },
       { "field": "menu_selection_direction", "type": "Dword", "comment": "1: up, 0: down, -1: no input" },
@@ -2915,12 +2915,12 @@
       { "field": "spear_6_dangle_angle", "type": "Float" },
       { "field": "play_scroll_descend_timer", "type": "Float" },
       { "field": "scroll_text", "type": "StringsTableID" },
-      { "field": "unknown29c", "type": "Float" },
-      { "field": "unknown29d", "type": "Float" },
+      { "field": "unknown29c", "type": "Float", "comment": "possibly screen shake related" },
+      { "field": "unknown29d", "type": "Float", "comment": "possibly screen shake related" },
       { "field": "unknown29e", "type": "Float" },
       { "field": "unknown29f", "type": "Float" },
       { "field": "unknown30", "type": "Float" },
-      { "field": "cthulhu_animation", "type": "Qword" }
+      { "field": "cthulhu_animation", "type": "Qword", "comment": "possibly off by one Qword" }
     ],
     "ScreenOptionsPointer": [
       {
