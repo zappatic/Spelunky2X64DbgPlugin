@@ -1581,6 +1581,23 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             }
             break;
         }
+        case MemoryFieldType::StdMap:
+        {
+            itemValue->setData("<font color='blue'><u>Show contents</u></font>", Qt::DisplayRole);
+            itemValue->setData(memoryOffset, gsRoleRawValue);
+            itemValue->setData(QString::fromStdString(field.mapkeyType), gsRoleFieldType);
+            itemValue->setData(QString::fromStdString(field.mapvalueType), gsRoleFieldType2);
+            // no comparison in Entity
+
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
+                }
+            }
+            break;
+        }
         case MemoryFieldType::Skip:
         {
             break;
@@ -1812,6 +1829,17 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     if (offset != 0)
                     {
                         mToolbar->showStdVector(offset, fieldType);
+                    }
+                    break;
+                }
+                case MemoryFieldType::StdMap:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    auto fieldkeyType = clickedItem->data(gsRoleFieldType).toString().toStdString();
+                    auto fieldvalueType = clickedItem->data(gsRoleFieldType2).toString().toStdString();
+                    if (offset != 0)
+                    {
+                        mToolbar->showStdMap(offset, fieldkeyType, fieldvalueType);
                     }
                     break;
                 }

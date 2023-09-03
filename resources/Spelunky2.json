@@ -907,14 +907,15 @@
     "GetEntitiesResultPointer",
     "MapBucket",
     "MapBucket1",
-    "MapBucket2",
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2",
-    "MysteryLayerPointer1",
+    "EntityRegionsPointer",
     "PointerToMap",
     "PlayerSlotPointer",
     "MultiLineTextRenderingPointer",
-    "UnknownAiStuff"
+    "UnknownAiStuff",
+    "PointerToPointerToEntityList",
+    "PointerToEntityList"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -923,7 +924,6 @@
     "Rect",
     "LightParams",
     "Color",
-    "Map",
     "UnorderedMap",
     "EmittedParticlesInfo",
     "TextureRenderingInfo",
@@ -1011,7 +1011,9 @@
     "BackLayerRelated",
     "CollisionInfo",
     "DeathScreenBlood",
-    "DeathScreenBloodSlot"
+    "DeathScreenBloodSlot",
+    "EntityRegions",
+    "StdSet"
   ],
   "refs": {
     "screen_states": {
@@ -5364,7 +5366,7 @@
     ],
     "PointerToMap":
     [
-    { "field": "unknown", "type": "Map" }
+      { "field": "unknown", "type": "StdMap" }
     ],
     "LiquidLake":
     [
@@ -9484,16 +9486,14 @@
         }
       },
       {
-        "field": "behavior_map",
-        "type": "Map",
-        "comment": "map of avaible behaviors for this entity"
+        "field": "behaviors_map",
+        "type": "StdMap",
+        "keytype": "UnsignedDword",
+        "valuetype": "DataPointer",
+        "comment": "map of avaible behaviors for this entity, behavior is just a vtable"
       },
-      { "field": "pb0", "type": "Map" },
-      {
-        "field": "behavior",
-        "type": "DataPointer",
-        "comment": "pointer to array element, that array is list of pointers that point to a list of code pointers (funcitons)"
-      },
+      { "field": "behaviors", "type": "StdSet", "keytype": "DataPointer" },
+      { "field": "current_behavior", "type": "DataPointer" },
       { "field": "ic8", "type": "UnknownAiStuff" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
@@ -9582,8 +9582,9 @@
       },
       {
         "field": "powerups",
-        "type": "Map",
-        "comment": "std::map<uint32_t, Entity*>"
+        "type": "StdMap",
+        "keytype": "UnsignedDword",
+        "valuetype": "EntityPointer"
       }
     ],
     "Monster": [
@@ -9879,69 +9880,45 @@
       { "field": "slot_9", "type": "UnsignedDword" },
       { "field": "slot_10", "type": "UnsignedDword" }
     ],
-    "Map": [
-      { "field": "items", "type": "MapBucket" },
-      { "field": "size", "type": "UnsignedQword" }
+    "StdMap": [
+      { "field": "_Myhead", "type": "MapBucket", "comment": "also the 'end' bucket" },
+      { "field": "_Size", "type": "UnsignedQword" }
+    ],
+    "StdSet": [
+      { "field": "_Myhead", "type": "MapBucket", "comment": "also the 'end' bucket" },
+      { "field": "_Size", "type": "UnsignedQword" }
     ],
     "MapBucket": [
-      { "field": "unknown1", "type": "MapBucket1" },
-      { "field": "unknown2", "type": "MapBucket1" },
-      { "field": "unknown3", "type": "MapBucket1" },
-      {
-        "field": "unknown4",
-        "type": "Bool",
-        "comment": "if both bools are set true the bucket is marked as deleted"
-      },
-      { "field": "unknown5", "type": "Bool" },
+      { "field": "_Left", "type": "MapBucket1", "comment": "since this is head, point's to the `begin` bucket" },
+      { "field": "_Parent", "type": "MapBucket1", "comment": "since this is head, point's to the root bucket" },
+      { "field": "_Right", "type": "MapBucket1", "comment": "since this is head, point's to the last bucket" },
+      { "field": "_Color", "type": "Bool", "comment": "true = black" },
+      { "field": "_IsNil", "type": "Bool" },
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
-      { "field": "padding3?", "type": "Dword" },
-      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
+      { "field": "padding3", "type": "Dword" },
+      { 
+        "field": "key",
+        "type": "Dword",
+        "comment": "key and value are treated as one struct, if they fit, then can be placed in place of the padding"
+      },
       {
         "field": "value",
         "type": "Dword",
-        "comment": "type obviously may vary, at the end there is always Qword with small number"
+        "comment": "std::set is identical, just there is only the key, value doesn't exists"
       }
     ],
     "MapBucket1": [
-      { "field": "unknown1", "type": "MapBucket2" },
-      { "field": "unknown2", "type": "MapBucket2" },
-      { "field": "unknown3", "type": "MapBucket2" },
-      {
-        "field": "unknown4",
-        "type": "Bool",
-        "comment": "if both bools are set true the bucket is marked as deleted"
-      },
-      { "field": "unknown5", "type": "Bool" },
+      { "field": "_Left", "type": "DataPointer" },
+      { "field": "_Parent", "type": "DataPointer" },
+      { "field": "_Right", "type": "DataPointer" },
+      { "field": "_Color", "type": "Bool", "comment": "true = black" },
+      { "field": "_IsNil", "type": "Bool" },
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
-      { "field": "padding3?", "type": "Dword" },
+      { "field": "padding3", "type": "Dword" },
       { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
-      {
-        "field": "value",
-        "type": "Dword",
-        "comment": "type obviously may vary"
-      }
-    ],
-    "MapBucket2": [
-      { "field": "unknown1", "type": "DataPointer" },
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "unknown3", "type": "DataPointer" },
-      {
-        "field": "unknown4",
-        "type": "Bool",
-        "comment": "if both bools are set true the bucket is marked as deleted"
-      },
-      { "field": "unknown5", "type": "Bool" },
-      { "field": "padding1", "type": "Byte" },
-      { "field": "padding2", "type": "Byte" },
-      { "field": "padding3?", "type": "Dword" },
-      { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
-      {
-        "field": "value",
-        "type": "Dword",
-        "comment": "type obviously may vary"
-      }
+      { "field": "value", "type": "Dword", "comment": "type obviously may vary" }
     ],
     "UnorderedMap": [
       { "field": "max_load_factor", "type": "Float" },
@@ -10079,28 +10056,42 @@
         "type": "EntityList",
         "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
       },
-      { "field": "unknown1", "type": "MysteryLayerPointer1" },
-      { "field": "entities_by_mask", "type": "Map" },
-
-      { "field": "entities_by_unknown", "type": "EntityList" },
+      { "field": "unknown1", "type": "EntityRegionsPointer" },
+      { "field": "entities_by_mask", "type": "StdMap", "keytype": "UnsignedDword", "valuetype": "EntityList" },
+      { "field": "entities_by_region1", "type": "EntityList", "comment": "31*21*EntityList" },
       {
         "field": "-",
         "type": "Skip",
-        "offset": 15504,
-        "comment": "647*EntityList (minus on above)"
+        "offset": 15600,
+        "comment": "31*21*EntityList (minus on above)"
       },
-
+      { "field": "entities_by_region2", "type": "EntityList", "comment": "31*21*EntityList" },
       {
         "field": "-",
         "type": "Skip",
-        "offset": 46968,
-        "comment": "unknown, maybe more of the array above?"
+        "offset": 15600,
+        "comment": "31*21*EntityList (minus on above)"
       },
-
+      { "field": "entities_by_region3", "type": "EntityList", "comment": "31*21*EntityList" },
       {
-        "field": "unknown_map/set",
-        "type": "Map",
-        "comment": "some movable and liquids and something else maybe?"
+        "field": "-",
+        "type": "Skip",
+        "offset": 15600,
+        "comment": "31*21*EntityList (minus on above)"
+      },
+      { "field": "entities_by_region4", "type": "EntityList", "comment": "31*21*EntityList" },
+      {
+        "field": "-",
+        "type": "Skip",
+        "offset": 15600,
+        "comment": "31*21*EntityList (minus on above)"
+      },
+      {
+        "field": "entity_regions",
+        "type": "StdMap",
+        "keytype": "UnsignedDword",
+        "valuetype": "EntityRegions",
+        "comment": "key is uid, all entities except FX, FLOOR, DECORATION, BG, SHADOW and LOGICAL"
       },
       { "field": "grid_entities_begin", "type": "Qword" },
       {
@@ -10140,7 +10131,7 @@
         "type": "StdVector",
         "vectortype": "EntityPointer"
       },
-      { "field": "unknown6", "type": "MysteryLayerPointer1" },
+      { "field": "unknown6", "type": "PointerToMap", "comment": "actually std::list<float>*" },
       { "field": "expired_entities", "type": "EntityList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },
@@ -10189,6 +10180,15 @@
         "comment": "next layer below"
       }
     ],
+    "PointerToEntityList": [
+    { "field": "entities", "type": "EntityList" }
+    ],
+    "PointerToPointerToEntityList": [
+    { "field": "region1", "type": "PointerToEntityList", "comment":  "those are dynamically assigned, put 4 just as example"  },
+    { "field": "region2", "type": "PointerToEntityList" },
+    { "field": "region3", "type": "PointerToEntityList" },
+    { "field": "region4", "type": "PointerToEntityList", "comment":  "can be more than 4" }
+    ],
     "EntityList": [
       {
         "field": "entities",
@@ -10203,31 +10203,17 @@
       { "field": "capacity", "type": "UnsignedDword" },
       { "field": "size", "type": "UnsignedDword" }
     ],
-    "MysteryLayerPointer1": [
+    "EntityRegions": [
       {
-        "field": "unknown1",
-        "type": "DataPointer",
-        "comment": "points to 4 EntityList?"
+        "field": "regions",
+        "type": "PointerToPointerToEntityList",
+        "comment": "EntityList**"
       },
-      { "field": "unknown2a", "type": "UnsignedByte" },
-      { "field": "unknown2b", "type": "UnsignedByte" },
-      {
-        "field": "unknown2c",
-        "type": "UnsignedByte",
-        "comment": "padding probably"
-      },
-      {
-        "field": "unknown2d",
-        "type": "UnsignedByte",
-        "comment": "padding probably"
-      },
-      {
-        "field": "unknown3",
-        "type": "UnsignedDword",
-        "comment": "padding probably"
-      },
-      { "field": "unknown4", "type": "UnsignedQword" },
-      { "field": "unknown5", "type": "UnsignedQword" }
+      { "field": "size", "type": "UnsignedByte" },
+      { "field": "cap", "type": "UnsignedByte" }
+    ],
+    "EntityRegionsPointer": [
+      { "field": "entity_regions", "type": "EntityRegions" }
     ],
     "EntityListPointer": [
       { "field": "entity_1", "type": "EntityPointer" },
@@ -10934,7 +10920,7 @@
       }
     ],
     "Yang": [
-      { "field": "turkeys_in_den", "type": "Map" },
+      { "field": "turkeys_in_den", "type": "StdSet", "keytype": "EntityUID" },
       { "field": "unknown4", "type": "UnsignedByte" },
       { "field": "unknown5", "type": "UnsignedByte" },
       {
@@ -14101,8 +14087,8 @@
       { "field": "unknown26", "type": "Dword" },
       {
         "field": "unknown27",
-        "type": "Map",
-        "comment": "added map for now, it's list of 3 pointers"
+        "type": "StdMap",
+        "comment": "added map for now, the size seam to always be 0"
       }
     ],
     "EggshipCenterJetFlame": [
@@ -14360,7 +14346,7 @@
       { "field": "padding", "type": "Dword" },
       { "field": "illumination", "type": "IlluminationPointer" }
     ],
-    "FxWitchdoctorHint": [{ "field": "unknown", "type": "Map" }],
+    "FxWitchdoctorHint": [{ "field": "unknown", "type": "StdSet", "keytype": "EntityUID" }],
     "FxNecromancerANKH": [{ "field": "unknown", "type": "Float" }],
     "FxWebbedEffect": [{ "field": "visible", "type": "Bool" }],
     "FxUnderwaterBubble": [

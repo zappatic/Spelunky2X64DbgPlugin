@@ -179,6 +179,28 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                     dprintf("No vectortype specified for StdVector %s\n", key.c_str());
                 }
             }
+            else if (fieldTypeStr == "StdMap")
+            {
+                memField.type = MemoryFieldType::StdMap;
+                if (field.contains("keytype"))
+                {
+                    memField.mapkeyType = field["keytype"].get<std::string>();
+                }
+                else
+                {
+                    memField.mapkeyType = "UnsignedQword";
+                    dprintf("No keytype specified for StdMap %s\n", key.c_str());
+                }
+                if (field.contains("valuetype"))
+                {
+                    memField.mapvalueType = field["valuetype"].get<std::string>();
+                }
+                else
+                {
+                    memField.mapvalueType = "UnsignedQword";
+                    dprintf("No valuetype specified for StdMap %s\n", key.c_str());
+                }
+            }
             else
             {
                 if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)

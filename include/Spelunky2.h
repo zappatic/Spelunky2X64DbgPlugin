@@ -39,6 +39,7 @@ namespace S2Plugin
     static const uint16_t gsRoleFieldType = Qt::UserRole + 17;
     static const uint16_t gsRoleBaseFieldName = Qt::UserRole + 18;
     static const uint16_t gsRoleEntireMemoryField = Qt::UserRole + 19;
+    static const uint16_t gsRoleFieldType2 = Qt::UserRole + 20;
 
     static const char* gsJSONDragDropMemoryField_UID = "uid";
     static const char* gsJSONDragDropMemoryField_Offset = "offset";
@@ -92,6 +93,7 @@ namespace S2Plugin
         TextureDBPointer,
         Vector,
         StdVector,
+        StdMap,
         ConstCharPointer,
         ConstCharPointerPointer,
         EntitySubclass,               // a subclass of an entity defined in json
@@ -153,6 +155,7 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBPointer, "TextureDB pointer"},
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::StdVector, "StdVector"},
+        {MemoryFieldType::StdMap, "StdMap"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::ConstCharPointer, "Const char*"},
         {MemoryFieldType::PointerType, "Pointer"},
@@ -205,6 +208,7 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBPointer, "Texture*"},
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::StdVector, "std::vector<T>"},
+        {MemoryFieldType::StdMap, "std::map<K, V>"},
         {MemoryFieldType::ConstCharPointerPointer, "const char**"},
         {MemoryFieldType::ConstCharPointer, "const char*"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "ThemeInfo*"},
@@ -260,6 +264,7 @@ namespace S2Plugin
         {"TextureDBPointer", MemoryFieldType::TextureDBPointer},
         {"Vector", MemoryFieldType::Vector},
         {"StdVector", MemoryFieldType::StdVector},
+        {"StdMap", MemoryFieldType::StdMap},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"ConstCharPointer", MemoryFieldType::ConstCharPointer},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
@@ -312,6 +317,8 @@ namespace S2Plugin
         std::string parentStructJsonName;
         std::string virtualFunctionTableType;
         std::string vectorType;
+        std::string mapkeyType;
+        std::string mapvalueType;
         bool isPointer = false;
         bool isInlineStruct = false;
     };
