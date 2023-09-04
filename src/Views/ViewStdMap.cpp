@@ -112,11 +112,11 @@ void S2Plugin::ViewStdMap::refreshMapContents()
             dprintf("%s is UNKNOWN\n", mMapKeyType.c_str());
             // not implemented
         }
-        mMemoryFields.emplace_back(std::make_pair(key_field, _cur.key_ptr()));
-        mMainTreeView->addMemoryField(key_field, key_field.name);
+        mMemoryFields.emplace_back(std::make_tuple(key_field, _cur.key_ptr(), nullptr));
+        auto key_item = mMainTreeView->addMemoryField(key_field, key_field.name);
 
         if (mMapValueTypeSize == 0) // StdSet
-            break;
+            continue;
 
         MemoryField field;
         field.name = "val_" + std::to_string(x);
@@ -139,8 +139,8 @@ void S2Plugin::ViewStdMap::refreshMapContents()
             dprintf("%s is UNKNOWN\n", mMapValueType.c_str());
             // not implemented
         }
-        mMemoryFields.emplace_back(std::make_pair(field, _cur.value_ptr()));
-        mMainTreeView->addMemoryField(field, field.name);
+        mMemoryFields.emplace_back(std::make_tuple(field, _cur.value_ptr(), key_item));
+        mMainTreeView->addMemoryField(field, field.name, key_item);
     }
     refreshData();
 
@@ -149,6 +149,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
     mMainTreeView->setColumnHidden(gsColComparisonValue, true);
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
     mMainTreeView->setColumnHidden(gsColMemoryOffsetDelta, true);
+    mMainTreeView->setColumnHidden(gsColComment, true);
     mMainTreeView->setColumnWidth(gsColField, 145);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
@@ -163,8 +164,12 @@ void S2Plugin::ViewStdMap::refreshData()
 
     for (const auto& field : mMemoryFields)
     {
-        m.setOffsetForField(field.first, field.first.name, field.second, offsets);
-        mMainTreeView->updateValueForField(field.first, field.first.name, offsets);
+        const auto& mem_field = std::get<0>(field);
+        const auto& mem_offset = std::get<1>(field);
+        const auto& parrent = std::get<2>(field);
+
+        m.setOffsetForField(mem_field, mem_field.name, mem_offset, offsets);
+        mMainTreeView->updateValueForField(mem_field, mem_field.name, offsets, 0, parrent);
     }
 }
 

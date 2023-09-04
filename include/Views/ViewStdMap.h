@@ -17,7 +17,7 @@ namespace S2Plugin
     template <class Key = uint32_t, class Value = uint32_t> struct StdMap
     {
         StdMap(size_t addr) : address(addr){};
-        //StdMap(StdMap<Key, Value>&&) = default;
+        // StdMap(StdMap<Key, Value>&&) = default;
         StdMap(size_t addr, size_t keySize, size_t valueSize) : address(addr), keytype_size(keySize), valuetype_size(valueSize){};
 
         size_t size() const
@@ -257,7 +257,8 @@ namespace S2Plugin
         size_t mmapOffset;
         size_t mMapKeyTypeSize;
         size_t mMapValueTypeSize;
-        std::vector<std::pair<MemoryField, size_t>> mMemoryFields;
+        // MemoryField, offset, parrent
+        std::vector<std::tuple<MemoryField, size_t, QStandardItem*>> mMemoryFields;
 
         QVBoxLayout* mMainLayout;
         TreeViewMemoryFields* mMainTreeView;

@@ -9582,7 +9582,7 @@
       {
         "field": "powerups",
         "type": "StdMap",
-        "keytype": "UnsignedDword",
+        "keytype": "EntityDBID",
         "valuetype": "EntityPointer"
       }
     ],
