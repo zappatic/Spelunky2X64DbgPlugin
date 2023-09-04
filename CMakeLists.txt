@@ -145,6 +145,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Views/ViewVirtualFunctions.cpp
 	src/Views/ViewOnline.cpp
 	src/Views/ViewStdVector.cpp
+	src/Views/ViewStdMap.cpp
 	src/Views/ViewJournalPage.cpp
 	src/Views/ViewThreads.cpp
 	src/QtHelpers/StyledItemDelegateHTML.cpp

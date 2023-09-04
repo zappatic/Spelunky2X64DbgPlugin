@@ -94,6 +94,7 @@ namespace S2Plugin
         Vector,
         StdVector,
         StdMap,
+        StdSet,
         ConstCharPointer,
         ConstCharPointerPointer,
         EntitySubclass,               // a subclass of an entity defined in json
@@ -156,6 +157,7 @@ namespace S2Plugin
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::StdVector, "StdVector"},
         {MemoryFieldType::StdMap, "StdMap"},
+        {MemoryFieldType::StdSet, "StdSet"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::ConstCharPointer, "Const char*"},
         {MemoryFieldType::PointerType, "Pointer"},
@@ -209,6 +211,7 @@ namespace S2Plugin
         {MemoryFieldType::Vector, "Vector"},
         {MemoryFieldType::StdVector, "std::vector<T>"},
         {MemoryFieldType::StdMap, "std::map<K, V>"},
+        {MemoryFieldType::StdSet, "std::set<T>"},
         {MemoryFieldType::ConstCharPointerPointer, "const char**"},
         {MemoryFieldType::ConstCharPointer, "const char*"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "ThemeInfo*"},
@@ -265,6 +268,7 @@ namespace S2Plugin
         {"Vector", MemoryFieldType::Vector},
         {"StdVector", MemoryFieldType::StdVector},
         {"StdMap", MemoryFieldType::StdMap},
+        {"StdSet", MemoryFieldType::StdSet},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"ConstCharPointer", MemoryFieldType::ConstCharPointer},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
@@ -316,9 +320,8 @@ namespace S2Plugin
         std::string parentPointerJsonName;
         std::string parentStructJsonName;
         std::string virtualFunctionTableType;
-        std::string vectorType;
-        std::string mapkeyType;
-        std::string mapvalueType;
+        std::string firstParameterType;
+        std::string secondParameterType;
         bool isPointer = false;
         bool isInlineStruct = false;
     };

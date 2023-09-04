@@ -1569,7 +1569,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             itemValue->setData("<font color='blue'><u>Show contents</u></font>", Qt::DisplayRole);
             itemValue->setData(memoryOffset, gsRoleRawValue);
-            itemValue->setData(QString::fromStdString(field.vectorType), gsRoleFieldType);
+            itemValue->setData(QString::fromStdString(field.firstParameterType), gsRoleFieldType);
             // no comparison in Entity
 
             if (shouldUpdateChildren)
@@ -1585,8 +1585,10 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             itemValue->setData("<font color='blue'><u>Show contents</u></font>", Qt::DisplayRole);
             itemValue->setData(memoryOffset, gsRoleRawValue);
-            itemValue->setData(QString::fromStdString(field.mapkeyType), gsRoleFieldType);
-            itemValue->setData(QString::fromStdString(field.mapvalueType), gsRoleFieldType2);
+            itemValue->setData(QString::fromStdString(field.firstParameterType), gsRoleFieldType);
+
+            if (!field.secondParameterType.empty())
+                itemValue->setData(QString::fromStdString(field.secondParameterType), gsRoleFieldType2);
             // no comparison in Entity
 
             if (shouldUpdateChildren)

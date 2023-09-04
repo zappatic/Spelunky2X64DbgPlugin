@@ -171,11 +171,11 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = MemoryFieldType::StdVector;
                 if (field.contains("vectortype"))
                 {
-                    memField.vectorType = field["vectortype"].get<std::string>();
+                    memField.firstParameterType = field["vectortype"].get<std::string>();
                 }
                 else
                 {
-                    memField.vectorType = "UnsignedQword";
+                    memField.firstParameterType = "UnsignedQword";
                     dprintf("No vectortype specified for StdVector %s\n", key.c_str());
                 }
             }
@@ -184,21 +184,36 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = MemoryFieldType::StdMap;
                 if (field.contains("keytype"))
                 {
-                    memField.mapkeyType = field["keytype"].get<std::string>();
+                    memField.firstParameterType = field["keytype"].get<std::string>();
                 }
                 else
                 {
-                    memField.mapkeyType = "UnsignedQword";
+                    memField.firstParameterType = "UnsignedQword";
                     dprintf("No keytype specified for StdMap %s\n", key.c_str());
                 }
                 if (field.contains("valuetype"))
                 {
-                    memField.mapvalueType = field["valuetype"].get<std::string>();
+                    memField.secondParameterType = field["valuetype"].get<std::string>();
                 }
                 else
                 {
-                    memField.mapvalueType = "UnsignedQword";
+                    memField.secondParameterType = "UnsignedQword";
                     dprintf("No valuetype specified for StdMap %s\n", key.c_str());
+                }
+            }
+            else if (fieldTypeStr == "StdSet")
+            {
+                memField.type = MemoryFieldType::StdMap;
+                if (field.contains("keytype"))
+                {
+                    memField.firstParameterType = field["keytype"].get<std::string>();
+                    memField.secondParameterType = "";
+                }
+                else
+                {
+                    memField.firstParameterType = "UnsignedQword";
+                    memField.secondParameterType = "";
+                    dprintf("No keytype specified for StdSet %s\n", key.c_str());
                 }
             }
             else

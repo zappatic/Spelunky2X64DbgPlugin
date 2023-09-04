@@ -23,7 +23,10 @@ S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytyp
     mMainLayout->setMargin(5);
     setLayout(mMainLayout);
 
-    setWindowTitle(QString("std::map<%1, %2>").arg(QString::fromStdString(keytypeName), QString::fromStdString(valuetypeName)));
+    if (mMapValueTypeSize == 0)
+        setWindowTitle(QString("std::set<%1>").arg(QString::fromStdString(keytypeName)));
+    else
+        setWindowTitle(QString("std::map<%1, %2>").arg(QString::fromStdString(keytypeName), QString::fromStdString(valuetypeName)));
     mMainTreeView->setVisible(true);
 
     refreshMapContents();
@@ -88,9 +91,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
     for (int x = 0; _cur != _end; ++x, ++_cur)
     {
         MemoryField key_field;
-        MemoryField field;
 
-        field.name = "val_" + std::to_string(x);
         key_field.name = "key_" + std::to_string(x);
         if (config->isPointer(mMapKeyType))
         {
@@ -111,7 +112,14 @@ void S2Plugin::ViewStdMap::refreshMapContents()
             dprintf("%s is UNKNOWN\n", mMapKeyType.c_str());
             // not implemented
         }
+        mMemoryFields.emplace_back(std::make_pair(key_field, _cur.key_ptr()));
+        mMainTreeView->addMemoryField(key_field, key_field.name);
 
+        if (mMapValueTypeSize == 0) // StdSet
+            break;
+
+        MemoryField field;
+        field.name = "val_" + std::to_string(x);
         if (config->isPointer(mMapValueType))
         {
             field.type = MemoryFieldType::PointerType;
@@ -131,9 +139,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
             dprintf("%s is UNKNOWN\n", mMapValueType.c_str());
             // not implemented
         }
-        mMemoryFields.emplace_back(std::make_pair(key_field, _cur.key_ptr()));
         mMemoryFields.emplace_back(std::make_pair(field, _cur.value_ptr()));
-        mMainTreeView->addMemoryField(key_field, key_field.name);
         mMainTreeView->addMemoryField(field, field.name);
     }
     refreshData();

@@ -1012,8 +1012,7 @@
     "CollisionInfo",
     "DeathScreenBlood",
     "DeathScreenBloodSlot",
-    "EntityRegions",
-    "StdSet"
+    "EntityRegions"
   ],
   "refs": {
     "screen_states": {
