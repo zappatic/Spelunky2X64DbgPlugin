@@ -27,12 +27,4 @@ jobs:
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.do_formatting == 'true' }}
         with:
           prettier_options: --write resources/Spelunky2.json
-
-      - uses: EndBug/add-and-commit@v4
-        if: ${{ success() && github.event_name == 'workflow_dispatch' && github.event.inputs.do_formatting == 'true' }}
-        with:
-          author_name: Prettier Bot
-          author_email: fake.user@github.com
           commit_message: "Automated prettier changes"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
