@@ -101,7 +101,6 @@ namespace S2Plugin
                 return key_ptr() + offset;
             }
 
-          private:
             bool is_nil() const
             {
                 return (bool)Script::Memory::ReadByte(node_ptr + 0x19);
@@ -126,7 +125,6 @@ namespace S2Plugin
                 return Node{right_addr, root};
             }
 
-          public:
             Node operator++()
             {
                 if (is_nil())
@@ -199,8 +197,7 @@ namespace S2Plugin
         }
         Node begin() const
         {
-            Node a{Script::Memory::ReadQword(end().node_ptr), this};
-            return a;
+            return end().left();
         }
         Node end() const
         {
@@ -209,12 +206,21 @@ namespace S2Plugin
         }
         Node find(Key k) const
         {
-            // TODO: there is better and faster way to do this
             Node _end = end();
-            for (Node cur = begin(); cur != _end; ++cur)
+            Node cur = root();
+            while (true)
             {
-                if (cur.key() == k)
+                if (cur == _end)
+                    return _end;
+
+                Key node_key = cur.key();
+
+                if (node_key == k)
                     return cur;
+                else if (node_key > k)
+                    cur = cur.left();
+                else
+                    cur = cur.right();
             }
             return _end;
         }
@@ -228,6 +234,15 @@ namespace S2Plugin
         }
 
       private:
+        Node root() const
+        {
+            return end().parent();
+        }
+        Node last() const
+        {
+            return end().right();
+        }
+
         size_t address;
         size_t keytype_size{sizeof(Key)};
         size_t valuetype_size{sizeof(Value)};
