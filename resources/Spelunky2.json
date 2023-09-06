@@ -9981,23 +9981,43 @@
       { "field": "slot_10", "type": "UnsignedDword" }
     ],
     "StdMap": [
-      { "field": "_Myhead", "type": "MapBucket", "comment": "also the 'end' bucket" },
+      {
+        "field": "_Myhead",
+        "type": "MapBucket",
+        "comment": "also the 'end' bucket"
+      },
       { "field": "_Size", "type": "UnsignedQword" }
     ],
     "StdSet": [
-      { "field": "_Myhead", "type": "MapBucket", "comment": "also the 'end' bucket" },
+      {
+        "field": "_Myhead",
+        "type": "MapBucket",
+        "comment": "also the 'end' bucket"
+      },
       { "field": "_Size", "type": "UnsignedQword" }
     ],
     "MapBucket": [
-      { "field": "_Left", "type": "MapBucket1", "comment": "since this is head, point's to the `begin` bucket" },
-      { "field": "_Parent", "type": "MapBucket1", "comment": "since this is head, point's to the root bucket" },
-      { "field": "_Right", "type": "MapBucket1", "comment": "since this is head, point's to the last bucket" },
+      {
+        "field": "_Left",
+        "type": "MapBucket1",
+        "comment": "since this is head, point's to the `begin` bucket"
+      },
+      {
+        "field": "_Parent",
+        "type": "MapBucket1",
+        "comment": "since this is head, point's to the root bucket"
+      },
+      {
+        "field": "_Right",
+        "type": "MapBucket1",
+        "comment": "since this is head, point's to the last bucket"
+      },
       { "field": "_Color", "type": "Bool", "comment": "true = black" },
       { "field": "_IsNil", "type": "Bool" },
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
       { "field": "padding3", "type": "Dword" },
-      { 
+      {
         "field": "key",
         "type": "Dword",
         "comment": "key and value are treated as one struct, if they fit, then can be placed in place of the padding"
@@ -10018,7 +10038,11 @@
       { "field": "padding2", "type": "Byte" },
       { "field": "padding3", "type": "Dword" },
       { "field": "key", "type": "Dword", "comment": "type obviously may vary" },
-      { "field": "value", "type": "Dword", "comment": "type obviously may vary" }
+      {
+        "field": "value",
+        "type": "Dword",
+        "comment": "type obviously may vary"
+      }
     ],
     "UnorderedMap": [
       { "field": "max_load_factor", "type": "Float" },
@@ -10157,29 +10181,50 @@
         "comment": "char + fx + mons + item + logical + mount + activefloor + BG (excluding BG_SHOP, BG_LEVEL_*)"
       },
       { "field": "unknown1", "type": "EntityRegionsPointer" },
-      { "field": "entities_by_mask", "type": "StdMap", "keytype": "UnsignedDword", "valuetype": "EntityList" },
-      { "field": "entities_by_region1", "type": "EntityList", "comment": "31*21*EntityList" },
+      {
+        "field": "entities_by_mask",
+        "type": "StdMap",
+        "keytype": "UnsignedDword",
+        "valuetype": "EntityList"
+      },
+      {
+        "field": "entities_by_region1",
+        "type": "EntityList",
+        "comment": "31*21*EntityList"
+      },
       {
         "field": "-",
         "type": "Skip",
         "offset": 15600,
         "comment": "31*21*EntityList (minus on above)"
       },
-      { "field": "entities_by_region2", "type": "EntityList", "comment": "31*21*EntityList" },
+      {
+        "field": "entities_by_region2",
+        "type": "EntityList",
+        "comment": "31*21*EntityList"
+      },
       {
         "field": "-",
         "type": "Skip",
         "offset": 15600,
         "comment": "31*21*EntityList (minus on above)"
       },
-      { "field": "entities_by_region3", "type": "EntityList", "comment": "31*21*EntityList" },
+      {
+        "field": "entities_by_region3",
+        "type": "EntityList",
+        "comment": "31*21*EntityList"
+      },
       {
         "field": "-",
         "type": "Skip",
         "offset": 15600,
         "comment": "31*21*EntityList (minus on above)"
       },
-      { "field": "entities_by_region4", "type": "EntityList", "comment": "31*21*EntityList" },
+      {
+        "field": "entities_by_region4",
+        "type": "EntityList",
+        "comment": "31*21*EntityList"
+      },
       {
         "field": "-",
         "type": "Skip",
@@ -10231,7 +10276,11 @@
         "type": "StdVector",
         "vectortype": "EntityPointer"
       },
-      { "field": "unknown6", "type": "PointerToMap", "comment": "actually std::list<float>*" },
+      {
+        "field": "unknown6",
+        "type": "PointerToMap",
+        "comment": "actually std::list<float>*"
+      },
       { "field": "expired_entities", "type": "EntityList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },
@@ -10280,14 +10329,20 @@
         "comment": "next layer below"
       }
     ],
-    "PointerToEntityList": [
-    { "field": "entities", "type": "EntityList" }
-    ],
+    "PointerToEntityList": [{ "field": "entities", "type": "EntityList" }],
     "PointerToPointerToEntityList": [
-    { "field": "region1", "type": "PointerToEntityList", "comment":  "those are dynamically assigned, put 4 just as example"  },
-    { "field": "region2", "type": "PointerToEntityList" },
-    { "field": "region3", "type": "PointerToEntityList" },
-    { "field": "region4", "type": "PointerToEntityList", "comment":  "can be more than 4" }
+      {
+        "field": "region1",
+        "type": "PointerToEntityList",
+        "comment": "those are dynamically assigned, put 4 just as example"
+      },
+      { "field": "region2", "type": "PointerToEntityList" },
+      { "field": "region3", "type": "PointerToEntityList" },
+      {
+        "field": "region4",
+        "type": "PointerToEntityList",
+        "comment": "can be more than 4"
+      }
     ],
     "EntityList": [
       {
@@ -14490,7 +14545,9 @@
       { "field": "padding", "type": "Dword" },
       { "field": "illumination", "type": "IlluminationPointer" }
     ],
-    "FxWitchdoctorHint": [{ "field": "unknown", "type": "StdSet", "keytype": "EntityUID" }],
+    "FxWitchdoctorHint": [
+      { "field": "unknown", "type": "StdSet", "keytype": "EntityUID" }
+    ],
     "FxNecromancerANKH": [{ "field": "unknown", "type": "Float" }],
     "FxWebbedEffect": [{ "field": "visible", "type": "Bool" }],
     "FxUnderwaterBubble": [
