@@ -136,28 +136,32 @@ void S2Plugin::ViewEntities::refreshEntities()
         // TODO: change to proper struct when done
         auto ent_list = Script::Memory::ReadQword(layer0 + 0x8);
         auto uid_list = Script::Memory::ReadQword(layer0 + 0x10);
+        bool found_uid = false;
         for (int idx = 0; idx < layer0Count; ++idx)
         {
             auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
             if (enteredUID == uid)
             {
                 AddEntity(ent_list + idx * sizeof(size_t));
-                goto post_entityuid_lookup;
+                found_uid = true;
+                break;
             }
         }
         ent_list = Script::Memory::ReadQword(layer1 + 0x8);
         uid_list = Script::Memory::ReadQword(layer1 + 0x10);
-        for (int idx = 0; idx < layer1Count; ++idx)
+        if (found_uid == false)
         {
-            auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
-            if (enteredUID == uid)
+            for (int idx = 0; idx < layer1Count; ++idx)
             {
-                AddEntity(ent_list + idx * sizeof(size_t));
-                goto post_entityuid_lookup;
+                auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
+                if (enteredUID == uid)
+                {
+                    AddEntity(ent_list + idx * sizeof(size_t));
+                    break;
+                }
             }
         }
     }
-post_entityuid_lookup:
 
     StdMap<MASK, size_t> map0{layer0 + 0x40};
     StdMap<MASK, size_t> map1{layer1 + 0x40};
