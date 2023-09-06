@@ -1413,40 +1413,40 @@
       "31": "",
       "32": ""
     },
-	"type_mask": {
-	  "1": "Player",
-	  "2": "Mount",
-	  "3": "Monster",
-	  "4": "Item",
-	  "5": "Explosion",
-	  "6": "Rope",
-	  "7": "FX",
-	  "8": "ACTIVEFLOOR",
-	  "9": "FLOOR",
-	  "10": "DECORATION",
-	  "11": "BG",
-	  "12": "SHADOW",
-	  "13": "LOGICAL",
-	  "14": "WATER",
-	  "15": "LAVA",
-	  "16": "",
-	  "17": "",
-	  "18": "",
-	  "19": "",
-	  "20": "",
-	  "21": "",
-	  "22": "",
-	  "23": "",
-	  "24": "",
-	  "25": "",
-	  "26": "",
-	  "27": "",
-	  "28": "",
-	  "29": "",
-	  "30": "",
-	  "31": "",
-	  "32": ""
-	}
+    "type_mask": {
+      "1": "Player",
+      "2": "Mount",
+      "3": "Monster",
+      "4": "Item",
+      "5": "Explosion",
+      "6": "Rope",
+      "7": "FX",
+      "8": "ACTIVEFLOOR",
+      "9": "FLOOR",
+      "10": "DECORATION",
+      "11": "BG",
+      "12": "SHADOW",
+      "13": "LOGICAL",
+      "14": "WATER",
+      "15": "LAVA",
+      "16": "",
+      "17": "",
+      "18": "",
+      "19": "",
+      "20": "",
+      "21": "",
+      "22": "",
+      "23": "",
+      "24": "",
+      "25": "",
+      "26": "",
+      "27": "",
+      "28": "",
+      "29": "",
+      "30": "",
+      "31": "",
+      "32": ""
+    }
   },
 
   // a list of all the fields within the types
@@ -1643,17 +1643,37 @@
       { "field": "field_1c", "type": "Dword" }
     ],
     "EmittedParticlesInfo": [
-      { "field": "particle_emitter", "type": "DataPointer", "comment": "ParticleEmitterInfo*" },
+      {
+        "field": "particle_emitter",
+        "type": "DataPointer",
+        "comment": "ParticleEmitterInfo*"
+      },
       { "field": "memory", "type": "DataPointer", "comment": "void*" },
-      { "field": "max_lifetimes", "type": "DataPointer", "comment": "uint16_t*" },
+      {
+        "field": "max_lifetimes",
+        "type": "DataPointer",
+        "comment": "uint16_t*"
+      },
       { "field": "lifetimes", "type": "DataPointer", "comment": "uint16_t*" },
       { "field": "unknown7", "type": "DataPointer" },
       { "field": "unknown8", "type": "DataPointer" },
       { "field": "x_positions", "type": "DataPointer", "comment": "float*" },
       { "field": "y_positions", "type": "DataPointer", "comment": "float*" },
-      { "field": "unknown_x_positions", "type": "DataPointer", "comment": "float*" },
-      { "field": "unknown_y_positions", "type": "DataPointer", "comment": "float*" },
-      { "field": "colors", "type": "DataPointer", "comment": "uColor* - color saved as 4 unsigned bytes" },
+      {
+        "field": "unknown_x_positions",
+        "type": "DataPointer",
+        "comment": "float*"
+      },
+      {
+        "field": "unknown_y_positions",
+        "type": "DataPointer",
+        "comment": "float*"
+      },
+      {
+        "field": "colors",
+        "type": "DataPointer",
+        "comment": "uColor* - color saved as 4 unsigned bytes"
+      },
       { "field": "widths", "type": "DataPointer", "comment": "float*" },
       { "field": "heights", "type": "DataPointer", "comment": "float*" },
       { "field": "x_velocities", "type": "DataPointer", "comment": "float*" },
@@ -2349,7 +2369,10 @@
       { "field": "unknown9", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "Float" },
       { "field": "title_text_info", "type": "TextRenderingInfoPointer" },
-      { "field": "description_text_lines", "type": "MultiLineTextRenderingPointer" },
+      {
+        "field": "description_text_lines",
+        "type": "MultiLineTextRenderingPointer"
+      },
       { "field": "entry_text_info", "type": "TextRenderingInfoPointer" },
       {
         "field": "chapter_title_text_info",
@@ -2378,7 +2401,11 @@
     ],
     "MultiLineTextRenderingPointer": [
       { "field": "unknown20", "type": "RenderingTimerPointer" },
-      { "field": "text_lines", "type": "StdVector", "vectortype": "TextRenderingInfoPointer" },
+      {
+        "field": "text_lines",
+        "type": "StdVector",
+        "vectortype": "TextRenderingInfoPointer"
+      },
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" }
     ],
@@ -2933,7 +2960,12 @@
       { "field": "render_timer", "type": "Float" },
       { "field": "unknown2", "type": "UnsignedWord" },
       { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "StdVector", "vectortype": "DataPointer", "comment": "options pages?" },
+      {
+        "field": "unknown4",
+        "type": "StdVector",
+        "vectortype": "DataPointer",
+        "comment": "options pages?"
+      },
       { "field": "unknown7", "type": "StdVector", "vectortype": "Dword" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
       {
@@ -4168,7 +4200,11 @@
       { "field": "padding11", "type": "UnsignedByte" },
       { "field": "padding12", "type": "UnsignedByte" },
       { "field": "cause_of_death_entity_type", "type": "EntityDBID" },
-      { "field": "waddler_floor_storage", "type": "EntityUID", "comment": "entity uid of the first floor_storage entity" },
+      {
+        "field": "waddler_floor_storage",
+        "type": "EntityUID",
+        "comment": "entity uid of the first floor_storage entity"
+      },
       { "field": "toast", "type": "MultiLineTextRenderingPointer" },
       { "field": "speechbubble", "type": "MultiLineTextRenderingPointer" },
       { "field": "speechbubble_timer", "type": "UnsignedDword" },
@@ -4251,7 +4287,11 @@
         "type": "StdVectorPointerParticleEmitterInfo"
       },
       { "field": "lightsources", "type": "StdVectorPointerIllumination" },
-      { "field": "unknown27", "type": "MysteryPointer4", "comment": "lookup entity struct" },
+      {
+        "field": "unknown27",
+        "type": "MysteryPointer4",
+        "comment": "lookup entity struct"
+      },
       {
         "field": "uid_to_entity_mask",
         "type": "UnsignedDword",
@@ -4263,7 +4303,11 @@
         "type": "DataPointer",
         "comment": "RobinHoodTable entries"
       },
-      { "field": "backlayer_player_related1", "type": "StdVector", "vectortype": "BackLayerRelated" },
+      {
+        "field": "backlayer_player_related1",
+        "type": "StdVector",
+        "vectortype": "BackLayerRelated"
+      },
       { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
       { "field": "camera_layer", "type": "UnsignedByte" },
       { "field": "unknown31a", "type": "UnsignedByte" },
@@ -4339,7 +4383,11 @@
       { "field": "unknown5", "type": "UnsignedQword" },
       { "field": "unknown6", "type": "UnsignedQword" },
       { "field": "unknown7", "type": "UnsignedQword" },
-      { "field": "value2", "type": "UnsignedQword", "comment": "get's incremented with a `lock'" }
+      {
+        "field": "value2",
+        "type": "UnsignedQword",
+        "comment": "get's incremented with a `lock'"
+      }
     ],
     "AITargetsPointer": [
       { "field": "target1", "type": "AITarget" },
@@ -5353,15 +5401,27 @@
         "field": "stagnant_lava_tile_spawn_data",
         "type": "LiquidTileSpawnData"
       },
-      { "field": "floors", "type": "PointerToMap", "comment": "pointer to map/list that contains all floor uids that the liquid interact with" },
-      { "field": "activefloors", "type": "PointerToMap", "comment": "pointer to map/list that contains all activefloor uids that the liquid interact with" },
+      {
+        "field": "floors",
+        "type": "PointerToMap",
+        "comment": "pointer to map/list that contains all floor uids that the liquid interact with"
+      },
+      {
+        "field": "activefloors",
+        "type": "PointerToMap",
+        "comment": "pointer to map/list that contains all activefloor uids that the liquid interact with"
+      },
       { "field": "impostors", "type": "StdVector", "vectortype": "LiquidLake" },
       {
         "field": "total_liquid_spawned",
         "type": "UnsignedDword",
         "comment": "total number of spawned liquid entities, all types"
       },
-      { "field": "unknown8", "type": "UnsignedDword", "comment": "padding probably" },
+      {
+        "field": "unknown8",
+        "type": "UnsignedDword",
+        "comment": "padding probably"
+      },
       {
         "field": "unknown9",
         "type": "DataPointer",
@@ -5378,12 +5438,8 @@
       { "field": "padding12c", "type": "Byte" },
       { "field": "unknown13", "type": "UnsignedDword" }
     ],
-    "PointerToMap":
-    [
-    { "field": "unknown", "type": "Map" }
-    ],
-    "LiquidLake":
-    [
+    "PointerToMap": [{ "field": "unknown", "type": "Map" }],
+    "LiquidLake": [
       { "field": "position1", "type": "UnsignedDword" },
       { "field": "position2", "type": "UnsignedDword" },
       { "field": "position3", "type": "UnsignedDword" },
@@ -6632,9 +6688,7 @@
       { "field": "unknown5", "type": "UnsignedByte" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "PlayerSlotPointer": [
-      { "field": "input", "type": "PlayerSlot" }
-    ],
+    "PlayerSlotPointer": [{ "field": "input", "type": "PlayerSlot" }],
     "PlayerSlotSettings": [
       { "field": "controller_vibration", "type": "Bool" },
       { "field": "auto_run_enabled", "type": "Bool" },
@@ -7383,16 +7437,32 @@
       { "field": "text_length", "type": "UnsignedDword" },
       { "field": "width", "type": "Float" },
       { "field": "height", "type": "Float" },
-      { "field": "unknown3", "type": "UnsignedDword", "comment": "padding probably" },
-      { "field": "dest", "type": "DataPointer", "comment": "it's letters, each letter is created from two triangles, coordinates relative to the x/y" },
-      { 
+      {
+        "field": "unknown3",
+        "type": "UnsignedDword",
+        "comment": "padding probably"
+      },
+      {
+        "field": "dest",
+        "type": "DataPointer",
+        "comment": "it's letters, each letter is created from two triangles, coordinates relative to the x/y"
+      },
+      {
         "field": "source",
         "type": "DataPointer",
         "comment": "same as dest but coordinates in the texture"
       },
-      { "field": "unknown5", "type": "DataPointer", "comment": "6 * wcslen(input_text)" },
+      {
+        "field": "unknown5",
+        "type": "DataPointer",
+        "comment": "6 * wcslen(input_text)"
+      },
       { "field": "unknown7", "type": "UnsignedWord" },
-      { "field": "unknown8", "type": "UnsignedWord", "comment": "padding probably" },
+      {
+        "field": "unknown8",
+        "type": "UnsignedWord",
+        "comment": "padding probably"
+      },
       { "field": "unknown9", "type": "TextureDBID" },
       { "field": "shader", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
@@ -8662,7 +8732,10 @@
       { "field": "back_room_chance", "type": "UnsignedDword" },
       { "field": "back_room_interconnection_chance", "type": "UnsignedDword" },
       { "field": "back_room_hidden_door_chance", "type": "UnsignedDword" },
-      { "field": "back_room_hidden_door_cache_chance", "type": "UnsignedDword" },
+      {
+        "field": "back_room_hidden_door_cache_chance",
+        "type": "UnsignedDword"
+      },
       { "field": "mount_chance", "type": "UnsignedDword" },
       { "field": "altar_room_chance", "type": "UnsignedDword" },
       { "field": "idol_room_chance", "type": "UnsignedDword" },
@@ -8840,9 +8913,21 @@
       { "field": "unknown45", "type": "UnsignedDword" },
       { "field": "unknown46", "type": "UnsignedDword" },
       { "field": "sockaddr_game", "type": "SockAddrIn" },
-      { "field": "unknown47", "type": "StdVector", "vectortype": "UnsignedQword" },
-      { "field": "unknown48", "type": "StdVector", "vectortype": "UnsignedQword" },
-      { "field": "unknown49", "type": "StdVector", "vectortype": "UnsignedQword" }
+      {
+        "field": "unknown47",
+        "type": "StdVector",
+        "vectortype": "UnsignedQword"
+      },
+      {
+        "field": "unknown48",
+        "type": "StdVector",
+        "vectortype": "UnsignedQword"
+      },
+      {
+        "field": "unknown49",
+        "type": "StdVector",
+        "vectortype": "UnsignedQword"
+      }
     ],
     "OnlineServers": [
       { "field": "server1", "type": "OnlineServer" },
@@ -8947,13 +9032,13 @@
     ],
     "CollisionInfo": [
       { "field": "rect", "type": "Rect" },
-      { 
+      {
         "field": "shape",
         "type": "State8",
         "states": {
-            "0": "NONE",
-            "1": "RECTANGLE",
-            "2": "CIRCLE"
+          "0": "NONE",
+          "1": "RECTANGLE",
+          "2": "CIRCLE"
         }
       },
       { "field": "hitbox_enabled", "type": "Bool" },
@@ -9061,7 +9146,11 @@
             "comment": "works on entities with ai_func != 0; runs when companions are let go from being held"
           },
           "19": { "name": "friction", "params": "", "return": "float" },
-          "20": { "name": "set_as_sound_source", "params": "SoundMeta*", "return": "" },
+          "20": {
+            "name": "set_as_sound_source",
+            "params": "SoundMeta*",
+            "return": ""
+          },
           "21": {
             "name": "remove_item_ptr",
             "params": "Entity*",
@@ -9659,14 +9748,22 @@
       { "field": "i168", "type": "Dword" },
       { "field": "i16c", "type": "Dword" },
       { "field": "y_pos?", "type": "Float" },
-      { "field": "jump_lock_timer", "type": "UnsignedByte", "comment": "Increases when jump button is held, set to 0 when not held. Set to max value upon a jump. Unless this is at 0, a jump will only occur if the jump button was not held on the previous frame. "},
+      {
+        "field": "jump_lock_timer",
+        "type": "UnsignedByte",
+        "comment": "Increases when jump button is held, set to 0 when not held. Set to max value upon a jump. Unless this is at 0, a jump will only occur if the jump button was not held on the previous frame. "
+      },
       {
         "field": "coyote_timer",
         "type": "Byte",
         "comment": "can jump while airborne if greater than 0"
       },
       { "field": "hired_hand_name_index", "type": "UnsignedByte" },
-      { "field": "swim_timer", "type": "UnsignedByte", "comment": "45 frame delay between jumps when holding jump button in water." },
+      {
+        "field": "swim_timer",
+        "type": "UnsignedByte",
+        "comment": "45 frame delay between jumps when holding jump button in water."
+      },
       {
         "field": "timer_since_last_jump",
         "type": "UnsignedByte",
@@ -10270,7 +10367,11 @@
       { "field": "entity_uid_10", "type": "EntityUID" }
     ],
     "StateItemsPointer": [
-      { "field": "leader", "type": "UnsignedByte", "comment": "index of leader player in coop" },
+      {
+        "field": "leader",
+        "type": "UnsignedByte",
+        "comment": "index of leader player in coop"
+      },
       { "field": "unknown_player2", "type": "Bool" },
       { "field": "unknown_player3", "type": "Bool" },
       { "field": "unknown_player4", "type": "Bool" },
@@ -10606,7 +10707,11 @@
         "comment": "everything above 4 seems to be the same as 4"
       },
       { "field": "blown_by_player", "type": "Bool" },
-      { "field": "happy_dancing_clockwise", "type": "Bool", "comment": "Randomly set at the start of happy's dance phase to determine the dance rotation direction." },
+      {
+        "field": "happy_dancing_clockwise",
+        "type": "Bool",
+        "comment": "Randomly set at the start of happy's dance phase to determine the dance rotation direction."
+      },
       { "field": "unknown8", "type": "UnsignedByte" },
       { "field": "unknown9", "type": "UnsignedByte" },
       { "field": "unknown10", "type": "UnsignedByte" },
@@ -10634,11 +10739,31 @@
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
-          "0": { "name": "play", "params": "", "return": "", "comment": "sets music_on to true" },
-          "1": { "name": "fade_out", "params": "uint8_t", "return": "", "comment": "unsure, parameter sets the unknown49" },
-          "2": { "name": "get_name?", "params": "void* buttor, uint32_t size", "return": "", "comment": "" },
+          "0": {
+            "name": "play",
+            "params": "",
+            "return": "",
+            "comment": "sets music_on to true"
+          },
+          "1": {
+            "name": "fade_out",
+            "params": "uint8_t",
+            "return": "",
+            "comment": "unsure, parameter sets the unknown49"
+          },
+          "2": {
+            "name": "get_name?",
+            "params": "void* buttor, uint32_t size",
+            "return": "",
+            "comment": ""
+          },
           "3": { "name": "~SoundMeta", "params": "", "return": "" },
-          "4": { "name": "update", "params": "", "return": "", "comment": "disabling this function does not progresses the track, does not stop it at the end level etc." },
+          "4": {
+            "name": "update",
+            "params": "",
+            "return": "",
+            "comment": "disabling this function does not progresses the track, does not stop it at the end level etc."
+          },
           "5": { "name": "v4", "params": "", "return": "bool" }
         }
       },
@@ -10665,7 +10790,11 @@
       { "field": "music_on", "type": "Bool" },
       { "field": "unknown51", "type": "UnsignedByte" },
       { "field": "garbage1", "type": "UnsignedDword" },
-      { "field": "destroy_sound", "type": "Bool", "comment": "only backgound music?" }
+      {
+        "field": "destroy_sound",
+        "type": "Bool",
+        "comment": "only backgound music?"
+      }
     ],
     "GoldMonkey": [
       { "field": "jump_timer", "type": "UnsignedByte" },
@@ -14209,13 +14338,25 @@
       }
     ],
     "SoundInfoPointer": [
-      { "field": "unknown1", "type": "Qword", "comment": "used to start/construct the sound in fmod" },
+      {
+        "field": "unknown1",
+        "type": "Qword",
+        "comment": "used to start/construct the sound in fmod"
+      },
       { "field": "sound_id", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "Dword", "comment": "padding probably" },
-      { "field": "sound_name", "type": "ConstCharPointer", "comment": "std::string" },
+      {
+        "field": "sound_name",
+        "type": "ConstCharPointer",
+        "comment": "std::string"
+      },
       { "field": "unknown3", "type": "Qword" },
       { "field": "length", "type": "Qword", "comment": "std::string.length()" },
-      { "field": "capacity", "type": "Qword", "comment": "std::string.capacity()" }
+      {
+        "field": "capacity",
+        "type": "Qword",
+        "comment": "std::string.capacity()"
+      }
     ],
     "FxTornJournalPage": [
       { "field": "page_number", "type": "Dword", "comment": "only in tutorial" }
@@ -15191,9 +15332,7 @@
         "comment": "Is subtracted from the color alpha every frame after the `stand_counter` is more than 300"
       }
     ],
-    "UnknownAiStuff": [
-      { "field": "__vftable", "type": "DataPointer" }
-    ],
+    "UnknownAiStuff": [{ "field": "__vftable", "type": "DataPointer" }],
     "DeathScreenBlood": [
       { "field": "count", "type": "Byte" },
       { "field": "-", "type": "Skip", "offset": 3, "comment": "padding" },
@@ -15233,8 +15372,16 @@
       { "field": "y", "type": "Float" },
       { "field": "size_x?", "type": "Float" },
       { "field": "size_y?", "type": "Float" },
-      { "field": "texture_column", "type": "Dword", "comment": "normally set to 4" },
-      { "field": "texture_row", "type": "Dword", "comment": "normally set to 5" },
+      {
+        "field": "texture_column",
+        "type": "Dword",
+        "comment": "normally set to 4"
+      },
+      {
+        "field": "texture_row",
+        "type": "Dword",
+        "comment": "normally set to 5"
+      },
       {
         "field": "texture_range",
         "type": "Dword",
@@ -15243,4 +15390,3 @@
     ]
   }
 }
-

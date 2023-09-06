@@ -1,0 +1,30 @@
+name: Prettier
+  
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      do_formatting:
+        description: "Run prettier inplace formatting and commit the result"
+        required: true
+        default: "false"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: creyD/prettier_action@v4.3
+        if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.do_formatting != 'true' }}
+        with:
+          dry: True
+          prettier_options: --check resources/Spelunky2.json
+
+      - uses: creyD/prettier_action@v4.3
+        if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.do_formatting == 'true' }}
+        with:
+          prettier_options: --write resources/Spelunky2.json
+          commit_message: "Automated prettier changes"
