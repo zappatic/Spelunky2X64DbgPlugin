@@ -36,10 +36,10 @@ namespace S2Plugin
     static const uint16_t gsRoleFlagFieldName = Qt::UserRole + 14;
     static const uint16_t gsRoleFlagsSize = Qt::UserRole + 15;
     static const uint16_t gsRoleFieldName = Qt::UserRole + 16;
-    static const uint16_t gsRoleFieldType = Qt::UserRole + 17;
+    static const uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 17;
     static const uint16_t gsRoleBaseFieldName = Qt::UserRole + 18;
     static const uint16_t gsRoleEntireMemoryField = Qt::UserRole + 19;
-    static const uint16_t gsRoleFieldType2 = Qt::UserRole + 20;
+    static const uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 20;
 
     static const char* gsJSONDragDropMemoryField_UID = "uid";
     static const char* gsJSONDragDropMemoryField_Offset = "offset";
