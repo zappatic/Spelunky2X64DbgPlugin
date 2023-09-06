@@ -14196,10 +14196,8 @@
       { "field": "unknown1", "type": "Qword", "comment": "used to start/construct the sound in fmod" },
       { "field": "sound_id", "type": "UnsignedDword" },
       { "field": "unknown2", "type": "Dword", "comment": "padding probably" },
-      { "field": "sound_name", "type": "ConstCharPointer", "comment": "std::string" },
-      { "field": "unknown3", "type": "Qword" },
-      { "field": "length", "type": "Qword", "comment": "std::string.length()" },
-      { "field": "capacity", "type": "Qword", "comment": "std::string.capacity()" }
+      { "field": "sound_name", "type": "StdString" }
+
     ],
     "FxTornJournalPage": [
       { "field": "page_number", "type": "Dword", "comment": "only in tutorial" }
@@ -15211,6 +15209,18 @@
       { "field": "slot28", "type": "DeathScreenBloodSlot" },
       { "field": "slot29", "type": "DeathScreenBloodSlot" },
       { "field": "slot30", "type": "DeathScreenBloodSlot" }
+    ],
+    "StdString": [
+      { "field": "data1", "type": "DataPointer", "comment": "can be raw string data or pointer to data" },
+      { "field": "data2", "type": "UnsignedQword", "comment": "raw data or NULL, depending on the string size" },
+      { "field": "length", "type": "UnsignedQword" },
+      { "field": "capacity", "type": "UnsignedQword" }
+    ],
+    "StdWstring": [
+      { "field": "data1", "type": "DataPointer", "comment": "can be raw string data or pointer to data" },
+      { "field": "data2", "type": "UnsignedQword", "comment": "raw data or NULL, depending on the string size" },
+      { "field": "length", "type": "UnsignedQword" },
+      { "field": "capacity", "type": "UnsignedQword" }
     ],
     "DeathScreenBloodSlot": [
       { "field": "x", "type": "Float" },

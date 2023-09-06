@@ -66,6 +66,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/Logger.h
 	include/Data/Online.h
 	include/Data/JournalPage.h
+	include/Data/StdString.h
 	include/Views/ViewToolbar.h
 	include/Views/ViewEntityDB.h
 	include/Views/ViewParticleDB.h
