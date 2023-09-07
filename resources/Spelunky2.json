@@ -15345,14 +15345,30 @@
       { "field": "slot30", "type": "DeathScreenBloodSlot" }
     ],
     "StdString": [
-      { "field": "data1", "type": "DataPointer", "comment": "can be raw string data or pointer to data" },
-      { "field": "data2", "type": "UnsignedQword", "comment": "raw data or NULL, depending on the string size" },
+      {
+        "field": "data1",
+        "type": "DataPointer",
+        "comment": "can be raw string data or pointer to data"
+      },
+      {
+        "field": "data2",
+        "type": "UnsignedQword",
+        "comment": "raw data or NULL, depending on the string size"
+      },
       { "field": "length", "type": "UnsignedQword" },
       { "field": "capacity", "type": "UnsignedQword" }
     ],
     "StdWstring": [
-      { "field": "data1", "type": "DataPointer", "comment": "can be raw string data or pointer to data" },
-      { "field": "data2", "type": "UnsignedQword", "comment": "raw data or NULL, depending on the string size" },
+      {
+        "field": "data1",
+        "type": "DataPointer",
+        "comment": "can be raw string data or pointer to data"
+      },
+      {
+        "field": "data2",
+        "type": "UnsignedQword",
+        "comment": "raw data or NULL, depending on the string size"
+      },
       { "field": "length", "type": "UnsignedQword" },
       { "field": "capacity", "type": "UnsignedQword" }
     ],
