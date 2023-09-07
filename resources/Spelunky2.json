@@ -905,7 +905,9 @@
     "MysteryLiquidPointer1",
     "MysteryLiquidPointer2",
     "EntityRegionsPointer",
-    "PointerToMap",
+    "PointerToPushBlocksMap",
+    "PointerToFloorsMap",
+    "PointerToFloatSet",
     "PlayerSlotPointer",
     "MultiLineTextRenderingPointer",
     "UnknownAiStuff",
@@ -1008,7 +1010,8 @@
     "DeathScreenBlood",
     "DeathScreenBloodSlot",
     "EntityRegions",
-    "ItemOwnerDetails"
+    "ItemOwnerDetails",
+    "GridPosition"
   ],
   "refs": {
     "screen_states": {
@@ -5312,13 +5315,11 @@
       },
       {
         "field": "floors",
-        "type": "PointerToMap",
-        "comment": "pointer to map/list that contains all floor uids that the liquid interact with"
+        "type": "PointerToFloorsMap"
       },
       {
         "field": "activefloors",
-        "type": "PointerToMap",
-        "comment": "pointer to map/list that contains all activefloor uids that the liquid interact with"
+        "type": "PointerToPushBlocksMap"
       },
       { "field": "impostors", "type": "StdVector", "vectortype": "LiquidLake" },
       {
@@ -5347,7 +5348,13 @@
       { "field": "padding12c", "type": "Byte" },
       { "field": "unknown13", "type": "UnsignedDword" }
     ],
-    "PointerToMap": [{ "field": "unknown", "type": "StdMap" }],
+    "PointerToPushBlocksMap": [{ "field": "map", "type": "StdMap", "keytype": "EntityUID", "valuetype": "DataPointer" }],
+    "PointerToFloorsMap": [{ "field": "map", "type": "StdMap", "keytype": "GridPosition", "valuetype": "DataPointer" }],
+    "GridPosition": [
+      { "field": "x", "type": "UnsignedByte" },
+      { "field": "y", "type": "UnsignedByte" }
+    ],
+    "PointerToFloatSet": [{ "field": "set", "type": "StdSet", "keytype": "Float" }],
     "LiquidLake": [
       { "field": "position1", "type": "UnsignedDword" },
       { "field": "position2", "type": "UnsignedDword" },
@@ -10196,11 +10203,7 @@
         "type": "StdVector",
         "vectortype": "EntityPointer"
       },
-      {
-        "field": "unknown6",
-        "type": "PointerToMap",
-        "comment": "actually std::list<float>*"
-      },
+      { "field": "unknown6", "type": "PointerToFloatSet" },
       { "field": "expired_entities", "type": "EntityList" },
       { "field": "is_layer_loading", "type": "Bool" },
       { "field": "unknown14", "type": "Bool" },

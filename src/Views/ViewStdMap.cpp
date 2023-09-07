@@ -89,61 +89,84 @@ void S2Plugin::ViewStdMap::refreshMapContents()
     mMemoryFields.clear();
     mMemoryFields.reserve(the_map.size());
 
-    auto _end = the_map.end();
-    auto _cur = the_map.begin();
-    for (int x = 0; _cur != _end; ++x, ++_cur)
+    bool add_parrent_object = false;
+    MemoryField parent_field;
+    parent_field.type = MemoryFieldType::Byte;
+
+    MemoryField key_field;
+    key_field.name = "key";
+    if (config->isPointer(mMapKeyType))
     {
-        MemoryField key_field;
+        key_field.type = MemoryFieldType::PointerType;
+        key_field.jsonName = mMapKeyType;
+        add_parrent_object = true;
+    }
+    else if (config->isInlineStruct(mMapKeyType))
+    {
+        key_field.type = MemoryFieldType::InlineStructType;
+        key_field.jsonName = mMapKeyType;
+        add_parrent_object = true;
+    }
+    else if (config->isBuiltInType(mMapKeyType))
+    {
+        key_field.type = gsJSONStringToMemoryFieldTypeMapping.at(mMapKeyType);
+        // check for the line below
+        // add_parrent_object = true;
+    }
+    else
+    {
+        dprintf("%s is UNKNOWN\n", mMapKeyType.c_str());
+        // not implemented
+    }
 
-        key_field.name = "key_" + std::to_string(x);
-        if (config->isPointer(mMapKeyType))
-        {
-            key_field.type = MemoryFieldType::PointerType;
-            key_field.jsonName = mMapKeyType;
-        }
-        else if (config->isInlineStruct(mMapKeyType))
-        {
-            key_field.type = MemoryFieldType::InlineStructType;
-            key_field.jsonName = mMapKeyType;
-        }
-        else if (config->isBuiltInType(mMapKeyType))
-        {
-            key_field.type = gsJSONStringToMemoryFieldTypeMapping.at(mMapKeyType);
-        }
-        else
-        {
-            dprintf("%s is UNKNOWN\n", mMapKeyType.c_str());
-            // not implemented
-        }
-        mMemoryFields.emplace_back(std::make_tuple(key_field, _cur.key_ptr(), nullptr));
-        auto key_item = mMainTreeView->addMemoryField(key_field, key_field.name);
-
-        if (mMapValueTypeSize == 0) // StdSet
-            continue;
-
-        MemoryField field;
-        field.name = "value";
+    MemoryField value_field;
+    if (mMapValueTypeSize != 0) // if not StdSet
+    {
+        value_field.name = "value";
         if (config->isPointer(mMapValueType))
         {
-            field.type = MemoryFieldType::PointerType;
-            field.jsonName = mMapValueType;
+            value_field.type = MemoryFieldType::PointerType;
+            value_field.jsonName = mMapValueType;
         }
         else if (config->isInlineStruct(mMapValueType))
         {
-            field.type = MemoryFieldType::InlineStructType;
-            field.jsonName = mMapValueType;
+            value_field.type = MemoryFieldType::InlineStructType;
+            value_field.jsonName = mMapValueType;
         }
         else if (config->isBuiltInType(mMapValueType))
         {
-            field.type = gsJSONStringToMemoryFieldTypeMapping.at(mMapValueType);
+            value_field.type = gsJSONStringToMemoryFieldTypeMapping.at(mMapValueType);
         }
         else
         {
             dprintf("%s is UNKNOWN\n", mMapValueType.c_str());
             // not implemented
         }
-        mMemoryFields.emplace_back(std::make_tuple(field, _cur.value_ptr(), key_item));
-        mMainTreeView->addMemoryField(field, field.name, key_item);
+    }
+
+    auto _end = the_map.end();
+    auto _cur = the_map.begin();
+    for (int x = 0; _cur != _end && x < 100; ++x, ++_cur)
+    {
+        QStandardItem* parent{nullptr};
+        if (add_parrent_object)
+        {
+            parent_field.name = "obj_" + std::to_string(x);
+            parent = mMainTreeView->addMemoryField(parent_field, parent_field.name);
+        }
+        else
+            key_field.name = "key_" + std::to_string(x);
+
+        mMemoryFields.emplace_back(std::make_tuple(key_field, _cur.key_ptr(), parent));
+        auto key_StandardItem = mMainTreeView->addMemoryField(key_field, key_field.name, parent);
+        if (!add_parrent_object)
+            parent = key_StandardItem;
+
+        if (mMapValueTypeSize == 0) // StdSet
+            continue;
+
+        mMemoryFields.emplace_back(std::make_tuple(value_field, _cur.value_ptr(), parent));
+        mMainTreeView->addMemoryField(value_field, value_field.name, parent);
     }
     refreshData();
 
