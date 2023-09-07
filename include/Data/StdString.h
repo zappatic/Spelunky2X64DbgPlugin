@@ -56,7 +56,7 @@ namespace S2Plugin
             data.get()[string_lenght] = (T)NULL;
             return data;
         }
-        bool operator==(StdString<T> other) const
+        bool operator==(const StdString<T> other) const
         {
             if (string_ptr() == other.string_ptr())
                 return true;
@@ -72,6 +72,10 @@ namespace S2Plugin
             auto this_str = get_string();
             auto other_str = other.get_string();
             return memcmp(this_str.get(), other_str.get(), l * sizeof(T)) == 0;
+        }
+        bool operator!=(const StdString<T> other) const
+        {
+            return !operator==(other);
         }
         size_t offset;
     };

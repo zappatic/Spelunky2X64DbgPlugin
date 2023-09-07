@@ -1519,7 +1519,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValue->setData(QString(comparisonBuffer.get()), Qt::DisplayRole);
             auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
             itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
-            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValue->setBackground(string != comparison ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
 
             if (shouldUpdateChildren)
@@ -1558,7 +1558,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValue->setData(QString::fromUtf16(comparisonBuffer.get()), Qt::DisplayRole);
             auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
             itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
-            itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValue->setBackground(string != comparison ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
 
             if (shouldUpdateChildren)
