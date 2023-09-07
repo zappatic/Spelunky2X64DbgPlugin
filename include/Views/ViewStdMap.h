@@ -16,9 +16,14 @@ namespace S2Plugin
 
     template <class Key = uint32_t, class Value = uint32_t> struct StdMap
     {
+        // only for the template
         StdMap(size_t addr) : address(addr){};
-        // StdMap(StdMap<Key, Value>&&) = default;
-        StdMap(size_t addr, size_t keySize, size_t valueSize) : address(addr), keytype_size(keySize), valuetype_size(valueSize){};
+
+        // value size only needed for value() function
+        StdMap(size_t addr, uint8_t keyAlignment, uint8_t valueAlignment, size_t keySize)
+            : address(addr), keytype_alignment(keyAlignment), valuetype_alignment(valueAlignment), keytype_size(keySize){};
+        StdMap(size_t addr, uint8_t keyAlignment, uint8_t valueAlignment, size_t keySize, size_t valueSize)
+            : address(addr), keytype_alignment(keyAlignment), valuetype_alignment(valueAlignment), keytype_size(keySize), valuetype_size(valueSize){};
 
         size_t size() const
         {
@@ -63,10 +68,17 @@ namespace S2Plugin
             }
             size_t key_ptr() const
             {
-                // key and value in map are treated as one struct
-                // depending on the size, we need to figure out if it's placed right after the bucket flags
+                // key and value in map are treated as std::pair
+                // we need to figure out if it's placed right after the bucket flags
                 // or if there is a padding added for aliment
-                switch (root->keytype_size + root->valuetype_size)
+                // the issue is, if key or value are a structs, we need to know their alignments, not just their size
+
+                auto key_alignment = root->keytype_alignment;
+                auto value_alignment = root->valuetype_alignment;
+
+                uint8_t alignment = key_alignment > value_alignment ? key_alignment : value_alignment;
+
+                switch (alignment)
                 {
                     case 0:
                     case 1:
@@ -81,9 +93,9 @@ namespace S2Plugin
             }
             size_t value_ptr() const
             {
-                size_t offset = root->keytype_size;
+                size_t offset = key_ptr() + root->keytype_size;
                 // dealing with the padding between key and value
-                switch (root->valuetype_size)
+                switch (root->valuetype_alignment)
                 {
                     case 0:
                     case 1:
@@ -98,7 +110,7 @@ namespace S2Plugin
                     default:
                         offset = (offset + 7) & ~7;
                 }
-                return key_ptr() + offset;
+                return offset;
             }
 
             bool is_nil() const
@@ -246,6 +258,8 @@ namespace S2Plugin
         size_t address;
         size_t keytype_size{sizeof(Key)};
         size_t valuetype_size{sizeof(Value)};
+        uint8_t keytype_alignment{alignof(Key)};
+        uint8_t valuetype_alignment{alignof(Value)};
     };
 
     class ViewStdMap : public QWidget
@@ -272,6 +286,8 @@ namespace S2Plugin
         size_t mmapOffset;
         size_t mMapKeyTypeSize;
         size_t mMapValueTypeSize;
+        uint8_t mMapKeyAlignment;
+        uint8_t mMapValueAlignment;
         // MemoryField, offset, parrent
         std::vector<std::tuple<MemoryField, size_t, QStandardItem*>> mMemoryFields;
 

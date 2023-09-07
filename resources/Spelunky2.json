@@ -874,11 +874,6 @@
     "StdVectorPointerParticleEmitterInfo",
     "SpecialLevelGeneration",
     "LevelGenDataPointer",
-    "ShopRestrictedItemPointer1",
-    "ShopRestrictedItemPointer2",
-    "ShopRestrictedItemPointer3",
-    "ShopRestrictedItemPointer4",
-    "ShopRestrictedItemPointer5",
     "AITargetsPointer",
     "SaveGameHeapOffsetPointer",
     "ScreenLogoPointer",
@@ -1012,7 +1007,8 @@
     "CollisionInfo",
     "DeathScreenBlood",
     "DeathScreenBloodSlot",
-    "EntityRegions"
+    "EntityRegions",
+    "ItemOwnerDetails"
   ],
   "refs": {
     "screen_states": {
@@ -4545,13 +4541,10 @@
     "ShopsInfo": [
       {
         "field": "restricted_items",
-        "type": "ShopRestrictedItemPointer1",
+        "type": "StdMap",
+        "keytype":  "EntityUID",
+        "valuetype":  "ItemOwnerDetails",
         "comment": "the items in a shop that set off the shopkeeper if you walk off with them"
-      },
-      {
-        "field": "restricted_item_count",
-        "type": "UnsignedQword",
-        "comment": "this is a std::map <int32_t, std::pair<int32_t, ENT_TYPE>> or set with a struct, uid of the item as a key, uid and type of the shopkeeper as value"
       },
       {
         "field": "shop_owners",
@@ -4559,82 +4552,9 @@
         "vectortype": "ShopOwnerDetails"
       }
     ],
-    "ShopRestrictedItemPointer1": [
-      { "field": "prev", "type": "ShopRestrictedItemPointer2" },
-      { "field": "next1", "type": "ShopRestrictedItemPointer2" },
-      { "field": "next2", "type": "ShopRestrictedItemPointer2" },
-      {
-        "field": "unknown1",
-        "type": "Bool",
-        "comment": "seams to be some internal map/set stuff"
-      },
-      {
-        "field": "unknown2",
-        "type": "Bool",
-        "comment": "seams to be some internal map/set stuff"
-      },
-      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
-      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
-      { "field": "restricted_item", "type": "EntityUID" },
+    "ItemOwnerDetails": [
       { "field": "item_owner", "type": "EntityUID" },
-      { "field": "shop_owner_type", "type": "EntityDBID" },
-      {
-        "field": "unknown6",
-        "type": "Qword",
-        "comment": "pretty sure this is some standard map/set internal stuff"
-      }
-    ],
-    "ShopRestrictedItemPointer2": [
-      { "field": "prev", "type": "ShopRestrictedItemPointer3" },
-      { "field": "next1", "type": "ShopRestrictedItemPointer3" },
-      { "field": "next2", "type": "ShopRestrictedItemPointer3" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown2", "type": "Bool" },
-      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
-      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
-      { "field": "restricted_item", "type": "EntityUID" },
-      { "field": "item_owner", "type": "EntityUID" },
-      { "field": "shop_owner_type", "type": "EntityDBID" },
-      { "field": "unknown6", "type": "Qword" }
-    ],
-    "ShopRestrictedItemPointer3": [
-      { "field": "prev", "type": "ShopRestrictedItemPointer4" },
-      { "field": "next1", "type": "ShopRestrictedItemPointer4" },
-      { "field": "next2", "type": "ShopRestrictedItemPointer4" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown2", "type": "Bool" },
-      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
-      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
-      { "field": "restricted_item", "type": "EntityUID" },
-      { "field": "item_owner", "type": "EntityUID" },
-      { "field": "shop_owner_type", "type": "EntityDBID" },
-      { "field": "unknown6", "type": "Qword" }
-    ],
-    "ShopRestrictedItemPointer4": [
-      { "field": "prev", "type": "ShopRestrictedItemPointer5" },
-      { "field": "next1", "type": "ShopRestrictedItemPointer5" },
-      { "field": "next2", "type": "ShopRestrictedItemPointer5" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown2", "type": "Bool" },
-      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
-      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
-      { "field": "restricted_item", "type": "EntityUID" },
-      { "field": "item_owner", "type": "EntityUID" },
-      { "field": "shop_owner_type", "type": "EntityDBID" },
-      { "field": "unknown6", "type": "Qword" }
-    ],
-    "ShopRestrictedItemPointer5": [
-      { "field": "prev", "type": "DataPointer" },
-      { "field": "next1", "type": "DataPointer" },
-      { "field": "next2", "type": "DataPointer" },
-      { "field": "unknown1", "type": "Bool" },
-      { "field": "unknown2", "type": "Bool" },
-      { "field": "unknown3_garbage?", "type": "UnsignedByte" },
-      { "field": "unknown4_garbage?", "type": "UnsignedByte" },
-      { "field": "restricted_item", "type": "EntityUID" },
-      { "field": "item_owner", "type": "EntityUID" },
-      { "field": "shop_owner_type", "type": "EntityDBID" },
-      { "field": "unknown6", "type": "Qword" }
+      { "field": "shop_owner_type", "type": "EntityDBID" }
     ],
     "ShopOwnerDetails": [
       { "field": "layer", "type": "UnsignedByte" },
@@ -10017,7 +9937,7 @@
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
       { "field": "padding3", "type": "Dword" },
-      {
+      { 
         "field": "key",
         "type": "Dword",
         "comment": "key and value are treated as one struct, if they fit, then can be placed in place of the padding"
@@ -10336,8 +10256,8 @@
         "type": "PointerToEntityList",
         "comment": "those are dynamically assigned, put 4 just as example"
       },
-      { "field": "region2", "type": "PointerToEntityList" },
-      { "field": "region3", "type": "PointerToEntityList" },
+    { "field": "region2", "type": "PointerToEntityList" },
+    { "field": "region3", "type": "PointerToEntityList" },
       {
         "field": "region4",
         "type": "PointerToEntityList",
@@ -14546,7 +14466,7 @@
       { "field": "illumination", "type": "IlluminationPointer" }
     ],
     "FxWitchdoctorHint": [
-      { "field": "unknown", "type": "StdSet", "keytype": "EntityUID" }
+      { "field": "witchdoctor", "type": "StdSet", "keytype": "EntityUID" }
     ],
     "FxNecromancerANKH": [{ "field": "unknown", "type": "Float" }],
     "FxWebbedEffect": [{ "field": "visible", "type": "Bool" }],

@@ -16,6 +16,9 @@ S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytyp
     mMapKeyTypeSize = m.sizeOf(keytypeName);
     mMapValueTypeSize = m.sizeOf(valuetypeName);
 
+    mMapKeyAlignment = m.alignmentOf(keytypeName);
+    mMapValueAlignment = m.alignmentOf(valuetypeName);
+
     initializeRefreshLayout();
     initializeTreeView();
     setWindowIcon(QIcon(":/icons/caveman.png"));
@@ -80,7 +83,7 @@ void S2Plugin::ViewStdMap::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewStdMap::refreshMapContents()
 {
-    StdMap the_map{mmapOffset, mMapKeyTypeSize, mMapValueTypeSize};
+    StdMap the_map{mmapOffset, mMapKeyAlignment, mMapValueAlignment, mMapKeyTypeSize};
     auto config = mToolbar->configuration();
     mMainTreeView->clear();
     mMemoryFields.clear();
@@ -119,7 +122,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
             continue;
 
         MemoryField field;
-        field.name = "val_" + std::to_string(x);
+        field.name = "value";
         if (config->isPointer(mMapValueType))
         {
             field.type = MemoryFieldType::PointerType;
