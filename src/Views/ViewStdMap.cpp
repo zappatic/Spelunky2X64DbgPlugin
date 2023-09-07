@@ -16,8 +16,8 @@ S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytyp
     mMapKeyTypeSize = m.sizeOf(keytypeName);
     mMapValueTypeSize = m.sizeOf(valuetypeName);
 
-    mMapKeyAlignment = m.alignmentOf(keytypeName);
-    mMapValueAlignment = m.alignmentOf(valuetypeName);
+    mMapKeyAlignment = mToolbar->configuration()->getAlingment(keytypeName);
+    mMapValueAlignment = mToolbar->configuration()->getAlingment(valuetypeName);
 
     initializeRefreshLayout();
     initializeTreeView();

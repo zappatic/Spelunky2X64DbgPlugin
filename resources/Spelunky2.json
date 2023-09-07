@@ -1013,6 +1013,14 @@
     "ItemOwnerDetails",
     "GridPosition"
   ],
+  // Struct alignments needed to calculate the padding in map/set node
+  // it's just the biggest standard type in a struct, range: 0-8
+  "struct_alignments": {
+    "GridPosition": 1,
+    "EntityRegions": 8,
+    "EntityList": 8,
+    "ItemOwnerDetails": 4
+  },
   "refs": {
     "screen_states": {
       "-1": "Game startup",

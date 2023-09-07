@@ -18,12 +18,11 @@ namespace S2Plugin
         size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true);
 
         size_t sizeOf(const std::string& typeName);
-        uint8_t alignmentOf(const std::string& typeName);
 
       protected:
         Configuration* mConfiguration;
 
         // unused?
-        //size_t updateOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets);
+        // size_t updateOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets);
     };
 } // namespace S2Plugin
