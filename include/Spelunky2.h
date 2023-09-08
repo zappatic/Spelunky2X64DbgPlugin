@@ -94,6 +94,8 @@ namespace S2Plugin
         StdVector,
         ConstCharPointer,
         ConstCharPointerPointer,
+        StdString,
+        StdWstring,
         EntitySubclass,               // a subclass of an entity defined in json
         PointerType,                  // a pointer defined in json
         InlineStructType,             // an inline struct defined in json
@@ -155,6 +157,8 @@ namespace S2Plugin
         {MemoryFieldType::StdVector, "StdVector"},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**"},
         {MemoryFieldType::ConstCharPointer, "Const char*"},
+        {MemoryFieldType::StdString, "StdString"},
+        {MemoryFieldType::StdWstring, "StdWstring"},
         {MemoryFieldType::PointerType, "Pointer"},
         {MemoryFieldType::InlineStructType, "Inline struct"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer"},
@@ -207,6 +211,8 @@ namespace S2Plugin
         {MemoryFieldType::StdVector, "std::vector<T>"},
         {MemoryFieldType::ConstCharPointerPointer, "const char**"},
         {MemoryFieldType::ConstCharPointer, "const char*"},
+        {MemoryFieldType::StdString, "std::string"},
+        {MemoryFieldType::StdWstring, "std::wstring"},
         {MemoryFieldType::UndeterminedThemeInfoPointer, "ThemeInfo*"},
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRooms*"},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMeta*"},
@@ -262,6 +268,8 @@ namespace S2Plugin
         {"StdVector", MemoryFieldType::StdVector},
         {"ConstCharPointerPointer", MemoryFieldType::ConstCharPointerPointer},
         {"ConstCharPointer", MemoryFieldType::ConstCharPointer},
+        {"StdString", MemoryFieldType::StdString},
+        {"StdWstring", MemoryFieldType::StdWstring},
         {"UndeterminedThemeInfoPointer", MemoryFieldType::UndeterminedThemeInfoPointer},
         {"LevelGenRoomsPointer", MemoryFieldType::LevelGenRoomsPointer},
         {"LevelGenRoomsMetaPointer", MemoryFieldType::LevelGenRoomsMetaPointer},

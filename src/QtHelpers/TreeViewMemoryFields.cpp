@@ -1,5 +1,6 @@
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Data/Entity.h"
+#include "Data/StdString.h"
 #include "QtHelpers/DialogEditSimpleValue.h"
 #include "QtHelpers/DialogEditState.h"
 #include "Views/ViewCharacterDB.h"
@@ -1491,6 +1492,84 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             break;
         }
+        case MemoryFieldType::StdString:
+        {
+            StdString string{memoryOffset};
+            std::unique_ptr<char[]> buffer;
+            size_t value = (memoryOffset == 0 ? 0 : string.string_ptr());
+            if (value != 0)
+            {
+                buffer = string.get_string();
+            }
+
+            itemValue->setData(QString(buffer.get()), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            StdString comparison{comparisonMemoryOffset};
+            std::unique_ptr<char[]> comparisonBuffer;
+            size_t comparisonValue = (memoryOffset == 0 ? 0 : comparison.string_ptr());
+            if (comparisonValue != 0)
+            {
+                comparisonBuffer = comparison.get_string();
+            }
+            itemComparisonValue->setData(QString(comparisonBuffer.get()), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(string != comparison ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
+                }
+            }
+            break;
+        }
+        case MemoryFieldType::StdWstring:
+        {
+            StdString<uint16_t> string{memoryOffset};
+            std::unique_ptr<uint16_t[]> buffer;
+            size_t value = (memoryOffset == 0 ? 0 : string.string_ptr());
+            if (value != 0)
+            {
+                buffer = string.get_string();
+            }
+
+            itemValue->setData(QString::fromUtf16(buffer.get()), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            StdString<uint16_t> comparison{comparisonMemoryOffset};
+            std::unique_ptr<uint16_t[]> comparisonBuffer;
+            size_t comparisonValue = (memoryOffset == 0 ? 0 : comparison.string_ptr());
+            if (comparisonValue != 0)
+            {
+                comparisonBuffer = comparison.get_string();
+            }
+            itemComparisonValue->setData(QString::fromUtf16(comparisonBuffer.get()), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(string != comparison ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
+
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
+                }
+            }
+            break;
+        }
         case MemoryFieldType::UndeterminedThemeInfoPointer:
         {
             if (memoryOffset == 0)
@@ -1672,6 +1751,8 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     break;
                 }
                 case MemoryFieldType::ConstCharPointerPointer:
+                case MemoryFieldType::StdString:
+                case MemoryFieldType::StdWstring:
                 case MemoryFieldType::ConstCharPointer:
                 case MemoryFieldType::DataPointer:
                 case MemoryFieldType::PointerType:
