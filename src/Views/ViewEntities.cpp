@@ -1,7 +1,9 @@
+#include <windows.h>
+
 #include "Views/ViewEntities.h"
 #include "Data/EntityList.h"
+#include "Data/StdMap.h"
 #include "Spelunky2.h"
-#include "Views/ViewStdMap.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>

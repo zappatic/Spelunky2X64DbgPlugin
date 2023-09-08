@@ -579,8 +579,14 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
         if (itr == mAlignments.end())
             dprintf("Alignment not found for '%s'\n", typeName.c_str());
         else
+        {
+            if (itr->second > sizeof(size_t))
+            {
+                dprintf("Wrong alignment provided (%d) for struct (%s), allowed range: 0-8\n", itr->second, itr->first);
+                return sizeof(size_t);
+            }
             return itr->second;
     }
-
+    }
     return 0;
 }
