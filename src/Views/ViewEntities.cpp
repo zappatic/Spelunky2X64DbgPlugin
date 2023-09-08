@@ -1,6 +1,7 @@
 #include "Views/ViewEntities.h"
 #include "Data/EntityList.h"
 #include "Spelunky2.h"
+#include "Views/ViewStdMap.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>
@@ -49,73 +50,29 @@ void S2Plugin::ViewEntities::initializeRefreshAndFilter()
     QObject::connect(mFilterLineEdit, &QLineEdit::textChanged, this, &ViewEntities::refreshEntities);
     filterLayout->addWidget(mFilterLineEdit, 0, 2, 1, 6);
 
-    mCheckboxLayer0 = new QCheckBox("Front layer", this);
+    mCheckboxLayer0 = new QCheckBox("Front layer (0)", this);
     mCheckboxLayer0->setChecked(true);
     QObject::connect(mCheckboxLayer0, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
     filterLayout->addWidget(mCheckboxLayer0, 2, 2);
 
-    mCheckboxLayer1 = new QCheckBox("Back layer", this);
+    mCheckboxLayer1 = new QCheckBox("Back layer (0)", this);
     QObject::connect(mCheckboxLayer1, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
     filterLayout->addWidget(mCheckboxLayer1, 2, 3);
 
-    mCheckboxFLOOR = new QCheckBox("FLOOR*", this);
-    QObject::connect(mCheckboxFLOOR, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxFLOOR, 3, 2);
-
-    mCheckboxFLOORSTYLED = new QCheckBox("FLOORSTYLED*", this);
-    QObject::connect(mCheckboxFLOORSTYLED, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxFLOORSTYLED, 3, 3);
-
-    mCheckboxDECORATION = new QCheckBox("DECORATION*", this);
-    QObject::connect(mCheckboxDECORATION, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxDECORATION, 3, 4);
-
-    mCheckboxEMBED = new QCheckBox("EMBED*", this);
-    QObject::connect(mCheckboxEMBED, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxEMBED, 3, 5);
-
-    mCheckboxCHAR = new QCheckBox("CHAR*", this);
-    mCheckboxCHAR->setChecked(true);
-    QObject::connect(mCheckboxCHAR, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxCHAR, 3, 6);
-
-    mCheckboxMONS = new QCheckBox("MONS*", this);
-    mCheckboxMONS->setChecked(true);
-    QObject::connect(mCheckboxMONS, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxMONS, 3, 7);
-
-    mCheckboxITEM = new QCheckBox("ITEM*", this);
-    mCheckboxITEM->setChecked(true);
-    QObject::connect(mCheckboxITEM, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxITEM, 3, 8);
-
-    mCheckboxACTIVEFLOOR = new QCheckBox("ACTIVEFLOOR*", this);
-    QObject::connect(mCheckboxACTIVEFLOOR, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxACTIVEFLOOR, 4, 2);
-
-    mCheckboxFX = new QCheckBox("FX*", this);
-    QObject::connect(mCheckboxFX, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxFX, 4, 3);
-
-    mCheckboxBG = new QCheckBox("BG*", this);
-    QObject::connect(mCheckboxBG, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxBG, 4, 4);
-
-    mCheckboxMIDBG = new QCheckBox("MIDBG*", this);
-    QObject::connect(mCheckboxMIDBG, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxMIDBG, 4, 5);
-
-    mCheckboxLOGICAL = new QCheckBox("LOGICAL*", this);
-    QObject::connect(mCheckboxLOGICAL, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxLOGICAL, 4, 6);
-
-    mCheckboxMOUNT = new QCheckBox("MOUNT*", this);
-    QObject::connect(mCheckboxMOUNT, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxMOUNT, 4, 7);
-
-    mCheckboxLIQUID = new QCheckBox("LIQUID*", this);
-    QObject::connect(mCheckboxLIQUID, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
-    filterLayout->addWidget(mCheckboxLIQUID, 4, 8);
+    int row = 3;
+    int col = 2;
+    for (auto& checkbox : mCheckbox)
+    {
+        checkbox.mCheckbox = new QCheckBox(checkbox.name + " (0)", this);
+        QObject::connect(checkbox.mCheckbox, &QCheckBox::stateChanged, this, &ViewEntities::refreshEntities);
+        filterLayout->addWidget(checkbox.mCheckbox, row, col);
+        ++col;
+        if (col == 9)
+        {
+            col = 2;
+            ++row;
+        }
+    }
 
     auto horLayout = new QHBoxLayout(this);
     horLayout->addLayout(filterLayout);
@@ -133,131 +90,127 @@ void S2Plugin::ViewEntities::refreshEntities()
     mMainTreeView->clear();
     std::unordered_map<std::string, size_t> offsets;
 
-    auto insertEntities = [&](size_t layerEntities, uint32_t count) -> size_t
+    const auto spel2 = mToolbar->configuration()->spelunky2();
+    const static auto entity_db = mToolbar->entityDB();
+    bool isUIDlookupSuccess = false;
+    uint enteredUID;
+    if (!mFilterLineEdit->text().isEmpty())
     {
-        size_t maximum = (std::min)(count, 10000u);
-        size_t counter = 0;
-        for (auto x = 0; x < maximum; ++x)
+        enteredUID = mFilterLineEdit->text().toUInt(&isUIDlookupSuccess, 0);
+    }
+
+    auto AddEntity = [&](size_t entity_ptr)
+    {
+        auto entity = Script::Memory::ReadQword(entity_ptr);
+        auto entityUid = Script::Memory::ReadDword(entity + 0x38);
+        QString entityName = QString::fromStdString(spel2->getEntityName(entity, entity_db));
+
+        if (!isUIDlookupSuccess && !mFilterLineEdit->text().isEmpty())
         {
-            auto entityPtr = layerEntities + (x * sizeof(size_t));
-            auto entity = Script::Memory::ReadQword(entityPtr);
-            auto entityUid = Script::Memory::ReadDword(entity + 56);
-            auto entityName = QString::fromStdString(mToolbar->configuration()->spelunky2()->getEntityName(entity, mToolbar->entityDB()));
-
-            auto matchesFilter = false;
-            bool performEntityNameMatch = true;
-
-            if (!mFilterLineEdit->text().isEmpty())
-            {
-                bool isUIDlookupSuccess = false;
-                auto enteredUID = mFilterLineEdit->text().toUInt(&isUIDlookupSuccess, 0);
-                if (isUIDlookupSuccess)
-                {
-                    if (enteredUID == entityUid)
-                    {
-                        matchesFilter = true;
-                        performEntityNameMatch = false;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-
-            if (mCheckboxFLOOR->checkState() == Qt::Checked && entityName.startsWith("FLOOR_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxFLOORSTYLED->checkState() == Qt::Checked && entityName.startsWith("FLOORSTYLED_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxDECORATION->checkState() == Qt::Checked && entityName.startsWith("DECORATION_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxEMBED->checkState() == Qt::Checked && entityName.startsWith("EMBED_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxCHAR->checkState() == Qt::Checked && entityName.startsWith("CHAR_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxMONS->checkState() == Qt::Checked && entityName.startsWith("MONS_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxITEM->checkState() == Qt::Checked && entityName.startsWith("ITEM_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxACTIVEFLOOR->checkState() == Qt::Checked && entityName.startsWith("ACTIVEFLOOR_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxFX->checkState() == Qt::Checked && entityName.startsWith("FX_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxBG->checkState() == Qt::Checked && entityName.startsWith("BG_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxMIDBG->checkState() == Qt::Checked && entityName.startsWith("MIDBG"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxLOGICAL->checkState() == Qt::Checked && entityName.startsWith("LOGICAL_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxMOUNT->checkState() == Qt::Checked && entityName.startsWith("MOUNT_"))
-            {
-                matchesFilter = true;
-            }
-            else if (mCheckboxLIQUID->checkState() == Qt::Checked && entityName.startsWith("LIQUID_"))
-            {
-                matchesFilter = true;
-            }
-            if (matchesFilter && !mFilterLineEdit->text().isEmpty() && performEntityNameMatch)
-            {
-                if (!entityName.contains(mFilterLineEdit->text(), Qt::CaseInsensitive))
-                {
-                    matchesFilter = false;
-                }
-            }
-
-            if (matchesFilter)
-            {
-                MemoryField field;
-                field.name = "entity_uid_" + std::to_string(entityUid);
-                field.type = MemoryFieldType::EntityPointer;
-                mMainTreeView->addMemoryField(field, field.name);
-                offsets[field.name] = entityPtr;
-                mMainTreeView->updateValueForField(field, field.name, offsets);
-                counter++;
-            }
+            if (!entityName.contains(mFilterLineEdit->text(), Qt::CaseInsensitive))
+                return;
         }
-        return counter;
+
+        MemoryField field;
+        field.name = "entity_uid_" + std::to_string(entityUid);
+        field.type = MemoryFieldType::EntityPointer;
+        mMainTreeView->addMemoryField(field, field.name);
+        offsets[field.name] = entity_ptr;
+        mMainTreeView->updateValueForField(field, field.name, offsets);
     };
 
     size_t totalEntities = 0;
-    if (mCheckboxLayer0->checkState() == Qt::Checked)
+    auto layer0 = Script::Memory::ReadQword(mToolbar->state()->offsetForField("layer0"));
+    auto layer0Count = Script::Memory::ReadDword(layer0 + 0x1C);
+    auto layer1 = Script::Memory::ReadQword(mToolbar->state()->offsetForField("layer1"));
+    auto layer1Count = Script::Memory::ReadDword(layer1 + 0x1C);
+    mCheckboxLayer0->setText(QString("Front layer (%1)").arg(layer0Count));
+    mCheckboxLayer1->setText(QString("Back layer (%1)").arg(layer1Count));
+
+    auto check_layer0 = mCheckboxLayer0->checkState() == Qt::Checked;
+    auto check_layer1 = mCheckboxLayer1->checkState() == Qt::Checked;
+
+    if (isUIDlookupSuccess)
     {
-        auto layer0 = Script::Memory::ReadQword(mToolbar->state()->offsetForField("layer0"));
-        auto layer0Count = Script::Memory::ReadDword(layer0 + 28);
-        auto layerEntities = Script::Memory::ReadQword(layer0 + 8);
-        totalEntities += insertEntities(layerEntities, layer0Count);
+        // loop thru all entities to find the uid
+        // TODO: change to proper struct when done
+        auto ent_list = Script::Memory::ReadQword(layer0 + 0x8);
+        auto uid_list = Script::Memory::ReadQword(layer0 + 0x10);
+        bool found_uid = false;
+        for (int idx = 0; idx < layer0Count; ++idx)
+        {
+            auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
+            if (enteredUID == uid)
+            {
+                AddEntity(ent_list + idx * sizeof(size_t));
+                found_uid = true;
+                break;
+            }
+        }
+        ent_list = Script::Memory::ReadQword(layer1 + 0x8);
+        uid_list = Script::Memory::ReadQword(layer1 + 0x10);
+        if (found_uid == false)
+        {
+            for (int idx = 0; idx < layer1Count; ++idx)
+            {
+                auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
+                if (enteredUID == uid)
+                {
+                    AddEntity(ent_list + idx * sizeof(size_t));
+                    break;
+                }
+            }
+        }
     }
 
-    if (mCheckboxLayer1->checkState() == Qt::Checked)
+    StdMap<MASK, size_t> map0{layer0 + 0x40};
+    StdMap<MASK, size_t> map1{layer1 + 0x40};
+
+    for (auto& checkbox : mCheckbox)
     {
-        auto layer1 = Script::Memory::ReadQword(mToolbar->state()->offsetForField("layer1"));
-        auto layer1Count = Script::Memory::ReadDword(layer1 + 28);
-        auto layerEntities = Script::Memory::ReadQword(layer1 + 8);
-        totalEntities += insertEntities(layerEntities, layer1Count);
+        int field_count = 0;
+
+        if (check_layer0)
+        {
+            auto itr = map0.find(checkbox.mask);
+            if (itr != map0.end())
+            {
+                // TODO: change to proper struct when done
+                auto ent_list = itr.value_ptr();
+                auto pointers = Script::Memory::ReadQword(ent_list);
+                auto list_count = Script::Memory::ReadDword(ent_list + 20);
+                field_count += list_count;
+                // loop only if uid was not entered and the mask was choosen
+                if (!isUIDlookupSuccess && totalEntities < 10000u && checkbox.mCheckbox->checkState() == Qt::Checked)
+                {
+                    for (size_t i = 0; i < list_count; ++i)
+                    {
+                        AddEntity(pointers + (i * sizeof(size_t)));
+                        ++totalEntities;
+                    }
+                }
+            }
+        }
+        if (check_layer1)
+        {
+            auto itr = map1.find(checkbox.mask);
+            if (itr != map1.end())
+            {
+                auto ent_list = itr.value_ptr();
+                auto pointers = Script::Memory::ReadQword(ent_list);
+                auto list_count = Script::Memory::ReadDword(ent_list + 20);
+                field_count += list_count;
+                if (!isUIDlookupSuccess && totalEntities < 10000u && checkbox.mCheckbox->checkState() == Qt::Checked)
+                {
+                    for (size_t i = 0; i < list_count; ++i)
+                    {
+                        AddEntity(pointers + (i * sizeof(size_t)));
+                        ++totalEntities;
+                    }
+                }
+            }
+        }
+        checkbox.mCheckbox->setText(QString(checkbox.name + " (%1)").arg(field_count));
     }
     setWindowTitle(QString("%1 Entities").arg(totalEntities));
 
@@ -274,7 +227,7 @@ void S2Plugin::ViewEntities::refreshEntities()
 
 QSize S2Plugin::ViewEntities::sizeHint() const
 {
-    return QSize(750, 550);
+    return QSize(850, 550);
 }
 
 QSize S2Plugin::ViewEntities::minimumSizeHint() const

@@ -1648,7 +1648,26 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             itemValue->setData("<font color='blue'><u>Show contents</u></font>", Qt::DisplayRole);
             itemValue->setData(memoryOffset, gsRoleRawValue);
-            itemValue->setData(QString::fromStdString(field.vectorType), gsRoleFieldType);
+            itemValue->setData(QString::fromStdString(field.firstParameterType), gsRoleStdContainerFirstParameterType);
+            // no comparison in Entity
+
+            if (shouldUpdateChildren)
+            {
+                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
+                }
+            }
+            break;
+        }
+        case MemoryFieldType::StdMap:
+        {
+            itemValue->setData("<font color='blue'><u>Show contents</u></font>", Qt::DisplayRole);
+            itemValue->setData(memoryOffset, gsRoleRawValue);
+            itemValue->setData(QString::fromStdString(field.firstParameterType), gsRoleStdContainerFirstParameterType);
+
+            if (!field.secondParameterType.empty())
+                itemValue->setData(QString::fromStdString(field.secondParameterType), gsRoleStdContainerSecondParameterType);
             // no comparison in Entity
 
             if (shouldUpdateChildren)
@@ -1889,10 +1908,21 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::StdVector:
                 {
                     auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
-                    auto fieldType = clickedItem->data(gsRoleFieldType).toString().toStdString();
+                    auto fieldType = clickedItem->data(gsRoleStdContainerFirstParameterType).toString().toStdString();
                     if (offset != 0)
                     {
                         mToolbar->showStdVector(offset, fieldType);
+                    }
+                    break;
+                }
+                case MemoryFieldType::StdMap:
+                {
+                    auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
+                    auto fieldkeyType = clickedItem->data(gsRoleStdContainerFirstParameterType).toString().toStdString();
+                    auto fieldvalueType = clickedItem->data(gsRoleStdContainerSecondParameterType).toString().toStdString();
+                    if (offset != 0)
+                    {
+                        mToolbar->showStdMap(offset, fieldkeyType, fieldvalueType);
                     }
                     break;
                 }

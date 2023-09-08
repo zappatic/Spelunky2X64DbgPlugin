@@ -22,6 +22,7 @@ namespace S2Plugin
       protected:
         Configuration* mConfiguration;
 
-        size_t updateOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets);
+        // unused?
+        // size_t updateOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets);
     };
 } // namespace S2Plugin

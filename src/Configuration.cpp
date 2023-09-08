@@ -66,7 +66,7 @@ std::string S2Plugin::Configuration::lastError() const noexcept
 void S2Plugin::Configuration::processJSON(const ordered_json& j)
 {
     mEntityClassHierarchy.clear();
-    auto entityClassHierarchy = j["entity_class_hierarchy"];
+    const auto& entityClassHierarchy = j["entity_class_hierarchy"];
     for (const auto& [key, jsonValue] : entityClassHierarchy.items())
     {
         auto value = jsonValue.get<std::string>();
@@ -77,7 +77,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     }
 
     mDefaultEntityClassTypes.clear();
-    auto defaultEntityTypes = j["default_entity_types"];
+    const auto& defaultEntityTypes = j["default_entity_types"];
     for (const auto& [key, jsonValue] : defaultEntityTypes.items())
     {
         auto value = jsonValue.get<std::string>();
@@ -95,6 +95,10 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     {
         inlineStructTypes.insert(t.get<std::string>());
     }
+    for (const auto& [key, jsonValue] : j["struct_alignments"].items())
+    {
+        mAlignments.insert({key, jsonValue.get<uint8_t>()});
+    }
 
     mTypeFieldsEntitySubclasses.clear();
     mTypeFields.clear();
@@ -102,7 +106,7 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
     mTypeFieldsInlineStructs.clear();
     mVirtualFunctions.clear();
 
-    auto fields = j["fields"];
+    const auto& fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
     {
         auto isEntitySubclass = isKnownEntitySubclass(key);
@@ -171,12 +175,49 @@ void S2Plugin::Configuration::processJSON(const ordered_json& j)
                 memField.type = MemoryFieldType::StdVector;
                 if (field.contains("vectortype"))
                 {
-                    memField.vectorType = field["vectortype"].get<std::string>();
+                    memField.firstParameterType = field["vectortype"].get<std::string>();
                 }
                 else
                 {
-                    memField.vectorType = "UnsignedQword";
+                    memField.firstParameterType = "UnsignedQword";
                     dprintf("No vectortype specified for StdVector %s\n", key.c_str());
+                }
+            }
+            else if (fieldTypeStr == "StdMap")
+            {
+                memField.type = MemoryFieldType::StdMap;
+                if (field.contains("keytype"))
+                {
+                    memField.firstParameterType = field["keytype"].get<std::string>();
+                }
+                else
+                {
+                    memField.firstParameterType = "UnsignedQword";
+                    dprintf("No keytype specified for StdMap %s\n", key.c_str());
+                }
+                if (field.contains("valuetype"))
+                {
+                    memField.secondParameterType = field["valuetype"].get<std::string>();
+                }
+                else
+                {
+                    memField.secondParameterType = "UnsignedQword";
+                    dprintf("No valuetype specified for StdMap %s\n", key.c_str());
+                }
+            }
+            else if (fieldTypeStr == "StdSet")
+            {
+                memField.type = MemoryFieldType::StdMap;
+                if (field.contains("keytype"))
+                {
+                    memField.firstParameterType = field["keytype"].get<std::string>();
+                    memField.secondParameterType = "";
+                }
+                else
+                {
+                    memField.firstParameterType = "UnsignedQword";
+                    memField.secondParameterType = "";
+                    dprintf("No keytype specified for StdSet %s\n", key.c_str());
                 }
             }
             else
@@ -374,8 +415,8 @@ std::string S2Plugin::Configuration::flagTitle(const std::string& fieldName, uin
 {
     if (mFlagTitles.count(fieldName) > 0 && flagNumber > 0 && flagNumber <= 32)
     {
-        auto flags = mFlagTitles.at(fieldName);
-        auto flagStr = flags.at(flagNumber);
+        auto& flags = mFlagTitles.at(fieldName);
+        auto& flagStr = flags.at(flagNumber);
         if (flagStr.empty())
         {
             return "Unknown";
@@ -389,10 +430,10 @@ std::string S2Plugin::Configuration::stateTitle(const std::string& fieldName, in
 {
     if (mStateTitles.count(fieldName) > 0)
     {
-        auto states = mStateTitles.at(fieldName);
+        auto& states = mStateTitles.at(fieldName);
         if (states.count(state) > 0)
         {
-            auto stateStr = states.at(state);
+            auto& stateStr = states.at(state);
             if (!stateStr.empty())
             {
                 return stateStr;
@@ -443,4 +484,103 @@ std::vector<S2Plugin::VirtualFunction> S2Plugin::Configuration::virtualFunctions
     {
         return mVirtualFunctions.at(type);
     }
+}
+
+int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
+{
+    bool check_aligment = false;
+    if (isPointer(typeName))
+    {
+        return sizeof(size_t);
+    }
+    else if (isBuiltInType(typeName))
+    {
+        switch (gsJSONStringToMemoryFieldTypeMapping.at(typeName))
+        {
+                /*case MemoryFieldType::EntitySubclass:
+                case MemoryFieldType::Flag:*/
+
+            case MemoryFieldType::Skip:
+            {
+                dprintf("Cannot determinate alignment of \"Skip\" element!\n");
+                return 0;
+            }
+            case MemoryFieldType::Byte:
+            case MemoryFieldType::UnsignedByte:
+            case MemoryFieldType::Bool:
+            case MemoryFieldType::Flags8:
+            case MemoryFieldType::State8:
+            case MemoryFieldType::CharacterDBID:
+            case MemoryFieldType::UTF8StringFixedSize:
+                return sizeof(char);
+            case MemoryFieldType::Word:
+            case MemoryFieldType::UnsignedWord:
+            case MemoryFieldType::State16:
+            case MemoryFieldType::Flags16:
+            case MemoryFieldType::UTF16StringFixedSize:
+            case MemoryFieldType::UTF16Char:
+                return sizeof(int16_t);
+            case MemoryFieldType::Dword:
+            case MemoryFieldType::UnsignedDword:
+            case MemoryFieldType::Float:
+            case MemoryFieldType::Flags32:
+            case MemoryFieldType::State32:
+            case MemoryFieldType::EntityDBID:
+            case MemoryFieldType::ParticleDBID:
+            case MemoryFieldType::EntityUID:
+            case MemoryFieldType::TextureDBID:
+            case MemoryFieldType::StringsTableID:
+            case MemoryFieldType::IPv4Address:
+            case MemoryFieldType::CharacterDB: // biggest variable is 4
+                return sizeof(int32_t);
+
+            case MemoryFieldType::Online:
+            case MemoryFieldType::TextureDB:
+            case MemoryFieldType::ParticleDB:
+            case MemoryFieldType::EntityDB:
+            case MemoryFieldType::LevelGen:
+            case MemoryFieldType::GameManager:
+            case MemoryFieldType::State:
+            case MemoryFieldType::SaveGame:
+            case MemoryFieldType::PointerType:
+            case MemoryFieldType::ThemeInfoName:
+            case MemoryFieldType::UndeterminedThemeInfoPointer:
+            case MemoryFieldType::LevelGenRoomsPointer:
+            case MemoryFieldType::LevelGenRoomsMetaPointer:
+            case MemoryFieldType::JournalPagePointer:
+            case MemoryFieldType::LevelGenPointer:
+            case MemoryFieldType::VirtualFunctionTable:
+            case MemoryFieldType::EntityPointer:
+            case MemoryFieldType::EntityUIDPointer:
+            case MemoryFieldType::EntityDBPointer:
+            case MemoryFieldType::ParticleDBPointer:
+            case MemoryFieldType::TextureDBPointer:
+            case MemoryFieldType::ConstCharPointer:
+            case MemoryFieldType::ConstCharPointerPointer:
+            case MemoryFieldType::Vector:
+            case MemoryFieldType::StdVector:
+            case MemoryFieldType::StdMap:
+            case MemoryFieldType::StdSet:
+            case MemoryFieldType::CodePointer:
+            case MemoryFieldType::DataPointer:
+            case MemoryFieldType::Qword:
+            case MemoryFieldType::UnsignedQword:
+                return sizeof(size_t);
+            case MemoryFieldType::InlineStructType:
+            default:
+            {
+                check_aligment = true;
+            }
+        }
+    }
+    if (check_aligment || isInlineStruct(typeName))
+    {
+        auto itr = mAlignments.find(typeName);
+        if (itr == mAlignments.end())
+            dprintf("Alignment not found for '%s'\n", typeName.c_str());
+        else
+            return itr->second;
+    }
+
+    return 0;
 }

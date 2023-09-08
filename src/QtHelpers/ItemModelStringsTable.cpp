@@ -90,7 +90,7 @@ bool S2Plugin::SortFilterProxyModelStringsTable::filterAcceptsRow(int sourceRow,
     }
     else
     {
-        auto str = entries.at(sourceRow).str;
+        auto& str = entries.at(sourceRow).str;
         return str.contains(mFilterString, Qt::CaseInsensitive);
     }
     return false;

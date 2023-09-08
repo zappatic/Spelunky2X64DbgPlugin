@@ -11,6 +11,7 @@
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewSaveGame.h"
 #include "Views/ViewState.h"
+#include "Views/ViewStdMap.h"
 #include "Views/ViewStdVector.h"
 #include "Views/ViewStringsTable.h"
 #include "Views/ViewTextureDB.h"
@@ -287,6 +288,13 @@ void S2Plugin::ViewToolbar::showVirtualFunctions(size_t offset, const std::strin
 void S2Plugin::ViewToolbar::showStdVector(size_t offset, const std::string& typeName)
 {
     auto w = new ViewStdVector(this, typeName, offset, this);
+    mMDIArea->addSubWindow(w);
+    w->setVisible(true);
+}
+
+void S2Plugin::ViewToolbar::showStdMap(size_t offset, const std::string& keytypeName, const std::string& valuetypeName)
+{
+    auto w = new ViewStdMap(this, keytypeName, valuetypeName, offset, this);
     mMDIArea->addSubWindow(w);
     w->setVisible(true);
 }

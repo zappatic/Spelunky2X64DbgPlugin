@@ -32,6 +32,7 @@ namespace S2Plugin
         bool isPointer(const std::string& type) const;
         bool isInlineStruct(const std::string& type) const;
         bool isBuiltInType(const std::string& type) const;
+        int getAlingment(const std::string& type) const;
 
         std::string flagTitle(const std::string& fieldName, uint8_t flagNumber);
         std::string stateTitle(const std::string& fieldName, int64_t state);
@@ -53,6 +54,7 @@ namespace S2Plugin
         std::unordered_map<std::string, std::unordered_map<uint8_t, std::string>> mFlagTitles;  // fieldname => (flagnr 1-based => title)
         std::unordered_map<std::string, std::unordered_map<int64_t, std::string>> mStateTitles; // fieldname => (state => title)
         std::unordered_map<std::string, std::vector<VirtualFunction>> mVirtualFunctions;
+        std::unordered_map<std::string, uint8_t> mAlignments;
 
         void processJSON(const ordered_json& j);
         bool isKnownEntitySubclass(const std::string& typeName) const;

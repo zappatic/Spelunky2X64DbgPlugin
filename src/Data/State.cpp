@@ -78,11 +78,12 @@ void S2Plugin::State::refreshOffsets()
 size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
 {
     auto full = "State." + fieldName;
-    if (mMemoryOffsets.count(full) == 0)
+    auto r = mMemoryOffsets.find(full);
+    if (r == mMemoryOffsets.end())
     {
         return 0;
     }
-    return mMemoryOffsets.at(full);
+    return r->second;
 }
 
 size_t S2Plugin::State::findNextEntity(size_t entityOffset)
