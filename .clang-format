@@ -8,3 +8,5 @@ PointerAlignment: Left
 ColumnLimit: 200
 AllowShortFunctionsOnASingleLine: Empty
 IndentCaseLabels: true
+InsertNewlineAtEOF: true
+AlwaysBreakTemplateDeclarations: Yes
