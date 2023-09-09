@@ -20,17 +20,15 @@ jobs:
       - uses: DoozyX/clang-format-lint-action@v0.16.2
         if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.do_formatting != 'true' }}
         with:
-          source: "src"
+          source: "src include"
           extensions: "inl,h,hpp,cpp"
-          exclude: "./src/game_api/lua_libs"
           clangFormatVersion: 16
 
       - uses: DoozyX/clang-format-lint-action@v0.16.2
         if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.do_formatting == 'true' }}
         with:
-          source: "src"
+          source: "src include"
           extensions: "inl,h,hpp,cpp"
-          exclude: "./src/game_api/lua_libs"
           clangFormatVersion: 16
           inplace: true
       - uses: EndBug/add-and-commit@v4
