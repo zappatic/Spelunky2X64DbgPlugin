@@ -11,7 +11,7 @@ Qt::ItemFlags S2Plugin::ItemModelLoggerFields::flags(const QModelIndex& index) c
 
 QVariant S2Plugin::ItemModelLoggerFields::data(const QModelIndex& index, int role) const
 {
-    auto field = mLogger->fieldAt(index.row());
+    auto& field = mLogger->fieldAt(index.row());
     if (role == Qt::DisplayRole)
     {
         switch (index.column())

@@ -107,7 +107,7 @@ void S2Plugin::TableViewLogger::keyPressEvent(QKeyEvent* event)
         auto ix = selectedIndexes();
         if (ix.count() > 0)
         {
-            auto selectedIndex = ix.at(0);
+            auto& selectedIndex = ix.at(0);
             mLogger->removeFieldAt(selectedIndex.row());
             event->setAccepted(true);
         }

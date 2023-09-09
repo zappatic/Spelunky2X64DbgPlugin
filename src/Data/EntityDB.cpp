@@ -19,7 +19,7 @@ bool S2Plugin::EntityDB::loadEntityDB()
 
     mMemoryOffsets.clear();
     auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "A4 84 E4 CA DA BF 4E 83");
-    auto entitiesPtr = instructionEntitiesPtr - 33 + 7 + Script::Memory::ReadDword(instructionEntitiesPtr - 30);
+    auto entitiesPtr = instructionEntitiesPtr - 33 + 7 + (duint)Script::Memory::ReadDword(instructionEntitiesPtr - 30);
     mEntityDBPtr = Script::Memory::ReadQword(entitiesPtr);
 
     auto offset = mEntityDBPtr;

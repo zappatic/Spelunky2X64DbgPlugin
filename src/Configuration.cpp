@@ -5,7 +5,10 @@
 #include <QFileInfo>
 #include <QString>
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <regex>
+
+using nlohmann::ordered_json;
 
 S2Plugin::Configuration::Configuration()
 {
@@ -29,8 +32,7 @@ void S2Plugin::Configuration::load()
     {
         std::ifstream fp(path.toStdString());
         std::string jsonString((std::istreambuf_iterator<char>(fp)), std::istreambuf_iterator<char>());
-        auto j = ordered_json::parse(jsonString, nullptr, true, true);
-        processJSON(j);
+        processJSON(jsonString);
     }
     catch (const ordered_json::exception& e)
     {
@@ -63,8 +65,9 @@ std::string S2Plugin::Configuration::lastError() const noexcept
     return mErrorString;
 }
 
-void S2Plugin::Configuration::processJSON(const ordered_json& j)
+void S2Plugin::Configuration::processJSON(const std::string& str)
 {
+    auto j = ordered_json::parse(str, nullptr, true, true);
     mEntityClassHierarchy.clear();
     const auto& entityClassHierarchy = j["entity_class_hierarchy"];
     for (const auto& [key, jsonValue] : entityClassHierarchy.items())
@@ -327,7 +330,7 @@ const std::vector<std::pair<std::string, std::string>>& S2Plugin::Configuration:
 std::vector<std::string> S2Plugin::Configuration::classHierarchyOfEntity(const std::string& entityName) const
 {
     std::vector<std::string> returnSet;
-    std::string entityClass = "";
+    std::string entityClass;
     for (const auto& [regexStr, entityClassType] : mDefaultEntityClassTypes)
     {
         auto r = std::regex(regexStr);
@@ -339,7 +342,7 @@ std::vector<std::string> S2Plugin::Configuration::classHierarchyOfEntity(const s
     }
     if (!entityClass.empty())
     {
-        auto p = entityClass;
+        std::string p = entityClass;
         while (p != "Entity" && p != "")
         {
             returnSet.emplace_back(p);
@@ -586,7 +589,7 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
                 return sizeof(size_t);
             }
             return itr->second;
-    }
+        }
     }
     return 0;
 }

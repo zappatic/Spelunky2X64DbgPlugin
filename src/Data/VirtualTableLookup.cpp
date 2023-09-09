@@ -95,7 +95,7 @@ S2Plugin::VirtualTableEntry S2Plugin::VirtualTableLookup::findPrecedingEntryWith
     size_t counter = tableOffset;
     while (counter > 0)
     {
-        auto entry = mOffsetToTableEntries.at(counter);
+        const auto& entry = mOffsetToTableEntries.at(counter);
         if (!entry.isAutoSymbol && entry.isValidAddress && entry.symbols.size() > 0)
         {
             return entry;

@@ -93,7 +93,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
                 case MemoryFieldType::Flags8:
                 {
                     mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                    auto flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
+                    uint8_t flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
                     for (uint8_t x = 1; x <= flagCount; ++x)
                     {
                         MemoryField flagField;
@@ -275,7 +275,7 @@ void S2Plugin::ViewCharacterDB::populateComparisonTableWidget()
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        auto name = mToolbar->characterDB()->characterNames().at(x);
+        const auto& name = mToolbar->characterDB()->characterNames().at(x);
         mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(name)));
 
         auto [caption, value] = valueForField(field, x);
@@ -321,7 +321,7 @@ void S2Plugin::ViewCharacterDB::populateComparisonTreeWidget()
         mCompareTreeWidget->insertTopLevelItem(0, rootItem);
         for (const auto& characterId : characterIDs)
         {
-            auto characterName = mToolbar->characterDB()->characterNames().at(characterId);
+            const auto& characterName = mToolbar->characterDB()->characterNames().at(characterId);
             auto caption = QString("<font color='blue'><u>%1</u></font>").arg(characterName);
             auto childItem = new QTreeWidgetItem(rootItem, QStringList(caption));
             childItem->setData(0, Qt::UserRole, characterId);

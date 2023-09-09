@@ -12,7 +12,7 @@ QVariant S2Plugin::ItemModelVirtualTable::data(const QModelIndex& index, int rol
 {
     if (role == Qt::DisplayRole)
     {
-        auto entry = mVirtualTableLookup->entryForOffset(index.row());
+        const auto& entry = mVirtualTableLookup->entryForOffset(index.row());
         switch (index.column())
         {
             case gsColTableOffset:
@@ -88,7 +88,8 @@ void S2Plugin::ItemModelVirtualTable::detectEntities(ViewToolbar* toolbar)
     auto entityDB = toolbar->entityDB();
     auto vtl = toolbar->virtualTableLookup();
 
-    auto processEntities = [&](size_t layerEntities, uint32_t count) {
+    auto processEntities = [&](size_t layerEntities, uint32_t count)
+    {
         size_t maximum = (std::min)(count, 10000u);
         for (auto x = 0; x < maximum; ++x)
         {

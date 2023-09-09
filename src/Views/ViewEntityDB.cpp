@@ -254,7 +254,7 @@ void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefi
             case MemoryFieldType::Flags8:
             {
                 mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                auto flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
+                uint8_t flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
                 for (uint8_t x = 1; x <= flagCount; ++x)
                 {
                     MemoryField flagField;
@@ -292,8 +292,8 @@ void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
     mCompareTableWidget->setSortingEnabled(false);
 
     auto tmp = mCompareFieldComboBox->currentData().value<ComparisonField>();
-    auto field = tmp.field;
-    auto prefix = tmp.prefix;
+    const auto& field = tmp.field;
+    const auto& prefix = tmp.prefix;
 
     auto entityDB = mToolbar->entityDB();
     auto entityList = entityDB->entityList();
@@ -327,8 +327,8 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
     mCompareTreeWidget->setSortingEnabled(false);
 
     auto tmp = mCompareFieldComboBox->currentData().value<ComparisonField>();
-    auto field = tmp.field;
-    auto prefix = tmp.prefix;
+    const auto& field = tmp.field;
+    const auto& prefix = tmp.prefix;
 
     auto entityDB = mToolbar->entityDB();
     auto entityList = entityDB->entityList();

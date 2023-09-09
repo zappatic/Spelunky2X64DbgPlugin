@@ -163,7 +163,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mCPPTextEdit->setFont(font);
     mCPPTextEdit->setTabStopWidth(4 * fontMetrics.width(' '));
     mCPPTextEdit->setLineWrapMode(QTextEdit::LineWrapMode::NoWrap);
-    auto palette = mCPPTextEdit->palette();
+    QPalette palette = mCPPTextEdit->palette();
     palette.setColor(QPalette::Base, QColor("#1E1E1E"));
     palette.setColor(QPalette::Text, QColor("#D4D4D4"));
     mCPPTextEdit->setPalette(palette);

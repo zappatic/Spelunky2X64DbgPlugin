@@ -319,7 +319,7 @@ void S2Plugin::ViewToolbar::clearLabels()
     Script::Label::GetList(&list);
     for (auto x = 0; x < list.Count(); ++x)
     {
-        auto labelInfo = list[x];
+        const auto& labelInfo = list[x];
         if (!labelInfo.manual)
         {
             if (!Script::Label::Delete(labelInfo.rva))

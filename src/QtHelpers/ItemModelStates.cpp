@@ -15,7 +15,7 @@ Qt::ItemFlags S2Plugin::ItemModelStates::flags(const QModelIndex& index) const
 
 QVariant S2Plugin::ItemModelStates::data(const QModelIndex& index, int role) const
 {
-    auto [stateID, state] = mStates.at(index.row());
+    auto& [stateID, state] = mStates.at(index.row());
     if (role == Qt::DisplayRole)
     {
         return QString("%1: %2").arg(stateID).arg(QString::fromStdString(state));

@@ -25,9 +25,9 @@ void S2Plugin::Entity::refreshOffsets()
     auto offset = mEntityPtr;
     auto comparisonOffset = mComparisonEntityPtr;
     auto hierarchy = classHierarchy();
-    for (auto c : hierarchy)
+    for (const auto& c : hierarchy)
     {
-        auto headerIdentifier = c;
+        const auto headerIdentifier = c; // why copy this ? was there different intend for this variable?
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
@@ -96,7 +96,7 @@ void S2Plugin::Entity::populateTreeView()
     mTreeViewSectionItems.clear();
     auto hierarchy = classHierarchy();
     uint8_t counter = 0;
-    for (auto c : hierarchy)
+    for (const auto& c : hierarchy)
     {
         MemoryField headerField;
         headerField.name = "<b>" + c + "</b>";
@@ -120,9 +120,9 @@ void S2Plugin::Entity::populateMemoryView()
     mMemoryView->clearHighlights();
     auto hierarchy = classHierarchy();
     uint8_t colorIndex = 0;
-    for (auto c : hierarchy)
+    for (const auto& c : hierarchy)
     {
-        auto fields = mConfiguration->typeFieldsOfEntitySubclass(c);
+        auto& fields = mConfiguration->typeFieldsOfEntitySubclass(c);
         for (const auto& field : fields)
         {
             highlightField(field, c + "." + field.name, colors.at(colorIndex));
@@ -334,9 +334,9 @@ void S2Plugin::Entity::interpretAs(const std::string& classType)
 
 std::deque<std::string> S2Plugin::Entity::classHierarchy() const
 {
-    auto ech = mConfiguration->entityClassHierarchy();
+    auto& ech = mConfiguration->entityClassHierarchy();
     std::deque<std::string> hierarchy;
-    auto t = mEntityType;
+    std::string t = mEntityType;
     while (t != "Entity")
     {
         hierarchy.push_front(t);
@@ -439,9 +439,9 @@ void S2Plugin::Entity::updateComparedMemoryViewHighlights()
     if (mComparisonEntityPtr != 0)
     {
         auto hierarchy = classHierarchy();
-        for (auto c : hierarchy)
+        for (const auto& c : hierarchy)
         {
-            auto fields = mConfiguration->typeFieldsOfEntitySubclass(c);
+            auto& fields = mConfiguration->typeFieldsOfEntitySubclass(c);
             for (const auto& field : fields)
             {
                 highlightComparisonField(field, c + "." + field.name);

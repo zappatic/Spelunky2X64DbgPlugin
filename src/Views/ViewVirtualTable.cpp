@@ -218,7 +218,7 @@ void S2Plugin::ViewVirtualTable::tableEntryClicked(const QModelIndex& index)
 {
     auto mappedIndex = mSortFilterProxy->mapToSource(index);
     auto offset = mappedIndex.row();
-    const auto entry = mToolbar->virtualTableLookup()->entryForOffset(offset);
+    const auto& entry = mToolbar->virtualTableLookup()->entryForOffset(offset);
     auto column = mappedIndex.column();
     switch (column)
     {

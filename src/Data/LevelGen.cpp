@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <sstream>
 
 static const QColor gsDefaultColor = QColor(Qt::lightGray);
@@ -145,6 +146,7 @@ std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset)
 void S2Plugin::LevelGen::processJSON()
 {
     mRoomCodes.clear();
+    using nlohmann::ordered_json;
 
     std::unordered_map<std::string, QColor> colors;
 

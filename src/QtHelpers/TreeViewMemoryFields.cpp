@@ -391,6 +391,8 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
     QStandardItem* itemComparisonValueHex = nullptr;
     QStandardItem* itemMemoryOffset = nullptr;
     QStandardItem* itemMemoryOffsetDelta = nullptr;
+    auto shouldUpdateChildren = false;
+
     if (field.type != MemoryFieldType::Skip)
     {
         itemField = lookupTreeViewItem(fieldNameOverride, gsColField, parent);
@@ -417,16 +419,15 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleFieldName);
         itemComparisonValue->setData(comparisonMemoryOffset, gsRoleMemoryOffset);
         itemComparisonValue->setData(QString::fromStdString("comparison." + fieldNameOverride), gsRoleFieldName);
-    }
 
     auto modelIndex = mModel->indexFromItem(itemField);
-    auto shouldUpdateChildren = false;
     if (modelIndex.isValid())
     {
         shouldUpdateChildren = (itemField->hasChildren() && isExpanded(modelIndex));
     }
+    }
 
-    auto highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
+    QColor highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
     auto comparisonDifferenceColor = QColor::fromRgb(255, 221, 184);
     if (disableChangeHighlightingForField)
     {
@@ -1945,7 +1946,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
                     if (offset != 0)
                     {
-                        auto vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
+                        auto& vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
                         if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
                         {
                             auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
@@ -2077,7 +2078,7 @@ void S2Plugin::TreeViewMemoryFields::startDrag(Qt::DropActions supportedActions)
     QDrag* drag = new QDrag(this);
     auto mimeData = new QMimeData();
 
-    auto index = ix.at(0);
+    auto& index = ix.at(0);
 
     // for spelunky/entityoffset: dragging an entity from ViewEntities on top of ViewEntity for comparison
     auto entityItem = mModel->item(index.row(), gsColMemoryOffset);

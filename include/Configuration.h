@@ -56,7 +56,7 @@ namespace S2Plugin
         std::unordered_map<std::string, std::vector<VirtualFunction>> mVirtualFunctions;
         std::unordered_map<std::string, uint8_t> mAlignments;
 
-        void processJSON(const ordered_json& j);
+        void processJSON(const std::string& j);
         bool isKnownEntitySubclass(const std::string& typeName) const;
     };
 } // namespace S2Plugin

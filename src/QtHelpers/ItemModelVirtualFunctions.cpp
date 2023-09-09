@@ -13,7 +13,7 @@ Qt::ItemFlags S2Plugin::ItemModelVirtualFunctions::flags(const QModelIndex& inde
 
 QVariant S2Plugin::ItemModelVirtualFunctions::data(const QModelIndex& index, int role) const
 {
-    auto entry = mToolbar->configuration()->virtualFunctionsOfType(mTypeName).at(index.row());
+    const VirtualFunction entry = mToolbar->configuration()->virtualFunctionsOfType(mTypeName).at(index.row());
     switch (role)
     {
         case Qt::DisplayRole:

@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <sstream>
 
 S2Plugin::ItemModelGatherVirtualData::ItemModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent) : QAbstractItemModel(parent), mToolbar(toolbar)
@@ -20,7 +21,7 @@ QVariant S2Plugin::ItemModelGatherVirtualData::data(const QModelIndex& index, in
 {
     if (role == Qt::DisplayRole)
     {
-        auto entry = mEntries.at(index.row());
+        const auto& entry = mEntries.at(index.row());
         switch (index.column())
         {
             case gsColGatherID:
@@ -167,7 +168,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
         {
             auto g = GatheredDataEntry();
             g.id = index;
-            auto themeUpper = themeName;
+            std::string themeUpper = themeName;
             std::transform(themeUpper.begin(), themeUpper.end(), themeUpper.begin(), ::toupper);
             g.name = QString::fromStdString(themeUpper);
             g.virtualTableOffset = tableOffset;
@@ -273,7 +274,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
         {
             auto g = GatheredDataEntry();
             g.id = index;
-            auto themeUpper = screenName;
+            std::string themeUpper = screenName;
             std::transform(themeUpper.begin(), themeUpper.end(), themeUpper.begin(), ::toupper);
             g.name = QString::fromStdString(themeUpper);
             g.virtualTableOffset = tableOffset;
@@ -326,7 +327,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
         {
             auto g = GatheredDataEntry();
             g.id = index;
-            auto themeUpper = screenName;
+            std::string themeUpper = screenName;
             std::transform(themeUpper.begin(), themeUpper.end(), themeUpper.begin(), ::toupper);
             g.name = QString::fromStdString(themeUpper);
             g.virtualTableOffset = tableOffset;
@@ -416,6 +417,8 @@ std::string S2Plugin::ItemModelGatherVirtualData::dumpJSON() const
 
 void S2Plugin::ItemModelGatherVirtualData::parseJSON()
 {
+    using nlohmann::ordered_json;
+
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
     auto pathQStr = QFileInfo(QString(buffer)).dir().filePath(QString::fromStdString("plugins/Spelunky2VirtualTableData.json"));
