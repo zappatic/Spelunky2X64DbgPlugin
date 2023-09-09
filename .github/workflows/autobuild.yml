@@ -39,6 +39,7 @@ jobs:
           7z x qt563.7z
 
       - name: Save Qt to cache
+        if: steps.cache-qt.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
           path: C:\Qt
