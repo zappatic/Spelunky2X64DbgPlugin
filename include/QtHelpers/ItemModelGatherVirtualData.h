@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Views/ViewToolbar.h"
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+
     static const uint8_t gsColGatherID = 0;
     static const uint8_t gsColGatherName = 1;
     static const uint8_t gsColGatherVirtualTableOffset = 2;

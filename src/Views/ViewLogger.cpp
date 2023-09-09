@@ -1,4 +1,10 @@
 #include "Views/ViewLogger.h"
+#include "Data/Logger.h"
+#include "QtHelpers/ItemModelLoggerFields.h"
+#include "QtHelpers/ItemModelLoggerSamples.h"
+#include "QtHelpers/TableViewLogger.h"
+#include "QtHelpers/WidgetSamplesPlot.h"
+#include "QtHelpers/WidgetSampling.h"
 #include <QCloseEvent>
 #include <QHBoxLayout>
 #include <QIcon>

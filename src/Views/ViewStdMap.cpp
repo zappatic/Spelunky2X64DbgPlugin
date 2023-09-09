@@ -1,8 +1,11 @@
 #include <windows.h>
 
+#include "Configuration.h"
 #include "Data/MemoryMappedData.h"
 #include "Data/StdMap.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
+#include "Spelunky2.h"
+#include "Views/ViewStdMap.h"
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCheckBox>
@@ -13,8 +16,6 @@
 #include <QPushButton>
 #include <QTimer>
 #include <Qlayout>
-
-#include "Views/ViewStdMap.h"
 
 S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytypeName, const std::string& valuetypeName, size_t mapOffset, QWidget* parent)
     : mMapKeyType(keytypeName), mMapValueType(valuetypeName), mmapOffset(mapOffset), QWidget(parent), mToolbar(toolbar)

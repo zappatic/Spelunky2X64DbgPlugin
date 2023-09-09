@@ -1,12 +1,13 @@
 #pragma once
 
-#include "QtHelpers/WidgetMemoryView.h"
-#include "Views/ViewToolbar.h"
 #include <QWidget>
 #include <unordered_map>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct ToolTipRect;
+
     class WidgetSpelunkyRooms : public QWidget
     {
         Q_OBJECT

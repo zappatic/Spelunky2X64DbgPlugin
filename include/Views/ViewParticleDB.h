@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Data/ParticleDB.h"
-#include "QtHelpers/StyledItemDelegateHTML.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QCompleter>
@@ -13,9 +9,15 @@
 #include <QTreeWidget>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <memory>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct StyledItemDelegateHTML;
+    struct TreeViewMemoryFields;
+    struct MemoryField;
+
     class ViewParticleDB : public QWidget
     {
         Q_OBJECT

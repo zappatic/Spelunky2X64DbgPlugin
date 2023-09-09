@@ -1,21 +1,39 @@
-#include "QtHelpers/TreeViewMemoryFields.h"
+#include <windows.h>
+
+#include "Configuration.h"
+#include "Data/CharacterDB.h"
 #include "Data/Entity.h"
+#include "Data/EntityDB.h"
+#include "Data/LevelGen.h"
+#include "Data/ParticleDB.h"
+#include "Data/ParticleEmittersList.h"
+#include "Data/State.h"
 #include "Data/StdString.h"
+#include "Data/StringsTable.h"
+#include "Data/TextureDB.h"
 #include "QtHelpers/DialogEditSimpleValue.h"
 #include "QtHelpers/DialogEditState.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
+#include "Spelunky2.h"
 #include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewTextureDB.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QDrag>
+#include <QDragMoveEvent>
 #include <QMimeData>
+#include <QStandardItem>
+#include <QStandardItemModel>
 #include <QTextCodec>
 #include <inttypes.h>
 #include <iomanip>
 #include <nlohmann/json.hpp>
 #include <sstream>
+#include <vector>
 
 S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent) : QTreeView(parent), mToolbar(toolbar), mMemoryMappedData(mmd)
 {
@@ -420,11 +438,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         itemComparisonValue->setData(comparisonMemoryOffset, gsRoleMemoryOffset);
         itemComparisonValue->setData(QString::fromStdString("comparison." + fieldNameOverride), gsRoleFieldName);
 
-    auto modelIndex = mModel->indexFromItem(itemField);
-    if (modelIndex.isValid())
-    {
-        shouldUpdateChildren = (itemField->hasChildren() && isExpanded(modelIndex));
-    }
+        auto modelIndex = mModel->indexFromItem(itemField);
+        if (modelIndex.isValid())
+        {
+            shouldUpdateChildren = (itemField->hasChildren() && isExpanded(modelIndex));
+        }
     }
 
     QColor highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;

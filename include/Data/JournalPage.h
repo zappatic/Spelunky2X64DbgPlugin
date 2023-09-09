@@ -1,8 +1,7 @@
 #pragma once
 
 #include "Data/MemoryMappedData.h"
-#include "Spelunky2.h"
-#include <memory>
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 

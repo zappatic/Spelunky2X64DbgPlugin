@@ -1,7 +1,15 @@
 #include "Data/Entity.h"
 #include "Configuration.h"
+#include "Data/EntityDB.h"
+#include "Data/State.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
+#include "QtHelpers/WidgetMemoryView.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
+#include <QColor>
+#include <QStandardItem>
 #include <regex>
+#include <string>
 
 S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB, S2Plugin::Configuration* config)
     : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView), mComparisonMemoryView(comparisonMemoryView)

@@ -1,4 +1,8 @@
 #include "Views/ViewThreads.h"
+#include "Configuration.h"
+#include "Data/State.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QHeaderView>
 #include <QPushButton>

@@ -1,4 +1,12 @@
 #include "QtHelpers/ItemModelGatherVirtualData.h"
+#include "Configuration.h"
+#include "Data/EntityDB.h"
+#include "Data/GameManager.h"
+#include "Data/LevelGen.h"
+#include "Data/State.h"
+#include "Data/VirtualTableLookup.h"
+#include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>
@@ -6,6 +14,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <sstream>
+#include <string>
 
 S2Plugin::ItemModelGatherVirtualData::ItemModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent) : QAbstractItemModel(parent), mToolbar(toolbar)
 {

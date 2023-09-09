@@ -1,13 +1,14 @@
 #pragma once
 
-#include "Views/ViewToolbar.h"
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
-#include <unordered_map>
-#include <vector>
+#include <cstdint>
+#include <string>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+
     static const uint8_t gsColFunctionIndex = 0;
     static const uint8_t gsColFunctionTableAddress = 1;
     static const uint8_t gsColFunctionFunctionAddress = 2;

@@ -1,4 +1,6 @@
 #include "Data/EntityDB.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::EntityDB::EntityDB(Configuration* config) : MemoryMappedData(config) {}

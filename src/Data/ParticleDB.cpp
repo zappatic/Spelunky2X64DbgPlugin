@@ -1,5 +1,7 @@
 #include "Data/ParticleDB.h"
+#include "Configuration.h"
 #include "Data/ParticleEmittersList.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::ParticleDB::ParticleDB(Configuration* config) : MemoryMappedData(config) {}

@@ -1,4 +1,7 @@
 #include "Data/SaveGame.h"
+#include "Configuration.h"
+#include "Data/GameManager.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::SaveGame::SaveGame(Configuration* config, GameManager* gm) : MemoryMappedData(config), mGameManager(gm) {}

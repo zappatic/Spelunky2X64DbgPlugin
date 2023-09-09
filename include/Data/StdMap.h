@@ -10,7 +10,8 @@ namespace S2Plugin
     // this can also be used as std::set, just set the value size to 0
     // it's not the safes implementation but the one that was needed
 
-    template <class Key = size_t, class Value = size_t> struct StdMap
+    template <class Key = size_t, class Value = size_t>
+    struct StdMap
     {
         // only for the template
         StdMap(size_t addr) : address(addr)

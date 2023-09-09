@@ -1,4 +1,7 @@
 #include "Views/ViewVirtualFunctions.h"
+#include "QtHelpers/ItemModelVirtualFunctions.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QHeaderView>
 #include <QLabel>

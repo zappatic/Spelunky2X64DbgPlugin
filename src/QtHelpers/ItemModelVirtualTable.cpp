@@ -1,4 +1,9 @@
 #include "QtHelpers/ItemModelVirtualTable.h"
+#include "Configuration.h"
+#include "Data/State.h"
+#include "Data/VirtualTableLookup.h"
+#include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 
 S2Plugin::ItemModelVirtualTable::ItemModelVirtualTable(VirtualTableLookup* vtl, QObject* parent) : QAbstractItemModel(parent), mVirtualTableLookup(vtl) {}

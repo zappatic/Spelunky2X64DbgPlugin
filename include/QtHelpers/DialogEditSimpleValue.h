@@ -1,11 +1,12 @@
 #pragma once
 
-#include "Spelunky2.h"
 #include <QDialog>
 #include <QLineEdit>
 
 namespace S2Plugin
 {
+    enum class MemoryFieldType;
+
     class DialogEditSimpleValue : public QDialog
     {
         Q_OBJECT

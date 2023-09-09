@@ -1,7 +1,12 @@
 #include "Views/ViewTextureDB.h"
+#include "Configuration.h"
+#include "Data/TextureDB.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
 #include "QtHelpers/TreeWidgetItemNumeric.h"
 #include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>

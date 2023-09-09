@@ -1,4 +1,5 @@
 #include "QtHelpers/ItemModelStringsTable.h"
+#include "Data/StringsTable.h"
 #include "pluginmain.h"
 
 S2Plugin::ItemModelStringsTable::ItemModelStringsTable(StringsTable* stbl, QObject* parent) : QAbstractItemModel(parent), mStringsTable(stbl) {}

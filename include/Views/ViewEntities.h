@@ -1,14 +1,17 @@
 #pragma once
 
-#include "Data/EntityDB.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QString>
+#include <QVBoxLayout>
+#include <array>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct TreeViewMemoryFields;
+
     enum class MASK : uint32_t
     {
         PLAYER = 0x1,

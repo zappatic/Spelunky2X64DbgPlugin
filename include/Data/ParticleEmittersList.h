@@ -1,14 +1,11 @@
 #pragma once
 
 #include "Data/IDNameList.h"
-#include "Spelunky2.h"
-#include <QStringList>
-#include <cstdint>
-#include <string>
-#include <unordered_map>
 
 namespace S2Plugin
 {
+    struct Spelunky2;
+
     class ParticleEmittersList : public IDNameList
     {
       public:

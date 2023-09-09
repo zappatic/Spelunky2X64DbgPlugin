@@ -1,5 +1,7 @@
 #include "Data/LevelGen.h"
+#include "Configuration.h"
 #include "Data/State.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>

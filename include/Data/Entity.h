@@ -1,12 +1,7 @@
 #pragma once
 
-#include "Configuration.h"
-#include "Data/EntityDB.h"
 #include "Data/MemoryMappedData.h"
-#include "Data/State.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "QtHelpers/WidgetMemoryView.h"
-#include "Spelunky2.h"
+#include <QStandardItem>
 #include <deque>
 #include <memory>
 #include <string>
@@ -14,6 +9,12 @@
 
 namespace S2Plugin
 {
+    struct EntityDB;
+    struct Configuration;
+    struct TreeViewMemoryFields;
+    struct WidgetMemoryView;
+    struct State;
+
     class Entity : public MemoryMappedData
     {
       public:

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Data/JournalPage.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
@@ -11,10 +8,15 @@
 #include <QTimer>
 #include <QTreeView>
 #include <QVBoxLayout>
-
+#include <memory>
+#include <string>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct TreeViewMemoryFields;
+    struct JournalPage;
+
     class ViewJournalPage : public QWidget
     {
         Q_OBJECT

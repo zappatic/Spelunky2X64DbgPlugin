@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Spelunky2.h"
-#include <nlohmann/json.hpp>
+#include <memory>
 #include <string>
 #include <unordered_map>
 
-using nlohmann::ordered_json;
-
 namespace S2Plugin
 {
+    struct MemoryField;
+    struct VirtualFunction;
+    struct Spelunky2;
+    enum class MemoryFieldType;
+
     class Configuration
     {
       public:

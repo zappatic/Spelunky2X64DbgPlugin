@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Configuration.h"
-#include "QtHelpers/ItemModelStates.h"
-#include "Spelunky2.h"
 #include <QComboBox>
 #include <QDialog>
 #include <QLineEdit>
 
 namespace S2Plugin
 {
+    enum class MemoryFieldType;
+    struct ItemModelStates;
+    struct Configuration;
+    struct SortFilterProxyModelStates;
+
     class DialogEditState : public QDialog
     {
         Q_OBJECT

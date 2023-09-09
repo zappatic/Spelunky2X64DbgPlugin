@@ -1,9 +1,14 @@
 #include <windows.h>
 
-#include "Views/ViewEntities.h"
+#include "Configuration.h"
+#include "Data/EntityDB.h"
 #include "Data/EntityList.h"
+#include "Data/State.h"
 #include "Data/StdMap.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
+#include "Views/ViewEntities.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>

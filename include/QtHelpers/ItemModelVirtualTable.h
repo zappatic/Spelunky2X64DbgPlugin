@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Data/VirtualTableLookup.h"
-#include "Views/ViewToolbar.h"
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct VirtualTableLookup;
+
     static const uint8_t gsColTableOffset = 0;
     static const uint8_t gsColCodeAddress = 1;
     static const uint8_t gsColTableAddress = 2;

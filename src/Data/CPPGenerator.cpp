@@ -1,5 +1,7 @@
 #include "Data/CPPGenerator.h"
+#include "Configuration.h"
 #include "QtHelpers/CPPSyntaxHighlighter.h"
+#include "Spelunky2.h"
 
 S2Plugin::CPPGenerator::CPPGenerator(Configuration* config) : mConfiguration(config) {}
 

@@ -1,4 +1,6 @@
 #include "Data/GameManager.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::GameManager::GameManager(Configuration* config) : MemoryMappedData(config) {}

@@ -1,5 +1,9 @@
 #include "Data/Online.h"
+#include "Configuration.h"
+#include "Data/MemoryMappedData.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
+#include <cstdint>
 
 S2Plugin::Online::Online(Configuration* config) : MemoryMappedData(config) {}
 

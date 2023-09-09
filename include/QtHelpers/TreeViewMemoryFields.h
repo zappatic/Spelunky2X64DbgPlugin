@@ -1,20 +1,19 @@
 #pragma once
 
-#include "Data/EntityDB.h"
-#include "Data/MemoryMappedData.h"
-#include "QtHelpers/StyledItemDelegateHTML.h"
-#include "Spelunky2.h"
-#include "Views/ViewToolbar.h"
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QStandardItem>
+#include <QStandardItemModel>
 #include <QTreeView>
 #include <array>
 #include <memory>
+#include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct MemoryMappedData;
+    struct MemoryField;
+    class StyledItemDelegateHTML;
+
     class TreeViewMemoryFields : public QTreeView
     {
         Q_OBJECT
@@ -51,7 +50,7 @@ namespace S2Plugin
         MemoryMappedData* mMemoryMappedData;
         QStandardItemModel* mModel;
         std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
-        std::array<uint32_t, 6> mSavedColumnWidths = {0};
+        std::array<uint32_t, 9> mSavedColumnWidths = {0};
         bool mEnableChangeHighlighting = true;
     };
 } // namespace S2Plugin

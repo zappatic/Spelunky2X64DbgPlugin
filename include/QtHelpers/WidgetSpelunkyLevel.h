@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <cstdint>
 #include <unordered_map>
 
 namespace S2Plugin

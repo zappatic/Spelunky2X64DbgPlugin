@@ -1,4 +1,7 @@
 #include "Data/CharacterDB.h"
+#include "Configuration.h"
+#include "Data/StringsTable.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::CharacterDB::CharacterDB(Configuration* config) : MemoryMappedData(config) {}

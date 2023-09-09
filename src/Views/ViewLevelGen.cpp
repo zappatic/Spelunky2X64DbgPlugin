@@ -1,6 +1,12 @@
 #include "Views/ViewLevelGen.h"
+#include "Configuration.h"
+#include "Data/EntityDB.h"
 #include "Data/EntityList.h"
+#include "Data/LevelGen.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
+#include "QtHelpers/WidgetSpelunkyRooms.h"
 #include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>

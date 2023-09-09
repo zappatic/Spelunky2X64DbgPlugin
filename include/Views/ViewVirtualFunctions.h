@@ -1,16 +1,17 @@
 #pragma once
 
-#include "QtHelpers/ItemModelVirtualFunctions.h"
-#include "QtHelpers/StyledItemDelegateHTML.h"
-#include "Views/ViewToolbar.h"
 #include <QLineEdit>
 #include <QTableView>
 #include <QVBoxLayout>
 #include <memory>
 
-
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct StyledItemDelegateHTML;
+    struct ItemModelVirtualFunctions;
+    struct SortFilterProxyModelVirtualFunctions;
+
     class ViewVirtualFunctions : public QWidget
     {
         Q_OBJECT

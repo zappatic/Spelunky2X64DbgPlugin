@@ -1,4 +1,7 @@
 #include "QtHelpers/DialogEditState.h"
+#include "Configuration.h"
+#include "QtHelpers/ItemModelStates.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QGridLayout>
 #include <QHBoxLayout>

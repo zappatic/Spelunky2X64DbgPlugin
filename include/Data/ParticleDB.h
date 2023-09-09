@@ -1,15 +1,16 @@
 #pragma once
 
-#include "Configuration.h"
 #include "Data/MemoryMappedData.h"
-#include "Data/ParticleEmittersList.h"
-#include "Spelunky2.h"
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
+    struct Configuration;
+    struct ParticleEmittersList;
+
     class ParticleDB : public MemoryMappedData
     {
       public:

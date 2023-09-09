@@ -1,4 +1,6 @@
 #include "Data/TextureDB.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::TextureDB::TextureDB(Configuration* config) : MemoryMappedData(config) {}

@@ -6,13 +6,14 @@
 #include <QStandardItem>
 #include <QVBoxLayout>
 #include <memory>
-
-struct MemoryField;
-struct ViewToolbar;
-struct TreeViewMemoryFields;
+#include <vector>
 
 namespace S2Plugin
 {
+    struct MemoryField;
+    struct ViewToolbar;
+    struct TreeViewMemoryFields;
+
     class ViewStdMap : public QWidget
     {
         Q_OBJECT

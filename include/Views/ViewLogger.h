@@ -1,21 +1,22 @@
 #pragma once
 
-#include "Data/Logger.h"
-#include "QtHelpers/ItemModelLoggerFields.h"
-#include "QtHelpers/ItemModelLoggerSamples.h"
-#include "QtHelpers/TableViewLogger.h"
-#include "QtHelpers/WidgetSamplesPlot.h"
-#include "QtHelpers/WidgetSampling.h"
 #include <QLineEdit>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QWidget>
-
+#include <memory>
 
 namespace S2Plugin
 {
+    class Logger;
+    struct TableViewLogger;
+    struct ItemModelLoggerFields;
+    struct WidgetSampling;
+    struct ItemModelLoggerSamples;
+    struct WidgetSamplesPlot;
+
     class ViewLogger : public QWidget
     {
         Q_OBJECT

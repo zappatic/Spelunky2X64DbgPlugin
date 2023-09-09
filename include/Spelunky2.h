@@ -5,8 +5,6 @@
 #include <qnamespace.h>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
-#include <vector>
 
 namespace S2Plugin
 {
@@ -351,7 +349,7 @@ namespace S2Plugin
         // size_t findEntityListMapOffset();
 
       private:
-        bool mInitErrorShown = false;
+        bool mInitErrorShown = false; // TODO: change
     };
 
 } // namespace S2Plugin

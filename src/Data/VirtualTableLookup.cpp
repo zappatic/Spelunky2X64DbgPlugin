@@ -1,4 +1,6 @@
 #include "Data/VirtualTableLookup.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 static constexpr size_t gsAmountOfPointers = 53200;

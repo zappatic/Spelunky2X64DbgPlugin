@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pluginmain.h"
-
 namespace QtPlugin
 {
     void Init();

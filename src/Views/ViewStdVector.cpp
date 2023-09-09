@@ -1,5 +1,9 @@
 #include "Views/ViewStdVector.h"
+#include "Configuration.h"
+#include "Data/MemoryMappedData.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>

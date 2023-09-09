@@ -1,12 +1,22 @@
 #include "Views/ViewEntity.h"
+#include "Configuration.h"
 #include "Data/CPPGenerator.h"
+#include "Data/Entity.h"
+#include "Data/EntityDB.h"
 #include "Data/EntityList.h"
+#include "Data/State.h"
+#include "QtHelpers/CPPSyntaxHighlighter.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
+#include "QtHelpers/WidgetMemoryView.h"
+#include "QtHelpers/WidgetSpelunkyLevel.h"
 #include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QFont>
 #include <QHeaderView>
 #include <QLabel>
+#include <string>
 
 S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {

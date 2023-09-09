@@ -1,4 +1,6 @@
 #include "Data/JournalPage.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::JournalPage::JournalPage(Configuration* config, size_t offset, const std::string& pageType) : MemoryMappedData(config), mJournalPagePtr(offset), mJournalPageType(pageType) {}

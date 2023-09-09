@@ -1,5 +1,10 @@
 #include "Views/ViewVirtualTable.h"
+#include "Data/VirtualTableLookup.h"
+#include "QtHelpers/ItemModelGatherVirtualData.h"
+#include "QtHelpers/ItemModelVirtualTable.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCheckBox>
 #include <QClipBoard>

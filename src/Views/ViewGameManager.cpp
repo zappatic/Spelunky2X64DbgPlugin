@@ -1,5 +1,9 @@
 #include "Views/ViewGameManager.h"
+#include "Configuration.h"
+#include "Data/GameManager.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>
