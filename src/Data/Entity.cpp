@@ -33,15 +33,15 @@ void S2Plugin::Entity::refreshOffsets()
     auto offset = mEntityPtr;
     auto comparisonOffset = mComparisonEntityPtr;
     auto hierarchy = classHierarchy();
-    for (const auto& c : hierarchy)
+    for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
-        const auto headerIdentifier = c; // why copy this ? was there different intend for this variable?
+        const auto& headerIdentifier = *it;
         MemoryField headerField;
-        headerField.name = "<b>" + c + "</b>";
+        headerField.name = "<b>" + headerIdentifier + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
-        headerField.jsonName = c;
+        headerField.jsonName = headerIdentifier;
         offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
-        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
+        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(headerIdentifier))
         {
             offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
         }
@@ -49,12 +49,12 @@ void S2Plugin::Entity::refreshOffsets()
         if (mComparisonEntityPtr != 0)
         {
             MemoryField comparisonHeaderField;
-            comparisonHeaderField.name = "<b>Comparison" + c + "</b>";
+            comparisonHeaderField.name = "<b>Comparison" + headerIdentifier + "</b>";
             comparisonHeaderField.type = MemoryFieldType::EntitySubclass;
-            comparisonHeaderField.jsonName = "comparison." + c;
+            comparisonHeaderField.jsonName = "comparison." + headerIdentifier;
 
             comparisonOffset = setOffsetForField(comparisonHeaderField, "comparison." + headerIdentifier, comparisonOffset, mMemoryOffsets, false);
-            for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
+            for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(headerIdentifier))
             {
                 comparisonOffset = setOffsetForField(field, "comparison." + headerIdentifier + "." + field.name, comparisonOffset, mMemoryOffsets);
             }
@@ -71,9 +71,9 @@ void S2Plugin::Entity::refreshValues()
     // refresh all the offsets, as the pointer value may have changed, so in order to show
     // the correct values of the pointer contents, we need to set the new offset
     bool pointerFieldFound = false;
-    for (const auto& c : hierarchy)
+    for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
-        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(c))
+        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(*it))
         {
             if (field.type == MemoryFieldType::PointerType)
             {
@@ -104,14 +104,14 @@ void S2Plugin::Entity::populateTreeView()
     mTreeViewSectionItems.clear();
     auto hierarchy = classHierarchy();
     uint8_t counter = 0;
-    for (const auto& c : hierarchy)
+    for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
         MemoryField headerField;
-        headerField.name = "<b>" + c + "</b>";
+        headerField.name = "<b>" + *it + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
-        headerField.jsonName = c;
-        auto item = mTree->addMemoryField(headerField, c);
-        mTreeViewSectionItems[c] = item;
+        headerField.jsonName = *it;
+        auto item = mTree->addMemoryField(headerField, *it);
+        mTreeViewSectionItems[*it] = item;
         if (++counter == hierarchy.size())
         {
             mTree->expandItem(item);
@@ -128,12 +128,12 @@ void S2Plugin::Entity::populateMemoryView()
     mMemoryView->clearHighlights();
     auto hierarchy = classHierarchy();
     uint8_t colorIndex = 0;
-    for (const auto& c : hierarchy)
+    for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
-        auto& fields = mConfiguration->typeFieldsOfEntitySubclass(c);
+        auto& fields = mConfiguration->typeFieldsOfEntitySubclass(*it);
         for (const auto& field : fields)
         {
-            highlightField(field, c + "." + field.name, colors.at(colorIndex));
+            highlightField(field, *it + "." + field.name, colors.at(colorIndex));
         }
         colorIndex++;
         if (colorIndex >= colors.size())
@@ -340,21 +340,22 @@ void S2Plugin::Entity::interpretAs(const std::string& classType)
     mTree->updateTableHeader();
 }
 
-std::deque<std::string> S2Plugin::Entity::classHierarchy() const
+std::vector<std::string> S2Plugin::Entity::classHierarchy() const
 {
     auto& ech = mConfiguration->entityClassHierarchy();
-    std::deque<std::string> hierarchy;
+    std::vector<std::string> hierarchy;
     std::string t = mEntityType;
     while (t != "Entity")
     {
-        hierarchy.push_front(t);
-        if (ech.count(t) == 0)
+        hierarchy.push_back(t);
+        auto ech_it = ech.find(t);
+        if (ech_it == ech.end())
         {
             dprintf("unknown key requested in Entity::classHierarchy() (t=%s)\n", t.c_str());
         }
-        t = ech.at(t);
+        t = ech_it->second;
     }
-    hierarchy.push_front("Entity");
+    hierarchy.push_back("Entity");
     return hierarchy;
 }
 
@@ -447,12 +448,12 @@ void S2Plugin::Entity::updateComparedMemoryViewHighlights()
     if (mComparisonEntityPtr != 0)
     {
         auto hierarchy = classHierarchy();
-        for (const auto& c : hierarchy)
+        for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
         {
-            auto& fields = mConfiguration->typeFieldsOfEntitySubclass(c);
+            auto& fields = mConfiguration->typeFieldsOfEntitySubclass(*it);
             for (const auto& field : fields)
             {
-                highlightComparisonField(field, c + "." + field.name);
+                highlightComparisonField(field, *it + "." + field.name);
             }
         }
     }

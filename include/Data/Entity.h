@@ -2,10 +2,10 @@
 
 #include "Data/MemoryMappedData.h"
 #include <QStandardItem>
-#include <deque>
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace S2Plugin
 {
@@ -24,7 +24,7 @@ namespace S2Plugin
         void refreshValues();
         void interpretAs(const std::string& classType);
         std::string entityType() const noexcept;
-        std::deque<std::string> classHierarchy() const;
+        std::vector<std::string> classHierarchy() const;
         void populateTreeView();
         void populateMemoryView();
 
