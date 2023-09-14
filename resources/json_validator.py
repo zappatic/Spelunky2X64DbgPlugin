@@ -19,7 +19,8 @@ def count_json_keys(file_path):
             json_string = remove_comments(json_string)
             try:
                 data = json.loads(json_string)
-                key_count = len(data.keys())
+                key_count = len(data)
+                # could probably done more checks than just counting
                 return key_count
             except json.JSONDecodeError as e:
                 # Handle JSON decoding errors
