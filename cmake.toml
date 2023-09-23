@@ -1,0 +1,106 @@
+[cmake]
+version = "3.15"
+cmkr-include = "cmake/cmkr.cmake"
+
+[project]
+name = "Spelunky2"
+include-before = [
+	"cmake/msvc-static-runtime.cmake",
+	"cmake/msvc-configurations.cmake",
+]
+
+include-after = ["cmake/Qt5Helpers.cmake"]
+
+[subdir."3rdparty/json"]
+
+
+[fetch-content.x64dbg]
+url = "https://sourceforge.net/projects/x64dbg/files/snapshots/snapshot_2023-06-10_18-05.zip"
+sha1 = "04468bd61fb36d6b10d17f342f03ef12f5b2ce62"
+include-after = ["cmake/x64dbg.cmake"]
+
+
+
+
+
+[variables]
+
+
+X64DBG_PLUGINS_ROOT = ""
+CMAKE_AUTOMOC=true
+CMAKE_AUTORCC=true
+
+
+[find-package]
+Qt5 = {components = ["Core","Widgets"],required = true}
+
+
+
+
+
+
+
+[template.plugin]
+type = "shared"
+add-function = "x64dbg_plugin"
+
+[target.Spelunky2]
+type = "plugin"
+sources = [
+    "src/**.cpp",
+    "src/**.h",
+]
+properties = {CXX_STANDARD = "17"}
+private-include-directories = ["3rdparty/json/single_include","src"]
+private-link-libraries = ["Qt5::Core","Qt5::Widgets","nlohmann_json"]
+private-compile-definitions =["NOMINMAX","WIN32_LEAN_AND_MEAN","_ITERATOR_DEBUG_LEVEL=0"]
+cmake-before="""
+if(QT_NAMESPACE)
+    add_definitions(-DQT_NAMESPACE=${QT_NAMESPACE})
+endif()
+"""
+cmake-after = """
+# Enable Qt moc/rrc/uic support
+target_qt(${CMKR_TARGET})
+
+#TODO: This should be hooked to install target. Wait until cmkr stabilizes it.
+# Set the plugin as the startup project
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
+
+# Copy the plugin to the x64dbg plugins folder
+add_custom_command(	TARGET ${PROJECT_NAME} 
+					POST_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy_if_different" "${CMAKE_CURRENT_BINARY_DIR}/Release/Spelunky2.dp64" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2.json to the x64dbg plugins folder
+add_custom_target(deploy-auxfiles)
+add_custom_command(	TARGET deploy-auxfiles 
+					POST_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2.json" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2Entities.txt to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2Entities.txt" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2ParticleEmitters.txt to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2ParticleEmitters.txt" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2RoomCodes.json to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2RoomCodes.json" ${X64DBG_PLUGINS_ROOT})
+
+# Copy Spelunky2VirtualTableData.json to the x64dbg plugins folder
+add_custom_command(	TARGET deploy-auxfiles
+					PRE_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2VirtualTableData.json" ${X64DBG_PLUGINS_ROOT})
+
+add_dependencies(${PROJECT_NAME} deploy-auxfiles)
+
+
+
+"""
+

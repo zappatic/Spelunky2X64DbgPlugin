@@ -1,11 +1,11 @@
 #pragma once
 
 // Plugin information
-#ifndef PLUGIN_NAME
-#include "pluginconfig.h"
-#else
-#define PLUGIN_NAME "UnnamedPlugin"
-#endif // PLUGIN_NAME
+//#ifndef PLUGIN_NAME
+///#include "pluginconfig.h"
+//#else
+//#define PLUGIN_NAME "UnnamedPlugin"
+//#endif // PLUGIN_NAME
 #define PLUGIN_VERSION 16
 
 #include <windows.h>
