@@ -1,4 +1,17 @@
 #include "Views/ViewToolbar.h"
+#include "Configuration.h"
+#include "Data/CharacterDB.h"
+#include "Data/EntityDB.h"
+#include "Data/GameManager.h"
+#include "Data/LevelGen.h"
+#include "Data/Online.h"
+#include "Data/ParticleDB.h"
+#include "Data/SaveGame.h"
+#include "Data/State.h"
+#include "Data/StringsTable.h"
+#include "Data/TextureDB.h"
+#include "Data/VirtualTableLookup.h"
+#include "Spelunky2.h"
 #include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
@@ -319,7 +332,7 @@ void S2Plugin::ViewToolbar::clearLabels()
     Script::Label::GetList(&list);
     for (auto x = 0; x < list.Count(); ++x)
     {
-        auto labelInfo = list[x];
+        const auto& labelInfo = list[x];
         if (!labelInfo.manual)
         {
             if (!Script::Label::Delete(labelInfo.rva))

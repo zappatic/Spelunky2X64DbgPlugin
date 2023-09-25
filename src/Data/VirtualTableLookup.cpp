@@ -1,4 +1,6 @@
 #include "Data/VirtualTableLookup.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 static constexpr size_t gsAmountOfPointers = 53200;
@@ -95,7 +97,7 @@ S2Plugin::VirtualTableEntry S2Plugin::VirtualTableLookup::findPrecedingEntryWith
     size_t counter = tableOffset;
     while (counter > 0)
     {
-        auto entry = mOffsetToTableEntries.at(counter);
+        const auto& entry = mOffsetToTableEntries.at(counter);
         if (!entry.isAutoSymbol && entry.isValidAddress && entry.symbols.size() > 0)
         {
             return entry;

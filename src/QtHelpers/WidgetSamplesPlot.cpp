@@ -1,4 +1,6 @@
 #include "QtHelpers/WidgetSamplesPlot.h"
+#include "Data/Logger.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QFont>
 #include <QFontMetrics>

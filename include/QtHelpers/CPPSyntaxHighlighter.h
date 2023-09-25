@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Configuration.h"
 #include <QRegularExpression>
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>

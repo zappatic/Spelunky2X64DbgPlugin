@@ -1,5 +1,10 @@
 #include "Views/ViewVirtualTable.h"
+#include "Data/VirtualTableLookup.h"
+#include "QtHelpers/ItemModelGatherVirtualData.h"
+#include "QtHelpers/ItemModelVirtualTable.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCheckBox>
 #include <QClipBoard>
@@ -218,7 +223,7 @@ void S2Plugin::ViewVirtualTable::tableEntryClicked(const QModelIndex& index)
 {
     auto mappedIndex = mSortFilterProxy->mapToSource(index);
     auto offset = mappedIndex.row();
-    const auto entry = mToolbar->virtualTableLookup()->entryForOffset(offset);
+    const auto& entry = mToolbar->virtualTableLookup()->entryForOffset(offset);
     auto column = mappedIndex.column();
     switch (column)
     {

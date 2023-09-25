@@ -1,9 +1,14 @@
 #pragma once
 
 #include "Data/MemoryMappedData.h"
+#include <cstdint>
+#include <string>
+#include <unordered_map>
 
 namespace S2Plugin
 {
+    struct Configuration;
+
     class Online : public MemoryMappedData
     {
       public:

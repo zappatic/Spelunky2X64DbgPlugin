@@ -1,13 +1,17 @@
 #pragma once
 
-#include "QtHelpers/StyledItemDelegateHTML.h"
-#include "ViewToolbar.h"
 #include <QTableWidget>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <memory>
+#include <vector>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct StyledItemDelegateHTML;
+    struct State;
+
     class ViewThreads : public QWidget
     {
         Q_OBJECT

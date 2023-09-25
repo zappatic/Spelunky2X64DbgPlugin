@@ -1,4 +1,5 @@
 #include "Data/IDNameList.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>

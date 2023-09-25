@@ -1,9 +1,14 @@
 #pragma once
 
-#include "Configuration.h"
+#include <cstdint>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace S2Plugin
 {
+    struct Configuration;
+
     struct VirtualTableEntry
     {
         size_t value;

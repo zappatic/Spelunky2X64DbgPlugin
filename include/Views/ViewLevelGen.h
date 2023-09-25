@@ -1,10 +1,5 @@
 #pragma once
 
-#include "Data/EntityDB.h"
-#include "Data/LevelGen.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "QtHelpers/WidgetSpelunkyRooms.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
@@ -13,9 +8,15 @@
 #include <QTimer>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <memory>
+#include <unordered_map>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct TreeViewMemoryFields;
+    struct WidgetSpelunkyRooms;
+
     class ViewLevelGen : public QWidget
     {
         Q_OBJECT

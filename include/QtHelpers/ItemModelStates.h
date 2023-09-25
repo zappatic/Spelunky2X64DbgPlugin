@@ -2,6 +2,8 @@
 
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
+#include <cstdint>
+#include <string>
 #include <unordered_map>
 #include <vector>
 

@@ -1,4 +1,5 @@
 #include "QtHelpers/DialogEditSimpleValue.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QDoubleValidator>
 #include <QGridLayout>

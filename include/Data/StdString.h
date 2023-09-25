@@ -1,16 +1,13 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
-#include "Spelunky2.h"
-#include "pluginmain.h"
+#include "pluginsdk/_scriptapi_memory.h"
 #include <memory>
-#include <string>
-#include <unordered_map>
 
 namespace S2Plugin
 {
     // template just in case we want wstring or something, probably basic_string would fit this better
-    template <typename T = char> struct StdString
+    template <typename T = char>
+    struct StdString
     {
         StdString(size_t addr) : offset(addr){};
         size_t size() const

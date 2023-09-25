@@ -1,5 +1,9 @@
 #include "QtHelpers/WidgetSpelunkyRooms.h"
+#include "Data/State.h"
+#include "QtHelpers/WidgetMemoryView.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
+#include <Data/LevelGen.h>
 #include <QEvent>
 #include <QFontMetrics>
 #include <QHelpEvent>

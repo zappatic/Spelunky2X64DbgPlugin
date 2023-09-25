@@ -1,18 +1,21 @@
 #pragma once
 
-#include "Data/VirtualTableLookup.h"
-#include "QtHelpers/ItemModelGatherVirtualData.h"
-#include "QtHelpers/ItemModelVirtualTable.h"
-#include "QtHelpers/StyledItemDelegateHTML.h"
-#include "Views/ViewToolbar.h"
 #include <QCheckBox>
 #include <QLabel>
 #include <QTableView>
 #include <QTableWidget>
+#include <QVBoxLayout>
 #include <memory>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct ItemModelVirtualTable;
+    struct SortFilterProxyModelVirtualTable;
+    struct StyledItemDelegateHTML;
+    struct ItemModelGatherVirtualData;
+    struct SortFilterProxyModelGatherVirtualData;
+
     class ViewVirtualTable : public QWidget
     {
         Q_OBJECT

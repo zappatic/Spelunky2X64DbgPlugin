@@ -1,19 +1,20 @@
 #pragma once
 
-#include "Configuration.h"
-#include "Data/EntityDB.h"
 #include "Data/MemoryMappedData.h"
-#include "Data/State.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "QtHelpers/WidgetMemoryView.h"
-#include "Spelunky2.h"
-#include <deque>
+#include <QStandardItem>
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace S2Plugin
 {
+    struct EntityDB;
+    struct Configuration;
+    struct TreeViewMemoryFields;
+    struct WidgetMemoryView;
+    struct State;
+
     class Entity : public MemoryMappedData
     {
       public:
@@ -23,7 +24,7 @@ namespace S2Plugin
         void refreshValues();
         void interpretAs(const std::string& classType);
         std::string entityType() const noexcept;
-        std::deque<std::string> classHierarchy() const;
+        std::vector<std::string> classHierarchy() const;
         void populateTreeView();
         void populateMemoryView();
 

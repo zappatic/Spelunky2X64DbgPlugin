@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Spelunky2.h"
 #include <QAbstractItemModel>
-#include <unordered_map>
-#include <vector>
 
 namespace S2Plugin
 {

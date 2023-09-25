@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Spelunky2.h"
 #include <QStringList>
 #include <cstdint>
 #include <regex>
@@ -9,6 +8,8 @@
 
 namespace S2Plugin
 {
+    struct Spelunky2;
+
     class IDNameList
     {
       public:

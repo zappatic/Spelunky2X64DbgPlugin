@@ -1,12 +1,18 @@
 #pragma once
 
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
+#include <QLineEdit>
 #include <QPushButton>
+#include <QVBoxLayout>
+#include <memory>
+#include <vector>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct MemoryField;
+    struct TreeViewMemoryFields;
+
     class ViewStdVector : public QWidget
     {
         Q_OBJECT

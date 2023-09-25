@@ -1,12 +1,5 @@
 #pragma once
 
-#include "Data/Entity.h"
-#include "Data/EntityDB.h"
-#include "QtHelpers/CPPSyntaxHighlighter.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "QtHelpers/WidgetMemoryView.h"
-#include "QtHelpers/WidgetSpelunkyLevel.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
@@ -18,9 +11,17 @@
 #include <QTimer>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <memory>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct Entity;
+    struct TreeViewMemoryFields;
+    struct WidgetMemoryView;
+    struct CPPSyntaxHighlighter;
+    struct WidgetSpelunkyLevel;
+
     class ViewEntity : public QWidget
     {
         Q_OBJECT

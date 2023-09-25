@@ -1,11 +1,13 @@
 #include "Data/CPPGenerator.h"
+#include "Configuration.h"
 #include "QtHelpers/CPPSyntaxHighlighter.h"
+#include "Spelunky2.h"
 
 S2Plugin::CPPGenerator::CPPGenerator(Configuration* config) : mConfiguration(config) {}
 
 void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHighlighter* highlighter)
 {
-    auto className = typeName;
+    std::string className = typeName;
 
     std::vector<std::string> dependencies;
     std::string parentClassName = "";
@@ -20,7 +22,7 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
         fields = mConfiguration->typeFieldsOfEntitySubclass(className);
 
         // add the parents to the dependencies
-        auto p = parentClassName;
+        std::string p = parentClassName;
         while (p != "Entity" && p != "")
         {
             dependencies.emplace_back(p);
@@ -81,7 +83,7 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
         }
         else if (field.type == MemoryFieldType::PointerType)
         {
-            auto pointerLessFieldType = field.jsonName;
+            std::string pointerLessFieldType = field.jsonName;
             auto pointerIndex = pointerLessFieldType.find("Pointer");
             if (pointerIndex != std::string::npos)
             {

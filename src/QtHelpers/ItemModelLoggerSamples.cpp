@@ -1,6 +1,7 @@
 #include "QtHelpers/ItemModelLoggerSamples.h"
 #include "Data/Logger.h"
 #include "QtHelpers/TableViewLogger.h"
+#include "Spelunky2.h"
 
 S2Plugin::ItemModelLoggerSamples::ItemModelLoggerSamples(Logger* logger, QObject* parent) : QAbstractItemModel(parent), mLogger(logger) {}
 

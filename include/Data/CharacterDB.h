@@ -1,12 +1,16 @@
 #pragma once
 
-#include "Configuration.h"
 #include "Data/MemoryMappedData.h"
-#include "Data/StringsTable.h"
-#include "Spelunky2.h"
+#include <QStringList>
+#include <cstdint>
+#include <string>
+#include <unordered_map>
 
 namespace S2Plugin
 {
+    struct StringsTable;
+    struct Configuration;
+
     class CharacterDB : public MemoryMappedData
     {
       public:

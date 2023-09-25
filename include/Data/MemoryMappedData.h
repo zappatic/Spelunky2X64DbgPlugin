@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Configuration.h"
-#include "Spelunky2.h"
 #include <cstdint>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 namespace S2Plugin
 {
+    struct Configuration;
+    struct MemoryField;
+
     class MemoryMappedData
     {
       public:
@@ -21,8 +21,5 @@ namespace S2Plugin
 
       protected:
         Configuration* mConfiguration;
-
-        // unused?
-        // size_t updateOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets);
     };
 } // namespace S2Plugin

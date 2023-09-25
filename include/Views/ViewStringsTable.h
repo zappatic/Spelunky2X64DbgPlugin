@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Data/StringsTable.h"
-#include "QtHelpers/ItemModelStringsTable.h"
-#include "QtHelpers/StyledItemDelegateHTML.h"
-#include "Views/ViewToolbar.h"
 #include <QLineEdit>
 #include <QSortFilterProxyModel>
 #include <QStandardItemModel>
 #include <QTableView>
+#include <QVBoxLayout>
 #include <QWidget>
-
+#include <memory>
 
 namespace S2Plugin
 {
     class SortFilterProxyModelStringsTable;
+    struct ViewToolbar;
+    struct ItemModelStringsTable;
+    struct StyledItemDelegateHTML;
 
     class ViewStringsTable : public QWidget
     {

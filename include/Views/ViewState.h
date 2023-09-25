@@ -1,9 +1,5 @@
 #pragma once
 
-#include "Data/EntityDB.h"
-#include "Data/State.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QPushButton>
@@ -11,9 +7,14 @@
 #include <QTimer>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <memory>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct State;
+    struct TreeViewMemoryFields;
+
     class ViewState : public QWidget
     {
         Q_OBJECT

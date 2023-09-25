@@ -1,6 +1,7 @@
 #include "QtHelpers/ItemModelLoggerFields.h"
 #include "Data/Logger.h"
 #include "QtHelpers/TableViewLogger.h"
+#include "Spelunky2.h"
 
 S2Plugin::ItemModelLoggerFields::ItemModelLoggerFields(Logger* logger, QObject* parent) : QAbstractItemModel(parent), mLogger(logger) {}
 
@@ -11,7 +12,7 @@ Qt::ItemFlags S2Plugin::ItemModelLoggerFields::flags(const QModelIndex& index) c
 
 QVariant S2Plugin::ItemModelLoggerFields::data(const QModelIndex& index, int role) const
 {
-    auto field = mLogger->fieldAt(index.row());
+    auto& field = mLogger->fieldAt(index.row());
     if (role == Qt::DisplayRole)
     {
         switch (index.column())

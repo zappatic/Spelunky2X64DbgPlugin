@@ -1,4 +1,6 @@
 #include "Data/TextureDB.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::TextureDB::TextureDB(Configuration* config) : MemoryMappedData(config) {}
@@ -20,7 +22,7 @@ bool S2Plugin::TextureDB::loadTextureDB()
     mTextureNamesStringList.clear();
 
     auto instructionPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "4C 89 C6 41 89 CF 8B 1D");
-    auto textureStartAddress = instructionPtr + 12 + Script::Memory::ReadDword(instructionPtr + 8);
+    auto textureStartAddress = instructionPtr + 12 + (duint)Script::Memory::ReadDword(instructionPtr + 8);
     auto textureCount = Script::Memory::ReadQword(textureStartAddress);
     mTextureDBPtr = textureStartAddress + 0x8;
 

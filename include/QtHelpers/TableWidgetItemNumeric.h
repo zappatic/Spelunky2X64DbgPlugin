@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QTableWidgetItem>
 
 namespace S2Plugin

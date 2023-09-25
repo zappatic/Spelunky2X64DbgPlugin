@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Data/Logger.h"
 #include <QMouseEvent>
 #include <QPaintEvent>
 #include <QWidget>
 
 namespace S2Plugin
 {
+    class Logger;
+
     class WidgetSamplesPlot : public QWidget
     {
         Q_OBJECT

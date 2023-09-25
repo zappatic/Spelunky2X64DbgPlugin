@@ -1,4 +1,8 @@
 #include "Views/ViewStringsTable.h"
+#include "Data/StringsTable.h"
+#include "QtHelpers/ItemModelStringsTable.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QHeaderView>
 #include <QModelIndex>

@@ -1,11 +1,12 @@
 #pragma once
 
 #include "Data/MemoryMappedData.h"
-#include "Data/State.h"
 #include <QColor>
 
 namespace S2Plugin
 {
+    struct State;
+
     struct RoomCode
     {
         uint16_t id;

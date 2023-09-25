@@ -1,15 +1,16 @@
 #pragma once
 
-#include "Configuration.h"
 #include "Data/MemoryMappedData.h"
 #include "EntityList.h"
-#include "Spelunky2.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace S2Plugin
 {
+    struct Configuration;
+
     class EntityDB : public MemoryMappedData
     {
       public:

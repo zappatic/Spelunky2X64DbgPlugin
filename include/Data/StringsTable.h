@@ -1,11 +1,13 @@
 #pragma once
 
-#include "Configuration.h"
-#include "Spelunky2.h"
 #include <QString>
+#include <cstdint>
+#include <unordered_map>
 
 namespace S2Plugin
 {
+    struct Configuration;
+
     struct StringEntry
     {
         uint32_t id;

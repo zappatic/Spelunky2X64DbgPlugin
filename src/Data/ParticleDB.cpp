@@ -1,5 +1,7 @@
 #include "Data/ParticleDB.h"
+#include "Configuration.h"
 #include "Data/ParticleEmittersList.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::ParticleDB::ParticleDB(Configuration* config) : MemoryMappedData(config) {}
@@ -23,7 +25,7 @@ bool S2Plugin::ParticleDB::loadParticleDB()
 
     // Spelunky 1.20.4d, 1.23.1b: last id = 0xDB 219
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "FE FF FF FF 66 C7 05");
-    mParticleDBPtr = instructionOffset + 13 + Script::Memory::ReadDword(instructionOffset + 7);
+    mParticleDBPtr = instructionOffset + 13 + (duint)Script::Memory::ReadDword(instructionOffset + 7);
 
     auto counter = 0;
     size_t particleDBEntrySize = 0xA0;

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Data/StringsTable.h"
-#include "Views/ViewToolbar.h"
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
+#include <cstdint>
 
 namespace S2Plugin
 {
+    struct StringsTable;
+
     static const uint8_t gsColStringID = 0;
     static const uint8_t gsColStringTableOffset = 1;
     static const uint8_t gsColStringMemoryOffset = 2;

@@ -1,4 +1,7 @@
 #include "QtHelpers/DialogEditState.h"
+#include "Configuration.h"
+#include "QtHelpers/ItemModelStates.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QGridLayout>
 #include <QHBoxLayout>
@@ -43,7 +46,7 @@ S2Plugin::DialogEditState::DialogEditState(Configuration* config, const QString&
         }
     }
 
-    auto states = config->stateTitlesOfField(fieldName.toStdString());
+    const auto& states = config->stateTitlesOfField(fieldName.toStdString());
     mStatesComboBox = new QComboBox(this);
     mStatesModel = new ItemModelStates(states, this);
     mStatesSortProxy = new SortFilterProxyModelStates(states, this);

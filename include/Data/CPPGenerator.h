@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Configuration.h"
 #include <sstream>
 #include <string>
+#include <unordered_set>
 
 namespace S2Plugin
 {
     class CPPSyntaxHighlighter;
+    struct Configuration;
 
     class CPPGenerator
     {

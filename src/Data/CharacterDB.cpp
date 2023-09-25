@@ -1,4 +1,7 @@
 #include "Data/CharacterDB.h"
+#include "Configuration.h"
+#include "Data/StringsTable.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::CharacterDB::CharacterDB(Configuration* config) : MemoryMappedData(config) {}
@@ -21,7 +24,7 @@ bool S2Plugin::CharacterDB::loadCharacters(StringsTable* stringsTable)
     mCharacterNamesStringList.clear();
 
     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 6B C3 2C 48 8D 15 ?? ?? ?? ?? 48");
-    mCharactersPtr = instructionOffset + 11 + Script::Memory::ReadDword(instructionOffset + 7);
+    mCharactersPtr = instructionOffset + 11 + (duint)Script::Memory::ReadDword(instructionOffset + 7);
 
     size_t characterSize = 0x2C;
     for (size_t x = 0; x < 20; ++x)

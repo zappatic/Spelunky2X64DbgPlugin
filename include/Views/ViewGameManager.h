@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Data/GameManager.h"
-#include "QtHelpers/TreeViewMemoryFields.h"
-#include "ViewToolbar.h"
 #include <QCheckBox>
 #include <QLineEdit>
 #include <QPushButton>
@@ -10,9 +7,13 @@
 #include <QTimer>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <memory>
 
 namespace S2Plugin
 {
+    struct ViewToolbar;
+    struct TreeViewMemoryFields;
+
     class ViewGameManager : public QWidget
     {
         Q_OBJECT

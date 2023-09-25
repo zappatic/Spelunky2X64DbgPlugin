@@ -5,22 +5,20 @@
 #include <qnamespace.h>
 #include <string>
 #include <unordered_map>
-#include <unordered_set>
-#include <vector>
 
 namespace S2Plugin
 {
     class EntityDB;
 
-    static constexpr uint8_t gsColField = 0;
-    static constexpr uint8_t gsColValue = 1;
-    static constexpr uint8_t gsColValueHex = 2;
-    static constexpr uint8_t gsColComparisonValue = 3;
-    static constexpr uint8_t gsColComparisonValueHex = 4;
-    static constexpr uint8_t gsColMemoryOffset = 5;
-    static constexpr uint8_t gsColMemoryOffsetDelta = 6;
-    static constexpr uint8_t gsColType = 7;
-    static constexpr uint8_t gsColComment = 8;
+    constexpr uint8_t gsColField = 0;
+    constexpr uint8_t gsColValue = 1;
+    constexpr uint8_t gsColValueHex = 2;
+    constexpr uint8_t gsColComparisonValue = 3;
+    constexpr uint8_t gsColComparisonValueHex = 4;
+    constexpr uint8_t gsColMemoryOffset = 5;
+    constexpr uint8_t gsColMemoryOffsetDelta = 6;
+    constexpr uint8_t gsColType = 7;
+    constexpr uint8_t gsColComment = 8;
 
     static const uint16_t gsRoleField = Qt::UserRole + gsColField;
     static const uint16_t gsRoleValue = Qt::UserRole + gsColValue;
@@ -351,7 +349,7 @@ namespace S2Plugin
         // size_t findEntityListMapOffset();
 
       private:
-        bool mInitErrorShown = false;
+        bool mInitErrorShown = false; // TODO: change
     };
 
 } // namespace S2Plugin

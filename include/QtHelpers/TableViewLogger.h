@@ -1,6 +1,5 @@
 #pragma once
 
-#include "QtHelpers/StyledItemDelegateColorPicker.h"
 #include <QDragEnterEvent>
 #include <QDragMoveEvent>
 #include <QDropEvent>
@@ -12,6 +11,7 @@
 namespace S2Plugin
 {
     class Logger;
+    class StyledItemDelegateColorPicker;
 
     static constexpr uint8_t gsLogFieldColColor = 0;
     static constexpr uint8_t gsLogFieldColMemoryOffset = 1;

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <QTreeWidgetItem>
 
 namespace S2Plugin

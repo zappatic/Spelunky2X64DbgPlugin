@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Data/MemoryMappedData.h"
-#include "Spelunky2.h"
-#include <memory>
+#include <cstdint>
 #include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
+    struct Configuration;
+
     class State : public MemoryMappedData
     {
       public:

@@ -1,10 +1,13 @@
 #include "Data/LevelGen.h"
+#include "Configuration.h"
 #include "Data/State.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <fstream>
+#include <nlohmann/json.hpp>
 #include <sstream>
 
 static const QColor gsDefaultColor = QColor(Qt::lightGray);
@@ -145,6 +148,7 @@ std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset)
 void S2Plugin::LevelGen::processJSON()
 {
     mRoomCodes.clear();
+    using nlohmann::ordered_json;
 
     std::unordered_map<std::string, QColor> colors;
 

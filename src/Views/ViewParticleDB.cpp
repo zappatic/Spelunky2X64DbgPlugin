@@ -1,7 +1,13 @@
 #include "Views/ViewParticleDB.h"
+#include "Configuration.h"
+#include "Data/ParticleDB.h"
+#include "Data/ParticleEmittersList.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
 #include "QtHelpers/TreeWidgetItemNumeric.h"
 #include "Spelunky2.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCloseEvent>
 #include <QHeaderView>
@@ -93,7 +99,7 @@ void S2Plugin::ViewParticleDB::initializeUI()
                 case MemoryFieldType::Flags8:
                 {
                     mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                    auto flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
+                    uint8_t flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
                     for (uint8_t x = 1; x <= flagCount; ++x)
                     {
                         MemoryField flagField;

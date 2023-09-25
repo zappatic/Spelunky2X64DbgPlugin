@@ -1,13 +1,15 @@
 #pragma once
 
-#include "Configuration.h"
 #include "Data/MemoryMappedData.h"
+#include <QStringList>
+#include <cstdint>
 #include <string>
 #include <unordered_map>
-#include <vector>
 
 namespace S2Plugin
 {
+    struct Configuration;
+
     class TextureDB : public MemoryMappedData
     {
       public:

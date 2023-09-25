@@ -1,17 +1,19 @@
 #pragma once
 
-#include "QtHelpers/ItemModelLoggerFields.h"
-#include "Spelunky2.h"
 #include <QColor>
 #include <QString>
 #include <QTimer>
 #include <any>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace S2Plugin
 {
+    struct ItemModelLoggerFields;
+    enum class MemoryFieldType;
+
     struct LoggerField
     {
         size_t memoryOffset;

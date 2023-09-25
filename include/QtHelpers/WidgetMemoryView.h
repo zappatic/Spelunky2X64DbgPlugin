@@ -2,7 +2,10 @@
 
 #include <QStyleOptionTabWidgetFrame>
 #include <QWidget>
+#include <cstdint>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace S2Plugin
 {

@@ -1,14 +1,16 @@
 #pragma once
 
-#include "Spelunky2.h"
-#include <nlohmann/json.hpp>
+#include <memory>
 #include <string>
 #include <unordered_map>
 
-using nlohmann::ordered_json;
-
 namespace S2Plugin
 {
+    struct MemoryField;
+    struct VirtualFunction;
+    struct Spelunky2;
+    enum class MemoryFieldType;
+
     class Configuration
     {
       public:
@@ -56,7 +58,7 @@ namespace S2Plugin
         std::unordered_map<std::string, std::vector<VirtualFunction>> mVirtualFunctions;
         std::unordered_map<std::string, uint8_t> mAlignments;
 
-        void processJSON(const ordered_json& j);
+        void processJSON(const std::string& j);
         bool isKnownEntitySubclass(const std::string& typeName) const;
     };
 } // namespace S2Plugin

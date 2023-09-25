@@ -1,4 +1,6 @@
 #include "Data/MemoryMappedData.h"
+#include "Configuration.h"
+#include "Spelunky2.h"
 #include "pluginmain.h"
 
 S2Plugin::MemoryMappedData::MemoryMappedData(Configuration* config) : mConfiguration(config) {}

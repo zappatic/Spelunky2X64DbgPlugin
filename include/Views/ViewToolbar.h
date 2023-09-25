@@ -1,20 +1,10 @@
 #pragma once
 
-#include "Configuration.h"
-#include "Data/CharacterDB.h"
-#include "Data/EntityDB.h"
-#include "Data/GameManager.h"
-#include "Data/LevelGen.h"
-#include "Data/Online.h"
-#include "Data/ParticleDB.h"
-#include "Data/SaveGame.h"
-#include "Data/State.h"
-#include "Data/StringsTable.h"
-#include "Data/TextureDB.h"
-#include "Data/VirtualTableLookup.h"
 #include <QDockWidget>
 #include <QMdiArea>
 #include <QVBoxLayout>
+#include <cstdint>
+#include <string>
 
 namespace S2Plugin
 {
@@ -23,6 +13,18 @@ namespace S2Plugin
     class ViewVirtualTable;
     class ViewTextureDB;
     class ViewCharacterDB;
+    struct EntityDB;
+    struct ParticleDB;
+    struct TextureDB;
+    struct CharacterDB;
+    struct GameManager;
+    struct SaveGame;
+    struct State;
+    struct LevelGen;
+    struct VirtualTableLookup;
+    struct StringsTable;
+    struct Online;
+    struct Configuration;
 
     class ViewToolbar : public QDockWidget
     {

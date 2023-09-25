@@ -1,21 +1,39 @@
-#include "QtHelpers/TreeViewMemoryFields.h"
+#include <windows.h>
+
+#include "Configuration.h"
+#include "Data/CharacterDB.h"
 #include "Data/Entity.h"
+#include "Data/EntityDB.h"
+#include "Data/LevelGen.h"
+#include "Data/ParticleDB.h"
+#include "Data/ParticleEmittersList.h"
+#include "Data/State.h"
 #include "Data/StdString.h"
+#include "Data/StringsTable.h"
+#include "Data/TextureDB.h"
 #include "QtHelpers/DialogEditSimpleValue.h"
 #include "QtHelpers/DialogEditState.h"
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include "QtHelpers/TreeViewMemoryFields.h"
+#include "Spelunky2.h"
 #include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntity.h"
 #include "Views/ViewEntityDB.h"
 #include "Views/ViewParticleDB.h"
 #include "Views/ViewTextureDB.h"
+#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QDrag>
+#include <QDragMoveEvent>
 #include <QMimeData>
+#include <QStandardItem>
+#include <QStandardItemModel>
 #include <QTextCodec>
 #include <inttypes.h>
 #include <iomanip>
 #include <nlohmann/json.hpp>
 #include <sstream>
+#include <vector>
 
 S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent) : QTreeView(parent), mToolbar(toolbar), mMemoryMappedData(mmd)
 {
@@ -391,6 +409,8 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
     QStandardItem* itemComparisonValueHex = nullptr;
     QStandardItem* itemMemoryOffset = nullptr;
     QStandardItem* itemMemoryOffsetDelta = nullptr;
+    auto shouldUpdateChildren = false;
+
     if (field.type != MemoryFieldType::Skip)
     {
         itemField = lookupTreeViewItem(fieldNameOverride, gsColField, parent);
@@ -417,16 +437,15 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleFieldName);
         itemComparisonValue->setData(comparisonMemoryOffset, gsRoleMemoryOffset);
         itemComparisonValue->setData(QString::fromStdString("comparison." + fieldNameOverride), gsRoleFieldName);
+
+        auto modelIndex = mModel->indexFromItem(itemField);
+        if (modelIndex.isValid())
+        {
+            shouldUpdateChildren = (itemField->hasChildren() && isExpanded(modelIndex));
+        }
     }
 
-    auto modelIndex = mModel->indexFromItem(itemField);
-    auto shouldUpdateChildren = false;
-    if (modelIndex.isValid())
-    {
-        shouldUpdateChildren = (itemField->hasChildren() && isExpanded(modelIndex));
-    }
-
-    auto highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
+    QColor highlightColor = mEnableChangeHighlighting ? QColor::fromRgb(255, 184, 184) : Qt::transparent;
     auto comparisonDifferenceColor = QColor::fromRgb(255, 221, 184);
     if (disableChangeHighlightingForField)
     {
@@ -1945,7 +1964,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
                     if (offset != 0)
                     {
-                        auto vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
+                        auto& vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
                         if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
                         {
                             auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
@@ -2077,7 +2096,7 @@ void S2Plugin::TreeViewMemoryFields::startDrag(Qt::DropActions supportedActions)
     QDrag* drag = new QDrag(this);
     auto mimeData = new QMimeData();
 
-    auto index = ix.at(0);
+    auto& index = ix.at(0);
 
     // for spelunky/entityoffset: dragging an entity from ViewEntities on top of ViewEntity for comparison
     auto entityItem = mModel->item(index.row(), gsColMemoryOffset);
