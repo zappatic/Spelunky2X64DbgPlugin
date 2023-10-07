@@ -2823,9 +2823,17 @@
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
       { "field": "unknown8", "type": "Float" },
-      { "field": "menu_layers", "type": "Float", "comment": "Something to do with the menu texture layers" },
+      {
+        "field": "menu_layers",
+        "type": "Float",
+        "comment": "Something to do with the menu texture layers"
+      },
       { "field": "unknown10", "type": "Float" },
-      { "field": "layer_transition_progress", "type": "Float", "comment": "transition time between menu layer" },
+      {
+        "field": "layer_transition_progress",
+        "type": "Float",
+        "comment": "transition time between menu layer"
+      },
       { "field": "unknown12", "type": "Float" },
       {
         "field": "transition_state",
@@ -2858,7 +2866,11 @@
       { "field": "spear_dangler", "type": "TextureRenderingInfo" },
       { "field": "play_scroll", "type": "TextureRenderingInfo" },
       { "field": "info_toast", "type": "TextureRenderingInfo" },
-      { "field": "unknown15", "type": "TextureRenderingInfo", "comment": "could be the xbox username scroll because the source coordinates point to that same texture" },
+      {
+        "field": "unknown15",
+        "type": "TextureRenderingInfo",
+        "comment": "could be the xbox username scroll because the source coordinates point to that same texture"
+      },
       { "field": "unknown16a", "type": "UnsignedDword" },
       { "field": "unknown16b", "type": "UnsignedDword" },
       { "field": "cthulhu_sound", "type": "SoundMeta" },
@@ -2869,12 +2881,29 @@
       { "field": "cthulhu_disc_y", "type": "Float" },
       { "field": "cthulhu_timer", "type": "Float" },
       { "field": "unknown16k", "type": "DataPointer" },
-      { "field": "unknown17", "type": "StdVector", "vectortype": "DataPointer", "comment": "possibly contains menu pages that don't have their separate screens" },
+      {
+        "field": "unknown17",
+        "type": "StdVector",
+        "vectortype": "DataPointer",
+        "comment": "possibly contains menu pages that don't have their separate screens"
+      },
       { "field": "unknown20", "type": "StdVector", "vectortype": "Dword" },
       { "field": "buttons?", "type": "Flags32" },
-      { "field": "menu_selection_direction", "type": "Dword", "comment": "1: up, 0: down, -1: no input" },
-      { "field": "unknown23", "type": "UnsignedDword", "comment": "menu selection related" },
-      { "field": "unknown24", "type": "UnsignedDword", "comment": "menu selection related" },
+      {
+        "field": "menu_selection_direction",
+        "type": "Dword",
+        "comment": "1: up, 0: down, -1: no input"
+      },
+      {
+        "field": "unknown23",
+        "type": "UnsignedDword",
+        "comment": "menu selection related"
+      },
+      {
+        "field": "unknown24",
+        "type": "UnsignedDword",
+        "comment": "menu selection related"
+      },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
       { "field": "unknown26", "type": "UnsignedDword" },
       { "field": "unknown27", "type": "UnsignedDword" },
@@ -2955,7 +2984,11 @@
       { "field": "unknown29e", "type": "Float" },
       { "field": "unknown29f", "type": "Float" },
       { "field": "unknown30", "type": "Float" },
-      { "field": "cthulhu_animation", "type": "Qword", "comment": "possibly off by one Qword" }
+      {
+        "field": "cthulhu_animation",
+        "type": "Qword",
+        "comment": "possibly off by one Qword"
+      }
     ],
     "ScreenOptionsPointer": [
       {
@@ -4577,8 +4610,8 @@
       {
         "field": "restricted_items",
         "type": "StdMap",
-        "keytype":  "EntityUID",
-        "valuetype":  "ItemOwnerDetails",
+        "keytype": "EntityUID",
+        "valuetype": "ItemOwnerDetails",
         "comment": "the items in a shop that set off the shopkeeper if you walk off with them"
       },
       {
@@ -5401,13 +5434,29 @@
       { "field": "padding12c", "type": "Byte" },
       { "field": "unknown13", "type": "UnsignedDword" }
     ],
-    "PointerToPushBlocksMap": [{ "field": "map", "type": "StdMap", "keytype": "EntityUID", "valuetype": "DataPointer" }],
-    "PointerToFloorsMap": [{ "field": "map", "type": "StdMap", "keytype": "GridPosition", "valuetype": "DataPointer" }],
+    "PointerToPushBlocksMap": [
+      {
+        "field": "map",
+        "type": "StdMap",
+        "keytype": "EntityUID",
+        "valuetype": "DataPointer"
+      }
+    ],
+    "PointerToFloorsMap": [
+      {
+        "field": "map",
+        "type": "StdMap",
+        "keytype": "GridPosition",
+        "valuetype": "DataPointer"
+      }
+    ],
     "GridPosition": [
       { "field": "x", "type": "UnsignedByte" },
       { "field": "y", "type": "UnsignedByte" }
     ],
-    "PointerToFloatSet": [{ "field": "set", "type": "StdSet", "keytype": "Float" }],
+    "PointerToFloatSet": [
+      { "field": "set", "type": "StdSet", "keytype": "Float" }
+    ],
     "LiquidLake": [
       { "field": "position1", "type": "UnsignedDword" },
       { "field": "position2", "type": "UnsignedDword" },
@@ -9997,7 +10046,7 @@
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
       { "field": "padding3", "type": "Dword" },
-      { 
+      {
         "field": "key",
         "type": "Dword",
         "comment": "key and value are treated as one struct, if they fit, then can be placed in place of the padding"
@@ -10312,8 +10361,8 @@
         "type": "PointerToEntityList",
         "comment": "those are dynamically assigned, put 4 just as example"
       },
-    { "field": "region2", "type": "PointerToEntityList" },
-    { "field": "region3", "type": "PointerToEntityList" },
+      { "field": "region2", "type": "PointerToEntityList" },
+      { "field": "region3", "type": "PointerToEntityList" },
       {
         "field": "region4",
         "type": "PointerToEntityList",
