@@ -835,7 +835,8 @@
     "InputMappingPointer",
     "QuestsInfoPointer",
     "QuestHandlerPointer",
-    "MysteryPointer4",
+    "EntityLookupPointer",
+    "PointerToEntityList",
     "LogicPointer",
     "TutorialPointer",
     "DiceShopPointer",
@@ -849,14 +850,14 @@
     "MoonChallengePointer",
     "StarChallengePointer",
     "SunChallengePointer",
-    "OuroborosPointer",
-    "BasecampSpeedrunPointer",
+    "LogicOuroboros",
+    "LogicBasecampSpeedrun",
     "VolcanaRelatedPointer",
     "ApepTriggerPointer",
     "CogAnkhSacrificePointer",
     "DuatBossesTriggerPointer",
     "TiamatInfoPointer",
-    "WaterRelatedPointer",
+    "LogicUnderwaterBubbles",
     "TuskPleasurePalacePointer",
     "DiscoveryPointer",
     "BlackMarketDoorPointer",
@@ -899,7 +900,6 @@
     "RenderingTimerPointer",
     "StdListIteratorPointer",
     "LiquidPhysicsEngine",
-    "GetEntitiesResultPointer",
     "MapBucket",
     "MapBucket1",
     "MysteryLiquidPointer1",
@@ -910,7 +910,7 @@
     "PointerToFloatSet",
     "PlayerSlotPointer",
     "MultiLineTextRenderingPointer",
-    "UnknownAiStuff",
+    "EntityLogicPointer",
     "PointerToPointerToEntityList",
     "PointerToEntityList"
   ],
@@ -1011,7 +1011,8 @@
     "CollisionInfo",
     "EntityRegions",
     "ItemOwnerDetails",
-    "GridPosition"
+    "GridPosition",
+    "Logic"
   ],
   // Struct alignments needed to calculate the padding in map/set node
   // it's just the biggest standard type in a struct, range: 0-8
@@ -4307,11 +4308,7 @@
         "type": "StdVectorPointerParticleEmitterInfo"
       },
       { "field": "lightsources", "type": "StdVectorPointerIllumination" },
-      {
-        "field": "unknown27",
-        "type": "MysteryPointer4",
-        "comment": "lookup entity struct"
-      },
+      { "field": "EntityLookup", "type": "EntityLookupPointer" },
       {
         "field": "uid_to_entity_mask",
         "type": "UnsignedDword",
@@ -5542,33 +5539,20 @@
       { "field": "padding41c", "type": "Byte" },
       { "field": "unknown42", "type": "UnsignedDword" }
     ],
-    "MysteryPointer4": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "unknown3", "type": "UnsignedQword" },
+    "EntityLookupPointer": [
+      { "field": "unknown1", "type": "EntityList" },
+      { "field": "unknown2", "type": "EntityList" },
+      { "field": "unknown3", "type": "EntityList" },
       { "field": "unknown4", "type": "EntityList" },
-      { "field": "unknown5", "type": "EntityList" },
-      { "field": "unknown6", "type": "EntityList" },
-      { "field": "unknown13", "type": "DataPointer" },
-      { "field": "unknown14", "type": "DataPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "unknown16", "type": "UnsignedQword" },
-      { "field": "unknown17", "type": "DataPointer" },
-      { "field": "unknown18", "type": "DataPointer" },
-      { "field": "unknown19", "type": "DataPointer" },
-      { "field": "get_entities_result", "type": "GetEntitiesResultPointer" },
-      { "field": "unknown21", "type": "UnsignedQword" },
-      { "field": "unknown22", "type": "UnsignedByte" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "UnsignedByte" },
-      { "field": "unknown26", "type": "UnsignedDword" }
+      { "field": "unknown13", "type": "StdVector", "vectortype": "PointerToEntityList", "comment":  "probably not actual vector" }
     ],
-    "GetEntitiesResultPointer": [{ "field": "entities", "type": "EntityList" }],
+    "PointerToEntityList": [
+      { "field": "entity_list", "type": "EntityList" }
+    ],
     "LogicPointer": [
       { "field": "tutorial", "type": "TutorialPointer" },
-      { "field": "ouroboros", "type": "OuroborosPointer" },
-      { "field": "basecamp_speedrun", "type": "BasecampSpeedrunPointer" },
+      { "field": "ouroboros", "type": "LogicOuroboros" },
+      { "field": "basecamp_speedrun", "type": "LogicBasecampSpeedrun" },
       { "field": "ghost_trigger", "type": "GhostLogicPointer" },
       { "field": "ghost_toast_trigger", "type": "GhostToastLogicPointer" },
       { "field": "tun_aggro", "type": "TunAggroPointer" },
@@ -5587,8 +5571,8 @@
         "comment": "size is most likely incorrect"
       },
       {
-        "field": "water_related",
-        "type": "WaterRelatedPointer"
+        "field": "water_bubbles",
+        "type": "LogicUnderwaterBubbles"
       },
       { "field": "olmec_cutscene", "type": "OlmecCutscenePointer" },
       { "field": "tiamat_cutscene", "type": "TiamatCutscenePointer" },
@@ -5613,13 +5597,13 @@
       { "field": "arena_alien_blast", "type": "ArenaAlienBlastPointer" },
       { "field": "arena_loose_bombs", "type": "ArenaLooseBombsPointer" }
     ],
-    "TutorialPointer": [
+    "Logic": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~TutorialPointer",
+            "name": "~Logic",
             "params": "",
             "return": ""
           },
@@ -5637,59 +5621,16 @@
       },
       { "field": "padding", "type": "UnsignedDword" }
     ],
-    "OuroborosPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~OuroborosPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      {
-        "field": "unknown3",
-        "type": "DataPointer",
-        "comment": "sound related?"
-      },
-      { "field": "timer", "type": "UnsignedWord" }
+    "TutorialPointer": [
+      { "field": "base_logic", "type": "Logic" }
     ],
-    "BasecampSpeedrunPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~BasecampSpeedrunPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicOuroboros": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "sound", "type": "SoundMeta" },
+      { "field": "timer", "type": "UnsignedDword" }
+    ],
+    "LogicBasecampSpeedrun": [
+      { "field": "base_logic", "type": "Logic" },
       {
         "field": "official",
         "type": "EntityUID",
@@ -5699,130 +5640,27 @@
         "field": "crate",
         "type": "EntityUID",
         "comment": "you must break this crate for the run to be valid, otherwise you're cheating"
-      },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" }
+      }
     ],
     "GhostLogicPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~GhostLogicPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "GhostToastLogicPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~GhostLogicPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "toast_timer", "type": "UnsignedDword" }
     ],
     "TunAggroPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~GhostLogicPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "TunPreChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TunPreChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "unknown2", "type": "Qword" },
+      { "field": "unknown3", "type": "Qword" },
+      { "field": "unknown4", "type": "Qword" },
+      { "field": "tun", "type": "EntityUID" }
     ],
     "MoonChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~MoonChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "floor_challenge_entrance", "type": "EntityUID" },
@@ -5839,28 +5677,7 @@
       { "field": "mattock", "type": "EntityUID" }
     ],
     "StarChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~StarChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "floor_challenge_entrance", "type": "EntityUID" },
@@ -5878,31 +5695,15 @@
         "type": "StdVector",
         "vectortype": "EntityPointer"
       },
-      { "field": "start_countdown", "type": "UnsignedByte" }
+      { "field": "start_countdown", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" }
     ],
     "SunChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~SunChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "floor_challenge_entrance", "type": "EntityUID" },
@@ -5915,93 +5716,33 @@
       },
       { "field": "unknown7", "type": "UnsignedWord" },
       { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "start_countdown", "type": "UnsignedByte" }
+      { "field": "start_countdown", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" }
     ],
     "VolcanaRelatedPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~VolcanaRelatedPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "DataPointer" },
       { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "DataPointer" },
-      { "field": "unknown9", "type": "DataPointer" }
+      { "field": "unknown5", "type": "DataPointer" }
     ],
-    "WaterRelatedPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~WaterRelatedPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedByte" }
+    "LogicUnderwaterBubbles": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "Word" },
+      { "field": "unknown5", "type": "Byte" }
     ],
     "DiceShopPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~DiceShopPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       {
         "field": "boss",
         "type": "EntityUID",
         "comment": "either tusk or the shopkeeper"
       },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "boss_type", "type": "EntityDBID" },
       { "field": "bet_machine", "type": "EntityUID" },
       { "field": "die1", "type": "EntityUID" },
       { "field": "die2", "type": "EntityUID" },
@@ -6035,31 +5776,11 @@
         "field": "balance",
         "type": "Dword",
         "comment": "cash balance of all the games"
-      }
+      },
+      { "field": "unknown17", "type": "DataPointer" }
     ],
     "OlmecCutscenePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~OlmecCutscenePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown6a", "type": "UnsignedByte" },
       { "field": "unknown6b", "type": "UnsignedByte" },
       { "field": "unknown6c", "type": "UnsignedByte" },
@@ -6075,28 +5796,7 @@
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "TiamatCutscenePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TiamatCutscenePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "tiamat", "type": "EntityPointer" },
@@ -6108,346 +5808,69 @@
       { "field": "unknown7", "type": "UnsignedDword" }
     ],
     "ApepTriggerPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ApepTriggerPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "spawn_cooldown", "type": "UnsignedDword" },
       { "field": "cooling_down", "type": "Bool" },
       { "field": "apep_journal_entry_logged", "type": "Bool" },
       { "field": "unknown4c", "type": "UnsignedByte" },
-      { "field": "unknown4d", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "unknown4d", "type": "UnsignedByte" }
     ],
     "DuatBossesTriggerPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~DuatBossesTriggerPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "CogAnkhSacrificePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~CogAnkhSacrificePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "timer", "type": "UnsignedByte" }
     ],
     "TiamatInfoPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TiamatInfoPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "bubble_spawn_timer", "type": "UnsignedByte" }
     ],
     "TuskPleasurePalacePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TuskPleasurePalacePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "locked_door", "type": "EntityUID" },
       { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "DiscoveryPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~DiscoveryPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "BlackMarketDoorPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~BlackMarketDoorPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "CosmicOceanPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~CosmicOceanPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "Arena1Pointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~Arena1Pointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "crate_spawn_timer", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "Arena2Pointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~Arena2Pointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown1", "type": "UnsignedByte" }
     ],
     "Arena3Pointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~Arena3Pointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "ArenaAlienBlastPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ArenaAlienBlastPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "ArenaLooseBombsPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ArenaLooseBombsPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+      { "field": "base_logic", "type": "Logic" },
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "QuestsInfoPointer": [
@@ -9566,7 +8989,7 @@
       },
       { "field": "behaviors", "type": "StdSet", "keytype": "DataPointer" },
       { "field": "current_behavior", "type": "DataPointer" },
-      { "field": "ic8", "type": "UnknownAiStuff" },
+      { "field": "cutscene_logic", "type": "EntityLogicPointer", "comment": "similar to state.logic stuff" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
       { "field": "buttons", "type": "Flags8", "ref": "buttons_entity" },
@@ -15327,7 +14750,11 @@
         "comment": "Is subtracted from the color alpha every frame after the `stand_counter` is more than 300"
       }
     ],
-    "UnknownAiStuff": [{ "field": "__vftable", "type": "DataPointer" }],
+    "EntityLogicPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown2", "type": "Qword" }
+    ],
     "StdString": [
       {
         "field": "data1",
