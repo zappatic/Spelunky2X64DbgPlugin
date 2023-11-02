@@ -818,6 +818,7 @@
     "ParticleEmitterInfoPointer",
     "TextRenderingInfoPointer",
     "ScreenPointer",
+    "ScreenLevelPointer",
     "ScreenTransitionPointer",
     "ScreenWinPointer",
     "ScreenCreditsPointer",
@@ -1012,7 +1013,8 @@
     "EntityRegions",
     "ItemOwnerDetails",
     "GridPosition",
-    "Logic"
+    "Logic",
+    "MagmamanSpawnData"
   ],
   // Struct alignments needed to calculate the padding in map/set node
   // it's just the biggest standard type in a struct, range: 0-8
@@ -1717,7 +1719,7 @@
       { "field": "offset_x", "type": "Float" },
       { "field": "offset_y", "type": "Float" },
       { "field": "layer", "type": "UnsignedByte" },
-      { "field": "unknown54b", "type": "UnsignedByte" },
+      { "field": "draw_depth", "type": "UnsignedByte" },
       { "field": "unknown54c", "type": "UnsignedByte" },
       { "field": "unknown54d", "type": "UnsignedByte" },
       { "field": "unknown55", "type": "Float" },
@@ -4241,7 +4243,7 @@
         "type": "ScreenTeamSelectPointer"
       },
       { "field": "screen_camp", "type": "ScreenPointer" },
-      { "field": "screen_level", "type": "ScreenPointer" },
+      { "field": "screen_level", "type": "ScreenLevelPointer" },
       { "field": "screen_transition", "type": "ScreenTransitionPointer" },
       { "field": "screen_death", "type": "ScreenPointer" },
       {
@@ -4325,16 +4327,16 @@
         "type": "StdVector",
         "vectortype": "BackLayerRelated"
       },
-      { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
-      { "field": "camera_layer", "type": "UnsignedByte" },
+      { "field": "layer_transition_timer", "type": "UnsignedDword" },
+      { "field": "transition_to_layer", "type": "UnsignedByte" },
       { "field": "unknown31a", "type": "UnsignedByte" },
       { "field": "unknown31b", "type": "UnsignedByte" },
       { "field": "unknown31c", "type": "UnsignedByte" },
       { "field": "shops", "type": "ShopsInfo" },
       { "field": "time_startup", "type": "UnsignedDword" },
       {
-        "field": "special_visibility_flags",
-        "type": "Flags32",
+        "field": "crust_flags",
+        "type": "Flags8",
         "flags": {
           "1": "Crust embedded items shown",
           "2": "Crust embedded items shown (level transition)",
@@ -4343,33 +4345,38 @@
           "5": "",
           "6": "",
           "7": "",
-          "8": "",
-          "9": "Compass door markers shown",
-          "10": "Compass door markers shown (level transition)",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "Special compass door markers shown",
-          "18": "Special compass door markers shown (level transition)",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "In back layer",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
+          "8": ""
         }
       },
+      {
+        "field": "compass_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Compass door markers shown",
+          "2": "Compass door markers shown (level transition)",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        }
+      },
+      {
+        "field": "special_compass_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Special compass door markers shown",
+          "2": "Special compass door markers shown (level transition)",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        }
+      },
+      { "field": "camera_layer", "type": "UnsignedByte" },
       { "field": "camera", "type": "CameraPointer" },
       { "field": "unknown40", "type": "UnsignedByte" },
       {
@@ -5610,7 +5617,7 @@
           "1": {
             "name": "perform",
             "params": "",
-            "return": ""
+            "return": "bool"
           }
         }
       },
@@ -5622,7 +5629,9 @@
       { "field": "padding", "type": "UnsignedDword" }
     ],
     "TutorialPointer": [
-      { "field": "base_logic", "type": "Logic" }
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "pet", "type": "EntityPointer" },
+      { "field": "timer", "type": "UnsignedDword" }
     ],
     "LogicOuroboros": [
       { "field": "base_logic", "type": "Logic" },
@@ -5723,11 +5732,14 @@
       { "field": "unknown12", "type": "Float" },
       { "field": "unknown13", "type": "Float" }
     ],
+    "MagmamanSpawnData": [
+      { "field": "x", "type": "UnsignedDword" },
+      { "field": "y", "type": "UnsignedDword" },
+      { "field": "timer", "type": "UnsignedDword" }
+    ],
     "VolcanaRelatedPointer": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "unknown3", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" }
+      { "field": "magman_spawns", "type": "StdVector", "vectortype": "MagmamanSpawnData" }
     ],
     "LogicUnderwaterBubbles": [
       { "field": "base_logic", "type": "Logic" },
@@ -5776,19 +5788,26 @@
         "field": "balance",
         "type": "Dword",
         "comment": "cash balance of all the games"
-      },
-      { "field": "unknown17", "type": "DataPointer" }
+      }
     ],
     "OlmecCutscenePointer": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "unknown6a", "type": "UnsignedByte" },
-      { "field": "unknown6b", "type": "UnsignedByte" },
-      { "field": "unknown6c", "type": "UnsignedByte" },
-      { "field": "unknown6d", "type": "UnsignedByte" },
-      { "field": "unknown7a", "type": "UnsignedByte" },
-      { "field": "unknown7b", "type": "UnsignedByte" },
-      { "field": "unknown7c", "type": "UnsignedByte" },
-      { "field": "unknown7d", "type": "UnsignedByte" },
+      { "field": "leader_inputs", "type": "Flags8", 
+      "flags": {
+        "1": "Jump",
+        "2": "Attack",
+        "3": "Bomb",
+        "4": "Rope",
+        "5": "Run",
+        "6": "Use door/buy",
+        "7": "Pause/Menu",
+        "8": "Journal"
+      },
+      "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
+      },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      { "field": "padding3", "type": "Dword" },
       { "field": "fx_olmecpart_large", "type": "EntityPointer" },
       { "field": "olmec", "type": "EntityPointer" },
       { "field": "player", "type": "EntityPointer" },
@@ -5797,28 +5816,35 @@
     ],
     "TiamatCutscenePointer": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "leader_inputs", "type": "Flags8", 
+      "flags": {
+        "1": "Jump",
+        "2": "Attack",
+        "3": "Bomb",
+        "4": "Rope",
+        "5": "Run",
+        "6": "Use door/buy",
+        "7": "Pause/Menu",
+        "8": "Journal"
+      },
+      "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
+      },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      { "field": "padding3", "type": "Dword" },
       { "field": "tiamat", "type": "EntityPointer" },
       { "field": "player", "type": "EntityPointer" },
       { "field": "cinematic_anchor", "type": "EntityPointer" },
-      { "field": "timer", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "Dword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "timer", "type": "UnsignedDword" }
     ],
     "ApepTriggerPointer": [
       { "field": "base_logic", "type": "Logic" },
       { "field": "spawn_cooldown", "type": "UnsignedDword" },
       { "field": "cooling_down", "type": "Bool" },
-      { "field": "apep_journal_entry_logged", "type": "Bool" },
-      { "field": "unknown4c", "type": "UnsignedByte" },
-      { "field": "unknown4d", "type": "UnsignedByte" }
+      { "field": "apep_journal_entry_logged", "type": "Bool" }
     ],
     "DuatBossesTriggerPointer": [
-      { "field": "base_logic", "type": "Logic" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "CogAnkhSacrificePointer": [
       { "field": "base_logic", "type": "Logic" },
@@ -5832,31 +5858,22 @@
     "TuskPleasurePalacePointer": [
       { "field": "base_logic", "type": "Logic" },
       { "field": "locked_door", "type": "EntityUID" },
-      { "field": "unknown4", "type": "UnsignedDword" }
+      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "unknown5", "type": "UnsignedDword" },
+      { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "DiscoveryPointer": [
-      { "field": "base_logic", "type": "Logic" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "BlackMarketDoorPointer": [
-      { "field": "base_logic", "type": "Logic" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "base_logic", "type": "Logic" }
     ],
     "CosmicOceanPointer": [
       { "field": "base_logic", "type": "Logic" }
     ],
     "Arena1Pointer": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "crate_spawn_timer", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "crate_spawn_timer", "type": "UnsignedDword" }
     ],
     "Arena2Pointer": [
       { "field": "base_logic", "type": "Logic" },
@@ -6047,6 +6064,42 @@
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedWord" },
       { "field": "unknown7", "type": "UnsignedWord" }
+    ],
+    "ScreenLevelPointer": [
+            {
+        "field": "__vftable",
+        "type": "VirtualFunctionTable",
+        "functions": {
+          "0": {
+            "name": "~ScreenPointer",
+            "params": "",
+            "return": ""
+          },
+          "1": {
+            "name": "handle_camera_zoom_level",
+            "params": "",
+            "return": "",
+            "comment": ["May do more than this"]
+          }
+        }
+      },
+      { "field": "render_timer", "type": "Float" },
+      { "field": "unknown1", "type": "UnsignedDword" },
+      {
+        "field": "buttons",
+        "type": "Flags8",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "Pause",
+          "8": "Journal"
+        }
+      },
+      { "field": "time_till_death_screen", "type": "Byte" }
     ],
     "PlayerInputs": [
       { "field": "player_slot_1", "type": "PlayerSlot" },
@@ -9180,7 +9233,7 @@
       { "field": "inventory", "type": "PlayerInventory" }
     ],
     "PlayerInventory": [
-      { "field": "money", "type": "UnsignedDword" },
+      { "field": "money", "type": "Dword" },
       { "field": "bombs", "type": "UnsignedByte" },
       { "field": "ropes", "type": "UnsignedByte" },
       {
@@ -9325,7 +9378,7 @@
         "type": "AquiredPowerups",
         "comment": "assigned during level transition, so they can be applied to the newly created player entity in the next level"
       },
-      { "field": "collected_money_total", "type": "UnsignedDword" }
+      { "field": "collected_money_total", "type": "Dword" }
     ],
     "AquiredPowerups": [
       { "field": "slot_1", "type": "EntityDBID" },
