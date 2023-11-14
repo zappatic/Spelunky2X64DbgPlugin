@@ -2033,7 +2033,7 @@
       },
       {
         "field": "unknown_screen_arena_score?",
-        "type": "DataPointer",
+        "type": "ScreenPointer",
         "comment": "available in State"
       },
       {
