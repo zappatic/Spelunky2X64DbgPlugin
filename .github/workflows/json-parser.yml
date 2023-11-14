@@ -1,0 +1,30 @@
+name: Json Parser and validator
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  list-json-files:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v2
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$(ls resources/*.json | jq -R -s -c 'split("\n")[:-1]')"
+
+  check:
+    needs: list-json-files
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            json: ${{ fromJson(needs.list-json-files.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v2  
+      - uses: actions/setup-python@v2  
+      - name: Checking file ${{ matrix.json }}
+        run: python resources/json_validator.py ${{ matrix.json }}

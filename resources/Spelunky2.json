@@ -4570,8 +4570,8 @@
       {
         "field": "restricted_items",
         "type": "StdMap",
-        "keytype":  "EntityUID",
-        "valuetype":  "ItemOwnerDetails",
+        "keytype": "EntityUID",
+        "valuetype": "ItemOwnerDetails",
         "comment": "the items in a shop that set off the shopkeeper if you walk off with them"
       },
       {
@@ -5394,13 +5394,29 @@
       { "field": "padding12c", "type": "Byte" },
       { "field": "unknown13", "type": "UnsignedDword" }
     ],
-    "PointerToPushBlocksMap": [{ "field": "map", "type": "StdMap", "keytype": "EntityUID", "valuetype": "DataPointer" }],
-    "PointerToFloorsMap": [{ "field": "map", "type": "StdMap", "keytype": "GridPosition", "valuetype": "DataPointer" }],
+    "PointerToPushBlocksMap": [
+      {
+        "field": "map",
+        "type": "StdMap",
+        "keytype": "EntityUID",
+        "valuetype": "DataPointer"
+      }
+    ],
+    "PointerToFloorsMap": [
+      {
+        "field": "map",
+        "type": "StdMap",
+        "keytype": "GridPosition",
+        "valuetype": "DataPointer"
+      }
+    ],
     "GridPosition": [
       { "field": "x", "type": "UnsignedByte" },
       { "field": "y", "type": "UnsignedByte" }
     ],
-    "PointerToFloatSet": [{ "field": "set", "type": "StdSet", "keytype": "Float" }],
+    "PointerToFloatSet": [
+      { "field": "set", "type": "StdSet", "keytype": "Float" }
+    ],
     "LiquidLake": [
       { "field": "position1", "type": "UnsignedDword" },
       { "field": "position2", "type": "UnsignedDword" },
@@ -9360,7 +9376,7 @@
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Byte" },
       { "field": "padding3", "type": "Dword" },
-      { 
+      {
         "field": "key",
         "type": "Dword",
         "comment": "key and value are treated as one struct, if they fit, then can be placed in place of the padding"
@@ -9690,8 +9706,8 @@
         "type": "PointerToEntityList",
         "comment": "those are dynamically assigned, put 4 just as example"
       },
-    { "field": "region2", "type": "PointerToEntityList" },
-    { "field": "region3", "type": "PointerToEntityList" },
+      { "field": "region2", "type": "PointerToEntityList" },
+      { "field": "region3", "type": "PointerToEntityList" },
       {
         "field": "region4",
         "type": "PointerToEntityList",
