@@ -1963,7 +1963,7 @@
       },
       {
         "field": "screen_transition",
-        "type": "ScreenTransitionPointer",
+        "type": "ScreenPointer",
         "comment": "in state there is also screen_transition which is complete (this one isn't)"
       },
       {
