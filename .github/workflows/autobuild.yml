@@ -3,14 +3,19 @@ name: Autobuild
 on:
   push:
     branches: [master]
-  pull_request:
-    branches: [master]
   workflow_dispatch:
 
 jobs:
-  call-prettier-workflow:
-    if: ${{ github.event_name != 'pull_request' }}
-    uses: ./.github/workflows/prettier.yml
+  prettier:
+    name: Automated prettier
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --write resources/Spelunky2.json
+          commit_message: "Automated prettier changes"
 
   build:
     name: Autobuild
@@ -45,24 +50,26 @@ jobs:
           path: C:\Qt
           key: ${{ runner.os }}-Qt563 # don't think QT version will change?
 
-      - name: Build
+      - name: Pre-Build Setup
         run: |
           mkdir C:\spelunky2-x64dbg-plugin-autobuild
           mkdir build
           cd build
+
+      - name: Build
+        run: |
           cmake .. -DX64DBG_PLUGINS_ROOT=C:\spelunky2-x64dbg-plugin-autobuild -DQt5ROOT=C:\Qt\5.6.3\msvc2013_64\
           cmake --build . --config Release --target ALL_BUILD
-          7z a ..\spelunky2-x64dbg-plugin-autobuild.zip C:\spelunky2-x64dbg-plugin-autobuild\
+
+      - name: Pack build files
+        run: 7z a ..\spelunky2-x64dbg-plugin-autobuild.zip C:\spelunky2-x64dbg-plugin-autobuild\
 
       - name: Create release
-        if: ${{ github.event_name != 'pull_request' }}
         uses: marvinpinto/action-automatic-releases@v1.2.1
-        env:
-          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "autobuild"
-          prerelease: true
+          prerelease: false
           title: "Autobuild"
           files: |
             spelunky2-x64dbg-plugin-autobuild.zip
