@@ -20,4 +20,4 @@ main_download_url = 'https://sourceforge.net/projects/x64dbg/files/qt/Qt5.6.3-ms
 #     raise Exception('Could not determine mirror url from OSDN page')
 
 # ssl._create_default_https_context = ssl._create_unverified_context
-urllib.request.urlretrieve(main_download_url, "C:\Qt\qt563.7z")
+urllib.request.urlretrieve(main_download_url, r"C:\Qt\qt563.7z")
