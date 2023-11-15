@@ -2183,51 +2183,95 @@
       { "field": "CURRENT_LAYER2", "type": "Float" }
     ],
     "GamePropsPointer": [
-      { "field": "buttons_player1", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_player2", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_player3", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_player4", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_previous_player1", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_previous_player2", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_previous_player3", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_previous_player4", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "buttons_menu_previous", "type": "Flags16", "flags": {
-        "1": "accept",
-        "2": "back",
-        "3": "key R / controller X",
-        "4": "key D / controller Y",
-        "5": "key tab / controller RB",
-        "6": "left",
-        "7": "right",
-        "8": "up",
-        "9": "down",
-        "10": "",
-        "11": "",
-        "12": "",
-        "13": "",
-        "14": "",
-        "15": "",
-        "16": ""
-      }},
-      { "field": "buttons_menu", "type": "Flags16", "flags": {
-        "1": "accept",
-        "2": "back",
-        "3": "key R / controller X",
-        "4": "key D / controller Y",
-        "5": "key tab / controller RB",
-        "6": "left",
-        "7": "right",
-        "8": "up",
-        "9": "down",
-        "10": "",
-        "11": "",
-        "12": "",
-        "13": "",
-        "14": "",
-        "15": "",
-        "16": ""
-      }},
-      { "field": "menu_player_slot", "type": "Byte", "comment": "for the pause menu icon" },
+      {
+        "field": "buttons_player1",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_player2",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_player3",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_player4",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_previous_player1",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_previous_player2",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_previous_player3",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_previous_player4",
+        "type": "Flags32",
+        "ref": "buttons_controller"
+      },
+      {
+        "field": "buttons_menu_previous",
+        "type": "Flags16",
+        "flags": {
+          "1": "accept",
+          "2": "back",
+          "3": "key R / controller X",
+          "4": "key D / controller Y",
+          "5": "key tab / controller RB",
+          "6": "left",
+          "7": "right",
+          "8": "up",
+          "9": "down",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": ""
+        }
+      },
+      {
+        "field": "buttons_menu",
+        "type": "Flags16",
+        "flags": {
+          "1": "accept",
+          "2": "back",
+          "3": "key R / controller X",
+          "4": "key D / controller Y",
+          "5": "key tab / controller RB",
+          "6": "left",
+          "7": "right",
+          "8": "up",
+          "9": "down",
+          "10": "",
+          "11": "",
+          "12": "",
+          "13": "",
+          "14": "",
+          "15": "",
+          "16": ""
+        }
+      },
+      {
+        "field": "menu_player_slot",
+        "type": "Byte",
+        "comment": "for the pause menu icon"
+      },
       { "field": "game_has_focus", "type": "Bool" },
       { "field": "unknown9", "type": "Bool" },
       { "field": "unknown10", "type": "Bool" },
@@ -2276,18 +2320,24 @@
     "InputsByControllerPointer": [
       { "field": "is_keyboard", "type": "Bool" },
       { "field": "is_controller", "type": "Bool" },
-      { "field": "can_use_menu", "type": "Bool", "comment": "keyboard doesn't seam to care about this" },
+      {
+        "field": "can_use_menu",
+        "type": "Bool",
+        "comment": "keyboard doesn't seam to care about this"
+      },
       { "field": "lost_connection", "type": "Bool" },
       { "field": "input_index", "type": "UnsignedByte" },
       { "field": "padding1", "type": "UnsignedByte" },
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
       { "field": "inputs", "type": "Flags32", "ref": "buttons_controller" },
-      { "field": "controller_index", "type": "UnsignedByte", "comment": "for XInput used in XInputSetState" }
+      {
+        "field": "controller_index",
+        "type": "UnsignedByte",
+        "comment": "for XInput used in XInputSetState"
+      }
     ],
-    "MenuInsertPointer": [
-      { "field": "menu", "type": "MenuInsert" }
-    ],
+    "MenuInsertPointer": [{ "field": "menu", "type": "MenuInsert" }],
     "MenuInsert": [
       { "field": "x", "type": "Float" },
       { "field": "y", "type": "Float" },
@@ -2299,7 +2349,11 @@
       { "field": "unknown8", "type": "Float" },
       { "field": "unknown9", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "Float" },
-      { "field": "unknown11", "type": "StdVector", "vectortype": "DataPointer" },
+      {
+        "field": "unknown11",
+        "type": "StdVector",
+        "vectortype": "DataPointer"
+      },
       { "field": "unknown12", "type": "DataPointer" },
       { "field": "unknown13", "type": "CodePointer" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
@@ -2888,7 +2942,16 @@
       { "field": "logo_mossmouth", "type": "TextureRenderingInfo" },
       { "field": "logo_blitworks", "type": "TextureRenderingInfo" },
       { "field": "logo_fmod", "type": "TextureRenderingInfo" },
-      { "field": "state", "type": "State32", "states": { "0": "mossmouth", "1": "blitworks", "2": "fmod", "3": "end (next screen)" } },
+      {
+        "field": "state",
+        "type": "State32",
+        "states": {
+          "0": "mossmouth",
+          "1": "blitworks",
+          "2": "fmod",
+          "3": "end (next screen)"
+        }
+      },
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "ScreenIntroPointer": [
@@ -2952,7 +3015,11 @@
       { "field": "fire_sound", "type": "SoundMeta" }
     ],
     "ScreenMenuVector": [
-      { "field": "vector", "type": "StdVector", "vectortype": "ScreenMenuOption" }
+      {
+        "field": "vector",
+        "type": "StdVector",
+        "vectortype": "ScreenMenuOption"
+      }
     ],
     "ScreenMenuOption": [
       { "field": "option_name", "type": "StringsTableID" },
@@ -2960,7 +3027,11 @@
       { "field": "brigthness", "type": "Float" },
       { "field": "enabled", "type": "Bool" },
       { "field": "-", "type": "Skip", "offset": 3 },
-      { "field": "select", "type": "CodePointer", "comment": "std::pair<uint32_t, float>&(std::pair<uint32_t, float>&, Screen* src, uint8_t)" }
+      {
+        "field": "select",
+        "type": "CodePointer",
+        "comment": "std::pair<uint32_t, float>&(std::pair<uint32_t, float>&, Screen* src, uint8_t)"
+      }
     ],
     "ScreenMenuPointer": [
       { "field": "base_screen", "type": "ScreenBase" },
@@ -3004,7 +3075,11 @@
       { "field": "spear_dangler", "type": "TextureRenderingInfo" },
       { "field": "play_scroll", "type": "TextureRenderingInfo" },
       { "field": "info_toast", "type": "TextureRenderingInfo" },
-      { "field": "unknown15", "type": "TextureRenderingInfo", "comment": "could be the xbox username scroll because the source coordinates point to that same texture" },
+      {
+        "field": "unknown15",
+        "type": "TextureRenderingInfo",
+        "comment": "could be the xbox username scroll because the source coordinates point to that same texture"
+      },
       { "field": "unknown16", "type": "UnsignedDword" },
       { "field": "padding_probably1", "type": "UnsignedDword" },
       { "field": "cthulhu_sound", "type": "SoundMeta" },
@@ -3015,14 +3090,26 @@
       { "field": "cthulhu_disc_y", "type": "Float" },
       { "field": "cthulhu_timer", "type": "Float" },
       { "field": "screen_transition", "type": "CodePointer" },
-      { "field": "menu_tree", "type": "StdVector", "vectortype": "ScreenMenuVector" },
-      { "field": "menu_index_order", "type": "StdVector", "vectortype": "UnsignedDword" },
+      {
+        "field": "menu_tree",
+        "type": "StdVector",
+        "vectortype": "ScreenMenuVector"
+      },
+      {
+        "field": "menu_index_order",
+        "type": "StdVector",
+        "vectortype": "UnsignedDword"
+      },
       { "field": "controls", "type": "ScreenControls" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
       { "field": "sides_hold_down_timer", "type": "UnsignedByte" },
       { "field": "sides_fast_scroll_timer", "type": "UnsignedByte" },
       { "field": "padding_probably2", "type": "UnsignedWord" },
-      { "field": "unknown27", "type": "UnsignedDword", "comment": "pressed direction? 1 = left, 0 = right, no neutral, stays at the last state" },
+      {
+        "field": "unknown27",
+        "type": "UnsignedDword",
+        "comment": "pressed direction? 1 = left, 0 = right, no neutral, stays at the last state"
+      },
       { "field": "loop", "type": "Bool" },
       { "field": "padding_probably3", "type": "UnsignedByte" },
       { "field": "padding_probably4", "type": "UnsignedWord" },
@@ -3105,29 +3192,58 @@
     ],
     "ScreenOptionsPointer": [
       { "field": "base_screen", "type": "ScreenBase" },
-      { "field": "menu_tree", "type": "StdVector", "vectortype": "ScreenMenuVector" },
-      { "field": "menu_index_order", "type": "StdVector", "vectortype": "UnsignedDword" },
-      { "field": "DOWN", "type": "Bool", "comment": "this is just ScreenControls but different" },
+      {
+        "field": "menu_tree",
+        "type": "StdVector",
+        "vectortype": "ScreenMenuVector"
+      },
+      {
+        "field": "menu_index_order",
+        "type": "StdVector",
+        "vectortype": "UnsignedDword"
+      },
+      {
+        "field": "DOWN",
+        "type": "Bool",
+        "comment": "this is just ScreenControls but different"
+      },
       { "field": "UP", "type": "Bool" },
       { "field": "unused1", "type": "Bool" },
       { "field": "unused2", "type": "Bool" },
-      { "field": "direction_input", "type": "State32",
-        "states":
-        {
-        "-1": "None",
-        "0": "DOWN",
-        "1": "UP",
-        "2": "(unused)",
-        "3": "(unused)"
+      {
+        "field": "direction_input",
+        "type": "State32",
+        "states": {
+          "-1": "None",
+          "0": "DOWN",
+          "1": "UP",
+          "2": "(unused)",
+          "3": "(unused)"
         }
-        },
-      { "field": "hold_timer", "type": "Dword", "comment": "delay before activating fast scroll, UP/DOWN only" },
-      { "field": "fast_scroll_timer", "type": "Dword", "comment": "UP/DOWN only" },
+      },
+      {
+        "field": "hold_timer",
+        "type": "Dword",
+        "comment": "delay before activating fast scroll, UP/DOWN only"
+      },
+      {
+        "field": "fast_scroll_timer",
+        "type": "Dword",
+        "comment": "UP/DOWN only"
+      },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
       { "field": "sides_hold_down_timer", "type": "UnsignedByte" },
-      { "field": "sides_fast_scroll_timer", "type": "UnsignedByte", "comment": "yes, you've seen thins before, in the ScreenMenu" },
+      {
+        "field": "sides_fast_scroll_timer",
+        "type": "UnsignedByte",
+        "comment": "yes, you've seen thins before, in the ScreenMenu"
+      },
       { "field": "probably_padding1", "type": "UnsignedWord" },
-      { "field": "unknown0", "type": "UnsignedDword", "comment": "pressed direction? 1 = left, 0 = right, no neutral, stays at the last state" },
+      {
+        "field": "unknown0",
+        "type": "UnsignedDword",
+        "comment": "pressed direction? 1 = left, 0 = right, no neutral, stays at the last state"
+      },
       { "field": "loop", "type": "Bool" },
       { "field": "probably_padding2", "type": "UnsignedByte" },
       { "field": "probably_padding3", "type": "UnsignedWord" },
@@ -3137,7 +3253,11 @@
       { "field": "unknown4", "type": "Float" },
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword", "comment": "speed related?" },
+      {
+        "field": "unknown7",
+        "type": "UnsignedDword",
+        "comment": "speed related?"
+      },
       { "field": "unknown8", "type": "Float" },
       { "field": "unknown9", "type": "Float" },
       { "field": "unknown10", "type": "Float" },
@@ -3161,7 +3281,11 @@
         "comment": "set to 0 to start unfurl"
       },
       { "field": "bottom_woodpanel_speed_multiplayer", "type": "Float" },
-      { "field": "bottom_woodpanel_y_offset", "type": "Float", "comment": "maybe a resolution thing?" },
+      {
+        "field": "bottom_woodpanel_y_offset",
+        "type": "Float",
+        "comment": "maybe a resolution thing?"
+      },
       { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
       { "field": "top_woodpanel", "type": "TextureRenderingInfo" },
       {
@@ -3185,20 +3309,52 @@
       { "field": "bottom_woodpanel_visible", "type": "Bool" },
       { "field": "toggle_woodpanel_slidein_animation", "type": "Bool" },
       { "field": "capitalize_top_woodpanel", "type": "Bool" },
-      { "field": "state?", "type": "State32", "states":{ "0": "none", "2": "moving between inner menus", "3": "exiting menu options" }},
+      {
+        "field": "state?",
+        "type": "State32",
+        "states": {
+          "0": "none",
+          "2": "moving between inner menus",
+          "3": "exiting menu options"
+        }
+      },
       { "field": "menu_id", "type": "UnsignedDword" },
       { "field": "transfer_to_menu_id", "type": "UnsignedDword" },
       { "field": "show_apply_button", "type": "Bool" },
       { "field": "padding_probably4", "type": "Byte" },
       { "field": "padding_probably5", "type": "Word" },
       { "field": "fullscreen_resolution_id", "type": "UnsignedDword" },
-      { "field": "windowed_resolution_id", "type": "UnsignedDword", "comment": "depends on the GetMonitorInfo etc." },
-      { "field": "resolution_scale", "type": "UnsignedDword", "comment": "100 = 1.0" },
-      { "field": "display_mode", "type": "State8", "states": { "0": "Fullscreen", "1": "Borderless Windowed", "2": "Windowed"} },
+      {
+        "field": "windowed_resolution_id",
+        "type": "UnsignedDword",
+        "comment": "depends on the GetMonitorInfo etc."
+      },
+      {
+        "field": "resolution_scale",
+        "type": "UnsignedDword",
+        "comment": "100 = 1.0"
+      },
+      {
+        "field": "display_mode",
+        "type": "State8",
+        "states": {
+          "0": "Fullscreen",
+          "1": "Borderless Windowed",
+          "2": "Windowed"
+        }
+      },
       { "field": "unknown33", "type": "UnsignedByte" },
-      { "field": "unknown34", "type": "Bool", "comment": "if true, first input just sets it to false and does nothing else" },
+      {
+        "field": "unknown34",
+        "type": "Bool",
+        "comment": "if true, first input just sets it to false and does nothing else"
+      },
       { "field": "unknown35", "type": "Byte" },
-      { "field": "unknown36", "type": "Bool", "comment": "if it's not 0, it's set to 0 ???" },
+      {
+        "field": "unknown36",
+        "type": "Bool",
+        "comment": "if it's not 0, it's set to 0 ???"
+      },
       { "field": "padding_probably6", "type": "UnsignedByte" },
       { "field": "padding_probably7", "type": "UnsignedWord" },
       { "field": "unknown37", "type": "UnsignedDword" },
@@ -3217,8 +3373,15 @@
         "type": "TextureRenderingInfo",
         "comment": "brightness 'progressbar' background texture"
       },
-      { "field": "volume_progressbar_foreground", "type": "TextureRenderingInfo" },
-      { "field": "progressbar_foreground", "type": "TextureRenderingInfo", "comment": "the border" },
+      {
+        "field": "volume_progressbar_foreground",
+        "type": "TextureRenderingInfo"
+      },
+      {
+        "field": "progressbar_foreground",
+        "type": "TextureRenderingInfo",
+        "comment": "the border"
+      },
       {
         "field": "volume_progressbar_position_indicator",
         "type": "TextureRenderingInfo"
@@ -3228,9 +3391,21 @@
         "type": "TextureRenderingInfo",
         "comment": "behind 'GRAPHICS' and 'AUDIO', the black bars "
       },
-      { "field": "unknown44", "type": "TextureRenderingInfo", "comment": "could be something else, or just not used in PC version or something" },
-      { "field": "pet_icons", "type": "TextureRenderingInfo", "comment": "In Gameplay menu" },
-      { "field": "bottom_scroll", "type": "TextureRenderingInfo", "comment": "For the code in the sync menu" },
+      {
+        "field": "unknown44",
+        "type": "TextureRenderingInfo",
+        "comment": "could be something else, or just not used in PC version or something"
+      },
+      {
+        "field": "pet_icons",
+        "type": "TextureRenderingInfo",
+        "comment": "In Gameplay menu"
+      },
+      {
+        "field": "bottom_scroll",
+        "type": "TextureRenderingInfo",
+        "comment": "For the code in the sync menu"
+      },
       { "field": "bottom_left_scrollhandle", "type": "TextureRenderingInfo" },
       { "field": "bottom_right_scrollhandle", "type": "TextureRenderingInfo" },
       { "field": "topleft_woodpanel_esc_slidein", "type": "Float" },
@@ -3241,20 +3416,49 @@
       { "field": "item_highlight", "type": "Bool" },
       { "field": "padding_probably8", "type": "Byte" },
       { "field": "padding_probably9", "type": "Dword" },
-      { "field": "unknown50", "type": "StdVector", "vectortype": "UnsignedQword" },
+      {
+        "field": "unknown50",
+        "type": "StdVector",
+        "vectortype": "UnsignedQword"
+      },
       { "field": "unknown51", "type": "UnsignedByte" },
       { "field": "padding_probably10", "type": "UnsignedByte" },
       { "field": "padding_probably11", "type": "UnsignedWord" },
       { "field": "padding_probably12", "type": "UnsignedDword" },
-      { "field": "tooltip_text", "type": "StdVector", "vectortype": "StringsTableID" },
+      {
+        "field": "tooltip_text",
+        "type": "StdVector",
+        "vectortype": "StringsTableID"
+      },
       { "field": "disable_controls", "type": "Bool" },
       { "field": "padding_probably13", "type": "UnsignedByte" },
       { "field": "padding_probably14", "type": "UnsignedWord" },
-      { "field": "sync_progress_state", "type": "State32", "states": { "0": "None", "1": "waiting for the code", "2": "code acquired", "3": "sync in progress", "4": "sync completed" } },
-      { "field": "unknown54", "type": "UnsignedDword", "comment": "some timer" },
+      {
+        "field": "sync_progress_state",
+        "type": "State32",
+        "states": {
+          "0": "None",
+          "1": "waiting for the code",
+          "2": "code acquired",
+          "3": "sync in progress",
+          "4": "sync completed"
+        }
+      },
+      {
+        "field": "unknown54",
+        "type": "UnsignedDword",
+        "comment": "some timer"
+      },
       { "field": "padding_probably15", "type": "UnsignedDword" },
-      { "field": "credits_progression", "type": "ScrollingCreditsProgressionPointer" },
-      { "field": "unknown57", "type": "UnsignedQword", "comment": "grabage/unused?" }
+      {
+        "field": "credits_progression",
+        "type": "ScrollingCreditsProgressionPointer"
+      },
+      {
+        "field": "unknown57",
+        "type": "UnsignedQword",
+        "comment": "grabage/unused?"
+      }
     ],
     "ScreenStandardLayout": [
       { "field": "bottom_woodpanel_slideup_speed", "type": "Float" },
@@ -3343,7 +3547,19 @@
       { "field": "unknown93", "type": "TextureRenderingInfo" }
     ],
     "OnlineLobbyScreenPlayer": [
-      { "field": "player_icon", "type": "State8", "states": { "16": "PC", "17": "Discord", "18": "Steam", "19": "Xbox", "32": "Switch", "48": "PS", "49": "PS again?"} },
+      {
+        "field": "player_icon",
+        "type": "State8",
+        "states": {
+          "16": "PC",
+          "17": "Discord",
+          "18": "Steam",
+          "19": "Xbox",
+          "32": "Switch",
+          "48": "PS",
+          "49": "PS again?"
+        }
+      },
       { "field": "character", "type": "State8", "ref": "character_states" },
       { "field": "ready", "type": "Bool" },
       { "field": "searching", "type": "Bool" }
@@ -3359,7 +3575,11 @@
     "ScreenSeedInput": [
       { "field": "base_screen", "type": "ScreenBase" },
       { "field": "standard", "type": "ScreenStandardLayout" },
-      { "field": "allow_random", "type": "Bool", "comment": "needs to be set before opening the screen to show the correct text at the bottom" },
+      {
+        "field": "allow_random",
+        "type": "Bool",
+        "comment": "needs to be set before opening the screen to show the correct text at the bottom"
+      },
       { "field": "probably_padding1", "type": "UnsignedByte" },
       { "field": "probably_padding2", "type": "UnsignedByte" },
       { "field": "probably_padding3", "type": "UnsignedByte" },
@@ -3739,7 +3959,11 @@
       { "field": "bottom_left_bricks", "type": "TextureRenderingInfo" },
       { "field": "top_left_esc_panel", "type": "TextureRenderingInfo" },
       { "field": "next_panel", "type": "TextureRenderingInfo" },
-      { "field": "option_captions", "type": "StdVector", "vectortype": "ArenaRulesStringsEntry" },
+      {
+        "field": "option_captions",
+        "type": "StdVector",
+        "vectortype": "ArenaRulesStringsEntry"
+      },
       { "field": "unknown48", "type": "Bool" },
       { "field": "unknown49", "type": "UnsignedByte" },
       { "field": "unknown50", "type": "UnsignedByte" },
@@ -3818,7 +4042,7 @@
       { "field": "item_equipped_badge", "type": "TextureRenderingInfo" },
       { "field": "item_off_gray_overlay", "type": "TextureRenderingInfo" },
       { "field": "esc_woodpanel", "type": "TextureRenderingInfo" },
-      { "field": "items_to_gray_out", "type": "UnorderedMap" }, 
+      { "field": "items_to_gray_out", "type": "UnorderedMap" },
       { "field": "unknown33", "type": "UnsignedDword" },
       { "field": "center_panels_horizontal_slide_position", "type": "Float" },
       { "field": "esc_panel_slide_timer", "type": "Float" },
@@ -4235,7 +4459,11 @@
       { "field": "screen_camp", "type": "ScreenStateCampPointer" },
       { "field": "screen_level", "type": "ScreenStateLevelPointer" },
       { "field": "screen_transition", "type": "ScreenTransitionPointer" },
-      { "field": "screen_death", "type": "ScreenPointer", "comment": "there is extra 8 bytes, but i get nothing with breakpoint" },
+      {
+        "field": "screen_death",
+        "type": "ScreenPointer",
+        "comment": "there is extra 8 bytes, but i get nothing with breakpoint"
+      },
       {
         "field": "unknown_screen_spaceship?",
         "type": "UnsignedQword",
@@ -4376,7 +4604,11 @@
       },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
-      { "field": "unknown44", "type": "UnsignedDword", "comment": "padding probably" }
+      {
+        "field": "unknown44",
+        "type": "UnsignedDword",
+        "comment": "padding probably"
+      }
     ],
     "BackLayerRelated": [
       { "field": "entity", "type": "EntityPointer" },
@@ -5556,11 +5788,14 @@
       { "field": "unknown2", "type": "EntityList" },
       { "field": "unknown3", "type": "EntityList" },
       { "field": "unknown4", "type": "EntityList" },
-      { "field": "unknown13", "type": "StdVector", "vectortype": "PointerToEntityList", "comment":  "probably not actual vector" }
+      {
+        "field": "unknown13",
+        "type": "StdVector",
+        "vectortype": "PointerToEntityList",
+        "comment": "probably not actual vector"
+      }
     ],
-    "PointerToEntityList": [
-      { "field": "entity_list", "type": "EntityList" }
-    ],
+    "PointerToEntityList": [{ "field": "entity_list", "type": "EntityList" }],
     "LogicList": [
       { "field": "tutorial", "type": "LogicTutorial" },
       { "field": "ouroboros", "type": "LogicOuroboros" },
@@ -5738,7 +5973,11 @@
     ],
     "LogicMagmamanSpawn": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "magman_spawns", "type": "StdVector", "vectortype": "MagmamanSpawnData" }
+      {
+        "field": "magman_spawns",
+        "type": "StdVector",
+        "vectortype": "MagmamanSpawnData"
+      }
     ],
     "LogicUnderwaterBubbles": [
       { "field": "base_logic", "type": "Logic" },
@@ -5791,18 +6030,20 @@
     ],
     "LogicOlmecCutscene": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "leader_inputs", "type": "Flags8", 
-      "flags": {
-        "1": "Jump",
-        "2": "Attack",
-        "3": "Bomb",
-        "4": "Rope",
-        "5": "Run",
-        "6": "Use door/buy",
-        "7": "Pause/Menu",
-        "8": "Journal"
-      },
-      "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
+      {
+        "field": "leader_inputs",
+        "type": "Flags8",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "Pause/Menu",
+          "8": "Journal"
+        },
+        "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
       },
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Word" },
@@ -5815,18 +6056,20 @@
     ],
     "LogicTiamatCutscene": [
       { "field": "base_logic", "type": "Logic" },
-      { "field": "leader_inputs", "type": "Flags8", 
-      "flags": {
-        "1": "Jump",
-        "2": "Attack",
-        "3": "Bomb",
-        "4": "Rope",
-        "5": "Run",
-        "6": "Use door/buy",
-        "7": "Pause/Menu",
-        "8": "Journal"
-      },
-      "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
+      {
+        "field": "leader_inputs",
+        "type": "Flags8",
+        "flags": {
+          "1": "Jump",
+          "2": "Attack",
+          "3": "Bomb",
+          "4": "Rope",
+          "5": "Run",
+          "6": "Use door/buy",
+          "7": "Pause/Menu",
+          "8": "Journal"
+        },
+        "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
       },
       { "field": "padding1", "type": "Byte" },
       { "field": "padding2", "type": "Word" },
@@ -5858,9 +6101,7 @@
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "LogicPointer": [
-      { "field": "base_logic", "type": "Logic" }
-    ],
+    "LogicPointer": [{ "field": "base_logic", "type": "Logic" }],
     "LogicArena1": [
       { "field": "base_logic", "type": "Logic" },
       { "field": "crate_spawn_timer", "type": "UnsignedDword" }
@@ -6007,9 +6248,7 @@
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "ScreenPointer": [
-      { "field": "base_screen", "type": "ScreenBase" }
-    ],
+    "ScreenPointer": [{ "field": "base_screen", "type": "ScreenBase" }],
     "ScreenLevelPointer": [
       { "field": "base_screen", "type": "ScreenBase" },
       {
@@ -6183,15 +6422,27 @@
       { "field": "unknown3", "type": "Bool" }
     ],
     "ScreenArenaScoreUnknown": [
-      { "field": "unknown1", "type": "TextureRenderingInfo", "comment": "seams to fix" },
+      {
+        "field": "unknown1",
+        "type": "TextureRenderingInfo",
+        "comment": "seams to fix"
+      },
       { "field": "some_x?", "type": "Float" },
       { "field": "some_y?", "type": "Float" },
       { "field": "unknown4", "type": "Float" },
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float", "comment": "when not in use set to float max" },
-      { "field": "unknown9", "type": "Float", "comment": "when not in use set to float max" },
+      {
+        "field": "unknown8",
+        "type": "Float",
+        "comment": "when not in use set to float max"
+      },
+      {
+        "field": "unknown9",
+        "type": "Float",
+        "comment": "when not in use set to float max"
+      },
       { "field": "unknown10", "type": "Float" },
       { "field": "unknown11", "type": "Float" },
       { "field": "unknown12", "type": "Float" }
@@ -6325,24 +6576,33 @@
       { "field": "unknown89", "type": "ScreenArenaScoreUnknown" },
       { "field": "-", "type": "Skip", "offset": 6728 },
       { "field": "padding?", "type": "UnsignedDword" },
-      { "field": "end?", "type": "UnsignedQword", "comment": "160 structs above, who know what for, also this is just allocator thing, not actual value" }
+      {
+        "field": "end?",
+        "type": "UnsignedQword",
+        "comment": "160 structs above, who know what for, also this is just allocator thing, not actual value"
+      }
     ],
     "ScreenControls": [
       { "field": "UP", "type": "Bool" },
       { "field": "DOWN", "type": "Bool" },
       { "field": "LEFT", "type": "Bool" },
       { "field": "RIGHT", "type": "Bool" },
-      { "field": "direction_input", "type": "State32",
-        "states":
-        {
-        "-1": "None",
-        "0": "UP",
-        "1": "DOWN",
-        "2": "LEFT",
-        "3": "RIGHT"
+      {
+        "field": "direction_input",
+        "type": "State32",
+        "states": {
+          "-1": "None",
+          "0": "UP",
+          "1": "DOWN",
+          "2": "LEFT",
+          "3": "RIGHT"
         }
-        },
-      { "field": "hold_timer", "type": "Dword", "comment": "delay before activating fast scroll" },
+      },
+      {
+        "field": "hold_timer",
+        "type": "Dword",
+        "comment": "delay before activating fast scroll"
+      },
       { "field": "fast_scroll_timer", "type": "Dword" }
     ],
     "ScreenArenaStagesSelectPointer": [
@@ -6427,7 +6687,6 @@
       { "field": "unknown57", "type": "UnsignedByte" },
       { "field": "unknown58", "type": "UnsignedByte" },
       { "field": "unknown59", "type": "UnsignedByte" }
-      
     ],
     "ScreenArenaLevelPointer": [
       { "field": "base_screen", "type": "ScreenBase" },
@@ -8945,7 +9204,11 @@
       },
       { "field": "behaviors", "type": "StdSet", "keytype": "DataPointer" },
       { "field": "current_behavior", "type": "DataPointer" },
-      { "field": "cutscene_logic", "type": "EntityLogicPointer", "comment": "seams to be the same structs used in state.logic ? or similar at least" },
+      {
+        "field": "cutscene_logic",
+        "type": "EntityLogicPointer",
+        "comment": "seams to be the same structs used in state.logic ? or similar at least"
+      },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
       { "field": "buttons", "type": "Flags8", "ref": "buttons_entity" },
@@ -9409,7 +9672,7 @@
       {
         "field": "end",
         "type": "UnorderedMapEndBucketPointer",
-        "comment":  "can also be treated as std::list<std::pair<key, value>>*"
+        "comment": "can also be treated as std::list<std::pair<key, value>>*"
       },
       {
         "field": "size",
@@ -9454,7 +9717,11 @@
         "field": "last",
         "type": "UnorderedMapBucketPointer"
       },
-      { "field": "key/value", "type": "Qword", "comment": "even thou this memory is not used, it's still allocated as this is identical to normal bucket" }
+      {
+        "field": "key/value",
+        "type": "Qword",
+        "comment": "even thou this memory is not used, it's still allocated as this is identical to normal bucket"
+      }
     ],
     "UnorderedMapBucketPointer": [
       {
@@ -14736,8 +15003,16 @@
       { "field": "capacity", "type": "UnsignedQword" }
     ],
     "CrushingElevator": [
-      { "field": "y_limit", "type": "Float", "comment": "does don't actually exist, added for compatibility with OL API" },
-      { "field": "speed", "type": "Float", "comment": "does don't actually exist, added for compatibility with OL API" }
+      {
+        "field": "y_limit",
+        "type": "Float",
+        "comment": "does don't actually exist, added for compatibility with OL API"
+      },
+      {
+        "field": "speed",
+        "type": "Float",
+        "comment": "does don't actually exist, added for compatibility with OL API"
+      }
     ]
   }
 }
