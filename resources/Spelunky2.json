@@ -342,7 +342,8 @@
     "Purchasable": "Movable",
     "DummyPurchasableEntity": "Purchasable",
     "Present": "Purchasable",
-    "Web": "Movable"
+    "Web": "Movable",
+    "CrushingElevator": "Movable"
   },
   // a mapping of a regular expression or full name of an entity to its type
   "default_entity_types": {
@@ -655,6 +656,7 @@
     "ACTIVEFLOOR_THINICE": "ThinIce",
     "ACTIVEFLOOR_ELEVATOR": "Elevator",
     "ACTIVEFLOOR_GIANTCLAM_BASE": "ClamBase",
+    "ACTIVEFLOOR_CRUSHING_ELEVATOR": "CrushingElevator",
     "ACTIVEFLOOR_REGENERATINGBLOCK": "RegenBlock",
     "FX_EGGSHIP_CENTERJETFLAME": "EggshipCenterJetFlame",
     "FX_TORNJOURNALPAGE": "FxTornJournalPage",
@@ -818,6 +820,9 @@
     "ParticleEmitterInfoPointer",
     "TextRenderingInfoPointer",
     "ScreenPointer",
+    "ScreenLevelPointer",
+    "ScreenStateCampPointer",
+    "ScreenStateLevelPointer",
     "ScreenTransitionPointer",
     "ScreenWinPointer",
     "ScreenCreditsPointer",
@@ -835,41 +840,38 @@
     "InputMappingPointer",
     "QuestsInfoPointer",
     "QuestHandlerPointer",
-    "MysteryPointer4",
+    "EntityLookupPointer",
+    "PointerToEntityList",
+    "LogicList",
+    "LogicTutorial",
+    "LogicDiceShop",
+    "LogicOlmecCutscene",
+    "LogicTiamatCutscene",
+    "LogicJellyfish",
+    "LogicGhostToast",
+    "LogicTunPreChallenge",
+    "LogicMoonChallenge",
+    "LogicStarChallenge",
+    "LogicSunChallenge",
+    "LogicOuroboros",
+    "LogicBasecampSpeedrun",
+    "LogicMagmamanSpawn",
+    "LogicApepTrigger",
+    "LogicCOGAnkhSacrifice",
+    "LogicTiamatBubbles",
+    "LogicUnderwaterBubbles",
+    "LogicTuskPleasurePalace",
     "LogicPointer",
-    "TutorialPointer",
-    "DiceShopPointer",
-    "OlmecCutscenePointer",
-    "TiamatCutscenePointer",
-    "CosmicOceanPointer",
-    "GhostLogicPointer",
-    "GhostToastLogicPointer",
-    "TunAggroPointer",
-    "TunPreChallengePointer",
-    "MoonChallengePointer",
-    "StarChallengePointer",
-    "SunChallengePointer",
-    "OuroborosPointer",
-    "BasecampSpeedrunPointer",
-    "VolcanaRelatedPointer",
-    "ApepTriggerPointer",
-    "CogAnkhSacrificePointer",
-    "DuatBossesTriggerPointer",
-    "TiamatInfoPointer",
-    "WaterRelatedPointer",
-    "TuskPleasurePalacePointer",
-    "DiscoveryPointer",
     "BlackMarketDoorPointer",
-    "Arena1Pointer",
-    "Arena2Pointer",
-    "Arena3Pointer",
-    "ArenaAlienBlastPointer",
-    "ArenaLooseBombsPointer",
+    "LogicArena1",
+    "LogicArenaAlienBlast",
+    "LogicArenaLooseBombs",
     "LiquidPhysicsPointer",
     "CameraPointer",
+    "UnorderedMapEndBucketPointer",
     "UnorderedMapPointer",
     "UnorderedMapBucketPointer",
-    "UnorderedMapRecordPointer",
+    "UnorderedMapBucketPointer2",
     "StdVectorPointerIllumination",
     "StdVectorPointerParticleEmitterInfo",
     "SpecialLevelGeneration",
@@ -882,16 +884,14 @@
     "ScreenTitlePointer",
     "ScreenMenuPointer",
     "ScreenOptionsPointer",
-    "ScreenPlayerProfilePointer",
-    "ScreenLeaderboardsPointer",
     "ScreenSeedInputPointer",
     "ScreenCharacterSelectPointer",
-    "ScreenArenaPointer",
-    "ArenaRulesStringsPointer",
+    "ScreenArenaMenuPointer",
     "ScreenArenaItemsPointer",
     "ScreenOnlineLobbyPointer",
     "ScreenOnlineLoadingPointer",
     "PauseUIPointer",
+    "MenuInsertPointer",
     "JournalUIPointer",
     "BackgroundMusicManagerPointer",
     "Ai_func",
@@ -899,7 +899,6 @@
     "RenderingTimerPointer",
     "StdListIteratorPointer",
     "LiquidPhysicsEngine",
-    "GetEntitiesResultPointer",
     "MapBucket",
     "MapBucket1",
     "MysteryLiquidPointer1",
@@ -910,9 +909,10 @@
     "PointerToFloatSet",
     "PlayerSlotPointer",
     "MultiLineTextRenderingPointer",
-    "UnknownAiStuff",
+    "EntityLogicPointer",
     "PointerToPointerToEntityList",
-    "PointerToEntityList"
+    "PointerToEntityList",
+    "InputsByControllerPointer"
   ],
   // all the types that are regular inline data, but are logically grouped (and will be shown as such in the interface)
   // if you want to add an inline struct, add its field definition under "fields" below, and
@@ -1011,7 +1011,20 @@
     "CollisionInfo",
     "EntityRegions",
     "ItemOwnerDetails",
-    "GridPosition"
+    "GridPosition",
+    "Logic",
+    "MagmamanSpawnData",
+    "ScreenBase",
+    "ScreenControls",
+    "UnorderedMapBucketIterator",
+    "ScreenArenaScoreLavaBubble",
+    "ScreenArenaScoreUnknown",
+    "BGMUnknown",
+    "ScreenMenuVector",
+    "ScreenMenuOption",
+    "ScreenStandardLayout",
+    "ScreenSeedInput",
+    "MenuInsert"
   ],
   // Struct alignments needed to calculate the padding in map/set node
   // it's just the biggest standard type in a struct, range: 0-8
@@ -1454,6 +1467,50 @@
       "30": "",
       "31": "",
       "32": ""
+    },
+    "button_screens": {
+      "1": "Jump",
+      "2": "Attack",
+      "3": "Bomb",
+      "4": "Rope",
+      "5": "Run",
+      "6": "Use door/buy",
+      "7": "Pause",
+      "8": "Journal"
+    },
+    "buttons_controller": {
+      "1": "Jump",
+      "2": "Bomb",
+      "3": "Attack",
+      "4": "Rope",
+      "5": "",
+      "6": "Use door/buy",
+      "7": "",
+      "8": "Run",
+      "9": "",
+      "10": "",
+      "11": "",
+      "12": "menu",
+      "13": "journal",
+      "14": "",
+      "15": "",
+      "16": "",
+      "17": "Left",
+      "18": "Right",
+      "19": "Up",
+      "20": "Down",
+      "21": "",
+      "22": "",
+      "23": "",
+      "24": "",
+      "25": "",
+      "26": "",
+      "27": "",
+      "28": "",
+      "29": "",
+      "30": "",
+      "31": "",
+      "32": ""
     }
   },
 
@@ -1716,12 +1773,12 @@
       { "field": "offset_x", "type": "Float" },
       { "field": "offset_y", "type": "Float" },
       { "field": "layer", "type": "UnsignedByte" },
-      { "field": "unknown54b", "type": "UnsignedByte" },
+      { "field": "draw_depth", "type": "UnsignedByte" },
       { "field": "unknown54c", "type": "UnsignedByte" },
       { "field": "unknown54d", "type": "UnsignedByte" },
       { "field": "unknown55", "type": "Float" },
       { "field": "unknown56", "type": "UnsignedDword" },
-      { "field": "total_particles?", "type": "UnsignedDword" },
+      { "field": "total_particles", "type": "UnsignedDword" },
       { "field": "unknown58", "type": "UnsignedDword" },
       { "field": "max_particles", "type": "UnsignedDword" },
       { "field": "unknown60", "type": "UnsignedDword" }
@@ -1875,12 +1932,13 @@
       { "field": "screen_options", "type": "ScreenOptionsPointer" },
       {
         "field": "screen_player_profile",
-        "type": "ScreenPlayerProfilePointer"
+        "type": "ScreenPointer",
+        "comment": "just opens journal"
       },
       {
         "field": "screen_leaderboards",
-        "type": "ScreenLeaderboardsPointer",
-        "comment": "INCOMPLETE"
+        "type": "ScreenPointer",
+        "comment": "all handled by the Online struct"
       },
       { "field": "screen_seed_input", "type": "ScreenSeedInputPointer" },
       {
@@ -1895,17 +1953,17 @@
       },
       {
         "field": "screen_camp",
-        "type": "ScreenPointer",
+        "type": "ScreenLevelPointer",
         "comment": "in state there is also screen_camp"
       },
       {
         "field": "screen_level",
-        "type": "ScreenPointer",
+        "type": "ScreenLevelPointer",
         "comment": "in state there is also screen_level"
       },
       {
         "field": "screen_transition",
-        "type": "ScreenTransitionPointer",
+        "type": "ScreenPointer",
         "comment": "in state there is also screen_transition which is complete (this one isn't)"
       },
       {
@@ -1970,12 +2028,12 @@
       },
       {
         "field": "screen_arena_level",
-        "type": "ScreenArenaLevelPointer",
+        "type": "ScreenPointer",
         "comment": "also available in State, but it's a different object! this one only has a render_timer, no UI parts"
       },
       {
         "field": "unknown_screen_arena_score?",
-        "type": "DataPointer",
+        "type": "ScreenPointer",
         "comment": "available in State"
       },
       {
@@ -1986,8 +2044,60 @@
       { "field": "pause_ui", "type": "PauseUIPointer" },
       { "field": "journal_ui", "type": "JournalUIPointer" },
       { "field": "main_menu_music", "type": "SoundMeta" },
+      { "field": "layer_transition", "type": "Float" },
+      { "field": "layer", "type": "Float" },
+      { "field": "transition_timer", "type": "Byte" },
+      { "field": "unknown31", "type": "Bool" },
+      { "field": "unknown32", "type": "UnsignedWord" },
+      { "field": "unknown33", "type": "UnsignedDword" },
+      { "field": "unknown34", "type": "Bool" },
+      { "field": "unknown35", "type": "Bool" },
+      { "field": "unknown36", "type": "UnsignedWord" },
+      { "field": "unknown37", "type": "UnsignedDword" },
+      { "field": "unknown38", "type": "UnsignedDword" },
+      { "field": "unknown39", "type": "UnsignedDword" }
+    ],
+    "BGMUnknown": [
+      { "field": "unknown1", "type": "Float" },
+      { "field": "unknown2", "type": "Float" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "Float" },
+      { "field": "unknown16", "type": "Float" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
+      { "field": "unknown19", "type": "Float" },
+      { "field": "unknown20", "type": "Float" },
+      { "field": "unknown21", "type": "Float" },
+      { "field": "unknown22", "type": "Float" },
+      { "field": "unknown23", "type": "Float" },
+      { "field": "unknown24", "type": "Float" },
+      { "field": "unknown25", "type": "Float" },
+      { "field": "unknown26", "type": "Float" },
+      { "field": "unknown27", "type": "Float" },
       { "field": "unknown28", "type": "Float" },
-      { "field": "unknown29", "type": "Float" }
+      { "field": "unknown29", "type": "Float" },
+      { "field": "unknown30", "type": "Float" },
+      { "field": "unknown31", "type": "Float" },
+      { "field": "unknown32", "type": "Float" },
+      { "field": "unknown33", "type": "Float" },
+      { "field": "unknown34", "type": "Float" },
+      { "field": "unknown35", "type": "Float" },
+      { "field": "unknown36", "type": "Float" },
+      { "field": "unknown37", "type": "Float" },
+      { "field": "unknown38", "type": "Float" },
+      { "field": "unknown39", "type": "Float" },
+      { "field": "unknown40", "type": "Float" }
     ],
     "BackgroundMusicManagerPointer": [
       { "field": "game_startup", "type": "SoundMeta" },
@@ -2010,21 +2120,26 @@
       { "field": "unknown18", "type": "UnsignedByte" },
       { "field": "unknown19", "type": "UnsignedByte" },
       { "field": "unknown20", "type": "UnsignedByte" },
-      {
-        "field": "floats",
-        "type": "Skip",
-        "offset": 2400,
-        "comment": "600 floats, mostly seem to be 1.0"
-      },
+      { "field": "unknown21", "type": "BGMUnknown" },
+      { "field": "unknown22", "type": "BGMUnknown" },
+      { "field": "unknown23", "type": "BGMUnknown" },
+      { "field": "unknown24", "type": "BGMUnknown" },
+      { "field": "unknown25", "type": "BGMUnknown" },
+      { "field": "unknown26", "type": "BGMUnknown" },
+      { "field": "unknown27", "type": "BGMUnknown" },
+      { "field": "unknown28", "type": "BGMUnknown" },
+      { "field": "unknown29", "type": "BGMUnknown" },
+      { "field": "unknown30", "type": "BGMUnknown" },
+      { "field": "unknown31", "type": "BGMUnknown" },
+      { "field": "unknown32", "type": "BGMUnknown" },
+      { "field": "unknown33", "type": "BGMUnknown" },
+      { "field": "unknown34", "type": "BGMUnknown" },
+      { "field": "unknown35", "type": "BGMUnknown" },
       { "field": "idle_counter", "type": "Float" },
-      { "field": "unknown22", "type": "UnsignedDword" }
+      { "field": "unknown22a", "type": "UnsignedDword" }
     ],
     "AudioChannelParams": [
-      {
-        "field": "POS_SCREEN_X",
-        "type": "Float",
-        "comment": "VANILLA_SOUND_PARAM names, for now"
-      },
+      { "field": "POS_SCREEN_X", "type": "Float" },
       { "field": "DIST_CENTER_X", "type": "Float" },
       { "field": "DIST_CENTER_Y", "type": "Float" },
       { "field": "DIST_Z", "type": "Float" },
@@ -2035,93 +2150,163 @@
       },
       { "field": "SUBMERGED", "type": "Float" },
       { "field": "LIQUID_STREAM", "type": "Float" },
-      {
-        "field": "unknown8",
-        "type": "Float",
-        "comment": "LIQUID_STREAM related? , maybe LIQUID_INTENSITY?"
-      },
+      { "field": "LIQUID_INTENSITY", "type": "Float" },
       { "field": "VALUE", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
-      { "field": "unknown11", "type": "Float" },
-      { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Float" },
-      { "field": "unknown15", "type": "Float" },
-      { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "Float" },
-      { "field": "unknown18", "type": "Float" },
-      { "field": "unknown19", "type": "Float" },
-      { "field": "unknown20", "type": "Float" },
-      { "field": "unknown21", "type": "Float" },
-      { "field": "unknown22", "type": "Float" },
-      { "field": "unknown23", "type": "Float" },
-      { "field": "unknown24", "type": "Float" },
-      { "field": "unknown25", "type": "Float" },
-      { "field": "unknown26", "type": "Float" },
-      { "field": "unknown27", "type": "Float" },
-      { "field": "unknown28", "type": "Float" },
-      { "field": "unknown29", "type": "Float" },
+      { "field": "GHOST", "type": "Float" },
+      { "field": "TRIGGER", "type": "Float" },
+      { "field": "ANGER_PROXIMITY", "type": "Float" },
+      { "field": "ANGER_STATE", "type": "Float" },
+      { "field": "TORCH_PROXIMITY", "type": "Float" },
+      { "field": "COLLISION_MATERIAL", "type": "Float" },
+      { "field": "VELOCITY", "type": "Float" },
+      { "field": "LIGHTNESS", "type": "Float" },
+      { "field": "SIZE", "type": "Float" },
+      { "field": "TYPE_ID", "type": "Float" },
+      { "field": "MONSTER_ID", "type": "Float" },
+      { "field": "PLAYER_ACTIVITY", "type": "Float" },
+      { "field": "PLAYER_LIFE", "type": "Float" },
+      { "field": "PLAYER_DEPTH", "type": "Float" },
+      { "field": "FIRST_RUN", "type": "Float" },
+      { "field": "CAM_DEPTH", "type": "Float" },
+      { "field": "RESTLESS_DEAD", "type": "Float" },
+      { "field": "SPECIAL_MACHINE", "type": "Float" },
       { "field": "POISONED", "type": "Float" },
       { "field": "CURSED", "type": "Float" },
-      { "field": "unknown32", "type": "Float" },
-      { "field": "unknown33", "type": "Float" },
-      { "field": "unknown34", "type": "Float" },
-      { "field": "unknown35", "type": "Float" },
-      { "field": "unknown36", "type": "Float" },
-      { "field": "unknown37", "type": "Float" },
-      { "field": "unknown38", "type": "Float" }
+      { "field": "PLAYER_CONTROLLED", "type": "Float" },
+      { "field": "PLAYER_CHARACTER", "type": "Float" },
+      { "field": "PAGE", "type": "Float" },
+      { "field": "DM_STATE", "type": "Float" },
+      { "field": "FAST_FORWARD", "type": "Float" },
+      { "field": "CURRENT_THEME", "type": "Float" },
+      { "field": "CURRENT_LEVEL", "type": "Float" },
+      { "field": "CURRENT_SHOP_TYPE", "type": "Float" },
+      { "field": "CURRENT_LAYER2", "type": "Float" }
     ],
     "GamePropsPointer": [
-      {
-        "field": "buttons",
-        "type": "Flags32",
-        "flags": {
-          "1": "Jump",
-          "2": "Bomb",
-          "3": "Attack",
-          "4": "Rope",
-          "5": "",
-          "6": "Use door/buy",
-          "7": "",
-          "8": "Run",
-          "9": "",
-          "10": "",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "Left",
-          "18": "Right",
-          "19": "Up",
-          "20": "Down",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
-        }
-      },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "buttons_dupe", "type": "Flags32", "flags": {} },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "buttons_dupe_but_different", "type": "Flags32", "flags": {} },
-      { "field": "unknown8", "type": "Byte" },
+      { "field": "buttons_player1", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_player2", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_player3", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_player4", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_previous_player1", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_previous_player2", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_previous_player3", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_previous_player4", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "buttons_menu_previous", "type": "Flags16", "flags": {
+        "1": "accept",
+        "2": "back",
+        "3": "key R / controller X",
+        "4": "key D / controller Y",
+        "5": "key tab / controller RB",
+        "6": "left",
+        "7": "right",
+        "8": "up",
+        "9": "down",
+        "10": "",
+        "11": "",
+        "12": "",
+        "13": "",
+        "14": "",
+        "15": "",
+        "16": ""
+      }},
+      { "field": "buttons_menu", "type": "Flags16", "flags": {
+        "1": "accept",
+        "2": "back",
+        "3": "key R / controller X",
+        "4": "key D / controller Y",
+        "5": "key tab / controller RB",
+        "6": "left",
+        "7": "right",
+        "8": "up",
+        "9": "down",
+        "10": "",
+        "11": "",
+        "12": "",
+        "13": "",
+        "14": "",
+        "15": "",
+        "16": ""
+      }},
+      { "field": "menu_player_slot", "type": "Byte", "comment": "for the pause menu icon" },
       { "field": "game_has_focus", "type": "Bool" },
       { "field": "unknown9", "type": "Bool" },
-      { "field": "unknown10", "type": "Bool" }
+      { "field": "unknown10", "type": "Bool" },
+      { "field": "keyboard1", "type": "InputsByControllerPointer" },
+      { "field": "keyboard2", "type": "InputsByControllerPointer" },
+      { "field": "keyboard3", "type": "InputsByControllerPointer" },
+      { "field": "keyboard4", "type": "InputsByControllerPointer" },
+      { "field": "x_input1", "type": "InputsByControllerPointer" },
+      { "field": "x_input2", "type": "InputsByControllerPointer" },
+      { "field": "x_input3", "type": "InputsByControllerPointer" },
+      { "field": "x_input4", "type": "InputsByControllerPointer" },
+      { "field": "other_controller1", "type": "InputsByControllerPointer" },
+      { "field": "other_controller2", "type": "InputsByControllerPointer" },
+      { "field": "other_controller3", "type": "InputsByControllerPointer" },
+      { "field": "other_controller4", "type": "InputsByControllerPointer" },
+      { "field": "input_index_p1", "type": "Byte" },
+      { "field": "input_index_p2", "type": "Byte" },
+      { "field": "input_index_p3", "type": "Byte" },
+      { "field": "input_index_p4", "type": "Byte" },
+      { "field": "input_index_unknown", "type": "Byte" },
+      { "field": "padding_probably1", "type": "Byte" },
+      { "field": "padding_probably2", "type": "Word" },
+      { "field": "next_player_entrence", "type": "Dword" },
+      { "field": "leader player slot?", "type": "Byte" },
+      { "field": "unknown24", "type": "Byte" },
+      { "field": "padding_probably3", "type": "Word" },
+      { "field": "unknown25a", "type": "Dword" },
+      { "field": "unknown25b", "type": "Byte" },
+      { "field": "unknown25c", "type": "Byte" },
+      { "field": "unknown25d", "type": "Byte" },
+      { "field": "padding_probably4", "type": "Byte" },
+      { "field": "unknown26", "type": "Dword" },
+      { "field": "padding_probably5", "type": "Dword" },
+      { "field": "unknown27", "type": "DataPointer" },
+      { "field": "unknown28", "type": "Qword" },
+      { "field": "unknown29a", "type": "Qword", "comment": "it's double" },
+      { "field": "unknown29b", "type": "Qword", "comment": "it's double" },
+      { "field": "unknown29c", "type": "Qword", "comment": "it's double" },
+      { "field": "unknown29d", "type": "Qword", "comment": "it's double" },
+      { "field": "unknown30", "type": "Dword" },
+      { "field": "unknown31", "type": "Dword" },
+      { "field": "unknown32", "type": "Qword" },
+      { "field": "unknown33", "type": "Qword" },
+      { "field": "unknown34", "type": "Bool" }
+    ],
+    "InputsByControllerPointer": [
+      { "field": "is_keyboard", "type": "Bool" },
+      { "field": "is_controller", "type": "Bool" },
+      { "field": "can_use_menu", "type": "Bool", "comment": "keyboard doesn't seam to care about this" },
+      { "field": "lost_connection", "type": "Bool" },
+      { "field": "input_index", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "padding2", "type": "UnsignedByte" },
+      { "field": "padding3", "type": "UnsignedByte" },
+      { "field": "inputs", "type": "Flags32", "ref": "buttons_controller" },
+      { "field": "controller_index", "type": "UnsignedByte", "comment": "for XInput used in XInputSetState" }
+    ],
+    "MenuInsertPointer": [
+      { "field": "menu", "type": "MenuInsert" }
+    ],
+    "MenuInsert": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "text_disappearance_speed?", "type": "Float" },
+      { "field": "text_spacing", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "UnsignedDword" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "StdVector", "vectortype": "DataPointer" },
+      { "field": "unknown12", "type": "DataPointer" },
+      { "field": "unknown13", "type": "CodePointer" },
+      { "field": "selected_menu_index", "type": "UnsignedDword" },
+      { "field": "loop", "type": "Bool" },
+      { "field": "unknown16", "type": "Bool" },
+      { "field": "disable_controls", "type": "Bool" },
+      { "field": "padding_probably", "type": "UnsignedByte" }
     ],
     "PauseUIPointer": [
       { "field": "menu_slidein_progress", "type": "Float" },
@@ -2131,18 +2316,27 @@
       { "field": "woodpanel_right", "type": "TextureRenderingInfo" },
       { "field": "woodpanel_top", "type": "TextureRenderingInfo" },
       { "field": "scroll", "type": "TextureRenderingInfo" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "DataPointer" },
+      { "field": "padding_probably1", "type": "UnsignedDword" },
+      { "field": "menu", "type": "MenuInsertPointer" },
       { "field": "confirmation_panel", "type": "TextureRenderingInfo" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown7", "type": "DataPointer" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "previously_selected_menu_index", "type": "UnsignedDword" },
-      { "field": "buttons_actions", "type": "UnsignedDword" },
-      { "field": "buttons_movement", "type": "UnsignedDword" },
-      { "field": "unknown11a", "type": "UnsignedByte" },
-      { "field": "unknown11b", "type": "Byte" },
-      { "field": "unknown12", "type": "UnsignedWord" },
+      { "field": "prompt_question", "type": "MultiLineTextRenderingPointer" },
+      { "field": "prompt_menu", "type": "MenuInsertPointer" },
+      { "field": "unknown8", "type": "Bool" },
+      { "field": "padding_probably2", "type": "UnsignedByte" },
+      { "field": "padding_probably3", "type": "UnsignedWord" },
+      { "field": "selected_menu_index", "type": "UnsignedDword" },
+      { "field": "prompt_visible", "type": "Bool" },
+      { "field": "buttons_actions_p1", "type": "UnsignedByte" },
+      { "field": "buttons_actions_p2", "type": "UnsignedByte" },
+      { "field": "buttons_actions_p3", "type": "UnsignedByte" },
+      { "field": "buttons_actions_p4", "type": "UnsignedByte" },
+      { "field": "buttons_movement_p1", "type": "UnsignedByte" },
+      { "field": "buttons_movement_p2", "type": "UnsignedByte" },
+      { "field": "buttons_movement_p3", "type": "UnsignedByte" },
+      { "field": "buttons_movement_p4", "type": "UnsignedByte" },
+      { "field": "unknown11", "type": "Byte" },
+      { "field": "padding_probably4", "type": "UnsignedByte" },
+      { "field": "padding_probably5", "type": "UnsignedByte" },
       {
         "field": "visibility",
         "type": "State32",
@@ -2176,10 +2370,10 @@
         "vectortype": "JournalPagePointer"
       },
       {
-        "field": "unknown3",
+        "field": "pages_tmp",
         "type": "StdVector",
         "vectortype": "JournalPagePointer",
-        "comment": "pages are constructed, saved here and later moved to the pages vector"
+        "comment": "pages are constructed, saved here and later moved to the pages vector from where they are rendered"
       },
       { "field": "current_page", "type": "UnsignedDword" },
       { "field": "flipping_to_page", "type": "UnsignedDword" },
@@ -2212,9 +2406,7 @@
       { "field": "unknown26", "type": "Float" },
       { "field": "page_timer", "type": "UnsignedDword" },
       { "field": "unknown28", "type": "UnsignedDword" },
-      { "field": "unknown29", "type": "DataPointer" },
-      { "field": "unknown31", "type": "UnsignedDword" },
-      { "field": "unknown30", "type": "UnsignedDword" }
+      { "field": "unknown29", "type": "DataPointer" }
     ],
     "JournalPagePointer": [],
     "JournalPage": [
@@ -2223,9 +2415,14 @@
         "type": "VirtualFunctionTable",
         "functions": {
           "0": { "name": "~JournalPage", "params": "", "return": "" },
+          "1": { "name": "v_unknown1", "params": "", "return": "" },
+          "2": { "name": "v_unknown2", "params": "", "return": "" },
+          "3": { "name": "v_unknown3", "params": "", "return": "" },
           "4": { "name": "render", "params": "", "return": "" }
         }
-      }
+      },
+      { "field": "background", "type": "TextureRenderingInfo" },
+      { "field": "page_number", "type": "UnsignedDword" }
     ],
     "JournalPageProgress": [
       {
@@ -2235,7 +2432,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       { "field": "coffeestain_top", "type": "TextureRenderingInfo" }
     ],
     "JournalPageJournalMenu": [
@@ -2246,24 +2443,8 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "Float" },
-      { "field": "unknown4", "type": "Float" },
-      { "field": "unknown5", "type": "Float" },
-      { "field": "unknown6", "type": "Float" },
-      { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
-      { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "DataPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "unknown17", "type": "DataPointer" },
-      { "field": "unknown19", "type": "DataPointer" },
-      { "field": "unknown21", "type": "CodePointer" },
-      { "field": "selected_menu_index", "type": "UnsignedDword" },
-      { "field": "unknown23", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
+      { "field": "menu", "type": "MenuInsert" },
       { "field": "journal_text_info", "type": "TextRenderingInfoPointer" },
       { "field": "completion_badge", "type": "TextureRenderingInfo" }
     ],
@@ -2275,7 +2456,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "show_main_image",
         "type": "Bool",
@@ -2325,7 +2506,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "show_main_image",
         "type": "Bool",
@@ -2360,7 +2541,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "show_main_image",
         "type": "Bool",
@@ -2425,7 +2606,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "show_main_image",
         "type": "Bool",
@@ -2461,7 +2642,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "show_main_image",
         "type": "Bool",
@@ -2511,7 +2692,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "chapter_title_text_info",
         "type": "TextRenderingInfoPointer"
@@ -2526,7 +2707,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       { "field": "death_cause_text_info", "type": "TextRenderingInfoPointer" }
     ],
     "JournalPageDeathMenu": [
@@ -2537,33 +2718,15 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "Float" },
-      { "field": "unknown4", "type": "Float" },
-      { "field": "unknown5", "type": "Float" },
-      { "field": "unknown6", "type": "Float" },
-      { "field": "unknown7", "type": "Float" },
-      { "field": "unknown8", "type": "Float" },
-      { "field": "unknown9", "type": "Float" },
-      { "field": "unknown10", "type": "Float" },
-      { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "DataPointer" },
-      { "field": "unknown14", "type": "DataPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "unknown16", "type": "DataPointer" },
-      { "field": "unknown17", "type": "CodePointer" },
-      { "field": "selected_menu_index", "type": "UnsignedDword" },
-      { "field": "unknown18", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
+      { "field": "menu", "type": "MenuInsert" },
       { "field": "game_over_text_info", "type": "TextRenderingInfoPointer" },
       { "field": "level_text_info", "type": "TextRenderingInfoPointer" },
       { "field": "level_value_text_info", "type": "TextRenderingInfoPointer" },
       { "field": "money_text_info", "type": "TextRenderingInfoPointer" },
       { "field": "money_value_text_info", "type": "TextRenderingInfoPointer" },
       { "field": "time_text_info", "type": "TextRenderingInfoPointer" },
-      { "field": "time_value_text_info", "type": "TextRenderingInfoPointer" },
-      { "field": "unknown26", "type": "UnsignedDword" },
-      { "field": "unknown27", "type": "UnsignedDword" }
+      { "field": "time_value_text_info", "type": "TextRenderingInfoPointer" }
     ],
     "JournalPageRecap": [
       {
@@ -2582,7 +2745,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       { "field": "player_icon", "type": "TextureRenderingInfo" },
       { "field": "player_icon_id", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "Float" },
@@ -2649,7 +2812,7 @@
       },
       { "field": "background", "type": "TextureRenderingInfo" },
       { "field": "page_number", "type": "UnsignedDword" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       { "field": "main_image", "type": "TextureRenderingInfo" },
       {
         "field": "last_game_played_text_info",
@@ -2687,54 +2850,56 @@
       { "field": "heap_offset", "type": "UnsignedQword" },
       { "field": "journal_popup_ui", "type": "JournalPopupUI" }
     ],
-    "ScreenLogoPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~ScreenLogoPointer", "params": "", "return": "" }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "logo_mossmouth", "type": "TextureRenderingInfo" },
-      { "field": "logo_blitworks", "type": "TextureRenderingInfo" },
-      { "field": "logo_fmod", "type": "TextureRenderingInfo" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" }
-    ],
-    "ScreenIntroPointer": [
+    "ScreenBase": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~ScreenIntroPointer",
+            "name": "init",
+            "params": "",
+            "return": "",
+            "comment": "start the screen"
+          },
+          "1": {
+            "name": "update",
+            "params": "",
+            "return": "",
+            "comment": "runs every frame, for level screens: handle zoom, camera bounds, death, even some save data"
+          },
+          "2": {
+            "name": "~Screen",
             "params": "",
             "return": ""
+          },
+          "3": {
+            "name": "render",
+            "params": "",
+            "return": "",
+            "comment": "mostly the menu screens"
           }
         }
       },
       { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "padding", "type": "UnsignedDword" }
+    ],
+    "ScreenLogoPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
+      { "field": "logo_mossmouth", "type": "TextureRenderingInfo" },
+      { "field": "logo_blitworks", "type": "TextureRenderingInfo" },
+      { "field": "logo_fmod", "type": "TextureRenderingInfo" },
+      { "field": "state", "type": "State32", "states": { "0": "mossmouth", "1": "blitworks", "2": "fmod", "3": "end (next screen)" } },
+      { "field": "timer", "type": "UnsignedDword" }
+    ],
+    "ScreenIntroPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown4", "type": "TextureRenderingInfo" },
       { "field": "darkness", "type": "Float" },
       { "field": "active", "type": "Bool" },
       { "field": "skip_prologue", "type": "Bool" }
     ],
     "ScreenProloguePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~ScreenProloguePointer", "params": "", "return": "" }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "line1", "type": "StringsTableID" },
       { "field": "line2", "type": "StringsTableID" },
       { "field": "line3", "type": "StringsTableID" },
@@ -2743,20 +2908,7 @@
       { "field": "line3_alpha", "type": "Float" }
     ],
     "ScreenTitlePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenTitlePointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "logo_spelunky2", "type": "TextureRenderingInfo" },
       { "field": "ana", "type": "TextureRenderingInfo" },
       {
@@ -2793,48 +2945,34 @@
         "field": "particle_torchflame_ash",
         "type": "ParticleEmitterInfoPointer"
       },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown7", "type": "UnsignedByte" },
+      { "field": "-", "type": "Skip", "offset": 3 },
+      { "field": "brightness", "type": "Float" },
       { "field": "background_music", "type": "SoundMeta" },
-      { "field": "fire_sound", "type": "SoundMeta" },
-      { "field": "unknown11", "type": "Float" },
-      { "field": "unknown12", "type": "Float" },
-      { "field": "unknown13", "type": "Float" },
-      { "field": "unknown14", "type": "Float" },
-      { "field": "unknown15", "type": "Float" },
-      { "field": "unknown16", "type": "Float" },
-      { "field": "unknown17", "type": "Float" },
-      { "field": "unknown18", "type": "Float" },
-      { "field": "unknown19", "type": "Float" }
+      { "field": "fire_sound", "type": "SoundMeta" }
+    ],
+    "ScreenMenuVector": [
+      { "field": "vector", "type": "StdVector", "vectortype": "ScreenMenuOption" }
+    ],
+    "ScreenMenuOption": [
+      { "field": "option_name", "type": "StringsTableID" },
+      { "field": "y_position", "type": "Float" },
+      { "field": "brigthness", "type": "Float" },
+      { "field": "enabled", "type": "Bool" },
+      { "field": "-", "type": "Skip", "offset": 3 },
+      { "field": "select", "type": "CodePointer", "comment": "std::pair<uint32_t, float>&(std::pair<uint32_t, float>&, Screen* src, uint8_t)" }
     ],
     "ScreenMenuPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~ScreenMenuPointer", "params": "", "return": "" }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "Float" },
-      { "field": "unknown5", "type": "Float" },
+      { "field": "base_screen", "type": "ScreenBase" },
+      { "field": "backlayer_transition_speed", "type": "Float" },
+      { "field": "frontlayer_transition_speed", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
       { "field": "unknown7", "type": "Float" },
       { "field": "unknown8", "type": "Float" },
-      {
-        "field": "menu_layers",
-        "type": "Float",
-        "comment": "Something to do with the menu texture layers"
-      },
+      { "field": "some_unknown_state", "type": "UnsignedDword" },
       { "field": "unknown10", "type": "Float" },
-      {
-        "field": "layer_transition_progress",
-        "type": "Float",
-        "comment": "transition time between menu layer"
-      },
-      { "field": "unknown12", "type": "Float" },
+      { "field": "zoom_in_progress", "type": "Float" },
+      { "field": "zoom_limit", "type": "Float" },
       {
         "field": "transition_state",
         "type": "State32",
@@ -2866,50 +3004,30 @@
       { "field": "spear_dangler", "type": "TextureRenderingInfo" },
       { "field": "play_scroll", "type": "TextureRenderingInfo" },
       { "field": "info_toast", "type": "TextureRenderingInfo" },
-      {
-        "field": "unknown15",
-        "type": "TextureRenderingInfo",
-        "comment": "could be the xbox username scroll because the source coordinates point to that same texture"
-      },
-      { "field": "unknown16a", "type": "UnsignedDword" },
-      { "field": "unknown16b", "type": "UnsignedDword" },
+      { "field": "unknown15", "type": "TextureRenderingInfo", "comment": "could be the xbox username scroll because the source coordinates point to that same texture" },
+      { "field": "unknown16", "type": "UnsignedDword" },
+      { "field": "padding_probably1", "type": "UnsignedDword" },
       { "field": "cthulhu_sound", "type": "SoundMeta" },
-      { "field": "unknown16e", "type": "DataPointer" },
-      { "field": "unknown16f", "type": "DataPointer" },
+      { "field": "particle_smoke", "type": "ParticleEmitterInfoPointer" },
+      { "field": "particle_rubble", "type": "ParticleEmitterInfoPointer" },
       { "field": "cthulhu_disc_ring_angle", "type": "Float" },
       { "field": "cthulhu_disc_split_progress", "type": "Float" },
       { "field": "cthulhu_disc_y", "type": "Float" },
       { "field": "cthulhu_timer", "type": "Float" },
-      { "field": "unknown16k", "type": "DataPointer" },
-      {
-        "field": "unknown17",
-        "type": "StdVector",
-        "vectortype": "DataPointer",
-        "comment": "possibly contains menu pages that don't have their separate screens"
-      },
-      { "field": "unknown20", "type": "StdVector", "vectortype": "Dword" },
-      { "field": "buttons?", "type": "Flags32" },
-      {
-        "field": "menu_selection_direction",
-        "type": "Dword",
-        "comment": "1: up, 0: down, -1: no input"
-      },
-      {
-        "field": "unknown23",
-        "type": "UnsignedDword",
-        "comment": "menu selection related"
-      },
-      {
-        "field": "unknown24",
-        "type": "UnsignedDword",
-        "comment": "menu selection related"
-      },
+      { "field": "screen_transition", "type": "CodePointer" },
+      { "field": "menu_tree", "type": "StdVector", "vectortype": "ScreenMenuVector" },
+      { "field": "menu_index_order", "type": "StdVector", "vectortype": "UnsignedDword" },
+      { "field": "controls", "type": "ScreenControls" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
-      { "field": "unknown26", "type": "UnsignedDword" },
-      { "field": "unknown27", "type": "UnsignedDword" },
-      { "field": "unknown28", "type": "UnsignedDword" },
-      { "field": "unknown29a", "type": "UnsignedDword" },
-      { "field": "unknown29b", "type": "UnsignedDword" },
+      { "field": "sides_hold_down_timer", "type": "UnsignedByte" },
+      { "field": "sides_fast_scroll_timer", "type": "UnsignedByte" },
+      { "field": "padding_probably2", "type": "UnsignedWord" },
+      { "field": "unknown27", "type": "UnsignedDword", "comment": "pressed direction? 1 = left, 0 = right, no neutral, stays at the last state" },
+      { "field": "loop", "type": "Bool" },
+      { "field": "padding_probably3", "type": "UnsignedByte" },
+      { "field": "padding_probably4", "type": "UnsignedWord" },
+      { "field": "menu_id", "type": "UnsignedDword" },
+      { "field": "transfer_to_menu_id", "type": "UnsignedDword" },
       { "field": "menu_text_opacity", "type": "Float" },
       { "field": "spear_1_position", "type": "Float" },
       { "field": "spear_2_position", "type": "Float" },
@@ -2977,53 +3095,60 @@
       { "field": "spear_4_dangle_angle", "type": "Float" },
       { "field": "spear_5_dangle_angle", "type": "Float" },
       { "field": "spear_6_dangle_angle", "type": "Float" },
-      { "field": "play_scroll_descend_timer", "type": "Float" },
+      { "field": "play_scroll_descend", "type": "Float" },
       { "field": "scroll_text", "type": "StringsTableID" },
       { "field": "shake_offset_x", "type": "Float" },
       { "field": "shake_offset_y", "type": "Float" },
-      { "field": "unknown29e", "type": "Float" },
-      { "field": "unknown29f", "type": "Float" },
-      { "field": "unknown30", "type": "Float" },
-      {
-        "field": "cthulhu_animation",
-        "type": "Qword",
-        "comment": "possibly off by one Qword"
-      }
+      { "field": "unknown30", "type": "Bool" },
+      { "field": "unknown31", "type": "Byte" },
+      { "field": "unknown32", "type": "Word" }
     ],
     "ScreenOptionsPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~ScreenOptionsPointer", "params": "", "return": "" }
+      { "field": "base_screen", "type": "ScreenBase" },
+      { "field": "menu_tree", "type": "StdVector", "vectortype": "ScreenMenuVector" },
+      { "field": "menu_index_order", "type": "StdVector", "vectortype": "UnsignedDword" },
+      { "field": "DOWN", "type": "Bool", "comment": "this is just ScreenControls but different" },
+      { "field": "UP", "type": "Bool" },
+      { "field": "unused1", "type": "Bool" },
+      { "field": "unused2", "type": "Bool" },
+      { "field": "direction_input", "type": "State32",
+        "states":
+        {
+        "-1": "None",
+        "0": "DOWN",
+        "1": "UP",
+        "2": "(unused)",
+        "3": "(unused)"
         }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
-      {
-        "field": "unknown4",
-        "type": "StdVector",
-        "vectortype": "DataPointer",
-        "comment": "options pages?"
-      },
-      { "field": "unknown7", "type": "StdVector", "vectortype": "Dword" },
+        },
+      { "field": "hold_timer", "type": "Dword", "comment": "delay before activating fast scroll, UP/DOWN only" },
+      { "field": "fast_scroll_timer", "type": "Dword", "comment": "UP/DOWN only" },
       { "field": "selected_menu_index", "type": "UnsignedDword" },
-      {
-        "field": "key_press_timer",
-        "type": "UnsignedWord",
-        "comment": "might be two separate values"
-      },
-      { "field": "unknown12", "type": "UnsignedWord" },
-      { "field": "moved_left", "type": "Bool" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedByte" },
-      { "field": "padding3", "type": "UnsignedByte" },
-      { "field": "unknown14", "type": "UnsignedByte" },
-      { "field": "unknown15", "type": "UnsignedByte" },
-      { "field": "unknown16", "type": "UnsignedByte" },
-      { "field": "unknown17", "type": "UnsignedByte" },
-      { "field": "brick_border", "type": "TextureRenderingInfo" },
+      { "field": "sides_hold_down_timer", "type": "UnsignedByte" },
+      { "field": "sides_fast_scroll_timer", "type": "UnsignedByte", "comment": "yes, you've seen thins before, in the ScreenMenu" },
+      { "field": "probably_padding1", "type": "UnsignedWord" },
+      { "field": "unknown0", "type": "UnsignedDword", "comment": "pressed direction? 1 = left, 0 = right, no neutral, stays at the last state" },
+      { "field": "loop", "type": "Bool" },
+      { "field": "probably_padding2", "type": "UnsignedByte" },
+      { "field": "probably_padding3", "type": "UnsignedWord" },
+      { "field": "unknown1", "type": "Float" },
+      { "field": "unknown2", "type": "Float" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "UnsignedDword" },
+      { "field": "unknown7", "type": "UnsignedDword", "comment": "speed related?" },
+      { "field": "unknown8", "type": "Float" },
+      { "field": "unknown9", "type": "Float" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" },
+      { "field": "unknown14", "type": "Float" },
+      { "field": "unknown15", "type": "UnsignedDword" },
+      { "field": "unknown16", "type": "Dword" },
+      { "field": "unknown17", "type": "Float" },
+      { "field": "unknown18", "type": "Float" },
       { "field": "top_bottom_woodpanels_velocity", "type": "Float" },
       {
         "field": "top_bottom_woodpanels_progress",
@@ -3035,14 +3160,12 @@
         "type": "Float",
         "comment": "set to 0 to start unfurl"
       },
-      { "field": "unknown21", "type": "Float" },
-      { "field": "bottom_woodpanel_y", "type": "Float" },
-      { "field": "unknown23", "type": "Float" },
-      { "field": "top_bottom_woodpanels_slide_in_related", "type": "Float" },
+      { "field": "bottom_woodpanel_speed_multiplayer", "type": "Float" },
+      { "field": "bottom_woodpanel_y_offset", "type": "Float", "comment": "maybe a resolution thing?" },
       { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
       { "field": "top_woodpanel", "type": "TextureRenderingInfo" },
       {
-        "field": "unknown27",
+        "field": "scroll",
         "type": "TextureRenderingInfo",
         "comment": "all forced, changes when going a level deeper or higher in the options"
       },
@@ -3054,21 +3177,30 @@
         "field": "top_woodpanel_right_scrollhandle",
         "type": "TextureRenderingInfo"
       },
-      { "field": "button_right_caption", "type": "StringsTableID" },
-      { "field": "button_middle_caption", "type": "StringsTableID" },
+      { "field": "scroll_text", "type": "StringsTableID" },
+      { "field": "button_left_text", "type": "StringsTableID" },
+      { "field": "button_right_text", "type": "StringsTableID" },
+      { "field": "button_middle_text", "type": "StringsTableID" },
       { "field": "top_woodpanel_visible", "type": "Bool" },
       { "field": "bottom_woodpanel_visible", "type": "Bool" },
       { "field": "toggle_woodpanel_slidein_animation", "type": "Bool" },
       { "field": "capitalize_top_woodpanel", "type": "Bool" },
-      { "field": "unknown28", "type": "UnsignedDword" },
-      { "field": "current_menu_1", "type": "UnsignedDword" },
-      { "field": "current_menu_2", "type": "UnsignedDword" },
-      { "field": "unknown31", "type": "UnsignedDword" },
-      { "field": "unknown32", "type": "UnsignedDword" },
-      { "field": "unknown33", "type": "UnsignedDword" },
-      { "field": "unknown34", "type": "UnsignedDword" },
-      { "field": "unknown35", "type": "UnsignedDword" },
-      { "field": "unknown36", "type": "UnsignedDword" },
+      { "field": "state?", "type": "State32", "states":{ "0": "none", "2": "moving between inner menus", "3": "exiting menu options" }},
+      { "field": "menu_id", "type": "UnsignedDword" },
+      { "field": "transfer_to_menu_id", "type": "UnsignedDword" },
+      { "field": "show_apply_button", "type": "Bool" },
+      { "field": "padding_probably4", "type": "Byte" },
+      { "field": "padding_probably5", "type": "Word" },
+      { "field": "fullscreen_resolution_id", "type": "UnsignedDword" },
+      { "field": "windowed_resolution_id", "type": "UnsignedDword", "comment": "depends on the GetMonitorInfo etc." },
+      { "field": "resolution_scale", "type": "UnsignedDword", "comment": "100 = 1.0" },
+      { "field": "display_mode", "type": "State8", "states": { "0": "Fullscreen", "1": "Borderless Windowed", "2": "Windowed"} },
+      { "field": "unknown33", "type": "UnsignedByte" },
+      { "field": "unknown34", "type": "Bool", "comment": "if true, first input just sets it to false and does nothing else" },
+      { "field": "unknown35", "type": "Byte" },
+      { "field": "unknown36", "type": "Bool", "comment": "if it's not 0, it's set to 0 ???" },
+      { "field": "padding_probably6", "type": "UnsignedByte" },
+      { "field": "padding_probably7", "type": "UnsignedWord" },
       { "field": "unknown37", "type": "UnsignedDword" },
       { "field": "unknown38", "type": "UnsignedDword" },
       { "field": "topleft_woodpanel_esc", "type": "TextureRenderingInfo" },
@@ -3085,76 +3217,68 @@
         "type": "TextureRenderingInfo",
         "comment": "brightness 'progressbar' background texture"
       },
-      { "field": "unknown40", "type": "TextureRenderingInfo" },
-      { "field": "progressbar_foreground", "type": "TextureRenderingInfo" },
+      { "field": "volume_progressbar_foreground", "type": "TextureRenderingInfo" },
+      { "field": "progressbar_foreground", "type": "TextureRenderingInfo", "comment": "the border" },
       {
-        "field": "progressbar_position_indicator",
+        "field": "volume_progressbar_position_indicator",
         "type": "TextureRenderingInfo"
       },
       {
         "field": "sectionheader_background",
         "type": "TextureRenderingInfo",
-        "comment": "behind 'GRAPHICS' and 'AUDIO' "
+        "comment": "behind 'GRAPHICS' and 'AUDIO', the black bars "
       },
-      { "field": "unknown44", "type": "TextureRenderingInfo" },
-      { "field": "unknown45", "type": "TextureRenderingInfo" },
-      { "field": "topleft_woodpanel_esc_slidein_timer", "type": "Float" },
-      { "field": "text_fadein_timer", "type": "Float" },
-      { "field": "vertical_scroll_effect_timer", "type": "Float" },
+      { "field": "unknown44", "type": "TextureRenderingInfo", "comment": "could be something else, or just not used in PC version or something" },
+      { "field": "pet_icons", "type": "TextureRenderingInfo", "comment": "In Gameplay menu" },
+      { "field": "bottom_scroll", "type": "TextureRenderingInfo", "comment": "For the code in the sync menu" },
+      { "field": "bottom_left_scrollhandle", "type": "TextureRenderingInfo" },
+      { "field": "bottom_right_scrollhandle", "type": "TextureRenderingInfo" },
+      { "field": "topleft_woodpanel_esc_slidein", "type": "Float" },
+      { "field": "text_fadein", "type": "Float" },
+      { "field": "vertical_scroll_effect", "type": "Float" },
       { "field": "unknown49", "type": "UnsignedByte" },
-      { "field": "unknown50", "type": "UnsignedByte" },
-      { "field": "unknown51", "type": "UnsignedByte" }
+      { "field": "item_visiable", "type": "Bool" },
+      { "field": "item_highlight", "type": "Bool" },
+      { "field": "padding_probably8", "type": "Byte" },
+      { "field": "padding_probably9", "type": "Dword" },
+      { "field": "unknown50", "type": "StdVector", "vectortype": "UnsignedQword" },
+      { "field": "unknown51", "type": "UnsignedByte" },
+      { "field": "padding_probably10", "type": "UnsignedByte" },
+      { "field": "padding_probably11", "type": "UnsignedWord" },
+      { "field": "padding_probably12", "type": "UnsignedDword" },
+      { "field": "tooltip_text", "type": "StdVector", "vectortype": "StringsTableID" },
+      { "field": "disable_controls", "type": "Bool" },
+      { "field": "padding_probably13", "type": "UnsignedByte" },
+      { "field": "padding_probably14", "type": "UnsignedWord" },
+      { "field": "sync_progress_state", "type": "State32", "states": { "0": "None", "1": "waiting for the code", "2": "code acquired", "3": "sync in progress", "4": "sync completed" } },
+      { "field": "unknown54", "type": "UnsignedDword", "comment": "some timer" },
+      { "field": "padding_probably15", "type": "UnsignedDword" },
+      { "field": "credits_progression", "type": "ScrollingCreditsProgressionPointer" },
+      { "field": "unknown57", "type": "UnsignedQword", "comment": "grabage/unused?" }
     ],
-    "ScreenLeaderboardsPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenLeaderboardsPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" }
-      // INCOMPLETE
-    ],
-    "ScreenOnlineLobbyPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenOnlineLobbyPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedByte" },
-      { "field": "woodpanels_slidein_timer", "type": "Float" },
-      { "field": "scroll_unfurl_timer", "type": "Float" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
+    "ScreenStandardLayout": [
+      { "field": "bottom_woodpanel_slideup_speed", "type": "Float" },
+      { "field": "bottom_woodpanel_slideup", "type": "Float" },
+      { "field": "scroll_unfurl", "type": "Float" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "bottom_woodpanel_y_offset", "type": "Float" },
       { "field": "woodpanel_bottom", "type": "TextureRenderingInfo" },
       { "field": "woodpanel_top", "type": "TextureRenderingInfo" },
-      { "field": "unknown13", "type": "TextureRenderingInfo" },
+      { "field": "scroll", "type": "TextureRenderingInfo" },
       { "field": "left_scroll_handle", "type": "TextureRenderingInfo" },
       { "field": "right_scroll_handle", "type": "TextureRenderingInfo" },
-      { "field": "scroll_text_id", "type": "StringsTableID" },
-      { "field": "btn_left_text_id", "type": "StringsTableID" },
-      { "field": "btn_right_text_id", "type": "StringsTableID" },
-      { "field": "btn_center_text_id", "type": "StringsTableID" },
+      { "field": "scroll_text", "type": "StringsTableID" },
+      { "field": "bottom_left_text", "type": "StringsTableID" },
+      { "field": "bottom_right_text", "type": "StringsTableID" },
+      { "field": "bottom_middle_text", "type": "StringsTableID" },
       { "field": "woodpanel_top_visible", "type": "Bool" },
       { "field": "woodpanel_bottom_visible", "type": "Bool" },
       { "field": "toggle_panels_slidein", "type": "Bool" },
-      { "field": "unknown21", "type": "Bool" },
+      { "field": "unknown21", "type": "Bool" }
+    ],
+    "ScreenOnlineLobbyPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
+      { "field": "standard", "type": "ScreenStandardLayout" },
       { "field": "player_1", "type": "OnlineLobbyScreenPlayer" },
       { "field": "player_2", "type": "OnlineLobbyScreenPlayer" },
       { "field": "player_3", "type": "OnlineLobbyScreenPlayer" },
@@ -3198,77 +3322,7 @@
       { "field": "unknown50", "type": "UnsignedByte" },
       { "field": "unknown51", "type": "UnsignedByte" },
       { "field": "unknown53", "type": "UnsignedDword" },
-      {
-        "field": "enter_code_screen_vftable",
-        "type": "DataPointer",
-        "comment": "this starts a new object"
-      },
-      { "field": "enter_code_render_timer", "type": "Float" },
-      { "field": "unknown54", "type": "UnsignedDword" },
-      { "field": "unknown56", "type": "Float" },
-      { "field": "enter_code_woodpanel_bottom_slidein_pos", "type": "Float" },
-      { "field": "unknown58", "type": "Float" },
-      { "field": "unknown59", "type": "Float" },
-      { "field": "unknown60", "type": "Float" },
-      {
-        "field": "enter_code_woodpanel_bottom",
-        "type": "TextureRenderingInfo"
-      },
-      { "field": "unknown61", "type": "TextureRenderingInfo" },
-      { "field": "unknown62", "type": "TextureRenderingInfo" },
-      { "field": "unknown63", "type": "TextureRenderingInfo" },
-      { "field": "unknown64", "type": "TextureRenderingInfo" },
-      { "field": "text_id_1", "type": "StringsTableID" },
-      { "field": "text_id_2", "type": "StringsTableID" },
-      { "field": "enter_code_btn_right_text_id", "type": "StringsTableID" },
-      { "field": "text_id_4", "type": "StringsTableID" },
-      { "field": "enter_code_woodpanel_top_visible", "type": "Bool" },
-      { "field": "enter_code_woodpanel_bottom_visible", "type": "Bool" },
-      { "field": "enter_code_toggle_panels_slidein", "type": "Bool" },
-      { "field": "unknown68", "type": "Bool" },
-      { "field": "unknown69", "type": "UnsignedDword" },
-      {
-        "field": "selected_character",
-        "type": "UnsignedDword",
-        "comment": "the character with the gold outline"
-      },
-      { "field": "unknown71a", "type": "Bool" },
-      { "field": "unknown71b", "type": "UnsignedByte" },
-      { "field": "code_char_1", "type": "UTF16Char" },
-      { "field": "code_char_2", "type": "UTF16Char" },
-      { "field": "code_char_3", "type": "UTF16Char" },
-      { "field": "code_char_4", "type": "UTF16Char" },
-      { "field": "code_char_5", "type": "UTF16Char" },
-      { "field": "code_char_6", "type": "UTF16Char" },
-      { "field": "code_char_7", "type": "UTF16Char" },
-      { "field": "code_char_8", "type": "UTF16Char" },
-      { "field": "code_char_terminator", "type": "UnsignedWord" },
-      { "field": "characters_entered_count", "type": "UnsignedDword" },
-      {
-        "field": "enter_code_topleft_woodpanel_esc_slidein_timer",
-        "type": "Float"
-      },
-      { "field": "enter_code_banner_text_id", "type": "StringsTableID" },
-      { "field": "enter_code_OK_text_id", "type": "StringsTableID" },
-      {
-        "field": "enter_code_main_woodpanel_left",
-        "type": "TextureRenderingInfo"
-      },
-      {
-        "field": "enter_code_main_woodpanel_center",
-        "type": "TextureRenderingInfo"
-      },
-      {
-        "field": "enter_code_main_woodpanel_right",
-        "type": "TextureRenderingInfo"
-      },
-      { "field": "enter_code_banner", "type": "TextureRenderingInfo" },
-      { "field": "enter_code_char_cutouts", "type": "TextureRenderingInfo" },
-      { "field": "enter_code_pointing_hand", "type": "TextureRenderingInfo" },
-      { "field": "enter_code_buttons", "type": "TextureRenderingInfo" },
-      { "field": "unknown85", "type": "TextureRenderingInfo" },
-      { "field": "enter_code_OK_panel", "type": "TextureRenderingInfo" },
-      { "field": "enter_code_OK_panel_slidein_timer", "type": "Float" },
+      { "field": "screen_code_input", "type": "ScreenSeedInput" },
       { "field": "unknown87", "type": "Dword" },
       {
         "field": "enter_code_your_code_scroll",
@@ -3281,82 +3335,37 @@
       {
         "field": "enter_code_your_code_scroll_right_handle",
         "type": "TextureRenderingInfo"
-      }
+      },
+      { "field": "unknown88", "type": "UnsignedDword" },
+      { "field": "unknown89", "type": "TextureRenderingInfo" },
+      { "field": "unknown90", "type": "UnsignedDword" },
+      { "field": "unknown91", "type": "TextureRenderingInfo" },
+      { "field": "unknown93", "type": "TextureRenderingInfo" }
     ],
     "OnlineLobbyScreenPlayer": [
-      { "field": "unknown1", "type": "UnsignedByte" },
+      { "field": "player_icon", "type": "State8", "states": { "16": "PC", "17": "Discord", "18": "Steam", "19": "Xbox", "32": "Switch", "48": "PS", "49": "PS again?"} },
       { "field": "character", "type": "State8", "ref": "character_states" },
       { "field": "ready", "type": "Bool" },
-      { "field": "unknown2", "type": "UnsignedByte" }
+      { "field": "searching", "type": "Bool" }
     ],
     "ScreenOnlineLoadingPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenOnlineLoadingPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "ouroboros", "type": "TextureRenderingInfo" },
       { "field": "ouroboros_angle", "type": "Float" }
     ],
-    "ScreenPlayerProfilePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenPlayerProfilePointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" }
-    ],
     "ScreenSeedInputPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": { "name": "~ScreenSeedInputPointer", "params": "", "return": "" }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
-      { "field": "unknown4", "type": "UnsignedWord" },
-      { "field": "unknown5", "type": "UnsignedWord" },
-      { "field": "bottom_woodpanel_slideup_timer", "type": "Float" },
-      { "field": "unknown_timer", "type": "Float" },
-      { "field": "unknown6", "type": "Float" },
-      { "field": "bottom_woodpanel_y", "type": "Float" },
-      { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
-      { "field": "unknown8", "type": "TextureRenderingInfo" },
-      { "field": "unknown9", "type": "TextureRenderingInfo" },
-      { "field": "unknown10", "type": "TextureRenderingInfo" },
-      { "field": "unknown11", "type": "TextureRenderingInfo" },
-      { "field": "unknown12", "type": "StringsTableID" },
-      { "field": "unknown13", "type": "StringsTableID" },
-      { "field": "buttons_text_id", "type": "StringsTableID" },
-      { "field": "unknown15", "type": "StringsTableID" },
-      { "field": "unknown16", "type": "UnsignedByte" },
-      { "field": "unknown17", "type": "UnsignedByte" },
-      { "field": "unknown18", "type": "UnsignedByte" },
-      { "field": "unknown19", "type": "UnsignedByte" },
-      { "field": "unknown20", "type": "UnsignedByte" },
-      { "field": "unknown21", "type": "UnsignedByte" },
-      { "field": "unknown22", "type": "UnsignedByte" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedDword" },
-      { "field": "unknown25", "type": "UnsignedWord" },
+      { "field": "screen", "type": "ScreenSeedInput" }
+    ],
+    "ScreenSeedInput": [
+      { "field": "base_screen", "type": "ScreenBase" },
+      { "field": "standard", "type": "ScreenStandardLayout" },
+      { "field": "allow_random", "type": "Bool", "comment": "needs to be set before opening the screen to show the correct text at the bottom" },
+      { "field": "probably_padding1", "type": "UnsignedByte" },
+      { "field": "probably_padding2", "type": "UnsignedByte" },
+      { "field": "probably_padding3", "type": "UnsignedByte" },
+      { "field": "selected_button_index", "type": "UnsignedDword" },
+      { "field": "pressed_select", "type": "Bool" },
+      { "field": "probably_padding4", "type": "UnsignedByte" },
       { "field": "seed_char_1", "type": "UTF16Char" },
       { "field": "seed_char_2", "type": "UTF16Char" },
       { "field": "seed_char_3", "type": "UTF16Char" },
@@ -3366,11 +3375,12 @@
       { "field": "seed_char_7", "type": "UTF16Char" },
       { "field": "seed_char_8", "type": "UTF16Char" },
       { "field": "seed_char_terminator", "type": "UnsignedWord" },
-      { "field": "unknown38", "type": "UnsignedWord" },
-      { "field": "unknown39", "type": "UnsignedWord" },
+      { "field": "seed_length", "type": "UnsignedByte" },
+      { "field": "probably_padding5", "type": "UnsignedByte" },
+      { "field": "probably_padding6", "type": "UnsignedWord" },
       { "field": "topleft_woodpanel_esc_slidein_timer", "type": "Float" },
-      { "field": "scroll_text_id", "type": "StringsTableID" },
-      { "field": "start_text_id", "type": "StringsTableID" },
+      { "field": "scroll_text", "type": "StringsTableID" },
+      { "field": "start_text", "type": "StringsTableID" },
       { "field": "main_woodpanel_left_border", "type": "TextureRenderingInfo" },
       { "field": "main_woodpanel_center", "type": "TextureRenderingInfo" },
       {
@@ -3379,27 +3389,14 @@
       },
       { "field": "top_scroll", "type": "TextureRenderingInfo" },
       { "field": "seed_letter_cutouts", "type": "TextureRenderingInfo" },
-      { "field": "unknown40", "type": "TextureRenderingInfo" },
-      { "field": "unknown41", "type": "TextureRenderingInfo" },
+      { "field": "hand_pointer", "type": "TextureRenderingInfo" },
+      { "field": "key_background", "type": "TextureRenderingInfo" },
       { "field": "topleft_woodpanel_esc", "type": "TextureRenderingInfo" },
       { "field": "start_sidepanel", "type": "TextureRenderingInfo" },
       { "field": "start_sidepanel_slidein_timer", "type": "Float" }
     ],
     "ScreenCharacterSelectPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenCharacterSelectPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown4", "type": "Float" },
       { "field": "unknown5", "type": "Float" },
       { "field": "unknown6", "type": "Float" },
@@ -3421,24 +3418,7 @@
       { "field": "unknown22", "type": "UnsignedByte" },
       { "field": "blurred_border_zoom_timer", "type": "Float" },
       { "field": "blurred_border_zoom_target", "type": "Float" },
-      { "field": "unknown25", "type": "Float" },
-      { "field": "top_bottom_woodpanel_slidein_timer", "type": "Float" },
-      { "field": "top_scroll_unfurl_timer", "type": "Float" },
-      { "field": "unknown28", "type": "Float" },
-      { "field": "unknown29", "type": "Float" },
-      { "field": "unknown30", "type": "UnsignedDword" },
-      { "field": "bottom_woodpanel", "type": "TextureRenderingInfo" },
-      { "field": "top_woodpanel", "type": "TextureRenderingInfo" },
-      { "field": "unknown32", "type": "TextureRenderingInfo" },
-      { "field": "left_scroll_handle", "type": "TextureRenderingInfo" },
-      { "field": "right_scroll_handle", "type": "TextureRenderingInfo" },
-      { "field": "left_button_text", "type": "StringsTableID" },
-      { "field": "right_button_text", "type": "StringsTableID" },
-      { "field": "middle_button_text", "type": "StringsTableID" },
-      { "field": "top_woodpanel_visible", "type": "Bool" },
-      { "field": "bottom_woodpanel_visible", "type": "Bool" },
-      { "field": "toggle_woodpanel_slidein_animation", "type": "Bool" },
-      { "field": "padding1", "type": "UnsignedByte" },
+      { "field": "standard", "type": "ScreenStandardLayout" },
       { "field": "mine_entrance_background", "type": "TextureRenderingInfo" },
       { "field": "character", "type": "TextureRenderingInfo" },
       { "field": "character_shadow", "type": "TextureRenderingInfo" },
@@ -3516,14 +3496,14 @@
       { "field": "player_3_quickselect_wiggle_angle", "type": "Float" },
       { "field": "player_4_quickselect_wiggle_angle", "type": "Float" },
       { "field": "another_timer", "type": "Float" },
-      { "field": "topleft_woodpanel_esc_slidein_timer", "type": "Float" },
-      { "field": "start_panel_slidein_timer", "type": "Float" },
+      { "field": "topleft_woodpanel_esc_slidein", "type": "Float" },
+      { "field": "bottom_woodpanel_slideout", "type": "Float" },
       { "field": "action_buttons_keycap_size", "type": "Float" },
       { "field": "unknown64a", "type": "Bool" },
       { "field": "unknown64b", "type": "Bool" },
       { "field": "unknown64c", "type": "Bool" },
       { "field": "unknown64d", "type": "Bool" },
-      { "field": "unknown65", "type": "UnsignedDword" },
+      { "field": "next_screen_to_load", "type": "UnsignedDword" },
       { "field": "not_ready_to_start_yet", "type": "Bool" },
       {
         "field": "available_mine_entrances",
@@ -3531,10 +3511,10 @@
         "comment": "The rest are boarded off"
       },
       { "field": "amount_of_mine_entrances_activated", "type": "UnsignedByte" },
-      { "field": "unknown66", "type": "UnsignedByte" },
+      { "field": "probably_padding2", "type": "UnsignedByte" },
       { "field": "reset_func?", "type": "CodePointer" },
       {
-        "field": "buttons",
+        "field": "some_state",
         "type": "Flags32",
         "flags": {
           "1": "player_1_left",
@@ -3571,12 +3551,12 @@
           "32": "-"
         }
       },
-      { "field": "unknown69", "type": "TextureRenderingInfo" },
-      { "field": "opacity", "type": "Float" },
+      { "field": "screen_blackout", "type": "TextureRenderingInfo" },
+      { "field": "blackout_transparency", "type": "Float" },
       { "field": "start_pressed", "type": "Bool" },
       { "field": "transition_to_game_started", "type": "Bool" },
-      { "field": "unknown71c", "type": "UnsignedByte" },
-      { "field": "unknown71d", "type": "UnsignedByte" },
+      { "field": "disable_buttons?", "type": "Bool" },
+      { "field": "disable_controls", "type": "Bool" },
       { "field": "unknown72", "type": "UnsignedDword" },
       { "field": "flying_thing_1", "type": "FlyingThing" },
       { "field": "flying_thing_2", "type": "FlyingThing" },
@@ -3590,7 +3570,7 @@
         "comment": "when 0, flying things appear"
       },
       { "field": "unknown79", "type": "Word" },
-      { "field": "unknown80", "type": "UnsignedDword" },
+      { "field": "probably_padding4", "type": "UnsignedDword" },
       {
         "field": "particle_ceilingdust_smoke",
         "type": "ParticleEmitterInfoPointer"
@@ -3632,7 +3612,39 @@
         "field": "particle_torchflame_flames4",
         "type": "ParticleEmitterInfoPointer"
       },
-      { "field": "sound", "type": "SoundMeta" }
+      { "field": "torch_sound_entrence1", "type": "SoundMeta" },
+      { "field": "torch_sound_entrence2", "type": "SoundMeta" },
+      { "field": "torch_sound_entrence3", "type": "SoundMeta" },
+      { "field": "torch_sound_entrence4", "type": "SoundMeta" },
+      { "field": "buttons_device_id0", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id0", "type": "UnsignedWord" },
+      { "field": "buttons_device_id1", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id1", "type": "UnsignedWord" },
+      { "field": "buttons_device_id2", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id2", "type": "UnsignedWord" },
+      { "field": "buttons_device_id3", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id3", "type": "UnsignedWord" },
+      { "field": "buttons_device_id4", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id4", "type": "UnsignedWord" },
+      { "field": "buttons_device_id5", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id5", "type": "UnsignedWord" },
+      { "field": "buttons_device_id6", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id6", "type": "UnsignedWord" },
+      { "field": "buttons_device_id7", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id7", "type": "UnsignedWord" },
+      { "field": "buttons_device_id8", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id8", "type": "UnsignedWord" },
+      { "field": "buttons_device_id9", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id9", "type": "UnsignedWord" },
+      { "field": "buttons_device_id10", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id10", "type": "UnsignedWord" },
+      { "field": "buttons_device_id11", "type": "UnsignedWord" },
+      { "field": "buttons_previous_device_id11", "type": "UnsignedWord" },
+      { "field": "player1_buttons", "type": "UnsignedByte" },
+      { "field": "player2_buttons", "type": "UnsignedByte" },
+      { "field": "player3_buttons", "type": "UnsignedByte" },
+      { "field": "player4_buttons", "type": "UnsignedByte" },
+      { "field": "padding_probably5", "type": "UnsignedDword" }
     ],
     "FlyingThing": [
       { "field": "nodes", "type": "TextureRenderingInfo" },
@@ -3671,21 +3683,8 @@
       { "field": "unknown21", "type": "UnsignedDword" },
       { "field": "unknown22", "type": "UnsignedDword" }
     ],
-    "ScreenArenaPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenArenaPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+    "ScreenArenaMenuPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "brick_background_animation", "type": "ScreenZoomAnimation" },
       { "field": "blurry_border_animation", "type": "ScreenZoomAnimation" },
       { "field": "unknown6", "type": "Float" },
@@ -3740,9 +3739,7 @@
       { "field": "bottom_left_bricks", "type": "TextureRenderingInfo" },
       { "field": "top_left_esc_panel", "type": "TextureRenderingInfo" },
       { "field": "next_panel", "type": "TextureRenderingInfo" },
-      { "field": "option_captions", "type": "ArenaRulesStringsPointer" },
-      { "field": "unknown46", "type": "DataPointer" },
-      { "field": "unknown47", "type": "DataPointer" },
+      { "field": "option_captions", "type": "StdVector", "vectortype": "ArenaRulesStringsEntry" },
       { "field": "unknown48", "type": "Bool" },
       { "field": "unknown49", "type": "UnsignedByte" },
       { "field": "unknown50", "type": "UnsignedByte" },
@@ -3751,26 +3748,11 @@
       { "field": "center_panels_hor_slide_position", "type": "Float" },
       { "field": "esc_next_panels_slide_timer", "type": "Float" },
       { "field": "main_panel_vertical_scroll_position", "type": "Float" },
-      { "field": "selected_option_index", "type": "UnsignedDword" }
-    ],
-    "ArenaRulesStringsPointer": [
-      { "field": "entry_1", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_2", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_3", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_4", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_5", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_6", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_7", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_8", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_9", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_10", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_11", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_12", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_13", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_14", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_15", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_16", "type": "ArenaRulesStringsEntry" },
-      { "field": "entry_17", "type": "ArenaRulesStringsEntry" }
+      { "field": "selected_option_index", "type": "UnsignedDword" },
+      { "field": "controls", "type": "ScreenControls" },
+      { "field": "unknown57", "type": "UnsignedByte" },
+      { "field": "unknown58", "type": "UnsignedByte" },
+      { "field": "unknown59", "type": "UnsignedByte" }
     ],
     "ArenaRulesStringsEntry": [
       { "field": "text_1", "type": "StringsTableID" },
@@ -3796,20 +3778,7 @@
       { "field": "zoom_target", "type": "Float" }
     ],
     "ScreenArenaItemsPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenArenaItemsPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedWord" },
-      { "field": "unknown3", "type": "UnsignedWord" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown4", "type": "Float" },
       { "field": "woodpanel_top_slidein_timer", "type": "Float" },
       { "field": "woodpanel_top_scroll_unfurl_timer", "type": "Float" },
@@ -3820,7 +3789,7 @@
       { "field": "unknown11", "type": "TextureRenderingInfo" },
       { "field": "top_scroll_left_handle", "type": "TextureRenderingInfo" },
       { "field": "top_scroll_right_handle", "type": "TextureRenderingInfo" },
-      { "field": "scroll_text_id", "type": "StringsTableID" },
+      { "field": "scroll_text", "type": "StringsTableID" },
       { "field": "text_id_2", "type": "StringsTableID" },
       { "field": "text_id_3", "type": "StringsTableID" },
       { "field": "text_id_4", "type": "StringsTableID" },
@@ -3849,24 +3818,15 @@
       { "field": "item_equipped_badge", "type": "TextureRenderingInfo" },
       { "field": "item_off_gray_overlay", "type": "TextureRenderingInfo" },
       { "field": "esc_woodpanel", "type": "TextureRenderingInfo" },
-      { "field": "unknown22", "type": "Float" },
-      { "field": "unknown23", "type": "Float" },
-      { "field": "powerup_deactivation_related", "type": "DataPointer" },
-      { "field": "powerup_deactivation_counter?", "type": "UnsignedByte" },
-      { "field": "padding1", "type": "UnsignedByte" },
-      { "field": "padding2", "type": "UnsignedWord" },
-      { "field": "unknown25", "type": "UnsignedDword" },
-      { "field": "unknown26", "type": "DataPointer" },
-      { "field": "unknown27", "type": "DataPointer" },
-      { "field": "unknown28", "type": "DataPointer" },
-      { "field": "unknown29", "type": "UnsignedDword" },
-      { "field": "unknown30", "type": "UnsignedDword" },
-      { "field": "unknown31", "type": "UnsignedDword" },
-      { "field": "unknown32", "type": "UnsignedDword" },
+      { "field": "items_to_gray_out", "type": "UnorderedMap" }, 
       { "field": "unknown33", "type": "UnsignedDword" },
       { "field": "center_panels_horizontal_slide_position", "type": "Float" },
       { "field": "esc_panel_slide_timer", "type": "Float" },
-      { "field": "selected_item_index", "type": "UnsignedDword" }
+      { "field": "selected_item_index", "type": "UnsignedDword" },
+      { "field": "controls", "type": "ScreenControls" },
+      { "field": "unknown57", "type": "UnsignedByte" },
+      { "field": "unknown58", "type": "UnsignedByte" },
+      { "field": "unknown59", "type": "UnsignedByte" }
     ],
     "JournalPopupUI": [
       { "field": "wiggling_page_icon", "type": "TextureRenderingInfo" },
@@ -4272,10 +4232,10 @@
         "field": "screen_team_select",
         "type": "ScreenTeamSelectPointer"
       },
-      { "field": "screen_camp", "type": "ScreenPointer" },
-      { "field": "screen_level", "type": "ScreenPointer" },
+      { "field": "screen_camp", "type": "ScreenStateCampPointer" },
+      { "field": "screen_level", "type": "ScreenStateLevelPointer" },
       { "field": "screen_transition", "type": "ScreenTransitionPointer" },
-      { "field": "screen_death", "type": "ScreenPointer" },
+      { "field": "screen_death", "type": "ScreenPointer", "comment": "there is extra 8 bytes, but i get nothing with breakpoint" },
       {
         "field": "unknown_screen_spaceship?",
         "type": "UnsignedQword",
@@ -4290,7 +4250,7 @@
       { "field": "screen_scores", "type": "ScreenScoresPointer" },
       { "field": "screen_constellation", "type": "ScreenConstellationPointer" },
       { "field": "screen_recap", "type": "ScreenRecapPointer" },
-      { "field": "screen_arena_menu", "type": "ScreenArenaPointer" },
+      { "field": "screen_arena_menu", "type": "ScreenArenaMenuPointer" },
       {
         "field": "screen_arena_stages_select1",
         "type": "ScreenArenaStagesSelectPointer"
@@ -4331,7 +4291,7 @@
       { "field": "level_gen", "type": "LevelGenPointer" },
       { "field": "layer0", "type": "LayerPointer" },
       { "field": "layer1", "type": "LayerPointer" },
-      { "field": "logic", "type": "LogicPointer" },
+      { "field": "logic", "type": "LogicList" },
       { "field": "quests", "type": "QuestsInfoPointer" },
       { "field": "ai_targets", "type": "AITargetsPointer" },
       { "field": "liquid_physics", "type": "LiquidPhysicsPointer" },
@@ -4340,11 +4300,7 @@
         "type": "StdVectorPointerParticleEmitterInfo"
       },
       { "field": "lightsources", "type": "StdVectorPointerIllumination" },
-      {
-        "field": "unknown27",
-        "type": "MysteryPointer4",
-        "comment": "lookup entity struct"
-      },
+      { "field": "EntityLookup", "type": "EntityLookupPointer" },
       {
         "field": "uid_to_entity_mask",
         "type": "UnsignedDword",
@@ -4357,20 +4313,20 @@
         "comment": "RobinHoodTable entries"
       },
       {
-        "field": "backlayer_player_related1",
+        "field": "entities_switching_layer",
         "type": "StdVector",
         "vectortype": "BackLayerRelated"
       },
-      { "field": "layer_transition_effect_timer", "type": "UnsignedDword" },
-      { "field": "camera_layer", "type": "UnsignedByte" },
+      { "field": "layer_transition_timer", "type": "UnsignedDword" },
+      { "field": "transition_to_layer", "type": "UnsignedByte" },
       { "field": "unknown31a", "type": "UnsignedByte" },
       { "field": "unknown31b", "type": "UnsignedByte" },
       { "field": "unknown31c", "type": "UnsignedByte" },
       { "field": "shops", "type": "ShopsInfo" },
       { "field": "time_startup", "type": "UnsignedDword" },
       {
-        "field": "special_visibility_flags",
-        "type": "Flags32",
+        "field": "crust_flags",
+        "type": "Flags8",
         "flags": {
           "1": "Crust embedded items shown",
           "2": "Crust embedded items shown (level transition)",
@@ -4379,33 +4335,38 @@
           "5": "",
           "6": "",
           "7": "",
-          "8": "",
-          "9": "Compass door markers shown",
-          "10": "Compass door markers shown (level transition)",
-          "11": "",
-          "12": "",
-          "13": "",
-          "14": "",
-          "15": "",
-          "16": "",
-          "17": "Special compass door markers shown",
-          "18": "Special compass door markers shown (level transition)",
-          "19": "",
-          "20": "",
-          "21": "",
-          "22": "",
-          "23": "",
-          "24": "",
-          "25": "In back layer",
-          "26": "",
-          "27": "",
-          "28": "",
-          "29": "",
-          "30": "",
-          "31": "",
-          "32": ""
+          "8": ""
         }
       },
+      {
+        "field": "compass_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Compass door markers shown",
+          "2": "Compass door markers shown (level transition)",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        }
+      },
+      {
+        "field": "special_compass_flags",
+        "type": "Flags8",
+        "flags": {
+          "1": "Special compass door markers shown",
+          "2": "Special compass door markers shown (level transition)",
+          "3": "",
+          "4": "",
+          "5": "",
+          "6": "",
+          "7": "",
+          "8": ""
+        }
+      },
+      { "field": "camera_layer", "type": "UnsignedByte" },
       { "field": "camera", "type": "CameraPointer" },
       { "field": "unknown40", "type": "UnsignedByte" },
       {
@@ -4415,12 +4376,11 @@
       },
       { "field": "unknown42", "type": "UnsignedByte" },
       { "field": "unknown43", "type": "UnsignedByte" },
-      { "field": "unknown44", "type": "UnsignedDword" },
-      { "field": "unknown45", "type": "UnsignedQword" }
+      { "field": "unknown44", "type": "UnsignedDword", "comment": "padding probably" }
     ],
     "BackLayerRelated": [
-      { "field": "player", "type": "EntityPointer" },
-      { "field": "layer_dest?", "type": "UnsignedByte" },
+      { "field": "entity", "type": "EntityPointer" },
+      { "field": "layer_dest", "type": "UnsignedByte" },
       { "field": "padding", "type": "Skip", "offset": 7 }
     ],
     "RenderingTimerPointer": [
@@ -5591,91 +5551,78 @@
       { "field": "padding41c", "type": "Byte" },
       { "field": "unknown42", "type": "UnsignedDword" }
     ],
-    "MysteryPointer4": [
-      { "field": "unknown1", "type": "UnsignedQword" },
-      { "field": "unknown2", "type": "DataPointer" },
-      { "field": "unknown3", "type": "UnsignedQword" },
+    "EntityLookupPointer": [
+      { "field": "unknown1", "type": "EntityList" },
+      { "field": "unknown2", "type": "EntityList" },
+      { "field": "unknown3", "type": "EntityList" },
       { "field": "unknown4", "type": "EntityList" },
-      { "field": "unknown5", "type": "EntityList" },
-      { "field": "unknown6", "type": "EntityList" },
-      { "field": "unknown13", "type": "DataPointer" },
-      { "field": "unknown14", "type": "DataPointer" },
-      { "field": "unknown15", "type": "DataPointer" },
-      { "field": "unknown16", "type": "UnsignedQword" },
-      { "field": "unknown17", "type": "DataPointer" },
-      { "field": "unknown18", "type": "DataPointer" },
-      { "field": "unknown19", "type": "DataPointer" },
-      { "field": "get_entities_result", "type": "GetEntitiesResultPointer" },
-      { "field": "unknown21", "type": "UnsignedQword" },
-      { "field": "unknown22", "type": "UnsignedByte" },
-      { "field": "unknown23", "type": "UnsignedByte" },
-      { "field": "unknown24", "type": "UnsignedByte" },
-      { "field": "unknown25", "type": "UnsignedByte" },
-      { "field": "unknown26", "type": "UnsignedDword" }
+      { "field": "unknown13", "type": "StdVector", "vectortype": "PointerToEntityList", "comment":  "probably not actual vector" }
     ],
-    "GetEntitiesResultPointer": [{ "field": "entities", "type": "EntityList" }],
-    "LogicPointer": [
-      { "field": "tutorial", "type": "TutorialPointer" },
-      { "field": "ouroboros", "type": "OuroborosPointer" },
-      { "field": "basecamp_speedrun", "type": "BasecampSpeedrunPointer" },
-      { "field": "ghost_trigger", "type": "GhostLogicPointer" },
-      { "field": "ghost_toast_trigger", "type": "GhostToastLogicPointer" },
-      { "field": "tun_aggro", "type": "TunAggroPointer" },
-      { "field": "diceshop", "type": "DiceShopPointer" },
+    "PointerToEntityList": [
+      { "field": "entity_list", "type": "EntityList" }
+    ],
+    "LogicList": [
+      { "field": "tutorial", "type": "LogicTutorial" },
+      { "field": "ouroboros", "type": "LogicOuroboros" },
+      { "field": "basecamp_speedrun", "type": "LogicBasecampSpeedrun" },
+      { "field": "ghost_trigger", "type": "LogicPointer" },
+      { "field": "ghost_toast_trigger", "type": "LogicGhostToast" },
+      { "field": "tun_aggro", "type": "LogicPointer" },
+      { "field": "diceshop", "type": "LogicDiceShop" },
       {
         "field": "tun_pre_challenge",
-        "type": "TunPreChallengePointer",
+        "type": "LogicTunPreChallenge",
         "comment": "until the challenge actually starts"
       },
-      { "field": "tun_moon_challenge", "type": "MoonChallengePointer" },
-      { "field": "tun_star_challenge", "type": "StarChallengePointer" },
-      { "field": "tun_sun_challenge", "type": "SunChallengePointer" },
+      { "field": "tun_moon_challenge", "type": "LogicMoonChallenge" },
+      { "field": "tun_star_challenge", "type": "LogicStarChallenge" },
+      { "field": "tun_sun_challenge", "type": "LogicSunChallenge" },
       {
         "field": "volcana_related",
-        "type": "VolcanaRelatedPointer",
+        "type": "LogicMagmamanSpawn",
         "comment": "size is most likely incorrect"
       },
       {
-        "field": "water_related",
-        "type": "WaterRelatedPointer"
+        "field": "water_bubbles",
+        "type": "LogicUnderwaterBubbles"
       },
-      { "field": "olmec_cutscene", "type": "OlmecCutscenePointer" },
-      { "field": "tiamat_cutscene", "type": "TiamatCutscenePointer" },
-      { "field": "apep_trigger", "type": "ApepTriggerPointer" },
+      { "field": "olmec_cutscene", "type": "LogicOlmecCutscene" },
+      { "field": "tiamat_cutscene", "type": "LogicTiamatCutscene" },
+      { "field": "apep_trigger", "type": "LogicApepTrigger" },
       {
         "field": "city_of_gold_ankh_sacrifice",
-        "type": "CogAnkhSacrificePointer"
+        "type": "LogicCOGAnkhSacrifice"
       },
-      { "field": "duat_bosses_trigger", "type": "DuatBossesTriggerPointer" },
-      { "field": "tiamat", "type": "TiamatInfoPointer" },
-      { "field": "tusk_pleasure_palace", "type": "TuskPleasurePalacePointer" },
+      { "field": "duat_bosses_trigger", "type": "LogicPointer" },
+      { "field": "bubbler", "type": "LogicTiamatBubbles" },
+      { "field": "tusk_pleasure_palace", "type": "LogicTuskPleasurePalace" },
       {
         "field": "discovery_info",
-        "type": "DiscoveryPointer",
+        "type": "LogicPointer",
         "comment": "black market, vlad, wet fur discovery; shows the toast"
       },
-      { "field": "black_market", "type": "BlackMarketDoorPointer" },
-      { "field": "cosmic_ocean", "type": "CosmicOceanPointer" },
-      { "field": "arena_1", "type": "Arena1Pointer" },
-      { "field": "arena_2", "type": "Arena2Pointer" },
-      { "field": "arena_3", "type": "Arena3Pointer" },
-      { "field": "arena_alien_blast", "type": "ArenaAlienBlastPointer" },
-      { "field": "arena_loose_bombs", "type": "ArenaLooseBombsPointer" }
+      { "field": "black_market", "type": "LogicPointer" },
+      { "field": "jellyfish_trigger", "type": "LogicPointer" },
+      { "field": "arena_1", "type": "LogicArena1" },
+      { "field": "arena_2", "type": "LogicPointer" },
+      { "field": "arena_3", "type": "LogicPointer" },
+      { "field": "arena_alien_blast", "type": "LogicArenaAlienBlast" },
+      { "field": "arena_loose_bombs", "type": "LogicArenaLooseBombs" }
     ],
-    "TutorialPointer": [
+    "Logic": [
       {
         "field": "__vftable",
         "type": "VirtualFunctionTable",
         "functions": {
           "0": {
-            "name": "~TutorialPointer",
+            "name": "~Logic",
             "params": "",
             "return": ""
           },
           "1": {
             "name": "perform",
             "params": "",
-            "return": ""
+            "return": "bool"
           }
         }
       },
@@ -5686,59 +5633,18 @@
       },
       { "field": "padding", "type": "UnsignedDword" }
     ],
-    "OuroborosPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~OuroborosPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      {
-        "field": "unknown3",
-        "type": "DataPointer",
-        "comment": "sound related?"
-      },
-      { "field": "timer", "type": "UnsignedWord" }
+    "LogicTutorial": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "pet", "type": "EntityPointer" },
+      { "field": "timer", "type": "UnsignedDword" }
     ],
-    "BasecampSpeedrunPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~BasecampSpeedrunPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicOuroboros": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "sound", "type": "SoundMeta" },
+      { "field": "timer", "type": "UnsignedDword" }
+    ],
+    "LogicBasecampSpeedrun": [
+      { "field": "base_logic", "type": "Logic" },
       {
         "field": "official",
         "type": "EntityUID",
@@ -5748,130 +5654,21 @@
         "field": "crate",
         "type": "EntityUID",
         "comment": "you must break this crate for the run to be valid, otherwise you're cheating"
-      },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" }
+      }
     ],
-    "GhostLogicPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~GhostLogicPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
-    ],
-    "GhostToastLogicPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~GhostLogicPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicGhostToast": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "toast_timer", "type": "UnsignedDword" }
     ],
-    "TunAggroPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~GhostLogicPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+    "LogicTunPreChallenge": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "unknown2", "type": "Qword" },
+      { "field": "unknown3", "type": "Qword" },
+      { "field": "unknown4", "type": "Qword" },
+      { "field": "tun", "type": "EntityUID" }
     ],
-    "TunPreChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TunPreChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
-    ],
-    "MoonChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~MoonChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicMoonChallenge": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "floor_challenge_entrance", "type": "EntityUID" },
@@ -5887,29 +5684,8 @@
       { "field": "unknown8b", "type": "UnsignedWord" },
       { "field": "mattock", "type": "EntityUID" }
     ],
-    "StarChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~StarChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicStarChallenge": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "floor_challenge_entrance", "type": "EntityUID" },
@@ -5927,31 +5703,15 @@
         "type": "StdVector",
         "vectortype": "EntityPointer"
       },
-      { "field": "start_countdown", "type": "UnsignedByte" }
+      { "field": "start_countdown", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" }
     ],
-    "SunChallengePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~SunChallengePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicSunChallenge": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "floor_challenge_entrance", "type": "EntityUID" },
@@ -5964,93 +5724,36 @@
       },
       { "field": "unknown7", "type": "UnsignedWord" },
       { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "start_countdown", "type": "UnsignedByte" }
+      { "field": "start_countdown", "type": "UnsignedByte" },
+      { "field": "unknown9", "type": "UnsignedByte" },
+      { "field": "unknown10", "type": "UnsignedWord" },
+      { "field": "unknown11", "type": "UnsignedDword" },
+      { "field": "unknown12", "type": "Float" },
+      { "field": "unknown13", "type": "Float" }
     ],
-    "VolcanaRelatedPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~VolcanaRelatedPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "DataPointer" },
-      { "field": "unknown4", "type": "DataPointer" },
-      { "field": "unknown5", "type": "DataPointer" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "DataPointer" },
-      { "field": "unknown9", "type": "DataPointer" }
+    "MagmamanSpawnData": [
+      { "field": "x", "type": "UnsignedDword" },
+      { "field": "y", "type": "UnsignedDword" },
+      { "field": "timer", "type": "UnsignedDword" }
     ],
-    "WaterRelatedPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~WaterRelatedPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedByte" }
+    "LogicMagmamanSpawn": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "magman_spawns", "type": "StdVector", "vectortype": "MagmamanSpawnData" }
     ],
-    "DiceShopPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~DiceShopPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicUnderwaterBubbles": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "unknown3", "type": "Float" },
+      { "field": "unknown4", "type": "Word" },
+      { "field": "unknown5", "type": "Byte" }
+    ],
+    "LogicDiceShop": [
+      { "field": "base_logic", "type": "Logic" },
       {
         "field": "boss",
         "type": "EntityUID",
         "comment": "either tusk or the shopkeeper"
       },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "boss_type", "type": "EntityDBID" },
       { "field": "bet_machine", "type": "EntityUID" },
       { "field": "die1", "type": "EntityUID" },
       { "field": "die2", "type": "EntityUID" },
@@ -6086,417 +5789,88 @@
         "comment": "cash balance of all the games"
       }
     ],
-    "OlmecCutscenePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~OlmecCutscenePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
+    "LogicOlmecCutscene": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "leader_inputs", "type": "Flags8", 
+      "flags": {
+        "1": "Jump",
+        "2": "Attack",
+        "3": "Bomb",
+        "4": "Rope",
+        "5": "Run",
+        "6": "Use door/buy",
+        "7": "Pause/Menu",
+        "8": "Journal"
       },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
+      "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
       },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown6a", "type": "UnsignedByte" },
-      { "field": "unknown6b", "type": "UnsignedByte" },
-      { "field": "unknown6c", "type": "UnsignedByte" },
-      { "field": "unknown6d", "type": "UnsignedByte" },
-      { "field": "unknown7a", "type": "UnsignedByte" },
-      { "field": "unknown7b", "type": "UnsignedByte" },
-      { "field": "unknown7c", "type": "UnsignedByte" },
-      { "field": "unknown7d", "type": "UnsignedByte" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      { "field": "padding3", "type": "Dword" },
       { "field": "fx_olmecpart_large", "type": "EntityPointer" },
       { "field": "olmec", "type": "EntityPointer" },
       { "field": "player", "type": "EntityPointer" },
       { "field": "cinematic_anchor", "type": "EntityPointer" },
       { "field": "timer", "type": "UnsignedDword" }
     ],
-    "TiamatCutscenePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TiamatCutscenePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
+    "LogicTiamatCutscene": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "leader_inputs", "type": "Flags8", 
+      "flags": {
+        "1": "Jump",
+        "2": "Attack",
+        "3": "Bomb",
+        "4": "Rope",
+        "5": "Run",
+        "6": "Use door/buy",
+        "7": "Pause/Menu",
+        "8": "Journal"
       },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
+      "comment": "copied over buttons_gameplay from the leader, used to skip the cutscene"
       },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
+      { "field": "padding1", "type": "Byte" },
+      { "field": "padding2", "type": "Word" },
+      { "field": "padding3", "type": "Dword" },
       { "field": "tiamat", "type": "EntityPointer" },
       { "field": "player", "type": "EntityPointer" },
       { "field": "cinematic_anchor", "type": "EntityPointer" },
-      { "field": "timer", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "Dword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "timer", "type": "UnsignedDword" }
     ],
-    "ApepTriggerPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ApepTriggerPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicApepTrigger": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "spawn_cooldown", "type": "UnsignedDword" },
       { "field": "cooling_down", "type": "Bool" },
-      { "field": "apep_journal_entry_logged", "type": "Bool" },
-      { "field": "unknown4c", "type": "UnsignedByte" },
-      { "field": "unknown4d", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "apep_journal_entry_logged", "type": "Bool" }
     ],
-    "DuatBossesTriggerPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~DuatBossesTriggerPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
-    ],
-    "CogAnkhSacrificePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~CogAnkhSacrificePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicCOGAnkhSacrifice": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "unknown3", "type": "UnsignedByte" },
       { "field": "timer", "type": "UnsignedByte" }
     ],
-    "TiamatInfoPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TiamatInfoPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicTiamatBubbles": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "bubble_spawn_timer", "type": "UnsignedByte" }
     ],
-    "TuskPleasurePalacePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~TuskPleasurePalacePointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicTuskPleasurePalace": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "locked_door", "type": "EntityUID" },
-      { "field": "unknown4", "type": "UnsignedDword" }
-    ],
-    "DiscoveryPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~DiscoveryPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "unknown4", "type": "UnsignedDword" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "BlackMarketDoorPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~BlackMarketDoorPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+    "LogicPointer": [
+      { "field": "base_logic", "type": "Logic" }
     ],
-    "CosmicOceanPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~CosmicOceanPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
+    "LogicArena1": [
+      { "field": "base_logic", "type": "Logic" },
+      { "field": "crate_spawn_timer", "type": "UnsignedDword" }
     ],
-    "Arena1Pointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~Arena1Pointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "crate_spawn_timer", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
-    ],
-    "Arena2Pointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~Arena2Pointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
-      { "field": "unknown1", "type": "UnsignedByte" }
-    ],
-    "Arena3Pointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~Arena3Pointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" }
-    ],
-    "ArenaAlienBlastPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ArenaAlienBlastPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicArenaAlienBlast": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "timer", "type": "UnsignedDword" }
     ],
-    "ArenaLooseBombsPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ArenaLooseBombsPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "perform",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      {
-        "field": "logic_index",
-        "type": "UnsignedDword",
-        "comment": "array index into static.logic"
-      },
-      { "field": "padding", "type": "UnsignedDword" },
+    "LogicArenaLooseBombs": [
+      { "field": "base_logic", "type": "Logic" },
       { "field": "timer", "type": "UnsignedDword" }
     ],
     "QuestsInfoPointer": [
@@ -6634,45 +6008,32 @@
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
     "ScreenPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenPointer",
-            "params": "",
-            "return": ""
-          },
-          "1": {
-            "name": "handle_camera_zoom_level",
-            "params": "",
-            "return": "",
-            "comment": ["May do more than this"]
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" }
+    ],
+    "ScreenLevelPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
       {
         "field": "buttons",
         "type": "Flags8",
-        "flags": {
-          "1": "Jump",
-          "2": "Attack",
-          "3": "Bomb",
-          "4": "Rope",
-          "5": "Run",
-          "6": "Use door/buy",
-          "7": "Pause",
-          "8": "Journal"
-        }
+        "ref": "button_screens"
+      }
+    ],
+    "ScreenStateCampPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
+      {
+        "field": "time_till_reset",
+        "type": "UnsignedByte",
+        "comment": "delay to reset camp after player death"
+      }
+    ],
+    "ScreenStateLevelPointer": [
+      { "field": "base_screen", "type": "ScreenBase" },
+      {
+        "field": "buttons",
+        "type": "Flags8",
+        "ref": "button_screens"
       },
-      { "field": "unknown2", "type": "UnsignedByte" },
-      { "field": "unknown3", "type": "UnsignedByte" },
-      { "field": "unknown4", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedWord" },
-      { "field": "unknown7", "type": "UnsignedWord" }
+      { "field": "time_till_death_screen", "type": "UnsignedByte" }
     ],
     "PlayerInputs": [
       { "field": "player_slot_1", "type": "PlayerSlot" },
@@ -6727,19 +6088,7 @@
       { "field": "down", "type": "Byte" }
     ],
     "ScreenArenaIntroPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenArenaIntroPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "players", "type": "TextureRenderingInfo" },
       { "field": "background_colors", "type": "TextureRenderingInfo" },
       { "field": "vertical_lines", "type": "TextureRenderingInfo" },
@@ -6750,6 +6099,7 @@
       { "field": "all_forced", "type": "TextureRenderingInfo" },
       { "field": "left_scroll", "type": "TextureRenderingInfo" },
       { "field": "right_scroll", "type": "TextureRenderingInfo" },
+      { "field": "unk1", "type": "TextureRenderingInfo" },
       { "field": "scroll_unfurl_timer", "type": "Float" },
       {
         "field": "waiting",
@@ -6776,27 +6126,24 @@
         "type": "UnsignedDword",
         "comment": "when 0, continues to gameplay"
       },
-      { "field": "unknown16", "type": "UnsignedDword" }
+      { "field": "unknown16", "type": "UnsignedDword" },
+      { "field": "unknown17", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown18", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown19", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown20", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown21", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown22", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown23", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown24", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown25", "type": "ParticleEmitterInfoPointer" }
     ],
     "ScreenTeamSelectPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenTeamSelectPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
-      { "field": "ana_carrying_torch", "type": "TextureRenderingInfo" },
+      { "field": "base_screen", "type": "ScreenBase" },
+      { "field": "player_portrait", "type": "TextureRenderingInfo" },
       { "field": "scroll_bottom_left", "type": "TextureRenderingInfo" },
       { "field": "scrollend_bottom_left", "type": "TextureRenderingInfo" },
       { "field": "four_ropes", "type": "TextureRenderingInfo" },
-      { "field": "all_forced", "type": "TextureRenderingInfo" },
+      { "field": "gems_above_the_ropes", "type": "TextureRenderingInfo" },
       {
         "field": "four_characters",
         "type": "TextureRenderingInfo",
@@ -6805,7 +6152,9 @@
       { "field": "left_arrow", "type": "TextureRenderingInfo" },
       { "field": "right_arrow", "type": "TextureRenderingInfo" },
       { "field": "start_panel", "type": "TextureRenderingInfo" },
-      { "field": "start_panel_slide_timer", "type": "Float" },
+      { "field": "go_back_wooden_panel", "type": "TextureRenderingInfo" },
+      { "field": "start_panel_slide", "type": "Float" },
+      { "field": "go_back_wooden_panel_slide", "type": "Float" },
       { "field": "pulsating_arrows_timer", "type": "Float" },
       { "field": "selected_player", "type": "UnsignedByte" },
       {
@@ -6824,24 +6173,31 @@
       },
       { "field": "ready", "type": "Bool" },
       { "field": "unknown4d", "type": "UnsignedByte" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" }
+      { "field": "unknown5", "type": "UnsignedDword" }
+    ],
+    "ScreenArenaScoreLavaBubble": [
+      { "field": "x", "type": "Float" },
+      { "field": "y", "type": "Float" },
+      { "field": "timer1", "type": "Word" },
+      { "field": "timer2", "type": "UnsignedByte" },
+      { "field": "unknown3", "type": "Bool" }
+    ],
+    "ScreenArenaScoreUnknown": [
+      { "field": "unknown1", "type": "TextureRenderingInfo", "comment": "seams to fix" },
+      { "field": "some_x?", "type": "Float" },
+      { "field": "some_y?", "type": "Float" },
+      { "field": "unknown4", "type": "Float" },
+      { "field": "unknown5", "type": "Float" },
+      { "field": "unknown6", "type": "Float" },
+      { "field": "unknown7", "type": "Float" },
+      { "field": "unknown8", "type": "Float", "comment": "when not in use set to float max" },
+      { "field": "unknown9", "type": "Float", "comment": "when not in use set to float max" },
+      { "field": "unknown10", "type": "Float" },
+      { "field": "unknown11", "type": "Float" },
+      { "field": "unknown12", "type": "Float" }
     ],
     "ScreenArenaScorePointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenArenaScorePointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown3a", "type": "UnsignedWord" },
       { "field": "unknown3b", "type": "UnsignedWord" },
       { "field": "woodpanel_slide_timer", "type": "Float" },
@@ -6881,7 +6237,7 @@
       { "field": "unknown25", "type": "TextureRenderingInfo" },
       { "field": "score_counter", "type": "TextureRenderingInfo" },
       { "field": "unknown27", "type": "TextureRenderingInfo" },
-      { "field": "lava_bubbles?", "type": "TextureRenderingInfo" },
+      { "field": "lava_bubbles", "type": "TextureRenderingInfo" },
       { "field": "player_1_won", "type": "Bool" },
       { "field": "player_2_won", "type": "Bool" },
       { "field": "player_3_won", "type": "Bool" },
@@ -6915,22 +6271,82 @@
       { "field": "player_2_create_giblets", "type": "Bool" },
       { "field": "player_3_create_giblets", "type": "Bool" },
       { "field": "player_4_create_giblets", "type": "Bool" },
-      { "field": "next_sidepanel_slidein_timer", "type": "Float" }
+      { "field": "next_sidepanel_slidein_timer", "type": "Float" },
+      { "field": "padding_probably", "type": "UnsignedDword" },
+      { "field": "unknown40", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown41", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown42", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown43x", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown44x", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown45", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown46", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown47", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown48", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown49", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown50", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown51", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown52", "type": "ParticleEmitterInfoPointer" },
+      { "field": "lava_bubble_pos1", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos2", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos3", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos4", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos5", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos6", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos7", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos8", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos9", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos10", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos11", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos12", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos13", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos14", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "lava_bubble_pos15", "type": "ScreenArenaScoreLavaBubble" },
+      { "field": "unknown68", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown69", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown70", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown71", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown72", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown73", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown74", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown75", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown76", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown77", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown78", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown79", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown80", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown81", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown82", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown83", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown84", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown85", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown86", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown87", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown88", "type": "ScreenArenaScoreUnknown" },
+      { "field": "unknown89", "type": "ScreenArenaScoreUnknown" },
+      { "field": "-", "type": "Skip", "offset": 6728 },
+      { "field": "padding?", "type": "UnsignedDword" },
+      { "field": "end?", "type": "UnsignedQword", "comment": "160 structs above, who know what for, also this is just allocator thing, not actual value" }
+    ],
+    "ScreenControls": [
+      { "field": "UP", "type": "Bool" },
+      { "field": "DOWN", "type": "Bool" },
+      { "field": "LEFT", "type": "Bool" },
+      { "field": "RIGHT", "type": "Bool" },
+      { "field": "direction_input", "type": "State32",
+        "states":
+        {
+        "-1": "None",
+        "0": "UP",
+        "1": "DOWN",
+        "2": "LEFT",
+        "3": "RIGHT"
+        }
+        },
+      { "field": "hold_timer", "type": "Dword", "comment": "delay before activating fast scroll" },
+      { "field": "fast_scroll_timer", "type": "Dword" }
     ],
     "ScreenArenaStagesSelectPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenArenaStagesSelectPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown3a", "type": "UnsignedWord" },
       { "field": "unknown3b", "type": "UnsignedWord" },
       { "field": "woodenpanel_top_slidein_timer", "type": "Float" },
@@ -6997,43 +6413,24 @@
       { "field": "players_turn_scroll_handle", "type": "TextureRenderingInfo" },
       { "field": "grid_player_icon", "type": "TextureRenderingInfo" },
       { "field": "unknown30", "type": "Float" },
-      { "field": "unknown31", "type": "Float" },
-      { "field": "unknown32", "type": "Float" },
-      { "field": "unknown33", "type": "UnsignedDword" },
-      { "field": "unknown34", "type": "UnsignedDword" },
-      { "field": "unknown35", "type": "UnsignedDword" },
-      { "field": "unknown36", "type": "UnsignedDword" },
-      { "field": "unknown37", "type": "UnsignedDword" },
-      { "field": "unknown38", "type": "UnsignedDword" },
-      { "field": "unknown39", "type": "UnsignedDword" },
-      { "field": "unknown40", "type": "UnsignedDword" },
-      { "field": "unknown41", "type": "UnsignedDword" },
-      { "field": "unknown42", "type": "UnsignedDword" },
-      { "field": "unknown43", "type": "UnsignedDword" },
-      { "field": "unknown44", "type": "UnsignedDword" },
-      { "field": "unknown45", "type": "UnsignedDword" },
-      { "field": "unknown46", "type": "UnsignedDword" },
+      { "field": "stages_to_gray_out", "type": "UnorderedMap" },
       { "field": "unknown47", "type": "UnsignedDword" },
       { "field": "unknown48", "type": "UnsignedDword" },
-      { "field": "unknown49", "type": "UnsignedDword" },
-      { "field": "unknown50", "type": "UnsignedDword" },
-      { "field": "unknown51", "type": "UnsignedDword" },
-      { "field": "selected_stage_index", "type": "UnsignedDword" }
+      { "field": "unknown49", "type": "UnsignedByte" },
+      { "field": "padding_probably1", "type": "UnsignedByte" },
+      { "field": "padding_probably2", "type": "UnsignedByte" },
+      { "field": "padding_probably3", "type": "UnsignedByte" },
+      { "field": "panels_slide_from_both_sides", "type": "Float" },
+      { "field": "visibility_all_stages", "type": "Float" },
+      { "field": "selected_stage_index", "type": "UnsignedDword" },
+      { "field": "controls", "type": "ScreenControls" },
+      { "field": "unknown57", "type": "UnsignedByte" },
+      { "field": "unknown58", "type": "UnsignedByte" },
+      { "field": "unknown59", "type": "UnsignedByte" }
+      
     ],
     "ScreenArenaLevelPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenArenaLevelPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown2", "type": "UnsignedDword" },
       { "field": "unknown3", "type": "UnsignedDword" },
       { "field": "get_ready", "type": "TextureRenderingInfo" },
@@ -7090,22 +6487,21 @@
       { "field": "unknown50", "type": "TextureRenderingInfo" },
       { "field": "unknown51", "type": "TextureRenderingInfo" },
       { "field": "unknown52", "type": "TextureRenderingInfo" },
-      { "field": "unknown53", "type": "TextureRenderingInfo" }
+      { "field": "unknown53", "type": "TextureRenderingInfo" },
+      { "field": "unknown54", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown55", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown56", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown57", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown58", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown59", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown60", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown61", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown62", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown63", "type": "ParticleEmitterInfoPointer" },
+      { "field": "unknown64", "type": "ParticleEmitterInfoPointer" }
     ],
     "ScreenTransitionPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenTransitionPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "Float" },
+      { "field": "base_screen", "type": "ScreenBase" },
       {
         "field": "woodpanel_pos",
         "type": "Float",
@@ -7138,7 +6534,7 @@
       { "field": "woodpanel_bottomcutout1", "type": "TextureRenderingInfo" },
       { "field": "woodpanel_bottomcutout2", "type": "TextureRenderingInfo" },
       { "field": "woodpanel_bottomcutout3", "type": "TextureRenderingInfo" },
-      { "field": "all_forced", "type": "TextureRenderingInfo" },
+      { "field": "scroll", "type": "TextureRenderingInfo" },
       { "field": "stats_scroll_top_bottom", "type": "TextureRenderingInfo" },
       { "field": "killcount_rounded_rect", "type": "TextureRenderingInfo" },
       { "field": "level_completed_panel", "type": "TextureRenderingInfo" },
@@ -7269,49 +6665,21 @@
       { "field": "this_level_money_color_green", "type": "Float" },
       { "field": "this_level_money_color_blue", "type": "Float" },
       { "field": "this_level_money_color_alpha", "type": "Float" },
-      { "field": "unknown41", "type": "UnsignedByte" },
-      { "field": "unknown42", "type": "UnsignedByte" },
-      { "field": "unknown43", "type": "UnsignedByte" },
-      { "field": "unknown44", "type": "UnsignedByte" },
+      { "field": "player1_buttons", "type": "UnsignedByte" },
+      { "field": "player2_buttons", "type": "UnsignedByte" },
+      { "field": "player3_buttons", "type": "UnsignedByte" },
+      { "field": "player4_buttons", "type": "UnsignedByte" },
       { "field": "unknown45", "type": "UnsignedDword" },
       { "field": "unknown46", "type": "UnsignedDword" },
-      { "field": "unknown47", "type": "UnsignedDword" },
-      { "field": "unknown48", "type": "UnsignedDword" },
-      { "field": "unknown49", "type": "UnsignedDword" }
+      { "field": "unknown47", "type": "UnsignedDword" }
     ],
     "ScreenRecapPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenRecapPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown3", "type": "UnsignedDword" },
-      { "field": "unknown4", "type": "UnsignedDword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "unknown4", "type": "UnsignedDword" }
     ],
     "ScreenConstellationPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenConstellationPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       {
         "field": "sequence_state",
         "type": "UnsignedWord",
@@ -7331,24 +6699,10 @@
       },
       { "field": "explosion_loop", "type": "SoundMeta" },
       { "field": "bg_music", "type": "SoundMeta" },
-      { "field": "unknown30", "type": "UnsignedQword" },
-      { "field": "unknown31", "type": "UnsignedDword" },
-      { "field": "unknown32", "type": "UnsignedDword" }
+      { "field": "unknown30", "type": "UnsignedQword" }
     ],
     "ScreenWinPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenWinPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       { "field": "unknown2", "type": "UnsignedQword" },
       { "field": "unknown3", "type": "UnsignedQword" },
       { "field": "unknown4", "type": "UnsignedQword" },
@@ -7361,51 +6715,23 @@
       { "field": "frame_timer", "type": "UnsignedWord" },
       { "field": "animation_state", "type": "UnsignedDword" },
       { "field": "rescuing_ship_entity", "type": "EntityPointer" },
-      { "field": "unknown8", "type": "UnsignedQword" },
-      { "field": "unknown9", "type": "UnsignedDword" },
-      { "field": "unknown10", "type": "UnsignedDword" }
+      { "field": "unknown8", "type": "UnsignedQword" }
     ],
     "ScreenCreditsPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenCreditsPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       {
         "field": "credits_progression",
         "type": "ScrollingCreditsProgressionPointer",
         "comment": "points to float timer that indicates how far in the scrolling credits we are"
       },
       { "field": "bg_music_info", "type": "SoundMeta" },
-      { "field": "unknown4", "type": "UnsignedQword" },
-      { "field": "unknown5", "type": "UnsignedDword" },
-      { "field": "unknown6", "type": "UnsignedDword" }
+      { "field": "unknown4", "type": "UnsignedQword" }
     ],
     "ScrollingCreditsProgressionPointer": [
       { "field": "timer", "type": "Float" }
     ],
     "ScreenScoresPointer": [
-      {
-        "field": "__vftable",
-        "type": "VirtualFunctionTable",
-        "functions": {
-          "0": {
-            "name": "~ScreenScoresPointer",
-            "params": "",
-            "return": ""
-          }
-        }
-      },
-      { "field": "render_timer", "type": "Float" },
-      { "field": "unknown1", "type": "UnsignedDword" },
+      { "field": "base_screen", "type": "ScreenBase" },
       {
         "field": "animation_state",
         "type": "UnsignedDword",
@@ -7425,9 +6751,7 @@
       { "field": "woodpanel_slidedown_timer", "type": "Float" },
       { "field": "unknown5", "type": "UnsignedDword" },
       { "field": "unknown6", "type": "UnsignedDword" },
-      { "field": "unknown7", "type": "UnsignedDword" },
-      { "field": "unknown8", "type": "UnsignedDword" },
-      { "field": "unknown9", "type": "UnsignedDword" }
+      { "field": "unknown7", "type": "UnsignedDword" }
     ],
     "TextureRenderingInfo": [
       { "field": "x", "type": "Float" },
@@ -7487,8 +6811,7 @@
       { "field": "padding2", "type": "UnsignedByte" },
       { "field": "padding3", "type": "UnsignedByte" },
       { "field": "padding4", "type": "Dword" },
-      { "field": "font", "type": "TextureDBPointer" },
-      { "field": "unknown13", "type": "Qword" }
+      { "field": "font", "type": "TextureDBPointer" }
     ],
     "SaveGame": [
       { "field": "places", "type": "SaveGamePlaces" },
@@ -9072,44 +8395,44 @@
           "1": {
             "name": "create_rendering_info",
             "params": "",
-            "return": "void"
+            "return": ""
           },
           "2": {
             "name": "handle_state_machine",
             "params": "",
-            "return": "void"
+            "return": ""
           },
           "3": {
             "name": "kill",
-            "params": "bool, Entity* frm",
-            "return": "void"
+            "params": "bool destroy_corpse, Entity* responsible",
+            "return": ""
           },
           "4": {
             "name": "on_collision1",
             "params": "Entity* other_entity",
-            "return": "void",
+            "return": "",
             "comment": "triggers on collision between whip and hit object"
           },
           "5": {
             "name": "destroy",
             "params": "",
-            "return": "void",
+            "return": "",
             "comment": ""
           },
           "6": {
             "name": "apply_texture",
             "params": "Texture*",
-            "return": "void"
+            "return": ""
           },
           "7": {
             "name": "format_shopitem_name",
             "params": "char16_t*",
-            "return": "void"
+            "return": ""
           },
           "8": {
             "name": "generate_stomp_damage_particles",
             "params": "Entity* victim",
-            "return": "void",
+            "return": "",
             "comment": "particles when jumping on top of enemy"
           },
           "9": {
@@ -9145,17 +8468,17 @@
             "params": "",
             "return": "uint32_t"
           },
-          "15": { "name": "set_invisible", "params": "bool", "return": "void" },
+          "15": { "name": "set_invisible", "params": "bool", "return": "" },
           "16": {
             "name": "handle_turning_left",
             "params": "bool apply",
-            "return": "void",
+            "return": "",
             "comment": "if disabled, monsters don't turn left and keep walking in the wall (and other right-left issues)"
           },
           "17": {
             "name": "set_draw_depth",
             "params": "uint8_t draw_depth",
-            "return": "void"
+            "return": ""
           },
           "18": {
             "name": "resume_ai",
@@ -9172,17 +8495,17 @@
           "21": {
             "name": "remove_item_ptr",
             "params": "Entity*",
-            "return": "void"
+            "return": ""
           },
           "22": {
             "name": "get_held_entity",
             "params": "Entity*",
-            "return": "void"
+            "return": ""
           },
           "23": {
             "name": "v23",
             "params": "Entity* logical_trigger, Entity* who_triggered_it",
-            "return": ""
+            "return": "spawns LASERTRAP_SHOT from LASERTRAP, also some trigger entities use this, seam to be called right after on_collision2, tiggers use self as the first parameter"
           },
           "24": {
             "name": "trigger_action",
@@ -9192,7 +8515,7 @@
           "25": {
             "name": "activate",
             "params": "Entity* activator",
-            "return": "void",
+            "return": "",
             "comment": "Activates a button prompt (with the Use door/Buy button), e.g. buy shop item, activate drill, read sign, interact in camp ..."
           },
           "26": {
@@ -9210,18 +8533,18 @@
           "28": {
             "name": "apply_metadata",
             "params": "uint16_t metadata",
-            "return": "void"
+            "return": ""
           },
           "29": {
             "name": "on_walked_on_by",
             "params": "Entity* walker",
-            "return": "void",
+            "return": "",
             "comment": "hits when monster/player walks on a floor, does something when walker.velocityy<-0.21 (falling onto) and walker.hitboxy * hitboxx > 0.09"
           },
           "30": {
             "name": "on_walked_off_by",
             "params": "Entity* walker",
-            "return": "void",
+            "return": "",
             "comment": "hits when monster/player walks off a floor, it checks whether the walker has floor as overlay, and if so, removes walker from floor's items by calling virtual 20 (remove_item_ptr)"
           },
           "31": {
@@ -9254,7 +8577,7 @@
             "return": "",
             "comment": "can also be seen as event: when you anger the shopkeeper, this function gets called for each item; can be called on shopitems individually as well and they become 'purchased'"
           },
-          "36": { "name": "apply_db", "params": "", "return": "void" }
+          "36": { "name": "apply_db", "params": "", "return": "" }
         }
       },
       { "field": "type", "type": "EntityDBPointer" },
@@ -9316,7 +8639,11 @@
             "return": "",
             "comment": "disable to allow unlimited multijump; checks jump flags"
           },
-          "38": { "name": "v38", "params": "", "return": "" },
+          "38": {
+            "name": "get_collision_info",
+            "params": "CollisionInfo* dest",
+            "return": ""
+          },
           "39": { "name": "sprint_factor", "params": "", "return": "float" },
           "40": {
             "name": "calculate_jump_height",
@@ -9331,7 +8658,7 @@
           },
           "42": {
             "name": "apply_velocity",
-            "params": "float* velocities",
+            "params": "float* velocities, bool",
             "return": "",
             "comment": "param is pointer to an array of two floats: velocity x and y"
           },
@@ -9363,13 +8690,12 @@
             "return": ""
           },
           "48": {
-            "name": "on_regular_damage",
-            "params": "Entity* damage_dealer, int8_t damage_amount, uint8_t unknown = 1",
-            "return": "",
-            "comment": "disable for regular damage invincibility; does not handle crush deaths (boulder, quillback, ghost); unknown param = 2 when hired hand gets hit by player"
+            "name": "on_damage",
+            "params": "Entity* damage_dealer, int8_t damage_amount, DAMAGE_TYPE damage_flags, Vec2* velocity, uint8_t unknown_damage_phase, uint16_t stun_amount, uint8_t iframes, bool unknown_is_final",
+            "return": "bool"
           },
           "49": {
-            "name": "on_stun_damage",
+            "name": "on_hit",
             "params": "Entity* damage_dealer",
             "return": "",
             "comment": "triggers for broken arrow hit, calls handle_regular_damage with 0 damage; unsure about functionality and name"
@@ -9483,8 +8809,8 @@
             "comment": "also used when throwing"
           },
           "70": {
-            "name": "add_money",
-            "params": "uint32_t money",
+            "name": "collect_treasure",
+            "params": "int32_t value, ENT_TYPE treasure",
             "return": ""
           },
           "71": {
@@ -9500,86 +8826,90 @@
             "comment": "can't trigger, maybe extra params are needed"
           },
           "73": {
+            "name": "v73",
+            "params": "",
+            "return": ""
+          },
+          "74": {
             "name": "is_monster_or_player",
             "params": "",
             "return": "bool"
           },
-          "74": {
+          "75": {
             "name": "initialize",
             "params": "",
             "return": "",
             "comment": "e.g. cobra: set random spit_timer; bat: set random stand_counter; emerald: set price"
           },
-          "75": {
+          "76": {
             "name": "check_is_falling",
             "params": "",
             "return": "",
             "comment": "sets more_flags.falling by comparing velocityy to 0"
           },
-          "76": {
+          "77": {
             "name": "handle_stun_transition_animation",
             "params": "",
             "return": "e.g. the wiggle the dog does when waking up from being stunned"
           },
-          "77": {
+          "78": {
             "name": "process_input",
             "params": "",
             "return": ""
           },
-          "78": {
+          "79": {
             "name": "post_collision_damage_related",
             "params": "",
             "return": "",
             "comment": "seems to start processing invincibility timer in victim, not *this"
           },
-          "79": {
+          "80": {
             "name": "picked_up",
             "params": "",
             "return": "",
             "comment": "gets called after picked_up_by"
           },
-          "80": {
+          "81": {
             "name": "hired_hand_related",
             "params": "",
             "return": "",
             "comment": "checks ai_func, gets triggered just after throwing hired hand"
           },
-          "81": {
+          "82": {
             "name": "generate_fall_poof_particles",
             "params": "",
             "return": "",
             "comment": "entity.velocityy must be < -0.12 to generate a poof, might to other stuff regarding falling/landing"
           },
-          "82": {
+          "83": {
             "name": "handle_fall_logic",
             "params": "",
             "return": "",
             "comment": "adjusts entity.velocityy when falling"
           },
-          "83": {
+          "84": {
             "name": "apply_friction",
             "params": "",
             "return": "",
             "comment": "applies entity.type.friction to entity.velocityx"
           },
-          "84": {
+          "85": {
             "name": "boss_related",
             "params": "",
             "return": "",
             "comment": "when disabled, quillback keeps stomping through the level, including border tiles"
           },
-          "85": {
+          "86": {
             "name": "tusk_last_owner_uid_related",
             "params": "",
             "return": "",
             "comment": "triggers when tusk is angered, calls get_last_owner_uid"
           },
-          "86": {
+          "87": {
             "name": "gravity_related",
             "params": "",
             "return": ""
           },
-          "87": { "name": "v87", "params": "", "return": "" },
           "88": { "name": "v88", "params": "", "return": "" },
           "89": {
             "name": "stack_plus_28_is_0",
@@ -9615,7 +8945,7 @@
       },
       { "field": "behaviors", "type": "StdSet", "keytype": "DataPointer" },
       { "field": "current_behavior", "type": "DataPointer" },
-      { "field": "ic8", "type": "UnknownAiStuff" },
+      { "field": "cutscene_logic", "type": "EntityLogicPointer", "comment": "seams to be the same structs used in state.logic ? or similar at least" },
       { "field": "movex", "type": "Float" },
       { "field": "movey", "type": "Float" },
       { "field": "buttons", "type": "Flags8", "ref": "buttons_entity" },
@@ -9806,7 +9136,7 @@
       { "field": "inventory", "type": "PlayerInventory" }
     ],
     "PlayerInventory": [
-      { "field": "money", "type": "UnsignedDword" },
+      { "field": "money", "type": "Dword" },
       { "field": "bombs", "type": "UnsignedByte" },
       { "field": "ropes", "type": "UnsignedByte" },
       {
@@ -9951,7 +9281,7 @@
         "type": "AquiredPowerups",
         "comment": "assigned during level transition, so they can be applied to the newly created player entity in the next level"
       },
-      { "field": "collected_money_total", "type": "UnsignedDword" }
+      { "field": "collected_money_total", "type": "Dword" }
     ],
     "AquiredPowerups": [
       { "field": "slot_1", "type": "EntityDBID" },
@@ -10075,11 +9405,11 @@
     ],
     "UnorderedMap": [
       { "field": "max_load_factor", "type": "Float" },
-      { "field": "unknown2", "type": "UnsignedDword" },
+      { "field": "-", "type": "Skip", "offset": 4 },
       {
         "field": "end",
-        "type": "DataPointer",
-        "comment": "value is address that represents a terminal for Nodes"
+        "type": "UnorderedMapEndBucketPointer",
+        "comment":  "can also be treated as std::list<std::pair<key, value>>*"
       },
       {
         "field": "size",
@@ -10087,58 +9417,73 @@
         "comment": "number of elements in the map"
       },
       {
-        "field": "first_bucket_ptr",
-        "type": "UnorderedMapBucketPointer",
-        "comment": "points to Bucket[]"
+        "field": "_Vec",
+        "type": "StdVector",
+        "vectortype": "UnorderedMapBucketIterator",
+        "comment": "iterators for buckets, if both are pointing to end, the bucket is empty"
       },
       {
-        "field": "end_of_buckets",
-        "type": "DataPointer",
-        "comment": "this is the address after the last bucket, not the last bucket"
-      },
-      {
-        "field": "unknown4",
-        "type": "DataPointer",
-        "comment": "this is always the same as end of buckets above under observation"
-      },
-      {
-        "field": "mask",
+        "field": "_Mask",
         "type": "UnsignedQword",
         "comment": "&'d with hashed key to find bucket"
       },
       {
-        "field": "bucket_size",
+        "field": "_Maxidx",
         "type": "UnsignedQword",
-        "comment": "number of buckets"
+        "comment": "current maximum key value, must be a power of 2, min 8"
       }
     ],
-    "UnorderedMapBucketPointer": [
-      // If the bucket is empty it'll point to UnorderedMap::end
+    "UnorderedMapBucketIterator": [
       {
         "field": "first",
-        "type": "UnorderedMapRecordPointer",
-        "comment": "Points to first element in linked list"
+        "type": "UnorderedMapBucketPointer",
+        "comment": "don't really know the exact reason behind those"
+      },
+      {
+        "field": "second",
+        "type": "UnorderedMapBucketPointer",
+        "comment": "don't really know the exact reason behind those"
+      }
+    ],
+    "UnorderedMapEndBucketPointer": [
+      {
+        "field": "first",
+        "type": "UnorderedMapBucketPointer"
       },
       {
         "field": "last",
-        "type": "UnorderedMapRecordPointer",
-        "comment": "Points to last element in linked list"
-      }
+        "type": "UnorderedMapBucketPointer"
+      },
+      { "field": "key/value", "type": "Qword", "comment": "even thou this memory is not used, it's still allocated as this is identical to normal bucket" }
     ],
-    "UnorderedMapRecordPointer": [
-      // next/prev point to things even when they're the only record in the bucket so you
-      // need to compare to the addresses from the Bucket to know if you're done iterating
-      // through the bucket. Following the linked list will traverse all buckets. If a Record
-      // is the first or last record in the entiry map the value will be UnorderedMap::end
+    "UnorderedMapBucketPointer": [
       {
         "field": "next",
-        "type": "DataPointer",
-        "comment": "Also an UnorderedMapRecordPointer but will infinite recurse; just view the memory"
+        "type": "UnorderedMapBucketPointer2"
       },
       {
         "field": "prev",
-        "type": "DataPointer",
-        "comment": "Also an UnorderedMapRecordPointer but will infinite recurse; just view the memory"
+        "type": "UnorderedMapBucketPointer2"
+      },
+      {
+        "field": "key",
+        "type": "UnsignedDword",
+        "comment": "Key from the map, obviously type dependent (UnsignedDword just for visualization purposes in plugin)"
+      },
+      {
+        "field": "value",
+        "type": "UnsignedDword",
+        "comment": "Value from the map, obviously type dependent (UnsignedDword just for visualization purposes in plugin)"
+      }
+    ],
+    "UnorderedMapBucketPointer2": [
+      {
+        "field": "next",
+        "type": "DataPointer"
+      },
+      {
+        "field": "prev",
+        "type": "DataPointer"
       },
       {
         "field": "key",
@@ -10457,9 +9802,7 @@
       { "field": "player_count", "type": "UnsignedByte" },
       { "field": "unknown9", "type": "UnsignedByte" },
       { "field": "unknown10", "type": "UnsignedByte" },
-      { "field": "unknown11", "type": "UnsignedDword" },
-      { "field": "unknown12", "type": "UnsignedDword" },
-      { "field": "unknown13", "type": "UnsignedDword" }
+      { "field": "unknown11", "type": "UnsignedDword" }
     ],
     "SelectPlayerSlot": [
       { "field": "activated", "type": "Bool" },
@@ -10505,24 +9848,19 @@
           "2": "Enable light2",
           "3": "Enable light3",
           "4": "Enable light4",
-          "5": "",
-          "6": "",
+          "5": "Unknown",
+          "6": "Unknown",
           "7": "Modulate brightness_multiplier",
-          "8": ""
+          "8": "Unknown"
         }
       },
       {
         "field": "type_flags",
-        "type": "Flags8",
-        "flags": {
+        "type": "State8",
+        "states": {
           "1": "Follow camera",
           "2": "Follow entity",
-          "3": "Static, Rectangle, Full brightness",
-          "4": "unused",
-          "5": "unused",
-          "6": "unused",
-          "7": "unused",
-          "8": "unused"
+          "4": "Static, Rectangle, Full brightness"
         },
         "comment": "only one can be chosen, Rectangle always uses light1, even when it's disabled in flags"
       },
@@ -11964,43 +11302,31 @@
       { "field": "unknown38", "type": "UnsignedDword" },
       { "field": "texture", "type": "TextureDBPointer" },
       { "field": "texture_name", "type": "ConstCharPointerPointer" },
-      { "field": "unknown39", "type": "UnsignedQword" },
-      { "field": "unknown40", "type": "UnsignedQword" },
-      { "field": "unknown41", "type": "UnsignedQword" },
-      { "field": "unknown42", "type": "UnsignedQword" },
-      { "field": "unknown43", "type": "UnsignedQword" },
-      { "field": "unknown44", "type": "UnsignedQword" },
-      {
-        "field": "render_as_non_liquid",
-        "type": "Bool",
-        "comment": "for liquids, forced to false, for non-liquids: sprite goes crazy when moving about"
-      },
-      { "field": "unknown47", "type": "UnsignedByte" },
-      { "field": "unknown48", "type": "UnsignedByte" },
-      { "field": "unknown49", "type": "UnsignedByte" },
-      { "field": "unknown50", "type": "UnsignedDword" },
+      { "field": "second_texture_name", "type": "ConstCharPointerPointer" },
+      { "field": "third_texture_name", "type": "ConstCharPointerPointer" },
+      { "field": "unknown41", "type": "ConstCharPointerPointer" },
+      { "field": "unknown42", "type": "ConstCharPointerPointer" },
+      { "field": "unknown43", "type": "ConstCharPointerPointer" },
+      { "field": "unknown44", "type": "ConstCharPointerPointer" },
+      { "field": "texture_num", "type": "UnsignedDword" },
+      { "field": "padding_probably1", "type": "UnsignedDword" },
       {
         "field": "entity_offset",
         "type": "UnsignedQword",
         "comment": "the offset of the associated entity in memory, starting from the memory segment that State resides in"
       },
       { "field": "flip_horizontal", "type": "Bool", "comment": "facing left" },
-      { "field": "unknown52", "type": "UnsignedByte" },
-      { "field": "unknown53", "type": "UnsignedByte" },
-      { "field": "unknown54", "type": "UnsignedByte" },
+      { "field": "padding_probably2", "type": "UnsignedByte" },
+      { "field": "padding_probably3", "type": "UnsignedByte" },
+      { "field": "padding_probably4", "type": "UnsignedByte" },
       { "field": "unknown55", "type": "UnsignedDword" },
       {
         "field": "darkness",
         "type": "Float",
         "comment": "0.0 = completely black ; 1.0 = normal (dark effect like when on fire)"
       },
-      { "field": "unknown56", "type": "UnsignedDword" },
-      { "field": "unknown57", "type": "UnsignedDword" },
-      {
-        "field": "unknown58",
-        "type": "UnsignedDword",
-        "comment": "end, next RenderInfo below"
-      }
+      { "field": "padding_probably5", "type": "UnsignedDword" },
+      { "field": "garbage?", "type": "UnsignedQword" }
     ],
     "YetiQueen": [
       {
@@ -12305,7 +11631,7 @@
       { "field": "applied_ver_velocity?", "type": "Float" },
       { "field": "birdhead_entity_uid", "type": "EntityUID" },
       { "field": "snakehead_entity_uid", "type": "EntityUID" },
-      { "field": "y_level", "type": "Float" },
+      { "field": "floor_level", "type": "Float" },
       {
         "field": "bounce_timer",
         "type": "UnsignedWord",
@@ -13469,7 +12795,7 @@
             "name": "enter",
             "params": "Entity*",
             "return": "uint8_t",
-            "comment": ""
+            "comment": "Returns the entity state / behavior id to set the entity to after the entering animation."
           },
           "43": {
             "name": "entered_from_front_layer",
@@ -13478,22 +12804,22 @@
             "comment": "checks layer of the Entity entering, except for FLOOR_DOOR_EGGSHIP_ROOM which gets the overlay (BG_EGGSHIP_ROOM) and returns BGEggshipRoom.player_in"
           },
           "44": {
-            "name": "v44",
+            "name": "light_level",
             "params": "",
             "return": "float",
-            "comment": "returns 0.0 except for eggship doors, for example: FLOOR_DOOR_EGGSHIP_ROOM returns 0.75 when entering the room, and 1.0 when exiting, runs every frame while entering/exiting"
+            "comment": "Returns the darkest light level used to fade the entity when entering or exiting. 0 = black, 1 = no change"
           },
           "45": {
             "name": "is_door_unlocked",
             "params": "",
             "return": "bool",
-            "comment": ""
+            "comment": "Should we display the button prompt when collided by player. Will always return `true` for exits, layers and others that the game never locks"
           },
           "46": {
-            "name": "v46",
+            "name": "can_enter",
             "params": "",
             "return": "bool",
-            "comment": "dunno, runs every frame when player overlays door"
+            "comment": "Can the door actually be entered by player. Overrides the button prompt too if false"
           }
         }
       },
@@ -15376,7 +14702,11 @@
         "comment": "Is subtracted from the color alpha every frame after the `stand_counter` is more than 300"
       }
     ],
-    "UnknownAiStuff": [{ "field": "__vftable", "type": "DataPointer" }],
+    "EntityLogicPointer": [
+      { "field": "__vftable", "type": "DataPointer" },
+      { "field": "unknown1", "type": "Qword" },
+      { "field": "unknown2", "type": "Qword" }
+    ],
     "StdString": [
       {
         "field": "data1",
@@ -15404,6 +14734,10 @@
       },
       { "field": "length", "type": "UnsignedQword" },
       { "field": "capacity", "type": "UnsignedQword" }
+    ],
+    "CrushingElevator": [
+      { "field": "y_limit", "type": "Float", "comment": "does don't actually exist, added for compatibility with OL API" },
+      { "field": "speed", "type": "Float", "comment": "does don't actually exist, added for compatibility with OL API" }
     ]
   }
 }
