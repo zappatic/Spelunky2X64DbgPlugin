@@ -59,7 +59,7 @@ jobs:
           cmake --build . --config Release --target ALL_BUILD
 
       - name: Pack build files
-        run: 7z a ..\spelunky2-x64dbg-plugin-autobuild.zip C:\spelunky2-x64dbg-plugin-autobuild\
+        run: 7z a -tzip spelunky2-x64dbg-plugin-autobuild.zip C:\spelunky2-x64dbg-plugin-autobuild\
 
       - name: Create release
         uses: marvinpinto/action-automatic-releases@v1.2.1
@@ -69,4 +69,4 @@ jobs:
           prerelease: false
           title: "Autobuild"
           files: |
-            spelunky2-x64dbg-plugin-autobuild.zip
+             spelunky2-x64dbg-plugin-autobuild.zip
