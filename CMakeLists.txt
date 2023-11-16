@@ -21,7 +21,7 @@ include(CPM.cmake)
 
 CPMAddPackage(
 	NAME x64dbg
-	SOURCE_DIR "${CMAKE_HOME_DIRECTORY}/x64dbg-src"
+	SOURCE_DIR "${CMAKE_HOME_DIRECTORY}/3rdParty/x64dbg-src"
 )
 
 set(Qt5Core_DIR "${Qt5ROOT}/lib/cmake/Qt5Core")
