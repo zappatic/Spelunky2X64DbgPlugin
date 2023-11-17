@@ -22,6 +22,11 @@ S2Plugin::ViewCharacterDB::ViewCharacterDB(ViewToolbar* toolbar, size_t index, Q
     showIndex(index);
 }
 
+S2Plugin::ViewCharacterDB::~ViewCharacterDB()
+{
+    delete mCharacterNameCompleter;
+}
+
 void S2Plugin::ViewCharacterDB::initializeUI()
 {
     mMainLayout = new QVBoxLayout(this);

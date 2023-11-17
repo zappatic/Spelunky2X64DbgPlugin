@@ -25,6 +25,8 @@ namespace S2Plugin
         ViewCharacterDB(ViewToolbar* toolbar, size_t index = 0, QWidget* parent = nullptr);
         void showIndex(size_t index);
 
+        ~ViewCharacterDB();
+
       protected:
         void closeEvent(QCloseEvent* event) override;
         QSize sizeHint() const override;
