@@ -54,7 +54,7 @@ namespace S2Plugin
         size_t mLookupIndex;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
-        QCompleter* mCharacterNameCompleter;
+        std::unique_ptr<QCompleter> mCharacterNameCompleter;
 
         // COMPARE
         QComboBox* mCompareFieldComboBox;

@@ -55,11 +55,11 @@ void S2Plugin::ViewCharacterDB::initializeUI()
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewCharacterDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mCharacterNameCompleter = new QCompleter(mToolbar->characterDB()->characterNamesStringList(), this);
+        mCharacterNameCompleter = std::make_unique<QCompleter>(mToolbar->characterDB()->characterNamesStringList(), this);
         mCharacterNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
         mCharacterNameCompleter->setFilterMode(Qt::MatchContains);
-        QObject::connect(mCharacterNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewCharacterDB::searchFieldCompleterActivated);
-        mSearchLineEdit->setCompleter(mCharacterNameCompleter);
+        QObject::connect(mCharacterNameCompleter.get(), static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewCharacterDB::searchFieldCompleterActivated);
+        mSearchLineEdit->setCompleter(mCharacterNameCompleter.get());
 
         auto labelButton = new QPushButton("Label", this);
         QObject::connect(labelButton, &QPushButton::clicked, this, &ViewCharacterDB::label);
