@@ -21,8 +21,7 @@ include(CPM.cmake)
 
 CPMAddPackage(
 	NAME x64dbg
-	GITHUB_REPOSITORY x64dbg/sdk
-	GIT_TAG x64dbg_9f9b1ba1c03ffb9dc921b3e1f8615412c65723f5
+	SOURCE_DIR "${CMAKE_HOME_DIRECTORY}/3rdParty/x64dbg-src"
 )
 
 set(Qt5Core_DIR "${Qt5ROOT}/lib/cmake/Qt5Core")
