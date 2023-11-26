@@ -9355,8 +9355,7 @@
       { "field": "ai_func", "type": "Ai_func" },
       { "field": "input_ptr", "type": "PlayerSlotPointer" },
       { "field": "basecamp_button", "type": "EntityPointer" },
-      { "field": "i168", "type": "Dword" },
-      { "field": "i16c", "type": "Dword" },
+      { "field": "special_sound", "type": "SoundMeta", "comment": "For Lise System walking and looking up sounds" },
       { "field": "y_pos?", "type": "Float" },
       {
         "field": "jump_lock_timer",

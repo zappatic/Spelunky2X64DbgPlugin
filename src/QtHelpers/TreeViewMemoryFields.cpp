@@ -1589,23 +1589,34 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             }
             break;
         }
+        case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::UndeterminedThemeInfoPointer:
         {
-            if (memoryOffset == 0)
+            size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
+            QString newHexValue;
+            if (value == 0)
             {
-                itemValue->setData("NO THEME", Qt::DisplayRole);
+                itemValue->setData("n/a", Qt::DisplayRole);
+                newHexValue = "<font color='#aaa'>nullptr</font>";
             }
             else
             {
                 size_t themeInfoPointer = Script::Memory::ReadQword(memoryOffset);
                 itemValue->setData(QString::fromStdString(mToolbar->levelGen()->themeNameOfOffset(themeInfoPointer)), Qt::DisplayRole);
+                newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
             }
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(0, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
 
+            if (field.type == MemoryFieldType::UndeterminedThemeInfoPointer)
+            {
             for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
             {
                 updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField);
             }
-
+            }
             // no comparison in Entity
             break;
         }
@@ -1619,27 +1630,6 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::JournalPagePointer:
         {
             itemValue->setData("<font color='blue'><u>Show journal page</u></font>", Qt::DisplayRole);
-            // no comparison in Entity
-            break;
-        }
-        case MemoryFieldType::ThemeInfoName:
-        {
-            if (memoryOffset == 0)
-            {
-                itemValue->setData("n/a", Qt::DisplayRole);
-            }
-            else
-            {
-                size_t themeInfoPointer = Script::Memory::ReadQword(memoryOffset);
-                if (themeInfoPointer == 0)
-                {
-                    itemValue->setData("n/a", Qt::DisplayRole);
-                }
-                else
-                {
-                    itemValue->setData(QString::fromStdString(mToolbar->levelGen()->themeNameOfOffset(themeInfoPointer)), Qt::DisplayRole);
-                }
-            }
             // no comparison in Entity
             break;
         }
@@ -1794,9 +1784,15 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::ConstCharPointer:
                 case MemoryFieldType::DataPointer:
                 case MemoryFieldType::PointerType:
+                case MemoryFieldType::UndeterminedThemeInfoPointer:
+                case MemoryFieldType::ThemeInfoName:
+                {
+                    auto addr = clickedItem->data(gsRoleRawValue).toULongLong();
+                    if (addr != 0)
                 {
                     GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
                     GuiShowCpu();
+                    }
                     break;
                 }
                 case MemoryFieldType::EntityPointer:
