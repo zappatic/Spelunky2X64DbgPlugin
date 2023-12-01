@@ -7,8 +7,9 @@ S2Plugin::StringsTable::StringsTable(Configuration* config) : mConfiguration(con
 
 bool S2Plugin::StringsTable::loadStringsTable()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;

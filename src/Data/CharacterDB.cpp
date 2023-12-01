@@ -8,7 +8,9 @@ S2Plugin::CharacterDB::CharacterDB(Configuration* config) : MemoryMappedData(con
 
 bool S2Plugin::CharacterDB::loadCharacters(StringsTable* stringsTable)
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;
@@ -17,7 +19,6 @@ bool S2Plugin::CharacterDB::loadCharacters(StringsTable* stringsTable)
     {
         return true;
     }
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
 
     mMemoryOffsets.clear();
     mCharacterNames.clear();

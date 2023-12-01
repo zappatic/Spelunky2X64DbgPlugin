@@ -188,7 +188,7 @@ set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT $
 # Copy the plugin to the x64dbg plugins folder
 add_custom_command(	TARGET ${PROJECT_NAME} 
 					POST_BUILD
-					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_BINARY_DIR}/Release/Spelunky2.dp64" ${X64DBG_PLUGINS_ROOT})
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_BINARY_DIR}/Spelunky2.dp64" ${X64DBG_PLUGINS_ROOT})
 
 # Copy Spelunky2.json to the x64dbg plugins folder
 add_custom_target(deploy-auxfiles)

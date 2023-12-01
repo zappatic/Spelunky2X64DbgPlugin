@@ -97,7 +97,6 @@ void S2Plugin::ViewEntities::refreshEntities()
     mMainTreeView->clear();
     std::unordered_map<std::string, size_t> offsets;
 
-    const auto spel2 = mToolbar->configuration()->spelunky2();
     const static auto entity_db = mToolbar->entityDB();
     bool isUIDlookupSuccess = false;
     uint enteredUID;
@@ -110,7 +109,7 @@ void S2Plugin::ViewEntities::refreshEntities()
     {
         auto entity = Script::Memory::ReadQword(entity_ptr);
         auto entityUid = Script::Memory::ReadDword(entity + 0x38);
-        QString entityName = QString::fromStdString(spel2->getEntityName(entity, entity_db));
+        QString entityName = QString::fromStdString(Spelunky2::get()->getEntityName(entity, entity_db));
 
         if (!isUIDlookupSuccess && !mFilterLineEdit->text().isEmpty())
         {

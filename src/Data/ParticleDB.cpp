@@ -8,7 +8,9 @@ S2Plugin::ParticleDB::ParticleDB(Configuration* config) : MemoryMappedData(confi
 
 bool S2Plugin::ParticleDB::loadParticleDB()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;
@@ -17,9 +19,8 @@ bool S2Plugin::ParticleDB::loadParticleDB()
     {
         return true;
     }
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
 
-    mParticleEmittersList = std::make_unique<ParticleEmittersList>(mConfiguration->spelunky2());
+    mParticleEmittersList = std::make_unique<ParticleEmittersList>(spel2);
 
     mMemoryOffsets.clear();
 

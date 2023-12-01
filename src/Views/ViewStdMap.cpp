@@ -119,7 +119,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
     }
     else if (config->isBuiltInType(mMapKeyType))
     {
-        key_field.type = gsJSONStringToMemoryFieldTypeMapping.at(mMapKeyType);
+        key_field.type = gsMemoryFieldType.find(mMapKeyType)->first;
         // check for the line below
         // add_parrent_object = true;
     }
@@ -145,7 +145,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
         }
         else if (config->isBuiltInType(mMapValueType))
         {
-            value_field.type = gsJSONStringToMemoryFieldTypeMapping.at(mMapValueType);
+            value_field.type = gsMemoryFieldType.find(mMapValueType)->first;
         }
         else
         {

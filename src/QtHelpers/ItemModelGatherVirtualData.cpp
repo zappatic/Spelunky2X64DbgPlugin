@@ -112,7 +112,7 @@ QVariant S2Plugin::ItemModelGatherVirtualData::headerData(int section, Qt::Orien
 void S2Plugin::ItemModelGatherVirtualData::gatherEntities()
 {
     auto state = mToolbar->state();
-    auto spel2 = mToolbar->configuration()->spelunky2();
+    auto spel2 = Spelunky2::get();
     auto entityDB = mToolbar->entityDB();
     auto vtl = mToolbar->virtualTableLookup();
 
@@ -457,15 +457,15 @@ void S2Plugin::ItemModelGatherVirtualData::parseJSON()
         }
         catch (const ordered_json::exception& e)
         {
-            mToolbar->configuration()->spelunky2()->displayError(("Exception while parsing Spelunky2VirtualTableData.json: " + std::string(e.what())).c_str());
+            displayError(("Exception while parsing Spelunky2VirtualTableData.json: " + std::string(e.what())).c_str());
         }
         catch (const std::exception& e)
         {
-            mToolbar->configuration()->spelunky2()->displayError(("Exception while parsing Spelunky2VirtualTableData.json: " + std::string(e.what())).c_str());
+            displayError(("Exception while parsing Spelunky2VirtualTableData.json: " + std::string(e.what())).c_str());
         }
         catch (...)
         {
-            mToolbar->configuration()->spelunky2()->displayError("Unknown exception while parsing Spelunky2VirtualTableData.json");
+            displayError("Unknown exception while parsing Spelunky2VirtualTableData.json");
         }
 
         std::sort(mEntries.begin(), mEntries.end(), [](const GatheredDataEntry& a, const GatheredDataEntry& b) { return a.id < b.id; });

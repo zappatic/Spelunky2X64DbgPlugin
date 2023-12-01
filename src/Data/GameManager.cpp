@@ -7,8 +7,9 @@ S2Plugin::GameManager::GameManager(Configuration* config) : MemoryMappedData(con
 
 bool S2Plugin::GameManager::loadGameManager()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;

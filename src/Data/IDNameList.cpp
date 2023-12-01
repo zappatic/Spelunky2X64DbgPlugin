@@ -1,4 +1,5 @@
 #include "Data/IDNameList.h"
+#include "Configuration.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QDir>
@@ -14,7 +15,7 @@ S2Plugin::IDNameList::IDNameList(Spelunky2* spel2, const std::string& relFilePat
     auto pathQStr = QFileInfo(QString(buffer)).dir().filePath(QString::fromStdString(relFilePath));
     if (!QFile(pathQStr).exists())
     {
-        spel2->displayError((relFilePath + " not found").c_str());
+        displayError((relFilePath + " not found").c_str());
         return;
     }
 

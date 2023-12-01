@@ -135,7 +135,7 @@ size_t S2Plugin::MemoryMappedData::sizeOf(const std::string& typeName)
     else if (mConfiguration->isBuiltInType(typeName))
     {
         MemoryField tmp;
-        tmp.type = gsJSONStringToMemoryFieldTypeMapping.at(typeName);
+        tmp.type = gsMemoryFieldType.find(typeName)->first;
         std::unordered_map<std::string, size_t> offsetsDummy;
         return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
     }

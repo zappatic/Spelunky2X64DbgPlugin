@@ -32,7 +32,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     mMainLayout->setMargin(5);
     setLayout(mMainLayout);
 
-    setWindowTitle(QString::asprintf("Entity %s 0x%016llX", mToolbar->configuration()->spelunky2()->getEntityName(entityOffset, toolbar->entityDB()).c_str(), entityOffset));
+    setWindowTitle(QString::asprintf("Entity %s 0x%016llX", Spelunky2::get()->getEntityName(entityOffset, toolbar->entityDB()).c_str(), entityOffset));
     mMainTreeView->setVisible(true);
 
     mEntity->refreshOffsets();

@@ -89,7 +89,7 @@ QVariant S2Plugin::ItemModelVirtualTable::headerData(int section, Qt::Orientatio
 void S2Plugin::ItemModelVirtualTable::detectEntities(ViewToolbar* toolbar)
 {
     auto state = toolbar->state();
-    auto spel2 = toolbar->configuration()->spelunky2();
+    auto spel2 = Spelunky2::get();
     auto entityDB = toolbar->entityDB();
     auto vtl = toolbar->virtualTableLookup();
 

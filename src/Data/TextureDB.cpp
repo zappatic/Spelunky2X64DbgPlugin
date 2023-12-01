@@ -7,7 +7,9 @@ S2Plugin::TextureDB::TextureDB(Configuration* config) : MemoryMappedData(config)
 
 bool S2Plugin::TextureDB::loadTextureDB()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;
@@ -21,7 +23,7 @@ bool S2Plugin::TextureDB::loadTextureDB()
     mTextureNames.clear();
     mTextureNamesStringList.clear();
 
-    auto instructionPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "4C 89 C6 41 89 CF 8B 1D");
+    auto instructionPtr = Script::Pattern::FindMem(afterBundle, afterBundleSize, "4C 89 C6 41 89 CF 8B 1D");
     auto textureStartAddress = instructionPtr + 12 + (duint)Script::Memory::ReadDword(instructionPtr + 8);
     auto textureCount = Script::Memory::ReadQword(textureStartAddress);
     mTextureDBPtr = textureStartAddress + 0x8;

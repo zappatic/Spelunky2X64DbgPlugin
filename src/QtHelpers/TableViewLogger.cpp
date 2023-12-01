@@ -2,7 +2,7 @@
 #include "Data/Logger.h"
 #include "QtHelpers/ItemModelLoggerFields.h"
 #include "QtHelpers/StyledItemDelegateColorPicker.h"
-#include "Spelunky2.h"
+#include "Configuration.h"
 #include "pluginmain.h"
 #include <QColorDialog>
 #include <QFont>

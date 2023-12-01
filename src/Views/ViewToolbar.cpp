@@ -12,6 +12,7 @@
 #include "Data/TextureDB.h"
 #include "Data/VirtualTableLookup.h"
 #include "Spelunky2.h"
+#include "Configuration.h"
 #include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
@@ -144,7 +145,7 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
 
 S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
 {
-    if (mEntityDB->loadEntityDB())
+    if (Spelunky2::is_loaded() && mEntityDB->loadEntityDB())
     {
         auto w = new ViewEntityDB(this);
         mMDIArea->addSubWindow(w);
@@ -156,7 +157,7 @@ S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
 
 S2Plugin::ViewParticleDB* S2Plugin::ViewToolbar::showParticleDB()
 {
-    if (mParticleDB->loadParticleDB())
+    if (Spelunky2::is_loaded() && mParticleDB->loadParticleDB())
     {
         auto w = new ViewParticleDB(this);
         mMDIArea->addSubWindow(w);
@@ -168,7 +169,7 @@ S2Plugin::ViewParticleDB* S2Plugin::ViewToolbar::showParticleDB()
 
 S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
 {
-    if (mTextureDB->loadTextureDB())
+    if (Spelunky2::is_loaded() && mTextureDB->loadTextureDB())
     {
         auto w = new ViewTextureDB(this);
         mMDIArea->addSubWindow(w);
@@ -180,7 +181,7 @@ S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
 
 S2Plugin::ViewCharacterDB* S2Plugin::ViewToolbar::showCharacterDB()
 {
-    if (mStringsTable->loadStringsTable() && mCharacterDB->loadCharacters(stringsTable()))
+    if (Spelunky2::is_loaded() && mStringsTable->loadStringsTable() && mCharacterDB->loadCharacters(stringsTable()))
     {
         auto w = new ViewCharacterDB(this);
         mMDIArea->addSubWindow(w);
@@ -197,7 +198,7 @@ void S2Plugin::ViewToolbar::showMainThreadState()
 
 void S2Plugin::ViewToolbar::showState(State* state)
 {
-    if (mState->loadState())
+    if (Spelunky2::is_loaded() && mState->loadState())
     {
         auto w = new ViewState(this, state);
         mMDIArea->addSubWindow(w);
@@ -207,7 +208,7 @@ void S2Plugin::ViewToolbar::showState(State* state)
 
 void S2Plugin::ViewToolbar::showGameManager()
 {
-    if (mGameManager->loadGameManager())
+    if (Spelunky2::is_loaded() && mGameManager->loadGameManager())
     {
         auto w = new ViewGameManager(this);
         mMDIArea->addSubWindow(w);
@@ -217,7 +218,7 @@ void S2Plugin::ViewToolbar::showGameManager()
 
 void S2Plugin::ViewToolbar::showLevelGen()
 {
-    if (mState->loadState() && mLevelGen->loadLevelGen())
+    if (Spelunky2::is_loaded() && mState->loadState() && mLevelGen->loadLevelGen())
     {
         auto w = new ViewLevelGen(this);
         mMDIArea->addSubWindow(w);
@@ -227,7 +228,7 @@ void S2Plugin::ViewToolbar::showLevelGen()
 
 S2Plugin::ViewVirtualTable* S2Plugin::ViewToolbar::showVirtualTableLookup()
 {
-    if (mVirtualTableLookup->loadTable())
+    if (Spelunky2::is_loaded() && mVirtualTableLookup->loadTable())
     {
         auto w = new ViewVirtualTable(this);
         mMDIArea->addSubWindow(w);
@@ -239,7 +240,7 @@ S2Plugin::ViewVirtualTable* S2Plugin::ViewToolbar::showVirtualTableLookup()
 
 void S2Plugin::ViewToolbar::showStringsTable()
 {
-    if (mStringsTable->loadStringsTable())
+    if (Spelunky2::is_loaded() && mStringsTable->loadStringsTable())
     {
         auto w = new ViewStringsTable(this);
         mMDIArea->addSubWindow(w);
@@ -249,7 +250,7 @@ void S2Plugin::ViewToolbar::showStringsTable()
 
 void S2Plugin::ViewToolbar::showOnline()
 {
-    if (mOnline->loadOnline())
+    if (Spelunky2::is_loaded() && mOnline->loadOnline())
     {
         auto w = new ViewOnline(this);
         mMDIArea->addSubWindow(w);
@@ -266,7 +267,7 @@ void S2Plugin::ViewToolbar::showEntity(size_t offset)
 
 void S2Plugin::ViewToolbar::showEntities()
 {
-    if (mEntityDB->loadEntityDB())
+    if (Spelunky2::is_loaded() && mEntityDB->loadEntityDB())
     {
         auto w = new ViewEntities(this);
         mMDIArea->addSubWindow(w);
@@ -276,7 +277,7 @@ void S2Plugin::ViewToolbar::showEntities()
 
 void S2Plugin::ViewToolbar::showSaveGame()
 {
-    if (mSaveGame->loadSaveGame())
+    if (Spelunky2::is_loaded() && mSaveGame->loadSaveGame())
     {
         auto w = new ViewSaveGame(this);
         mMDIArea->addSubWindow(w);
@@ -429,7 +430,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
     mConfiguration->load();
     if (!mConfiguration->isValid())
     {
-        mConfiguration->spelunky2()->displayError(mConfiguration->lastError().c_str());
+        displayError(mConfiguration->lastError().c_str());
     }
     mState->reset();
     mGameManager->reset();
@@ -456,5 +457,5 @@ void S2Plugin::ViewToolbar::resetSpelunky2Data()
     mStringsTable->reset();
     mCharacterDB->reset();
     mOnline->reset();
-    mConfiguration->spelunky2()->reset();
+    Spelunky2::reset();
 }

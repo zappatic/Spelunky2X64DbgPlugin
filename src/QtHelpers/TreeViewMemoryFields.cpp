@@ -116,9 +116,9 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         {
             itemFieldType->setData(QString::fromStdString(field.jsonName), Qt::DisplayRole);
         }
-        else if (gsMemoryFieldTypeToStringMapping.count(field.type) > 0)
+        else if (auto it = gsMemoryFieldType.find(field.type); it != gsMemoryFieldType.end())
         {
-            itemFieldType->setData(QString::fromStdString(gsMemoryFieldTypeToStringMapping.at(field.type)), Qt::DisplayRole);
+            itemFieldType->setData(QString::fromUtf8(it->second.display_name.data(), it->second.display_name.size()), Qt::DisplayRole);
         }
         else
         {
@@ -1193,7 +1193,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 auto entityOffset = Entity::findEntityByUID(value, mToolbar->state());
                 if (entityOffset != 0)
                 {
-                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(entityOffset, mToolbar->entityDB());
+                    auto entityName = Spelunky2::get()->getEntityName(entityOffset, mToolbar->entityDB());
                     itemValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", value, entityName.c_str()), Qt::DisplayRole);
                 }
                 else
@@ -1217,7 +1217,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 auto comparisonEntityOffset = Entity::findEntityByUID(comparisonValue, mToolbar->state());
                 if (comparisonEntityOffset != 0)
                 {
-                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(comparisonEntityOffset, mToolbar->entityDB());
+                    auto entityName = Spelunky2::get()->getEntityName(comparisonEntityOffset, mToolbar->entityDB());
                     itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", comparisonValue, entityName.c_str()), Qt::DisplayRole);
                 }
                 else
@@ -1244,7 +1244,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 auto entityOffset = Entity::findEntityByUID(value, mToolbar->state());
                 if (entityOffset != 0)
                 {
-                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(entityOffset, mToolbar->entityDB());
+                    auto entityName = Spelunky2::get()->getEntityName(entityOffset, mToolbar->entityDB());
                     itemValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", value, entityName.c_str()), Qt::DisplayRole);
                 }
                 else
@@ -1268,7 +1268,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 auto comparisonEntityOffset = Entity::findEntityByUID(comparisonValue, mToolbar->state());
                 if (comparisonEntityOffset != 0)
                 {
-                    auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(comparisonEntityOffset, mToolbar->entityDB());
+                    auto entityName = Spelunky2::get()->getEntityName(comparisonEntityOffset, mToolbar->entityDB());
                     itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>UID %lu (%s)</u></font>", comparisonValue, entityName.c_str()), Qt::DisplayRole);
                 }
                 else
@@ -1286,7 +1286,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::EntityPointer:
         {
             size_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
-            auto entityName = mToolbar->configuration()->spelunky2()->getEntityName(value, mToolbar->entityDB());
+            auto entityName = Spelunky2::get()->getEntityName(value, mToolbar->entityDB());
             itemValue->setData(QString::asprintf("<font color='blue'><u>%s</u></font>", entityName.c_str()), Qt::DisplayRole);
             auto newHexValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
@@ -1295,7 +1295,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             size_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadQword(comparisonMemoryOffset));
-            auto comparisonEntityName = mToolbar->configuration()->spelunky2()->getEntityName(comparisonValue, mToolbar->entityDB());
+            auto comparisonEntityName = Spelunky2::get()->getEntityName(comparisonValue, mToolbar->entityDB());
             itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>%s</u></font>", comparisonEntityName.c_str()), Qt::DisplayRole);
             auto hexComparisonValue = QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", comparisonValue);
             itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
@@ -1612,10 +1612,10 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (field.type == MemoryFieldType::UndeterminedThemeInfoPointer)
             {
-            for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
-            {
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField);
-            }
+                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
+                {
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField);
+                }
             }
             // no comparison in Entity
             break;
@@ -1789,9 +1789,9 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 {
                     auto addr = clickedItem->data(gsRoleRawValue).toULongLong();
                     if (addr != 0)
-                {
-                    GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
-                    GuiShowCpu();
+                    {
+                        GuiDumpAt(clickedItem->data(gsRoleRawValue).toULongLong());
+                        GuiShowCpu();
                     }
                     break;
                 }

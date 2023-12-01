@@ -104,7 +104,7 @@ void S2Plugin::ViewStdVector::refreshVectorContents()
         }
         else if (config->isBuiltInType(mVectorType))
         {
-            field.type = gsJSONStringToMemoryFieldTypeMapping.at(mVectorType);
+            field.type = gsMemoryFieldType.find(mVectorType)->first;
         }
         else
         {

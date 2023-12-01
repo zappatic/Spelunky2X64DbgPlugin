@@ -21,8 +21,9 @@ bool S2Plugin::VirtualTableLookup::loadTable()
     mOffsetToTableEntries.reserve(gsAmountOfPointers);
 
     // From 1.23.2 on, the base isn't on D3Dcompile any more, so just look up the first pointer by pattern
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;

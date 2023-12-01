@@ -2,6 +2,7 @@
 #include "Configuration.h"
 #include "Data/State.h"
 #include "Spelunky2.h"
+#include "Configuration.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>
@@ -19,9 +20,7 @@ S2Plugin::LevelGen::LevelGen(Configuration* config, State* state) : MemoryMapped
 
 bool S2Plugin::LevelGen::loadLevelGen()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
-    if (afterBundle == 0 || mState == nullptr)
+    if (!Spelunky2::is_loaded() || mState == nullptr)
     {
         return false;
     }
@@ -166,7 +165,7 @@ void S2Plugin::LevelGen::processJSON()
     auto pathQStr = QFileInfo(QString(buffer)).dir().filePath(QString::fromStdString("plugins/Spelunky2RoomCodes.json"));
     if (!QFile(pathQStr).exists())
     {
-        mConfiguration->spelunky2()->displayError("Spelunky2RoomCodes.json not found");
+        displayError("Spelunky2RoomCodes.json not found");
         return;
     }
 
@@ -202,15 +201,15 @@ void S2Plugin::LevelGen::processJSON()
     }
     catch (const ordered_json::exception& e)
     {
-        mConfiguration->spelunky2()->displayError(("Exception while parsing Spelunky2RoomCodes.json: " + std::string(e.what())).c_str());
+        displayError(("Exception while parsing Spelunky2RoomCodes.json: " + std::string(e.what())).c_str());
     }
     catch (const std::exception& e)
     {
-        mConfiguration->spelunky2()->displayError(("Exception while parsing Spelunky2RoomCodes.json: " + std::string(e.what())).c_str());
+        displayError(("Exception while parsing Spelunky2RoomCodes.json: " + std::string(e.what())).c_str());
     }
     catch (...)
     {
-        mConfiguration->spelunky2()->displayError("Unknown exception while parsing Spelunky2RoomCodes.json");
+        displayError("Unknown exception while parsing Spelunky2RoomCodes.json");
     }
 }
 

@@ -14,8 +14,8 @@
 S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB, S2Plugin::Configuration* config)
     : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView), mComparisonMemoryView(comparisonMemoryView)
 {
-    auto entityID = config->spelunky2()->getEntityTypeID(offset);
-    mEntityName = config->spelunky2()->getEntityName(offset, entityDB);
+    auto entityID = Spelunky2::get()->getEntityTypeID(offset);
+    mEntityName = Spelunky2::get()->getEntityName(offset, entityDB);
     for (const auto& [regexStr, entityClassType] : mConfiguration->defaultEntityClassTypes())
     {
         auto r = std::regex(regexStr);

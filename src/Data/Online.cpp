@@ -9,8 +9,9 @@ S2Plugin::Online::Online(Configuration* config) : MemoryMappedData(config) {}
 
 bool S2Plugin::Online::loadOnline()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
-    auto afterBundleSize = mConfiguration->spelunky2()->spelunky2AfterBundleSize();
+    auto spel2 = Spelunky2::get();
+    auto afterBundle = spel2->afterBundle;
+    auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;

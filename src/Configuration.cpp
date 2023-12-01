@@ -3,6 +3,8 @@
 #include "pluginmain.h"
 #include <QDir>
 #include <QFileInfo>
+#include <QIcon>
+#include <QMessageBox>
 #include <QString>
 #include <fstream>
 #include <nlohmann/json.hpp>
@@ -10,10 +12,79 @@
 
 using nlohmann::ordered_json;
 
+namespace S2Plugin
+{
+    const MemoryFieldData gsMemoryFieldType = {
+        // MemoryFieldEnum, Name for desplay, c++ type name, name in json
+        {MemoryFieldType::CodePointer, "Code pointer", "size_t*", "CodePointer"},
+        {MemoryFieldType::DataPointer, "Data pointer", "size_t*", "DataPointer"},
+        {MemoryFieldType::Byte, "8-bit", "int8_t", "Byte"},
+        {MemoryFieldType::UnsignedByte, "8-bit unsigned", "uint8_t", "UnsignedByte"},
+        {MemoryFieldType::Word, "16-bit", "int16_t", "Word"},
+        {MemoryFieldType::UnsignedWord, "16-bit unsigned", "uint16_t", "UnsignedWord"},
+        {MemoryFieldType::Dword, "32-bit", "int32_t", "Dword"},
+        {MemoryFieldType::UnsignedDword, "32-bit unsigned", "uint32_t", "UnsignedDword"},
+        {MemoryFieldType::Qword, "64-bit", "int64_t", "Qword"},
+        {MemoryFieldType::UnsignedQword, "64-bit unsigned", "uint64_t", "UnsignedQword"},
+        {MemoryFieldType::Float, "Float", "float", "Float"},
+        {MemoryFieldType::Bool, "Bool", "bool", "Bool"},
+        {MemoryFieldType::Flag, "Flag", "", ""},
+        {MemoryFieldType::Flags32, "32-bit flags", "uint32_t", "Flags32"},
+        {MemoryFieldType::Flags16, "16-bit flags", "uint16_t", "Flags16"},
+        {MemoryFieldType::Flags8, "8-bit flags", "uint8_t", "Flags8"},
+        {MemoryFieldType::State8, "8-bit state", "int8_t", "State8"},
+        {MemoryFieldType::State16, "16-bit state", "int16_t", "State16"},
+        {MemoryFieldType::State32, "32-bit state", "int32_t", "State32"},
+        {MemoryFieldType::Skip, "skip", "uint8_t", "Skip"},
+        {MemoryFieldType::GameManager, "GameManager", "", "GameManager"},
+        {MemoryFieldType::State, "State", "", "State"},
+        {MemoryFieldType::SaveGame, "SaveGame", "", "SaveGame"},
+        {MemoryFieldType::LevelGen, "LevelGen", "", "LevelGen"},
+        {MemoryFieldType::EntityDB, "EntityDB", "", "EntityDB"},
+        {MemoryFieldType::EntityPointer, "Entity pointer", "Entity*", "EntityPointer"},
+        {MemoryFieldType::EntityUIDPointer, "Entity UID pointer", "uint32_t*", "EntityUIDPointer"},
+        {MemoryFieldType::EntityDBPointer, "EntityDB pointer", "EntityDB*", "EntityDBPointer"},
+        {MemoryFieldType::EntityDBID, "EntityDB ID", "uint32_t", "EntityDBID"},
+        {MemoryFieldType::EntityUID, "Entity UID", "int32_t", "EntityUID"},
+        {MemoryFieldType::ParticleDB, "ParticleDB", "ParticleDB*", "ParticleDB"},
+        {MemoryFieldType::ParticleDBID, "ParticleDB ID", "uint32_t", "ParticleDBID"},
+        {MemoryFieldType::ParticleDBPointer, "ParticleDB pointer", "ParticleDB**", "ParticleDBPointer"},
+        {MemoryFieldType::TextureDB, "TextureDB", "TextureDB*", "TextureDB"},
+        {MemoryFieldType::TextureDBID, "TextureDB ID", "uint32_t", "TextureDBID"},
+        {MemoryFieldType::TextureDBPointer, "TextureDB pointer", "Texture*", "TextureDBPointer"},
+        {MemoryFieldType::Vector, "Vector", "Vector", "Vector"},
+        {MemoryFieldType::StdVector, "StdVector", "std::vector<T>", "StdVector"},
+        {MemoryFieldType::StdMap, "StdMap", "std::map<K, V>", "StdMap"},
+        {MemoryFieldType::StdSet, "StdSet", "std::set<T>", "StdSet"},
+        {MemoryFieldType::ConstCharPointerPointer, "Const char**", "const char**", "ConstCharPointerPointer"},
+        {MemoryFieldType::ConstCharPointer, "Const char*", "const char*", "ConstCharPointer"},
+        {MemoryFieldType::StdString, "StdString", "std::string", "StdString"},
+        {MemoryFieldType::StdWstring, "StdWstring", "std::wstring", "StdWstring"},
+        //{MemoryFieldType::EntitySubclass, "", "", ""},
+        {MemoryFieldType::PointerType, "Pointer", "", ""},
+        {MemoryFieldType::InlineStructType, "Inline struct", "", ""},
+        {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer", "ThemeInfo*", "UndeterminedThemeInfoPointer"},
+        {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer", "LevelGenRooms*", "LevelGenRoomsPointer"},
+        {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer", "LevelGenRoomsMeta*", "LevelGenRoomsMetaPointer"},
+        {MemoryFieldType::JournalPagePointer, "JournalPagePointer", "JournalPage*", "JournalPagePointer"},
+        {MemoryFieldType::ThemeInfoName, "ThemeInfoName", "ThemeInfo*", "ThemeInfoName"},
+        {MemoryFieldType::LevelGenPointer, "LevelGenPointer", "LevelGen*", "LevelGenPointer"},
+        {MemoryFieldType::UTF16Char, "UTF16Char", "char16_t", "UTF16Char"},
+        {MemoryFieldType::UTF16StringFixedSize, "UTF16StringFixedSize", "std::array<char16_t, S>", "UTF16StringFixedSize"},
+        {MemoryFieldType::UTF8StringFixedSize, "UTF8StringFixedSize", "std::array<char, S>", "UTF8StringFixedSize"},
+        {MemoryFieldType::StringsTableID, "StringsTableID", "uint32_t", "StringsTableID"},
+        {MemoryFieldType::CharacterDB, "CharacterDB", "CharacterDB*", "CharacterDB"},
+        {MemoryFieldType::CharacterDBID, "CharacterDBID", "uint8_t", "CharacterDBID"},
+        {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable", "size_t*", "VirtualFunctionTable"},
+        {MemoryFieldType::Online, "Online", "", "Online"},
+        {MemoryFieldType::IPv4Address, "IPv4Address", "uint32_t", "IPv4Address"},
+    };
+}
+
 S2Plugin::Configuration::Configuration()
 {
-    mSpelunky2 = std::make_unique<Spelunky2>();
     load();
+    dprintf(" CONFIGURATION \n");
 }
 
 void S2Plugin::Configuration::load()
@@ -115,7 +186,7 @@ void S2Plugin::Configuration::processJSON(const std::string& str)
         auto isEntitySubclass = isKnownEntitySubclass(key);
         auto isPointer = (pointerTypes.count(key) > 0);
         auto isInlineStruct = (inlineStructTypes.count(key) > 0);
-        if (gsJSONStringToMemoryFieldTypeMapping.count(key) == 0 && !isEntitySubclass && !isPointer && !isInlineStruct)
+        if (!gsMemoryFieldType.contains(key) && !isEntitySubclass && !isPointer && !isInlineStruct)
         {
             throw std::runtime_error("Unknown type specified in fields(1): " + key);
         }
@@ -225,11 +296,12 @@ void S2Plugin::Configuration::processJSON(const std::string& str)
             }
             else
             {
-                if (gsJSONStringToMemoryFieldTypeMapping.count(fieldTypeStr) == 0)
+                auto it = gsMemoryFieldType.find(fieldTypeStr);
+                if (it == gsMemoryFieldType.end())
                 {
                     throw std::runtime_error("Unknown type specified in fields(2): " + fieldTypeStr);
                 }
-                memField.type = gsJSONStringToMemoryFieldTypeMapping.at(fieldTypeStr);
+                memField.type = it->first;
             }
 
             if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16 || memField.type == MemoryFieldType::Flags8) &&
@@ -312,7 +384,7 @@ void S2Plugin::Configuration::processJSON(const std::string& str)
         }
         else
         {
-            mTypeFields[gsJSONStringToMemoryFieldTypeMapping.at(key)] = vec;
+            mTypeFields[gsMemoryFieldType.find(key)->first] = vec;
         }
     }
 }
@@ -355,38 +427,42 @@ std::vector<std::string> S2Plugin::Configuration::classHierarchyOfEntity(const s
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfPointer(const std::string& type) const
 {
-    if (mTypeFieldsPointers.count(type) == 0)
+    auto it = mTypeFieldsPointers.find(type);
+    if (it == mTypeFieldsPointers.end())
     {
         dprintf("unknown key requested in Configuration::typeFieldsOfPointer() (t=%s)\n", type.c_str());
     }
-    return mTypeFieldsPointers.at(type);
+    return it->second;
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfInlineStruct(const std::string& type) const
 {
-    if (mTypeFieldsInlineStructs.count(type) == 0)
+    auto it = mTypeFieldsInlineStructs.find(type);
+    if (it == mTypeFieldsInlineStructs.end())
     {
         dprintf("unknown key requested in Configuration::typeFieldsOfInlineStruct() (t=%s)\n", type.c_str());
     }
-    return mTypeFieldsInlineStructs.at(type);
+    return it->second;
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFields(const MemoryFieldType& type) const
 {
-    if (mTypeFields.count(type) == 0)
+    auto it = mTypeFields.find(type);
+    if (it == mTypeFields.end())
     {
-        dprintf("unknown key requested in Configuration::typeFields() (t=%s id=%d)\n", gsMemoryFieldTypeToStringMapping.at(type).c_str(), type);
+        dprintf("unknown key requested in Configuration::typeFields() (t=%s id=%d)\n", gsMemoryFieldType.at(type).display_name, type);
     }
-    return mTypeFields.at(type);
+    return it->second;
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfEntitySubclass(const std::string& type) const
 {
-    if (mTypeFieldsEntitySubclasses.count(type) == 0)
+    auto it = mTypeFieldsEntitySubclasses.find(type);
+    if (it == mTypeFieldsEntitySubclasses.end())
     {
         dprintf("unknown key requested in Configuration::typeFieldsOfEntitySubclass() (t=%s)\n", type.c_str());
     }
-    return mTypeFieldsEntitySubclasses.at(type);
+    return it->second;
 }
 
 bool S2Plugin::Configuration::isEntitySubclass(const std::string& type) const
@@ -406,19 +482,14 @@ bool S2Plugin::Configuration::isInlineStruct(const std::string& type) const
 
 bool S2Plugin::Configuration::isBuiltInType(const std::string& type) const
 {
-    return (gsJSONStringToMemoryFieldTypeMapping.count(type) > 0);
-}
-
-S2Plugin::Spelunky2* S2Plugin::Configuration::spelunky2() const noexcept
-{
-    return mSpelunky2.get();
+    return gsMemoryFieldType.contains(type);
 }
 
 std::string S2Plugin::Configuration::flagTitle(const std::string& fieldName, uint8_t flagNumber)
 {
-    if (mFlagTitles.count(fieldName) > 0 && flagNumber > 0 && flagNumber <= 32)
+    if (auto it = mFlagTitles.find(fieldName); it != mFlagTitles.end() && flagNumber > 0 && flagNumber <= 32)
     {
-        auto& flags = mFlagTitles.at(fieldName);
+        auto& flags = it->second;
         auto& flagStr = flags.at(flagNumber);
         if (flagStr.empty())
         {
@@ -431,12 +502,12 @@ std::string S2Plugin::Configuration::flagTitle(const std::string& fieldName, uin
 
 std::string S2Plugin::Configuration::stateTitle(const std::string& fieldName, int64_t state)
 {
-    if (mStateTitles.count(fieldName) > 0)
+    if (auto it = mStateTitles.find(fieldName); it != mStateTitles.end())
     {
-        auto& states = mStateTitles.at(fieldName);
-        if (states.count(state) > 0)
+        auto& states = it->second;
+        if (auto states_it = states.find(state); states_it != states.end())
         {
-            auto& stateStr = states.at(state);
+            auto& stateStr = states_it->second;
             if (!stateStr.empty())
             {
                 return stateStr;
@@ -448,7 +519,7 @@ std::string S2Plugin::Configuration::stateTitle(const std::string& fieldName, in
 
 const std::unordered_map<int64_t, std::string>& S2Plugin::Configuration::stateTitlesOfField(const std::string& fieldName)
 {
-    return mStateTitles.at(fieldName);
+    return mStateTitles.at(fieldName); // no error handling?
 }
 
 bool S2Plugin::Configuration::isKnownEntitySubclass(const std::string& typeName) const
@@ -468,9 +539,9 @@ std::vector<S2Plugin::VirtualFunction> S2Plugin::Configuration::virtualFunctions
         std::string currentType = type;
         while (true)
         {
-            if (mVirtualFunctions.count(currentType) > 0)
+            if (auto it = mVirtualFunctions.find(currentType); it != mVirtualFunctions.end())
             {
-                for (const auto& f : mVirtualFunctions.at(currentType))
+                for (const auto& f : it->second)
                 {
                     functions.emplace_back(f);
                 }
@@ -498,7 +569,7 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
     }
     else if (isBuiltInType(typeName))
     {
-        switch (gsJSONStringToMemoryFieldTypeMapping.at(typeName))
+        switch (gsMemoryFieldType.find(typeName)->first)
         {
                 /*case MemoryFieldType::EntitySubclass:
                 case MemoryFieldType::Flag:*/
@@ -592,4 +663,22 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
         }
     }
     return 0;
+}
+
+void S2Plugin::displayError(const char* fmt, ...)
+{
+    char buffer[1024] = {0};
+
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buffer, sizeof(buffer), fmt, args);
+    va_end(args);
+
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Critical);
+    msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
+    msgBox.setText(buffer);
+    msgBox.setWindowTitle("Spelunky2");
+    msgBox.exec();
+    _plugin_logprintf("[Spelunky2] %s\n", buffer);
 }

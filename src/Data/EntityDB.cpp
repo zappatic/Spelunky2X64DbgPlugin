@@ -7,7 +7,9 @@ S2Plugin::EntityDB::EntityDB(Configuration* config) : MemoryMappedData(config) {
 
 bool S2Plugin::EntityDB::loadEntityDB()
 {
-    auto afterBundle = mConfiguration->spelunky2()->spelunky2AfterBundle();
+    auto spel2 = Spelunky2::get();
+    const auto afterBundle = spel2->afterBundle;
+    const auto afterBundleSize = spel2->afterBundleSize;
     if (afterBundle == 0)
     {
         return false;
@@ -17,10 +19,10 @@ bool S2Plugin::EntityDB::loadEntityDB()
         return true;
     }
 
-    mEntityList = std::make_unique<EntityList>(mConfiguration->spelunky2());
+    mEntityList = std::make_unique<EntityList>(spel2);
 
     mMemoryOffsets.clear();
-    auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, mConfiguration->spelunky2()->spelunky2AfterBundleSize(), "A4 84 E4 CA DA BF 4E 83");
+    auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, afterBundleSize, "A4 84 E4 CA DA BF 4E 83");
     auto entitiesPtr = instructionEntitiesPtr - 33 + 7 + (duint)Script::Memory::ReadDword(instructionEntitiesPtr - 30);
     mEntityDBPtr = Script::Memory::ReadQword(entitiesPtr);
 
