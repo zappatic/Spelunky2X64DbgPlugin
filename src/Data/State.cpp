@@ -24,14 +24,14 @@ bool S2Plugin::State::loadState()
     instructionOffset = Script::Pattern::FindMem(instructionOffset - 25, afterBundleSize, "48 8B");
     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
     auto heapOffsetPtr = instructionOffset + pcOffset + 7;
-    mHeapOffset = Script::Memory::ReadDword(heapOffsetPtr);
+    mHeapOffset = Script::Memory::ReadDword(heapOffsetPtr); // 4A0
 
     THREADLIST threadList;
     DbgGetThreadList(&threadList);
     for (auto x = 0; x < threadList.count; ++x)
     {
         auto threadAllInfo = threadList.list[x];
-        if (strncmp(threadAllInfo.BasicInfo.threadName, "Main Thread", 11) == 0 || strncmp(threadAllInfo.BasicInfo.threadName, "MainThrd", 8) == 0)
+        if (threadAllInfo.BasicInfo.ThreadNumber == 0)
         {
             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));

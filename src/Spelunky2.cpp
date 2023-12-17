@@ -66,11 +66,33 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
             return false;
         }
 
+        THREADLIST threadList;
+        size_t heapBase{0};
+        DbgGetThreadList(&threadList);
+        for (auto x = 0; x < threadList.count; ++x)
+        {
+            auto threadAllInfo = threadList.list[x];
+            if (threadAllInfo.BasicInfo.ThreadNumber == 0) // main thread
+            {
+                auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
+                auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
+                auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
+                heapBase = Script::Memory::ReadQword(tebAddress11Value + TEB_offset);
+                break;
+            }
+        }
+        if (heapBase == 0)
+        {
+            displayError("Could not retrieve heap base of the main thread!");
+            return false;
+        }
+
         auto addr = new Spelunky2{};
         addr->codeSectionStart = Spelunky2CodeSectionStart;
         addr->codeSectionSize = Spelunky2CodeSectionSize;
         addr->afterBundle = Spelunky2AfterBundle;
         addr->afterBundleSize = Spelunky2CodeSectionStart + Spelunky2CodeSectionSize - Spelunky2AfterBundle;
+        addr->heapBaseAddr = heapBase;
         ptr = addr;
     }
     return ptr;

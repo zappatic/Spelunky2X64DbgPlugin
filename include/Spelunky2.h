@@ -10,6 +10,21 @@
 
 namespace S2Plugin
 {
+    constexpr uint32_t TEB_offset = 0x120;
+
+    enum class GAME_OFFSET : size_t
+    {
+        UNKNOWN1 = 0x8, // - ?
+        MALLOC = 0x20, // - malloc base
+        UNKNOWN2 = 0x3B4, // - ?
+        ILLUMINATION_SYNC = 0x3D0, // - illumination sync timer
+        PRNG = 0x3F0, // - PRNG
+        STATE = 0x4A0, // - State Memory
+        LEVEL_GEN = 0xD7B30, // - level gen
+        LIQUID_ENGINE = 0xD8650, // - liquid physics
+        UNKNOWN3 = 0x108420, // - some vector?
+    };
+
     class EntityDB;
 
     struct VirtualFunction
@@ -55,6 +70,8 @@ namespace S2Plugin
         static Spelunky2* ptr;
 
       private:
+        size_t heapBaseAddr;
+
         Spelunky2() = default;
         ~Spelunky2(){};
         Spelunky2(const Spelunky2&) = delete;

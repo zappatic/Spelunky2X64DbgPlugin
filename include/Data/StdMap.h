@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pluginsdk/_scriptapi_memory.h"
+#include "pluginmain.h"
 
 namespace S2Plugin
 {
