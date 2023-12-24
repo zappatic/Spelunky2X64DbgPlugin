@@ -2,7 +2,6 @@
 
 #include "Data/EntityDB.h"
 #include "pluginmain.h"
-#include "Configuration.h"
 #include <QIcon>
 #include <QMessageBox>
 
@@ -51,14 +50,15 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
             break;
         }
 
-        if (Spelunky2CodeSectionStart == 0) // TODO: check if maybe also return?
+        if (Spelunky2CodeSectionStart == 0 && Spelunky2CodeSectionSize == 0)
         {
             displayError("Could not locate the .text section in the loaded spel2.exe image");
+            return false;
         }
 
         // find the 'after_bundle' location, where the actual code is
         // only search in the last 7 megabytes
-        auto sevenMegs = 7 * 1024 * 1024;
+        constexpr size_t sevenMegs = 7 * 1024 * 1024;
         Spelunky2AfterBundle = Script::Pattern::FindMem(Spelunky2CodeSectionStart + Spelunky2CodeSectionSize - sevenMegs, sevenMegs, "55 41 57 41 56 41 55 41 54");
         if (Spelunky2AfterBundle == 0)
         {
@@ -157,4 +157,29 @@ uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset) const
         return 0;
     }
     return Script::Memory::ReadDword(entityDBPtr + 20);
+}
+
+size_t S2Plugin::Spelunky2::find(const char* pattern, size_t start, size_t size) const
+{
+    if (start == 0)
+        start = afterBundle;
+
+    if (size == 0)
+        size = afterBundleSize - (start - afterBundle);
+
+    return Script::Pattern::FindMem(start, size, pattern);
+}
+
+size_t S2Plugin::Spelunky2::find_between(const char* pattern, size_t start, size_t end) const
+{
+    if (start == 0)
+        start = afterBundle;
+
+    size_t size;
+    if (end == 0)
+        size = afterBundleSize - (start - afterBundle);
+    else
+        size = end - start;
+
+    return Script::Pattern::FindMem(start, size, pattern);
 }

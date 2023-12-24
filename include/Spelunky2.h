@@ -14,15 +14,15 @@ namespace S2Plugin
 
     enum class GAME_OFFSET : size_t
     {
-        UNKNOWN1 = 0x8, // - ?
-        MALLOC = 0x20, // - malloc base
-        UNKNOWN2 = 0x3B4, // - ?
+        UNKNOWN1 = 0x8,            // - ?
+        MALLOC = 0x20,             // - malloc base
+        UNKNOWN2 = 0x3B4,          // - ?
         ILLUMINATION_SYNC = 0x3D0, // - illumination sync timer
-        PRNG = 0x3F0, // - PRNG
-        STATE = 0x4A0, // - State Memory
-        LEVEL_GEN = 0xD7B30, // - level gen
-        LIQUID_ENGINE = 0xD8650, // - liquid physics
-        UNKNOWN3 = 0x108420, // - some vector?
+        PRNG = 0x3F0,              // - PRNG
+        STATE = 0x4A0,             // - State Memory
+        LEVEL_GEN = 0xD7B30,       // - level gen
+        LIQUID_ENGINE = 0xD8650,   // - liquid physics
+        UNKNOWN3 = 0x108420,       // - some vector?
     };
 
     class EntityDB;
@@ -61,6 +61,9 @@ namespace S2Plugin
         std::string getEntityName(size_t offset, EntityDB* entityDB) const;
         uint32_t getEntityTypeID(size_t offset) const;
 
+        size_t find(const char* pattern, size_t start = 0, size_t size = 0) const;
+        size_t find_between(const char* pattern, size_t start = 0, size_t end = 0) const;
+
         // TODO: those should be private
         size_t codeSectionStart{0};
         size_t codeSectionSize{0};
@@ -70,7 +73,7 @@ namespace S2Plugin
         static Spelunky2* ptr;
 
       private:
-        size_t heapBaseAddr;
+        size_t heapBaseAddr{0};
 
         Spelunky2() = default;
         ~Spelunky2(){};

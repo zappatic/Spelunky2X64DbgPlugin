@@ -70,3 +70,5 @@ namespace S2Plugin
     extern int hMenuDump;
     extern int hMenuStack;
 } // namespace S2Plugin
+
+void displayError(const char* fmt, ...);

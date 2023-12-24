@@ -664,21 +664,3 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
     }
     return 0;
 }
-
-void S2Plugin::displayError(const char* fmt, ...)
-{
-    char buffer[1024] = {0};
-
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf(buffer, sizeof(buffer), fmt, args);
-    va_end(args);
-
-    QMessageBox msgBox;
-    msgBox.setIcon(QMessageBox::Critical);
-    msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
-    msgBox.setText(buffer);
-    msgBox.setWindowTitle("Spelunky2");
-    msgBox.exec();
-    _plugin_logprintf("[Spelunky2] %s\n", buffer);
-}

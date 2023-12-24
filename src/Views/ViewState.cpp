@@ -82,7 +82,7 @@ void S2Plugin::ViewState::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewState::refreshState()
 {
-    mState->refreshOffsets();
+    //mState->refreshOffsets();
     auto& offsets = mState->offsets();
     auto deltaReference = offsets.at("State.p00");
     for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))

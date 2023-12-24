@@ -255,6 +255,4 @@ namespace S2Plugin
         void processJSON(const std::string& j);
         bool isKnownEntitySubclass(const std::string& typeName) const;
     };
-
-    void displayError(const char* fmt, ...);
 } // namespace S2Plugin
