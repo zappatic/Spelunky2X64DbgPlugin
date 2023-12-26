@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <QStringList>
 #include <cstdint>
 #include <string>
@@ -9,12 +8,10 @@
 namespace S2Plugin
 {
     struct StringsTable;
-    struct Configuration;
 
-    class CharacterDB : public MemoryMappedData
+    class CharacterDB 
     {
       public:
-        explicit CharacterDB(Configuration* config);
         bool loadCharacters(StringsTable* stringsTable);
         uint8_t charactersCount() const noexcept;
 

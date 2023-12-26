@@ -576,11 +576,12 @@ void S2Plugin::ItemModelGatherVirtualData::gatherAvailableVirtuals()
     };
 
     beginResetModel();
+    auto config = Configuration::get();
     for (auto& entry : mEntries)
     {
         if (entry.id < 1000 && entry.virtualTableOffset != 0)
         {
-            auto entityClassHierarchy = mToolbar->configuration()->classHierarchyOfEntity(entry.name.toStdString());
+            auto entityClassHierarchy = config->classHierarchyOfEntity(entry.name.toStdString());
             bool isMovable = false;
             for (const auto& c : entityClassHierarchy)
             {

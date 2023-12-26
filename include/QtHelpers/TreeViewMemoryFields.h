@@ -10,7 +10,6 @@
 namespace S2Plugin
 {
     struct ViewToolbar;
-    struct MemoryMappedData;
     struct MemoryField;
     class StyledItemDelegateHTML;
 
@@ -18,8 +17,8 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent = nullptr);
-        void setMemoryMappedData(MemoryMappedData* mmd);
+        TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent = nullptr);
+        //void setMemoryMappedData(MemoryMappedData* mmd);
 
         QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
         void clear();
@@ -47,7 +46,6 @@ namespace S2Plugin
 
       private:
         ViewToolbar* mToolbar;
-        MemoryMappedData* mMemoryMappedData;
         QStandardItemModel* mModel;
         std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
         std::array<uint32_t, 9> mSavedColumnWidths = {0};

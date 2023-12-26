@@ -3,7 +3,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::EntityDB::EntityDB(Configuration* config) : MemoryMappedData(config) {}
 
 bool S2Plugin::EntityDB::loadEntityDB()
 {
@@ -19,7 +18,7 @@ bool S2Plugin::EntityDB::loadEntityDB()
         return true;
     }
 
-    mEntityList = std::make_unique<EntityList>(spel2);
+    mEntityList = std::make_unique<EntityList>();
 
     mMemoryOffsets.clear();
     auto instructionEntitiesPtr = Script::Pattern::FindMem(afterBundle, afterBundleSize, "A4 84 E4 CA DA BF 4E 83");
@@ -27,13 +26,14 @@ bool S2Plugin::EntityDB::loadEntityDB()
     mEntityDBPtr = Script::Memory::ReadQword(entitiesPtr);
 
     auto offset = mEntityDBPtr;
+    auto config = Configuration::get();
 
     for (auto x = 0; x < mEntityList->highestID() + 1; ++x)
     {
         std::unordered_map<std::string, size_t> offsets;
-        for (const auto& field : mConfiguration->typeFields(MemoryFieldType::EntityDB))
+        for (const auto& field : config->typeFields(MemoryFieldType::EntityDB))
         {
-            offset = setOffsetForField(field, "EntityDB." + field.name, offset, offsets);
+            offset = config->setOffsetForField(field, "EntityDB." + field.name, offset, offsets);
         }
         mMemoryOffsets.emplace_back(offsets);
     }

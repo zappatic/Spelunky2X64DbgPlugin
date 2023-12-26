@@ -1,18 +1,14 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
-    struct Configuration;
-
-    class State : public MemoryMappedData
+    class State
     {
       public:
-        explicit State(Configuration* config);
         bool loadState();
         void loadThreadSpecificState(size_t offset);
 

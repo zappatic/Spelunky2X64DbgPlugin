@@ -27,28 +27,6 @@ namespace S2Plugin
 
     class EntityDB;
 
-    struct VirtualFunction
-    {
-        size_t index;
-        std::string name;
-        std::string params;
-        std::string returnValue;
-        std::string type;
-    };
-
-    enum class VIRT_FUNC
-    {
-        ENTITY_STATEMACHINE = 2,
-        ENTITY_KILL = 3,
-        ENTITY_COLLISION1 = 4,
-        ENTITY_DESTROY = 5,
-        ENTITY_OPEN = 24,
-        ENTITY_COLLISION2 = 26,
-        MOVABLE_DAMAGE = 48,
-    };
-
-    Q_DECLARE_METATYPE(S2Plugin::VirtualFunction)
-
     struct Spelunky2
     {
         static Spelunky2* get();
@@ -61,19 +39,23 @@ namespace S2Plugin
         std::string getEntityName(size_t offset, EntityDB* entityDB) const;
         uint32_t getEntityTypeID(size_t offset) const;
 
-        size_t find(const char* pattern, size_t start = 0, size_t size = 0) const;
-        size_t find_between(const char* pattern, size_t start = 0, size_t end = 0) const;
+        uintptr_t find(const char* pattern, uintptr_t start = 0, size_t size = 0) const;
+        uintptr_t find_between(const char* pattern, uintptr_t start = 0, uintptr_t end = 0) const;
+        uintptr_t get_state_ptr() const
+        {
+            return heapBaseAddr + (size_t)GAME_OFFSET::STATE;
+        };
 
         // TODO: those should be private
-        size_t codeSectionStart{0};
-        size_t codeSectionSize{0};
-        size_t afterBundle{0};
-        size_t afterBundleSize{0};
-
-        static Spelunky2* ptr;
+        uintptr_t codeSectionStart{0};
+        uintptr_t codeSectionSize{0};
+        uintptr_t afterBundle{0};
+        uintptr_t afterBundleSize{0};
 
       private:
-        size_t heapBaseAddr{0};
+        static Spelunky2* ptr;
+
+        uintptr_t heapBaseAddr{0};
 
         Spelunky2() = default;
         ~Spelunky2(){};

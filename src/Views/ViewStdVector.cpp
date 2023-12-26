@@ -1,6 +1,5 @@
 #include "Views/ViewStdVector.h"
 #include "Configuration.h"
-#include "Data/MemoryMappedData.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -16,8 +15,7 @@ S2Plugin::ViewStdVector::ViewStdVector(ViewToolbar* toolbar, const std::string& 
 {
     mMainLayout = new QVBoxLayout(this);
 
-    auto m = MemoryMappedData(mToolbar->configuration());
-    mVectorTypeSize = m.sizeOf(mVectorType);
+    mVectorTypeSize = Configuration::get()->sizeOf(mVectorType);
 
     initializeRefreshLayout();
     initializeTreeView();
@@ -35,7 +33,7 @@ S2Plugin::ViewStdVector::ViewStdVector(ViewToolbar* toolbar, const std::string& 
 
 void S2Plugin::ViewStdVector::initializeTreeView()
 {
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, nullptr, this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->setEnableChangeHighlighting(false);
 
     mMainLayout->addWidget(mMainTreeView);
@@ -80,7 +78,7 @@ void S2Plugin::ViewStdVector::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewStdVector::refreshVectorContents()
 {
-    auto config = mToolbar->configuration();
+    auto config = Configuration::get();
     mMainTreeView->clear();
     mMemoryFields.clear();
 
@@ -131,11 +129,11 @@ void S2Plugin::ViewStdVector::refreshData()
 {
     size_t counter = 0;
     std::unordered_map<std::string, size_t> offsets;
-    auto m = MemoryMappedData(mToolbar->configuration());
+    auto config = Configuration::get();
 
     for (const auto& field : mMemoryFields)
     {
-        m.setOffsetForField(field, field.name, mVectorBegin + (counter++ * mVectorTypeSize), offsets);
+        config->setOffsetForField(field, field.name, mVectorBegin + (counter++ * mVectorTypeSize), offsets);
 
         mMainTreeView->updateValueForField(field, field.name, offsets);
     }

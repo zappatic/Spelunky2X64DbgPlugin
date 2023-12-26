@@ -54,6 +54,8 @@ void S2Plugin::ViewEntityDB::initializeUI()
     mMainTabWidget->addTab(mTabLookup, "Lookup");
     mMainTabWidget->addTab(mTabCompare, "Compare");
 
+    auto config = Configuration::get();
+
     // LOOKUP
     {
         auto topLayout = new QHBoxLayout();
@@ -75,9 +77,9 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->entityDB(), this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
+        for (const auto& field : config->typeFields(MemoryFieldType::EntityDB))
         {
             mMainTreeView->addMemoryField(field, "EntityDB." + field.name);
         }
@@ -95,7 +97,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        populateComparisonCombobox("", mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB));
+        populateComparisonCombobox("", config->typeFields(MemoryFieldType::EntityDB));
         QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewEntityDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
 
@@ -183,7 +185,7 @@ void S2Plugin::ViewEntityDB::showIndex(size_t index)
     mLookupIndex = index;
     auto& offsets = mToolbar->entityDB()->offsetsForIndex(index);
     auto deltaReference = offsets.at("EntityDB.create_func");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::EntityDB))
     {
         mMainTreeView->updateValueForField(field, "EntityDB." + field.name, offsets, deltaReference);
     }
@@ -218,7 +220,7 @@ void S2Plugin::ViewEntityDB::updateFieldValues()
 {
     auto& offsets = mToolbar->entityDB()->offsetsForIndex(mLookupIndex);
     auto deltaReference = offsets.at("EntityDB.create_func");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::EntityDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::EntityDB))
     {
         mMainTreeView->updateValueForField(field, "EntityDB." + field.name, offsets, deltaReference);
     }
@@ -277,7 +279,7 @@ void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefi
             }
             case MemoryFieldType::InlineStructType:
             {
-                populateComparisonCombobox(field.name + ".", mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName));
+                populateComparisonCombobox(field.name + ".", Configuration::get()->typeFieldsOfInlineStruct(field.jsonName));
                 break;
             }
             default:

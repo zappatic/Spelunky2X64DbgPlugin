@@ -12,6 +12,8 @@
 
 using nlohmann::ordered_json;
 
+S2Plugin::Configuration* S2Plugin::Configuration::ptr = nullptr;
+
 namespace S2Plugin
 {
     const MemoryFieldData gsMemoryFieldType = {
@@ -81,20 +83,47 @@ namespace S2Plugin
     };
 }
 
-S2Plugin::Configuration::Configuration()
+S2Plugin::Configuration* S2Plugin::Configuration::get()
 {
-    load();
-    dprintf(" CONFIGURATION \n");
+    if (ptr == nullptr)
+    {
+        auto new_config = new Configuration{};
+        if (new_config->mIsValid)
+            ptr = new_config;
+        else
+            delete new_config;
+    }
+    return ptr;
 }
 
-void S2Plugin::Configuration::load()
+bool S2Plugin::Configuration::reset()
+{
+    auto new_config = new Configuration{};
+    if (new_config->mIsValid)
+    {
+        delete ptr;
+        ptr = new_config;
+        return true;
+    }
+
+    delete new_config;
+    return false;
+}
+
+bool S2Plugin::Configuration::is_loaded()
+{
+    get();
+    return (ptr != nullptr);
+}
+
+S2Plugin::Configuration::Configuration()
 {
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
     auto path = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2.json");
     if (!QFile(path).exists())
     {
-        mErrorString = "Could not find " + path.toStdString();
+        displayError("Could not find " + path.toStdString());
         mIsValid = false;
         return;
     }
@@ -102,44 +131,32 @@ void S2Plugin::Configuration::load()
     try
     {
         std::ifstream fp(path.toStdString());
-        std::string jsonString((std::istreambuf_iterator<char>(fp)), std::istreambuf_iterator<char>());
-        processJSON(jsonString);
+        auto j = ordered_json::parse(fp, nullptr, true, true);
+        processJSON(j);
     }
     catch (const ordered_json::exception& e)
     {
-        mErrorString = "Exception while parsing Spelunky2.json: " + std::string(e.what());
+        displayError("Exception while parsing Spelunky2.json: " + std::string(e.what()));
         mIsValid = false;
         return;
     }
     catch (const std::exception& e)
     {
-        mErrorString = "Exception while parsing Spelunky2.json: " + std::string(e.what());
+        displayError("Exception while parsing Spelunky2.json: " + std::string(e.what()));
         mIsValid = false;
         return;
     }
     catch (...)
     {
-        mErrorString = "Unknown exception while parsing Spelunky2.json";
+        displayError("Unknown exception while parsing Spelunky2.json");
         mIsValid = false;
         return;
     }
     mIsValid = true;
 }
 
-bool S2Plugin::Configuration::isValid() const noexcept
+void S2Plugin::Configuration::processJSON(ordered_json& j)
 {
-    return mIsValid;
-}
-
-std::string S2Plugin::Configuration::lastError() const noexcept
-{
-    return mErrorString;
-}
-
-void S2Plugin::Configuration::processJSON(const std::string& str)
-{
-    auto j = ordered_json::parse(str, nullptr, true, true);
-    mEntityClassHierarchy.clear();
     const auto& entityClassHierarchy = j["entity_class_hierarchy"];
     for (const auto& [key, jsonValue] : entityClassHierarchy.items())
     {
@@ -149,8 +166,6 @@ void S2Plugin::Configuration::processJSON(const std::string& str)
             mEntityClassHierarchy[key] = value;
         }
     }
-
-    mDefaultEntityClassTypes.clear();
     const auto& defaultEntityTypes = j["default_entity_types"];
     for (const auto& [key, jsonValue] : defaultEntityTypes.items())
     {
@@ -173,12 +188,6 @@ void S2Plugin::Configuration::processJSON(const std::string& str)
     {
         mAlignments.insert({key, jsonValue.get<uint8_t>()});
     }
-
-    mTypeFieldsEntitySubclasses.clear();
-    mTypeFields.clear();
-    mTypeFieldsPointers.clear();
-    mTypeFieldsInlineStructs.clear();
-    mVirtualFunctions.clear();
 
     const auto& fields = j["fields"];
     for (const auto& [key, jsonArray] : fields.items())
@@ -663,4 +672,152 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
         }
     }
     return 0;
+}
+
+size_t S2Plugin::Configuration::setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets,
+                                                  bool advanceOffset) const
+{
+    offsets[fieldNameOverride] = offset;
+    if (!advanceOffset)
+    {
+        return offset;
+    }
+
+    switch (field.type)
+    {
+        case MemoryFieldType::Flag:
+            break;
+        case MemoryFieldType::Skip:
+        case MemoryFieldType::UTF16StringFixedSize:
+        case MemoryFieldType::UTF8StringFixedSize:
+            offset += field.extraInfo;
+            break;
+        case MemoryFieldType::Bool:
+        case MemoryFieldType::Byte:
+        case MemoryFieldType::UnsignedByte:
+        case MemoryFieldType::Flags8:
+        case MemoryFieldType::State8:
+        case MemoryFieldType::CharacterDBID:
+            offset += 1;
+            break;
+        case MemoryFieldType::Word:
+        case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::Flags16:
+        case MemoryFieldType::State16:
+        case MemoryFieldType::UTF16Char:
+            offset += 2;
+            break;
+        case MemoryFieldType::Dword:
+        case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::Float:
+        case MemoryFieldType::Flags32:
+        case MemoryFieldType::State32:
+        case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::ParticleDBID:
+        case MemoryFieldType::EntityUID:
+        case MemoryFieldType::TextureDBID:
+        case MemoryFieldType::StringsTableID:
+        case MemoryFieldType::IPv4Address:
+            offset += 4;
+            break;
+        case MemoryFieldType::CodePointer:
+        case MemoryFieldType::DataPointer:
+        case MemoryFieldType::EntityDBPointer:          // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::TextureDBPointer:         // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::EntityPointer:            // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::EntityUIDPointer:         // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::ParticleDBPointer:        // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::LevelGenPointer:          // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::LevelGenRoomsPointer:     // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::LevelGenRoomsMetaPointer: // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::JournalPagePointer:       // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::ThemeInfoName:            // not shown inline in the treeview, so just skip sizeof(size_t)
+        case MemoryFieldType::Qword:
+        case MemoryFieldType::UnsignedQword:
+        case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::ConstCharPointer:
+        case MemoryFieldType::VirtualFunctionTable:
+            offset += 8;
+            break;
+        case MemoryFieldType::UndeterminedThemeInfoPointer:
+        {
+            size_t pointerOffset = Script::Memory::ReadQword(offset);
+            for (const auto& f : typeFieldsOfPointer("ThemeInfoPointer"))
+            {
+                auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                if (pointerOffset != 0)
+                {
+                    pointerOffset = newOffset;
+                }
+            }
+            offset += 8;
+            break;
+        }
+        case MemoryFieldType::PointerType:
+        {
+            size_t pointerOffset = Script::Memory::ReadQword(offset);
+            for (const auto& f : typeFieldsOfPointer(field.jsonName))
+            {
+                auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
+                if (pointerOffset != 0)
+                {
+                    pointerOffset = newOffset;
+                }
+            }
+            offset += 8;
+            break;
+        }
+        case MemoryFieldType::InlineStructType:
+        {
+            for (const auto& f : typeFieldsOfInlineStruct(field.jsonName))
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
+            break;
+        }
+        case MemoryFieldType::EntitySubclass:
+        {
+            for (const auto& f : typeFieldsOfEntitySubclass(field.jsonName))
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
+            break;
+        }
+        default:
+        {
+            for (const auto& f : typeFields(field.type))
+            {
+                offset = setOffsetForField(f, fieldNameOverride + "." + f.name, offset, offsets);
+            }
+            break;
+        }
+    }
+    return offset;
+}
+
+size_t S2Plugin::Configuration::sizeOf(const std::string& typeName) const
+{
+    if (isPointer(typeName))
+    {
+        return sizeof(size_t);
+    }
+    else if (isBuiltInType(typeName))
+    {
+        MemoryField tmp;
+        tmp.type = gsMemoryFieldType.find(typeName)->first;
+        std::unordered_map<std::string, size_t> offsetsDummy;
+        return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
+    }
+    else if (isInlineStruct(typeName))
+    {
+        MemoryField tmp;
+        tmp.type = MemoryFieldType::InlineStructType;
+        tmp.jsonName = typeName;
+        std::unordered_map<std::string, size_t> offsetsDummy;
+        return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
+    }
+    else
+    {
+        return 0;
+    }
 }

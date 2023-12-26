@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <QStringList>
 #include <cstdint>
 #include <string>
@@ -8,12 +7,9 @@
 
 namespace S2Plugin
 {
-    struct Configuration;
-
-    class TextureDB : public MemoryMappedData
+    class TextureDB 
     {
       public:
-        explicit TextureDB(Configuration* config);
         bool loadTextureDB();
 
         std::unordered_map<std::string, size_t>& offsetsForTextureID(uint32_t textureDBID);

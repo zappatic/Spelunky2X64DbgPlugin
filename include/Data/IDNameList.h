@@ -8,12 +8,10 @@
 
 namespace S2Plugin
 {
-    struct Spelunky2;
-
     class IDNameList
     {
       public:
-        IDNameList(Spelunky2* spel2, const std::string& relFilePath, const std::regex& regex);
+        IDNameList(const std::string& relFilePath, const std::regex& regex);
 
         uint32_t idForName(const std::string& name);
         std::string nameForID(uint32_t id);

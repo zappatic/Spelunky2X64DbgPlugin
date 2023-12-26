@@ -56,8 +56,8 @@ void S2Plugin::ViewSaveGame::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewSaveGame::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->savegame(), this);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::SaveGame))
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::SaveGame))
     {
         mMainTreeView->addMemoryField(field, "SaveGame." + field.name);
     }
@@ -83,7 +83,7 @@ void S2Plugin::ViewSaveGame::refreshSaveGame()
     mToolbar->savegame()->refreshOffsets();
     auto& offsets = mToolbar->savegame()->offsets();
     auto deltaReference = offsets.at("SaveGame.places");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::SaveGame))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::SaveGame))
     {
         mMainTreeView->updateValueForField(field, "SaveGame." + field.name, offsets, deltaReference);
     }

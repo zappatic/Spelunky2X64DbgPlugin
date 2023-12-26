@@ -13,7 +13,7 @@
 
 static const QColor gsDefaultColor = QColor(Qt::lightGray);
 
-S2Plugin::LevelGen::LevelGen(Configuration* config, State* state) : MemoryMappedData(config), mState(state)
+S2Plugin::LevelGen::LevelGen(State* state) : mState(state)
 {
     processJSON();
 }
@@ -44,9 +44,10 @@ void S2Plugin::LevelGen::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mLevelGenPtr;
-    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::LevelGen))
+    auto config = Configuration::get();
+    for (const auto& field : config->typeFields(MemoryFieldType::LevelGen))
     {
-        offset = setOffsetForField(field, "LevelGen." + field.name, offset, mMemoryOffsets);
+        offset = config->setOffsetForField(field, "LevelGen." + field.name, offset, mMemoryOffsets);
     }
 }
 
@@ -64,10 +65,10 @@ void S2Plugin::LevelGen::reset()
 {
     mLevelGenPtr = 0;
     mMemoryOffsets.clear();
-    processJSON();
+    //processJSON();
 }
 
-std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset)
+std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset) const
 {
     if (offset == offsetForField("theme_dwelling.__vftable"))
     {

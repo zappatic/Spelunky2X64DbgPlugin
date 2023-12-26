@@ -1,7 +1,6 @@
 #include <windows.h>
 
 #include "Configuration.h"
-#include "Data/MemoryMappedData.h"
 #include "Data/StdMap.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
@@ -22,12 +21,12 @@ S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytyp
 {
     mMainLayout = new QVBoxLayout(this);
 
-    auto m = MemoryMappedData(mToolbar->configuration());
-    mMapKeyTypeSize = m.sizeOf(keytypeName);
-    mMapValueTypeSize = m.sizeOf(valuetypeName);
+    auto config = Configuration::get();
+    mMapKeyTypeSize = config->sizeOf(keytypeName);
+    mMapValueTypeSize = config->sizeOf(valuetypeName);
 
-    mMapKeyAlignment = mToolbar->configuration()->getAlingment(keytypeName);
-    mMapValueAlignment = mToolbar->configuration()->getAlingment(valuetypeName);
+    mMapKeyAlignment = config->getAlingment(keytypeName);
+    mMapValueAlignment = config->getAlingment(valuetypeName);
 
     initializeRefreshLayout();
     initializeTreeView();
@@ -48,7 +47,7 @@ S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytyp
 
 void S2Plugin::ViewStdMap::initializeTreeView()
 {
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, nullptr, this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->setEnableChangeHighlighting(false);
 
     mMainLayout->addWidget(mMainTreeView);
@@ -94,7 +93,7 @@ void S2Plugin::ViewStdMap::closeEvent(QCloseEvent* event)
 void S2Plugin::ViewStdMap::refreshMapContents()
 {
     StdMap the_map{mmapOffset, mMapKeyAlignment, mMapValueAlignment, mMapKeyTypeSize};
-    auto config = mToolbar->configuration();
+    auto config = Configuration::get();
     mMainTreeView->clear();
     mMemoryFields.clear();
     mMemoryFields.reserve(the_map.size());
@@ -196,7 +195,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
 void S2Plugin::ViewStdMap::refreshData()
 {
     std::unordered_map<std::string, size_t> offsets;
-    auto m = MemoryMappedData(mToolbar->configuration());
+    auto config = Configuration::get();
 
     for (const auto& field : mMemoryFields)
     {
@@ -204,7 +203,7 @@ void S2Plugin::ViewStdMap::refreshData()
         const auto& mem_offset = std::get<1>(field);
         const auto& parrent = std::get<2>(field);
 
-        m.setOffsetForField(mem_field, mem_field.name, mem_offset, offsets);
+        config->setOffsetForField(mem_field, mem_field.name, mem_offset, offsets);
         mMainTreeView->updateValueForField(mem_field, mem_field.name, offsets, 0, parrent);
     }
 }

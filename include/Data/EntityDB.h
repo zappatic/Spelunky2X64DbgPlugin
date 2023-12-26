@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include "EntityList.h"
 #include <memory>
 #include <string>
@@ -9,12 +8,9 @@
 
 namespace S2Plugin
 {
-    struct Configuration;
-
-    class EntityDB : public MemoryMappedData
+    class EntityDB
     {
       public:
-        explicit EntityDB(Configuration* config);
         bool loadEntityDB();
         EntityList* entityList() const noexcept;
 

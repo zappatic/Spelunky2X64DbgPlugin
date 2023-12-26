@@ -152,7 +152,7 @@ void S2Plugin::ViewThreads::cellClicked(int row, int column)
     }
     else if (column == gsColStateAddress)
     {
-        auto threadState = std::make_unique<State>(mToolbar->configuration());
+        auto threadState = std::make_unique<State>();
         threadState->loadThreadSpecificState(clickedItem->data(gsRoleMemoryAddress).toULongLong());
         mToolbar->showState(threadState.get());
         mThreadStates.emplace_back(std::move(threadState));

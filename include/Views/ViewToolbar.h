@@ -24,14 +24,13 @@ namespace S2Plugin
     struct VirtualTableLookup;
     struct StringsTable;
     struct Online;
-    struct Configuration;
 
     class ViewToolbar : public QDockWidget
     {
         Q_OBJECT
       public:
         ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen, VirtualTableLookup* vtl,
-                    StringsTable* stbl, Online* online, Configuration* config, QMdiArea* mdiArea, QWidget* parent = nullptr);
+                    StringsTable* stbl, Online* online, QMdiArea* mdiArea, QWidget* parent = nullptr);
         void showEntity(size_t offset);
         void showState(State* state);
 
@@ -46,7 +45,6 @@ namespace S2Plugin
         VirtualTableLookup* virtualTableLookup();
         StringsTable* stringsTable();
         Online* online();
-        Configuration* configuration() const noexcept;
 
         void resetSpelunky2Data();
 
@@ -83,7 +81,6 @@ namespace S2Plugin
         LevelGen* mLevelGen;
         VirtualTableLookup* mVirtualTableLookup;
         StringsTable* mStringsTable;
-        Configuration* mConfiguration;
         Online* mOnline;
 
         QMdiArea* mMDIArea;

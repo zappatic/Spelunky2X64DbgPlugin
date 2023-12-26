@@ -10,8 +10,6 @@ void S2Plugin::VirtualTableEntry::addSymbol(const std::string& s)
     symbols.insert(s);
 }
 
-S2Plugin::VirtualTableLookup::VirtualTableLookup(Configuration* configuration) : mConfiguration(configuration) {}
-
 bool S2Plugin::VirtualTableLookup::loadTable()
 {
     if (mOffsetToTableEntries.size() != 0)
@@ -82,7 +80,7 @@ size_t S2Plugin::VirtualTableLookup::tableStartAddress() const noexcept
     return mTableStartAddress;
 }
 
-size_t S2Plugin::VirtualTableLookup::tableAddressForEntry(const VirtualTableEntry& entry)
+size_t S2Plugin::VirtualTableLookup::tableAddressForEntry(const VirtualTableEntry& entry) const
 {
     return mTableStartAddress + (entry.offset * sizeof(size_t));
 }

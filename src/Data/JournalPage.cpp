@@ -3,7 +3,7 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::JournalPage::JournalPage(Configuration* config, size_t offset, const std::string& pageType) : MemoryMappedData(config), mJournalPagePtr(offset), mJournalPageType(pageType) {}
+S2Plugin::JournalPage::JournalPage(size_t offset, const std::string& pageType) : mJournalPagePtr(offset), mJournalPageType(pageType) {}
 
 std::unordered_map<std::string, size_t>& S2Plugin::JournalPage::offsets()
 {
@@ -14,9 +14,10 @@ void S2Plugin::JournalPage::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mJournalPagePtr;
-    for (const auto& field : mConfiguration->typeFieldsOfInlineStruct(mJournalPageType))
+    auto config = Configuration::get();
+    for (const auto& field : config->typeFieldsOfInlineStruct(mJournalPageType))
     {
-        offset = setOffsetForField(field, mJournalPageType + "." + field.name, offset, mMemoryOffsets);
+        offset = config->setOffsetForField(field, mJournalPageType + "." + field.name, offset, mMemoryOffsets);
     }
 }
 

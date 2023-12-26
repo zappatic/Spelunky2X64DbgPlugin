@@ -2,6 +2,7 @@
 
 #include <QMetaEnum>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
 
@@ -183,6 +184,28 @@ namespace S2Plugin
         std::unordered_map<std::string_view, map_type::iterator> json_names_map;
     };
 
+    struct VirtualFunction
+    {
+        size_t index;
+        std::string name;
+        std::string params;
+        std::string returnValue;
+        std::string type;
+    };
+
+    enum class VIRT_FUNC
+    {
+        ENTITY_STATEMACHINE = 2,
+        ENTITY_KILL = 3,
+        ENTITY_COLLISION1 = 4,
+        ENTITY_DESTROY = 5,
+        ENTITY_OPEN = 24,
+        ENTITY_COLLISION2 = 26,
+        MOVABLE_DAMAGE = 48,
+    };
+
+    Q_DECLARE_METATYPE(S2Plugin::VirtualFunction)
+
     extern const MemoryFieldData gsMemoryFieldType; // TODO: make functions to get what's needed, not relay on global
 
     struct MemoryField
@@ -211,11 +234,9 @@ namespace S2Plugin
     class Configuration
     {
       public:
-        Configuration();
-
-        void load();
-        bool isValid() const noexcept;
-        std::string lastError() const noexcept;
+        static Configuration* get();
+        static bool reset();
+        static bool is_loaded();
 
         const std::unordered_map<std::string, std::string>& entityClassHierarchy() const noexcept;
         const std::vector<std::pair<std::string, std::string>>& defaultEntityClassTypes() const noexcept;
@@ -237,9 +258,12 @@ namespace S2Plugin
         std::string stateTitle(const std::string& fieldName, int64_t state);
         const std::unordered_map<int64_t, std::string>& stateTitlesOfField(const std::string& fieldName);
 
+        size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true) const;
+        size_t sizeOf(const std::string& typeName) const;
+
       private:
+        static Configuration* ptr;
         bool mIsValid = false;
-        std::string mErrorString;
 
         std::unordered_map<std::string, std::string> mEntityClassHierarchy;
         std::vector<std::pair<std::string, std::string>> mDefaultEntityClassTypes;
@@ -252,7 +276,12 @@ namespace S2Plugin
         std::unordered_map<std::string, std::vector<VirtualFunction>> mVirtualFunctions;
         std::unordered_map<std::string, uint8_t> mAlignments;
 
-        void processJSON(const std::string& j);
+        void processJSON(nlohmann::ordered_json& json);
         bool isKnownEntitySubclass(const std::string& typeName) const;
+
+        Configuration();
+        ~Configuration(){};
+        Configuration(const Configuration&) = delete;
+        Configuration& operator=(const Configuration&) = delete;
     };
 } // namespace S2Plugin

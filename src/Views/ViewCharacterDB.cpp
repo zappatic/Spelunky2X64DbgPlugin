@@ -45,7 +45,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
 
     mMainTabWidget->addTab(mTabLookup, "Lookup");
     mMainTabWidget->addTab(mTabCompare, "Compare");
-
+    auto config = Configuration::get();
     // LOOKUP
     {
         auto topLayout = new QHBoxLayout();
@@ -67,9 +67,9 @@ void S2Plugin::ViewCharacterDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->characterDB(), this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::CharacterDB))
+        for (const auto& field : config->typeFields(MemoryFieldType::CharacterDB))
         {
             mMainTreeView->addMemoryField(field, "CharacterDB." + field.name);
         }
@@ -87,7 +87,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::CharacterDB))
+        for (const auto& field : config->typeFields(MemoryFieldType::CharacterDB))
         {
             switch (field.type)
             {
@@ -211,7 +211,7 @@ void S2Plugin::ViewCharacterDB::showIndex(size_t index)
     mLookupIndex = index;
     auto& offsets = mToolbar->characterDB()->offsetsForIndex(mLookupIndex);
     auto deltaReference = offsets.at("CharacterDB.is_female");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::CharacterDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::CharacterDB))
     {
         mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, offsets, deltaReference);
     }
@@ -240,7 +240,7 @@ void S2Plugin::ViewCharacterDB::updateFieldValues()
 {
     auto& offsets = mToolbar->characterDB()->offsetsForIndex(mLookupIndex);
     auto deltaReference = offsets.at("CharacterDB.is_female");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::CharacterDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::CharacterDB))
     {
         mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, offsets, deltaReference);
     }

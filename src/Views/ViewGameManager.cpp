@@ -56,8 +56,8 @@ void S2Plugin::ViewGameManager::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewGameManager::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->gameManager(), this);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::GameManager))
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::GameManager))
     {
         mMainTreeView->addMemoryField(field, "GameManager." + field.name);
     }
@@ -83,7 +83,7 @@ void S2Plugin::ViewGameManager::refreshGameManager()
     mToolbar->gameManager()->refreshOffsets();
     auto& offsets = mToolbar->gameManager()->offsets();
     auto deltaReference = offsets.at("GameManager.backgroundmusic");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::GameManager))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::GameManager))
     {
         mMainTreeView->updateValueForField(field, "GameManager." + field.name, offsets, deltaReference);
     }

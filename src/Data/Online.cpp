@@ -1,11 +1,8 @@
 #include "Data/Online.h"
 #include "Configuration.h"
-#include "Data/MemoryMappedData.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include <cstdint>
-
-S2Plugin::Online::Online(Configuration* config) : MemoryMappedData(config) {}
 
 bool S2Plugin::Online::loadOnline()
 {
@@ -37,9 +34,10 @@ void S2Plugin::Online::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mOnlinePtr;
-    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::Online))
+    auto config = Configuration::get();
+    for (const auto& field : config->typeFields(MemoryFieldType::Online))
     {
-        offset = setOffsetForField(field, "Online." + field.name, offset, mMemoryOffsets);
+        offset = config->setOffsetForField(field, "Online." + field.name, offset, mMemoryOffsets);
     }
 }
 

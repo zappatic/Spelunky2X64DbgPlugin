@@ -25,8 +25,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
 
-    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mMemoryComparisonView, mToolbar->entityDB(), mToolbar->configuration());
-    mMainTreeView->setMemoryMappedData(mEntity.get());
+    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mMemoryComparisonView, mToolbar->entityDB());
     mEntity->populateTreeView();
 
     mMainLayout->setMargin(5);
@@ -115,7 +114,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mInterpretAsComboBox->addItem("Entity");
     mInterpretAsComboBox->insertSeparator(2);
     std::vector<std::string> classNames;
-    for (const auto& [classType, parentClassType] : mToolbar->configuration()->entityClassHierarchy())
+    for (const auto& [classType, parentClassType] : Configuration::get()->entityClassHierarchy())
     {
         classNames.emplace_back(classType);
     }
@@ -128,7 +127,7 @@ void S2Plugin::ViewEntity::initializeUI()
     mTopLayout->addWidget(mInterpretAsComboBox);
 
     // TAB FIELDS
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mEntity.get(), this);
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
     mMainTreeView->updateTableHeader();
@@ -327,7 +326,7 @@ void S2Plugin::ViewEntity::tabChanged(int index)
     if (mMainTabWidget->currentWidget() == mTabCPP)
     {
         mCPPSyntaxHighlighter->clearRules();
-        CPPGenerator g(mToolbar->configuration());
+        CPPGenerator g{};
         g.generate(mEntity->entityType(), mCPPSyntaxHighlighter);
         mCPPSyntaxHighlighter->finalCustomRuleAdded();
         mCPPTextEdit->setText(QString::fromStdString(g.result()));

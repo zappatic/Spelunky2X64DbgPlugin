@@ -4,8 +4,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::CharacterDB::CharacterDB(Configuration* config) : MemoryMappedData(config) {}
-
 bool S2Plugin::CharacterDB::loadCharacters(StringsTable* stringsTable)
 {
     auto spel2 = Spelunky2::get();
@@ -28,19 +26,20 @@ bool S2Plugin::CharacterDB::loadCharacters(StringsTable* stringsTable)
     mCharactersPtr = instructionOffset + 11 + (duint)Script::Memory::ReadDword(instructionOffset + 7);
 
     size_t characterSize = 0x2C;
+    auto config = Configuration::get();
     for (size_t x = 0; x < 20; ++x)
     {
         size_t startOffset = mCharactersPtr + (x * characterSize);
         size_t offset = startOffset;
         QString characterName;
         std::unordered_map<std::string, size_t> offsets;
-        for (const auto& field : mConfiguration->typeFields(MemoryFieldType::CharacterDB))
+        for (const auto& field : config->typeFields(MemoryFieldType::CharacterDB))
         {
             if (field.name == "full_name")
             {
                 characterName = stringsTable->nameForID(Script::Memory::ReadDword(offset));
             }
-            offset = setOffsetForField(field, "CharacterDB." + field.name, offset, offsets);
+            offset = config->setOffsetForField(field, "CharacterDB." + field.name, offset, offsets);
         }
         mMemoryOffsets[x] = offsets;
         mCharacterNames[x] = characterName;

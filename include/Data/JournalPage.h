@@ -1,16 +1,15 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
-    class JournalPage : public MemoryMappedData
+    class JournalPage
     {
       public:
-        explicit JournalPage(Configuration* config, size_t offset, const std::string& pageType);
+        explicit JournalPage(size_t offset, const std::string& pageType);
 
         std::unordered_map<std::string, size_t>& offsets();
         void refreshOffsets();

@@ -3,7 +3,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::TextureDB::TextureDB(Configuration* config) : MemoryMappedData(config) {}
 
 bool S2Plugin::TextureDB::loadTextureDB()
 {
@@ -29,13 +28,14 @@ bool S2Plugin::TextureDB::loadTextureDB()
     mTextureDBPtr = textureStartAddress + 0x8;
 
     auto offset = mTextureDBPtr;
+    auto config = Configuration::get();
 
     for (auto x = 0; x < (std::min)(1000ull, textureCount); ++x)
     {
         std::unordered_map<std::string, size_t> offsets;
-        for (const auto& field : mConfiguration->typeFields(MemoryFieldType::TextureDB))
+        for (const auto& field : config->typeFields(MemoryFieldType::TextureDB))
         {
-            offset = setOffsetForField(field, "TextureDB." + field.name, offset, offsets);
+            offset = config->setOffsetForField(field, "TextureDB." + field.name, offset, offsets);
         }
         auto textureID = Script::Memory::ReadQword(offsets.at("TextureDB.id"));
         mMemoryOffsets[textureID] = offsets;

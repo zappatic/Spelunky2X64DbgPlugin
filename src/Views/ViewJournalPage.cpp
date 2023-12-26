@@ -11,13 +11,13 @@
 
 S2Plugin::ViewJournalPage::ViewJournalPage(ViewToolbar* toolbar, size_t offset, const std::string& pageType, QWidget* parent) : QWidget(parent), mOffset(offset), mPageType(pageType), mToolbar(toolbar)
 {
-    mJournalPage = std::make_unique<JournalPage>(mToolbar->configuration(), mOffset, mPageType);
+    mJournalPage = std::make_unique<JournalPage>(mOffset, mPageType);
 
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
     setWindowTitle("JournalPage");
 
-    mMainTreeView->setMemoryMappedData(mJournalPage.get());
+    //mMainTreeView->setMemoryMappedData(mJournalPage.get());
 
     refreshJournalPage();
     mMainTreeView->setColumnWidth(gsColField, 125);
@@ -83,8 +83,8 @@ void S2Plugin::ViewJournalPage::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewJournalPage::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mJournalPage.get(), this);
-    for (const auto& field : mToolbar->configuration()->typeFieldsOfInlineStruct(mPageType))
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    for (const auto& field : Configuration::get()->typeFieldsOfInlineStruct(mPageType))
     {
         mMainTreeView->addMemoryField(field, mPageType + "." + field.name);
     }
@@ -110,7 +110,7 @@ void S2Plugin::ViewJournalPage::refreshJournalPage()
     mJournalPage->refreshOffsets();
     auto& offsets = mJournalPage->offsets();
     auto deltaReference = offsets.at(mPageType + ".__vftable");
-    for (const auto& field : mToolbar->configuration()->typeFieldsOfInlineStruct(mPageType))
+    for (const auto& field : Configuration::get()->typeFieldsOfInlineStruct(mPageType))
     {
         mMainTreeView->updateValueForField(field, mPageType + "." + field.name, offsets, deltaReference);
     }
@@ -170,7 +170,7 @@ void S2Plugin::ViewJournalPage::interpretAsChanged(const QString& text)
         mJournalPage->interpretAs(textStr);
         mPageType = textStr;
         mMainTreeView->clear();
-        for (const auto& field : mToolbar->configuration()->typeFieldsOfInlineStruct(mPageType))
+        for (const auto& field : Configuration::get()->typeFieldsOfInlineStruct(mPageType))
         {
             mMainTreeView->addMemoryField(field, mPageType + "." + field.name);
         }

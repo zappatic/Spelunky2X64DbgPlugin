@@ -12,7 +12,6 @@
 #include "Data/TextureDB.h"
 #include "Data/VirtualTableLookup.h"
 #include "Spelunky2.h"
-#include "Configuration.h"
 #include "Views/ViewCharacterDB.h"
 #include "Views/ViewEntities.h"
 #include "Views/ViewEntity.h"
@@ -37,9 +36,9 @@
 #include <QPushButton>
 
 S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, TextureDB* textureDB, CharacterDB* cdb, GameManager* gm, SaveGame* sg, State* state, LevelGen* levelGen,
-                                   VirtualTableLookup* vtl, StringsTable* stbl, Online* online, Configuration* config, QMdiArea* mdiArea, QWidget* parent)
+                                   VirtualTableLookup* vtl, StringsTable* stbl, Online* online, QMdiArea* mdiArea, QWidget* parent)
     : QDockWidget(parent, Qt::WindowFlags()), mEntityDB(entityDB), mParticleDB(particleDB), mTextureDB(textureDB), mCharacterDB(cdb), mGameManager(gm), mSaveGame(sg), mState(state),
-      mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mOnline(online), mConfiguration(config), mMDIArea(mdiArea)
+      mLevelGen(levelGen), mVirtualTableLookup(vtl), mStringsTable(stbl), mOnline(online), mMDIArea(mdiArea)
 {
     setFeatures(QDockWidget::NoDockWidgetFeatures);
 
@@ -145,7 +144,7 @@ S2Plugin::ViewToolbar::ViewToolbar(EntityDB* entityDB, ParticleDB* particleDB, T
 
 S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
 {
-    if (Spelunky2::is_loaded() && mEntityDB->loadEntityDB())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mEntityDB->loadEntityDB())
     {
         auto w = new ViewEntityDB(this);
         mMDIArea->addSubWindow(w);
@@ -157,7 +156,7 @@ S2Plugin::ViewEntityDB* S2Plugin::ViewToolbar::showEntityDB()
 
 S2Plugin::ViewParticleDB* S2Plugin::ViewToolbar::showParticleDB()
 {
-    if (Spelunky2::is_loaded() && mParticleDB->loadParticleDB())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mParticleDB->loadParticleDB())
     {
         auto w = new ViewParticleDB(this);
         mMDIArea->addSubWindow(w);
@@ -169,7 +168,7 @@ S2Plugin::ViewParticleDB* S2Plugin::ViewToolbar::showParticleDB()
 
 S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
 {
-    if (Spelunky2::is_loaded() && mTextureDB->loadTextureDB())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mTextureDB->loadTextureDB())
     {
         auto w = new ViewTextureDB(this);
         mMDIArea->addSubWindow(w);
@@ -181,7 +180,7 @@ S2Plugin::ViewTextureDB* S2Plugin::ViewToolbar::showTextureDB()
 
 S2Plugin::ViewCharacterDB* S2Plugin::ViewToolbar::showCharacterDB()
 {
-    if (Spelunky2::is_loaded() && mStringsTable->loadStringsTable() && mCharacterDB->loadCharacters(stringsTable()))
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mStringsTable->loadStringsTable() && mCharacterDB->loadCharacters(stringsTable()))
     {
         auto w = new ViewCharacterDB(this);
         mMDIArea->addSubWindow(w);
@@ -198,7 +197,7 @@ void S2Plugin::ViewToolbar::showMainThreadState()
 
 void S2Plugin::ViewToolbar::showState(State* state)
 {
-    if (Spelunky2::is_loaded() && mState->loadState())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mState->loadState())
     {
         auto w = new ViewState(this, state);
         mMDIArea->addSubWindow(w);
@@ -208,7 +207,7 @@ void S2Plugin::ViewToolbar::showState(State* state)
 
 void S2Plugin::ViewToolbar::showGameManager()
 {
-    if (Spelunky2::is_loaded() && mGameManager->loadGameManager())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mGameManager->loadGameManager())
     {
         auto w = new ViewGameManager(this);
         mMDIArea->addSubWindow(w);
@@ -218,7 +217,7 @@ void S2Plugin::ViewToolbar::showGameManager()
 
 void S2Plugin::ViewToolbar::showLevelGen()
 {
-    if (Spelunky2::is_loaded() && mState->loadState() && mLevelGen->loadLevelGen())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mState->loadState() && mLevelGen->loadLevelGen())
     {
         auto w = new ViewLevelGen(this);
         mMDIArea->addSubWindow(w);
@@ -228,7 +227,7 @@ void S2Plugin::ViewToolbar::showLevelGen()
 
 S2Plugin::ViewVirtualTable* S2Plugin::ViewToolbar::showVirtualTableLookup()
 {
-    if (Spelunky2::is_loaded() && mVirtualTableLookup->loadTable())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mVirtualTableLookup->loadTable())
     {
         auto w = new ViewVirtualTable(this);
         mMDIArea->addSubWindow(w);
@@ -240,7 +239,7 @@ S2Plugin::ViewVirtualTable* S2Plugin::ViewToolbar::showVirtualTableLookup()
 
 void S2Plugin::ViewToolbar::showStringsTable()
 {
-    if (Spelunky2::is_loaded() && mStringsTable->loadStringsTable())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mStringsTable->loadStringsTable())
     {
         auto w = new ViewStringsTable(this);
         mMDIArea->addSubWindow(w);
@@ -250,7 +249,7 @@ void S2Plugin::ViewToolbar::showStringsTable()
 
 void S2Plugin::ViewToolbar::showOnline()
 {
-    if (Spelunky2::is_loaded() && mOnline->loadOnline())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mOnline->loadOnline())
     {
         auto w = new ViewOnline(this);
         mMDIArea->addSubWindow(w);
@@ -267,7 +266,7 @@ void S2Plugin::ViewToolbar::showEntity(size_t offset)
 
 void S2Plugin::ViewToolbar::showEntities()
 {
-    if (Spelunky2::is_loaded() && mEntityDB->loadEntityDB())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mEntityDB->loadEntityDB())
     {
         auto w = new ViewEntities(this);
         mMDIArea->addSubWindow(w);
@@ -277,7 +276,7 @@ void S2Plugin::ViewToolbar::showEntities()
 
 void S2Plugin::ViewToolbar::showSaveGame()
 {
-    if (Spelunky2::is_loaded() && mSaveGame->loadSaveGame())
+    if (Spelunky2::is_loaded() && Configuration::is_loaded() && mSaveGame->loadSaveGame())
     {
         auto w = new ViewSaveGame(this);
         mMDIArea->addSubWindow(w);
@@ -322,9 +321,12 @@ void S2Plugin::ViewToolbar::showJournalPage(size_t offset, const std::string& pa
 
 void S2Plugin::ViewToolbar::showThreads()
 {
-    auto w = new ViewThreads(this);
-    mMDIArea->addSubWindow(w);
-    w->setVisible(true);
+    if (Spelunky2::is_loaded() && Configuration::is_loaded())
+    {
+        auto w = new ViewThreads(this);
+        mMDIArea->addSubWindow(w);
+        w->setVisible(true);
+    }
 }
 
 void S2Plugin::ViewToolbar::clearLabels()
@@ -412,11 +414,6 @@ S2Plugin::Online* S2Plugin::ViewToolbar::online()
     return mOnline;
 }
 
-S2Plugin::Configuration* S2Plugin::ViewToolbar::configuration() const noexcept
-{
-    return mConfiguration;
-}
-
 void S2Plugin::ViewToolbar::reloadConfig()
 {
     auto windows = mMDIArea->subWindowList();
@@ -427,24 +424,25 @@ void S2Plugin::ViewToolbar::reloadConfig()
             window->close();
         }
     }
-    mConfiguration->load();
-    if (!mConfiguration->isValid())
+    if (Configuration::reset())
     {
-        displayError(mConfiguration->lastError().c_str());
+        // TODO
+        mState->reset();
+        mGameManager->reset();
+        mSaveGame->reset();
+        mLevelGen->reset();
+        mEntityDB->reset();
+        mParticleDB->reset();
+        mTextureDB->reset();
+        mCharacterDB->reset();
+        mOnline->reset();
     }
-    mState->reset();
-    mGameManager->reset();
-    mSaveGame->reset();
-    mLevelGen->reset();
-    mEntityDB->reset();
-    mParticleDB->reset();
-    mTextureDB->reset();
-    mCharacterDB->reset();
-    mOnline->reset();
 }
 
 void S2Plugin::ViewToolbar::resetSpelunky2Data()
 {
+    // TODO
+
     mMDIArea->closeAllSubWindows();
     mState->reset();
     mGameManager->reset();

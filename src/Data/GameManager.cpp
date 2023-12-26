@@ -3,7 +3,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::GameManager::GameManager(Configuration* config) : MemoryMappedData(config) {}
 
 bool S2Plugin::GameManager::loadGameManager()
 {
@@ -54,9 +53,10 @@ void S2Plugin::GameManager::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mGameManagerPtr;
-    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::GameManager))
+    auto config = Configuration::get();
+    for (const auto& field : config->typeFields(MemoryFieldType::GameManager))
     {
-        offset = setOffsetForField(field, "GameManager." + field.name, offset, mMemoryOffsets);
+        offset = config->setOffsetForField(field, "GameManager." + field.name, offset, mMemoryOffsets);
     }
 }
 

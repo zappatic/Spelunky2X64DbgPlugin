@@ -58,8 +58,8 @@ void S2Plugin::ViewState::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewState::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mState, this);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::State))
     {
         mMainTreeView->addMemoryField(field, "State." + field.name);
     }
@@ -85,7 +85,7 @@ void S2Plugin::ViewState::refreshState()
     //mState->refreshOffsets();
     auto& offsets = mState->offsets();
     auto deltaReference = offsets.at("State.p00");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::State))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::State))
     {
         mMainTreeView->updateValueForField(field, "State." + field.name, offsets, deltaReference);
     }

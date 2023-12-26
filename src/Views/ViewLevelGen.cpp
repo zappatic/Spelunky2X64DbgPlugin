@@ -77,8 +77,8 @@ void S2Plugin::ViewLevelGen::initializeUI()
 
     // TAB DATA
     {
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->levelGen(), this);
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
+        mMainTreeView = new TreeViewMemoryFields(mToolbar,this);
+        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
         {
             mMainTreeView->addMemoryField(field, "LevelGen." + field.name);
         }
@@ -99,7 +99,7 @@ void S2Plugin::ViewLevelGen::initializeUI()
         scroll->setWidget(containerWidget);
         auto containerLayout = new QVBoxLayout(containerWidget);
 
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
+        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
         {
             if (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer)
             {
@@ -130,7 +130,7 @@ void S2Plugin::ViewLevelGen::refreshLevelGen()
     mToolbar->levelGen()->refreshOffsets();
     auto& offsets = mToolbar->levelGen()->offsets();
     auto deltaReference = offsets.at("LevelGen.data");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::LevelGen))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
     {
         mMainTreeView->updateValueForField(field, "LevelGen." + field.name, offsets, deltaReference);
         if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer))

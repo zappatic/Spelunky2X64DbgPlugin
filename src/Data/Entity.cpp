@@ -11,12 +11,12 @@
 #include <regex>
 #include <string>
 
-S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB, S2Plugin::Configuration* config)
-    : MemoryMappedData(config), mEntityPtr(offset), mTree(tree), mMemoryView(memoryView), mComparisonMemoryView(comparisonMemoryView)
+S2Plugin::Entity::Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB)
+    : mEntityPtr(offset), mTree(tree), mMemoryView(memoryView), mComparisonMemoryView(comparisonMemoryView)
 {
     auto entityID = Spelunky2::get()->getEntityTypeID(offset);
     mEntityName = Spelunky2::get()->getEntityName(offset, entityDB);
-    for (const auto& [regexStr, entityClassType] : mConfiguration->defaultEntityClassTypes())
+    for (const auto& [regexStr, entityClassType] : Configuration::get()->defaultEntityClassTypes())
     {
         auto r = std::regex(regexStr);
         if (std::regex_match(mEntityName, r))
@@ -33,6 +33,7 @@ void S2Plugin::Entity::refreshOffsets()
     auto offset = mEntityPtr;
     auto comparisonOffset = mComparisonEntityPtr;
     auto hierarchy = classHierarchy();
+    auto config = Configuration::get();
     for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
         const auto& headerIdentifier = *it;
@@ -40,10 +41,10 @@ void S2Plugin::Entity::refreshOffsets()
         headerField.name = "<b>" + headerIdentifier + "</b>";
         headerField.type = MemoryFieldType::EntitySubclass;
         headerField.jsonName = headerIdentifier;
-        offset = setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
-        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(headerIdentifier))
+        offset = config->setOffsetForField(headerField, headerIdentifier, offset, mMemoryOffsets, false);
+        for (const auto& field : config->typeFieldsOfEntitySubclass(headerIdentifier))
         {
-            offset = setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
+            offset = config->setOffsetForField(field, headerIdentifier + "." + field.name, offset, mMemoryOffsets);
         }
 
         if (mComparisonEntityPtr != 0)
@@ -53,10 +54,10 @@ void S2Plugin::Entity::refreshOffsets()
             comparisonHeaderField.type = MemoryFieldType::EntitySubclass;
             comparisonHeaderField.jsonName = "comparison." + headerIdentifier;
 
-            comparisonOffset = setOffsetForField(comparisonHeaderField, "comparison." + headerIdentifier, comparisonOffset, mMemoryOffsets, false);
-            for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(headerIdentifier))
+            comparisonOffset = config->setOffsetForField(comparisonHeaderField, "comparison." + headerIdentifier, comparisonOffset, mMemoryOffsets, false);
+            for (const auto& field : config->typeFieldsOfEntitySubclass(headerIdentifier))
             {
-                comparisonOffset = setOffsetForField(field, "comparison." + headerIdentifier + "." + field.name, comparisonOffset, mMemoryOffsets);
+                comparisonOffset = config->setOffsetForField(field, "comparison." + headerIdentifier + "." + field.name, comparisonOffset, mMemoryOffsets);
             }
         }
     }
@@ -73,7 +74,7 @@ void S2Plugin::Entity::refreshValues()
     bool pointerFieldFound = false;
     for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
-        for (const auto& field : mConfiguration->typeFieldsOfEntitySubclass(*it))
+        for (const auto& field : Configuration::get()->typeFieldsOfEntitySubclass(*it))
         {
             if (field.type == MemoryFieldType::PointerType)
             {
@@ -130,7 +131,7 @@ void S2Plugin::Entity::populateMemoryView()
     uint8_t colorIndex = 0;
     for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
-        auto& fields = mConfiguration->typeFieldsOfEntitySubclass(*it);
+        auto& fields = Configuration::get()->typeFieldsOfEntitySubclass(*it);
         for (const auto& field : fields)
         {
             highlightField(field, *it + "." + field.name, colors.at(colorIndex));
@@ -204,7 +205,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         }
         case MemoryFieldType::InlineStructType:
         {
-            for (const auto& f : mConfiguration->typeFieldsOfInlineStruct(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
             {
                 highlightField(f, fieldNameOverride + "." + f.name, color);
             }
@@ -212,7 +213,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         }
         case MemoryFieldType::EntitySubclass:
         {
-            for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
             {
                 highlightField(f, fieldNameOverride + "." + f.name, color);
             }
@@ -220,7 +221,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         }
         default:
         {
-            for (const auto& f : mConfiguration->typeFields(field.type))
+            for (const auto& f : Configuration::get()->typeFields(field.type))
             {
                 highlightField(f, fieldNameOverride + "." + f.name, color);
             }
@@ -299,7 +300,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         }
         case MemoryFieldType::InlineStructType:
         {
-            for (const auto& f : mConfiguration->typeFieldsOfInlineStruct(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
             {
                 highlightComparisonField(f, fieldNameOverride + "." + f.name);
             }
@@ -307,7 +308,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         }
         case MemoryFieldType::EntitySubclass:
         {
-            for (const auto& f : mConfiguration->typeFieldsOfEntitySubclass(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
             {
                 highlightComparisonField(f, fieldNameOverride + "." + f.name);
             }
@@ -315,7 +316,7 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         }
         default:
         {
-            for (const auto& f : mConfiguration->typeFields(field.type))
+            for (const auto& f : Configuration::get()->typeFields(field.type))
             {
                 highlightComparisonField(f, fieldNameOverride + "." + f.name);
             }
@@ -342,7 +343,7 @@ void S2Plugin::Entity::interpretAs(const std::string& classType)
 
 std::vector<std::string> S2Plugin::Entity::classHierarchy() const
 {
-    auto& ech = mConfiguration->entityClassHierarchy();
+    auto& ech = Configuration::get()->entityClassHierarchy();
     std::vector<std::string> hierarchy;
     std::string t = mEntityType;
     while (t != "Entity")
@@ -445,12 +446,13 @@ size_t S2Plugin::Entity::comparedEntityMemoryOffset() const noexcept
 void S2Plugin::Entity::updateComparedMemoryViewHighlights()
 {
     mComparisonMemoryView->clearHighlights();
+    auto config = Configuration::get();
     if (mComparisonEntityPtr != 0)
     {
         auto hierarchy = classHierarchy();
         for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
         {
-            auto& fields = mConfiguration->typeFieldsOfEntitySubclass(*it);
+            auto& fields = config->typeFieldsOfEntitySubclass(*it);
             for (const auto& field : fields)
             {
                 highlightComparisonField(field, *it + "." + field.name);

@@ -35,7 +35,7 @@
 #include <sstream>
 #include <vector>
 
-S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, MemoryMappedData* mmd, QWidget* parent) : QTreeView(parent), mToolbar(toolbar), mMemoryMappedData(mmd)
+S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent) : QTreeView(parent), mToolbar(toolbar)
 {
     mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     setItemDelegate(mHTMLDelegate.get());
@@ -50,10 +50,10 @@ S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, Memor
     QObject::connect(this, &QTreeView::clicked, this, &TreeViewMemoryFields::cellClicked);
 }
 
-void S2Plugin::TreeViewMemoryFields::setMemoryMappedData(MemoryMappedData* mmd)
-{
-    mMemoryMappedData = mmd;
-}
+//void S2Plugin::TreeViewMemoryFields::setMemoryMappedData(MemoryMappedData* mmd)
+//{
+//    mMemoryMappedData = mmd;
+//}
 
 QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
@@ -272,7 +272,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::UndeterminedThemeInfoPointer:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
+            for (const auto& f : Configuration::get()->typeFieldsOfPointer("ThemeInfoPointer"))
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
@@ -281,7 +281,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::EntitySubclass:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
@@ -290,7 +290,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::PointerType:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfPointer(field.jsonName))
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
@@ -299,7 +299,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::InlineStructType:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
+            for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
@@ -308,7 +308,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         default:
         {
             returnField = createAndInsertItem(field, fieldNameOverride, parent);
-            for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+            for (const auto& f : Configuration::get()->typeFields(field.type))
             {
                 addMemoryField(f, fieldNameOverride + "." + f.name, returnField);
             }
@@ -910,8 +910,9 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 stateFieldName = fieldNameOverride;
             }
 
+            auto config = Configuration::get();
             int8_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
-            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, value));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(stateFieldName, value));
             itemValue->setData(stateTitle, Qt::DisplayRole);
             itemValue->setData(QString::fromStdString(stateFieldName), gsRoleBaseFieldName);
             auto newHexValue = QString::asprintf("0x%02X", value);
@@ -921,7 +922,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int8_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadByte(comparisonMemoryOffset));
-            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, comparisonValue));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(stateFieldName, comparisonValue));
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -943,8 +944,9 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 stateFieldName = fieldNameOverride;
             }
 
+            auto config = Configuration::get();
             int16_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadWord(memoryOffset));
-            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, value));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(stateFieldName, value));
             itemValue->setData(stateTitle, Qt::DisplayRole);
             itemValue->setData(QString::fromStdString(stateFieldName), gsRoleBaseFieldName);
             auto newHexValue = QString::asprintf("0x%04X", value);
@@ -954,7 +956,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int16_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadWord(comparisonMemoryOffset));
-            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, comparisonValue));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(stateFieldName, comparisonValue));
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -976,8 +978,9 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
                 stateFieldName = fieldNameOverride;
             }
 
+            auto config = Configuration::get();
             int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
-            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, value));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(stateFieldName, value));
             itemValue->setData(stateTitle, Qt::DisplayRole);
             itemValue->setData(QString::fromStdString(stateFieldName), gsRoleBaseFieldName);
             auto newHexValue = QString::asprintf("0x%08X", value);
@@ -987,7 +990,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
-            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + mToolbar->configuration()->stateTitle(stateFieldName, comparisonValue));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(stateFieldName, comparisonValue));
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -1024,7 +1027,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             auto mask = (1 << (flagIndex - 1));
             auto flagSet = ((value & mask) == mask);
             auto flagFieldName = itemField->data(gsRoleFlagFieldName).toString().toStdString();
-            auto flagTitle = QString::fromStdString(mToolbar->configuration()->flagTitle(flagFieldName, flagIndex));
+            auto flagTitle = QString::fromStdString(Configuration::get()->flagTitle(flagFieldName, flagIndex));
             auto caption = QString("<font color='%1'>%2</font>").arg(flagSet ? "green" : "red", flagTitle);
             itemValue->setData(caption, Qt::DisplayRole);
             itemValue->setData(flagIndex, gsRoleFlagIndex);
@@ -1543,7 +1546,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                for (const auto& f : Configuration::get()->typeFields(field.type))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1582,7 +1585,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                for (const auto& f : Configuration::get()->typeFields(field.type))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1612,7 +1615,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (field.type == MemoryFieldType::UndeterminedThemeInfoPointer)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer("ThemeInfoPointer"))
+                for (const auto& f : Configuration::get()->typeFieldsOfPointer("ThemeInfoPointer"))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField);
                 }
@@ -1662,7 +1665,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                for (const auto& f : Configuration::get()->typeFields(field.type))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1681,7 +1684,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                for (const auto& f : Configuration::get()->typeFields(field.type))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1696,7 +1699,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfEntitySubclass(field.jsonName))
+                for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1721,7 +1724,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfPointer(field.jsonName))
+                for (const auto& f : Configuration::get()->typeFieldsOfPointer(field.jsonName))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, Script::Memory::ReadQword(memoryOffset), itemField);
                 }
@@ -1732,7 +1735,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFieldsOfInlineStruct(field.jsonName))
+                for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1743,7 +1746,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         {
             if (shouldUpdateChildren)
             {
-                for (const auto& f : mToolbar->configuration()->typeFields(field.type))
+                for (const auto& f : Configuration::get()->typeFields(field.type))
                 {
                     updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffsetDeltaReference, itemField);
                 }
@@ -1906,7 +1909,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     if (offset != 0)
                     {
                         auto fieldName = clickedItem->data(gsRoleBaseFieldName).toString();
-                        auto dialog = new DialogEditState(mToolbar->configuration(), fieldName, offset, dataType, this);
+                        auto dialog = new DialogEditState(fieldName, offset, dataType, this);
                         dialog->exec();
                     }
                     break;
@@ -1963,11 +1966,12 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto& vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
                         if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
                         {
-                            auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
-                            if (entity != nullptr)
-                            {
-                                mToolbar->showVirtualFunctions(offset, entity->entityType());
-                            }
+                            // TODO fix
+                            //auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
+                            //if (entity != nullptr)
+                            //{
+                            //    mToolbar->showVirtualFunctions(offset, entity->entityType());
+                            //}
                         }
                         else
                         {

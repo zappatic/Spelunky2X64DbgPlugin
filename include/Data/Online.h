@@ -1,18 +1,14 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
-    struct Configuration;
-
-    class Online : public MemoryMappedData
+    class Online
     {
       public:
-        Online(Configuration* config);
         bool loadOnline();
 
         std::unordered_map<std::string, size_t>& offsets();

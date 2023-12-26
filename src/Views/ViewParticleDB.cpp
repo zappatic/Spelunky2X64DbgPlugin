@@ -68,9 +68,9 @@ void S2Plugin::ViewParticleDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->particleDB(), this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
+        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::ParticleDB))
         {
             mMainTreeView->addMemoryField(field, "ParticleDB." + field.name);
         }
@@ -88,7 +88,7 @@ void S2Plugin::ViewParticleDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
+        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::ParticleDB))
         {
             switch (field.type)
             {
@@ -210,7 +210,7 @@ void S2Plugin::ViewParticleDB::showIndex(size_t index)
     mLookupIndex = index;
     auto& offsets = mToolbar->particleDB()->offsetsForIndex(mLookupIndex);
     auto deltaReference = offsets.at("ParticleDB.id");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::ParticleDB))
     {
         mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, offsets, deltaReference);
     }
@@ -239,7 +239,7 @@ void S2Plugin::ViewParticleDB::updateFieldValues()
 {
     auto& offsets = mToolbar->particleDB()->offsetsForIndex(mLookupIndex);
     auto deltaReference = offsets.at("ParticleDB.id");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::ParticleDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::ParticleDB))
     {
         mMainTreeView->updateValueForField(field, "ParticleDB." + field.name, offsets, deltaReference);
     }

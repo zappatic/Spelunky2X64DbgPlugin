@@ -3,8 +3,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::State::State(Configuration* config) : MemoryMappedData(config) {}
-
 bool S2Plugin::State::loadState()
 {
     auto spel2 = Spelunky2::get();
@@ -72,9 +70,10 @@ void S2Plugin::State::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mStatePtr;
-    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::State))
+    auto config = Configuration::get();
+    for (const auto& field : config->typeFields(MemoryFieldType::State))
     {
-        offset = setOffsetForField(field, "State." + field.name, offset, mMemoryOffsets);
+        offset = config->setOffsetForField(field, "State." + field.name, offset, mMemoryOffsets);
     }
 }
 

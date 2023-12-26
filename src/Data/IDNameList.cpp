@@ -8,7 +8,7 @@
 #include <filesystem>
 #include <fstream>
 
-S2Plugin::IDNameList::IDNameList(Spelunky2* spel2, const std::string& relFilePath, const std::regex& regex)
+S2Plugin::IDNameList::IDNameList(const std::string& relFilePath, const std::regex& regex)
 {
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);

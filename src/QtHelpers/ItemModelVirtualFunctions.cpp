@@ -16,7 +16,7 @@ Qt::ItemFlags S2Plugin::ItemModelVirtualFunctions::flags(const QModelIndex& inde
 
 QVariant S2Plugin::ItemModelVirtualFunctions::data(const QModelIndex& index, int role) const
 {
-    const VirtualFunction entry = mToolbar->configuration()->virtualFunctionsOfType(mTypeName).at(index.row());
+    const VirtualFunction entry = Configuration::get()->virtualFunctionsOfType(mTypeName).at(index.row());
     switch (role)
     {
         case Qt::DisplayRole:
@@ -56,7 +56,7 @@ QVariant S2Plugin::ItemModelVirtualFunctions::data(const QModelIndex& index, int
 
 int S2Plugin::ItemModelVirtualFunctions::rowCount(const QModelIndex& parent) const
 {
-    return mToolbar->configuration()->virtualFunctionsOfType(mTypeName).size();
+    return Configuration::get()->virtualFunctionsOfType(mTypeName).size();
 }
 
 int S2Plugin::ItemModelVirtualFunctions::columnCount(const QModelIndex& parent) const

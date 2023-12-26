@@ -4,7 +4,7 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::SaveGame::SaveGame(Configuration* config, GameManager* gm) : MemoryMappedData(config), mGameManager(gm) {}
+S2Plugin::SaveGame::SaveGame(GameManager* gm) : mGameManager(gm) {}
 
 bool S2Plugin::SaveGame::loadSaveGame()
 {
@@ -21,9 +21,10 @@ void S2Plugin::SaveGame::refreshOffsets()
 {
     mMemoryOffsets.clear();
     auto offset = mGameManager->saveGameOffset();
-    for (const auto& field : mConfiguration->typeFields(MemoryFieldType::SaveGame))
+    auto config = Configuration::get();
+    for (const auto& field : config->typeFields(MemoryFieldType::SaveGame))
     {
-        offset = setOffsetForField(field, "SaveGame." + field.name, offset, mMemoryOffsets);
+        offset = config->setOffsetForField(field, "SaveGame." + field.name, offset, mMemoryOffsets);
     }
 }
 

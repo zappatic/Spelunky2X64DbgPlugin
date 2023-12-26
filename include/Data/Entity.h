@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <QStandardItem>
 #include <memory>
 #include <string>
@@ -10,15 +9,15 @@
 namespace S2Plugin
 {
     struct EntityDB;
-    struct Configuration;
     struct TreeViewMemoryFields;
     struct WidgetMemoryView;
     struct State;
+    struct MemoryField;
 
-    class Entity : public MemoryMappedData
+    class Entity
     {
       public:
-        Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB, Configuration* config);
+        Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB);
 
         void refreshOffsets();
         void refreshValues();

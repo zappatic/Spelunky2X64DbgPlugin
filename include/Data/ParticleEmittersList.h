@@ -4,11 +4,9 @@
 
 namespace S2Plugin
 {
-    struct Spelunky2;
-
     class ParticleEmittersList : public IDNameList
     {
       public:
-        explicit ParticleEmittersList(Spelunky2* spel2);
+        explicit ParticleEmittersList();
     };
 } // namespace S2Plugin

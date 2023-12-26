@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <cstdint>
 #include <memory>
 #include <string>
@@ -8,13 +7,11 @@
 
 namespace S2Plugin
 {
-    struct Configuration;
     struct ParticleEmittersList;
 
-    class ParticleDB : public MemoryMappedData
+    class ParticleDB 
     {
       public:
-        explicit ParticleDB(Configuration* config);
         bool loadParticleDB();
         ParticleEmittersList* particleEmittersList() const noexcept;
 

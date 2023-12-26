@@ -1,9 +1,6 @@
 #include "Data/CPPGenerator.h"
 #include "Configuration.h"
 #include "QtHelpers/CPPSyntaxHighlighter.h"
-#include "Spelunky2.h"
-
-S2Plugin::CPPGenerator::CPPGenerator(Configuration* config) : mConfiguration(config) {}
 
 void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHighlighter* highlighter)
 {
@@ -12,14 +9,15 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
     std::vector<std::string> dependencies;
     std::string parentClassName = "";
     std::vector<MemoryField> fields;
-    if (mConfiguration->isEntitySubclass(className))
+    auto config = Configuration::get();
+    if (config->isEntitySubclass(className))
     {
-        const auto& hierarchy = mConfiguration->entityClassHierarchy();
+        const auto& hierarchy = config->entityClassHierarchy();
         if (hierarchy.count(className) > 0)
         {
             parentClassName = hierarchy.at(className);
         }
-        fields = mConfiguration->typeFieldsOfEntitySubclass(className);
+        fields = config->typeFieldsOfEntitySubclass(className);
 
         // add the parents to the dependencies
         std::string p = parentClassName;
@@ -33,18 +31,18 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
             dependencies.emplace_back("Entity");
         }
     }
-    else if (mConfiguration->isPointer(className))
+    else if (config->isPointer(className))
     {
-        fields = mConfiguration->typeFieldsOfPointer(className);
+        fields = config->typeFieldsOfPointer(className);
         auto pointerIndex = className.find("Pointer");
         if (pointerIndex != std::string::npos)
         {
             className.replace(pointerIndex, 7, "");
         }
     }
-    else if (mConfiguration->isInlineStruct(className))
+    else if (config->isInlineStruct(className))
     {
-        fields = mConfiguration->typeFieldsOfInlineStruct(className);
+        fields = config->typeFieldsOfInlineStruct(className);
     }
     else
     {

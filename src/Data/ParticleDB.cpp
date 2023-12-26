@@ -4,8 +4,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::ParticleDB::ParticleDB(Configuration* config) : MemoryMappedData(config) {}
-
 bool S2Plugin::ParticleDB::loadParticleDB()
 {
     auto spel2 = Spelunky2::get();
@@ -20,7 +18,7 @@ bool S2Plugin::ParticleDB::loadParticleDB()
         return true;
     }
 
-    mParticleEmittersList = std::make_unique<ParticleEmittersList>(spel2);
+    mParticleEmittersList = std::make_unique<ParticleEmittersList>();
 
     mMemoryOffsets.clear();
 
@@ -30,6 +28,7 @@ bool S2Plugin::ParticleDB::loadParticleDB()
 
     auto counter = 0;
     size_t particleDBEntrySize = 0xA0;
+    auto config = Configuration::get();
     while (counter < 250)
     {
         size_t startOffset = mParticleDBPtr + (counter * particleDBEntrySize);
@@ -38,9 +37,9 @@ bool S2Plugin::ParticleDB::loadParticleDB()
         {
             size_t offset = startOffset;
             std::unordered_map<std::string, size_t> offsets;
-            for (const auto& field : mConfiguration->typeFields(MemoryFieldType::ParticleDB))
+            for (const auto& field : config->typeFields(MemoryFieldType::ParticleDB))
             {
-                offset = setOffsetForField(field, "ParticleDB." + field.name, offset, offsets);
+                offset = config->setOffsetForField(field, "ParticleDB." + field.name, offset, offsets);
             }
             mMemoryOffsets[particleID] = offsets;
         }

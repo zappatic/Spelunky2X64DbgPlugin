@@ -57,8 +57,8 @@ void S2Plugin::ViewOnline::initializeUI()
     QObject::connect(labelButton, &QPushButton::clicked, this, &ViewOnline::label);
     mRefreshLayout->addWidget(labelButton);
 
-    mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->online(), this);
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::Online))
+    mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::Online))
     {
         mMainTreeView->addMemoryField(field, "Online." + field.name);
     }
@@ -84,7 +84,7 @@ void S2Plugin::ViewOnline::refreshOnline()
     mToolbar->state()->refreshOffsets();
     auto& offsets = mToolbar->online()->offsets();
     auto deltaReference = offsets.at("Online.__vftable");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::Online))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::Online))
     {
         mMainTreeView->updateValueForField(field, "Online." + field.name, offsets, deltaReference);
     }

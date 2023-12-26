@@ -27,9 +27,9 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
         }
 
         // retrieve the memory map and loop every entry, until we find the .text section of spel2.exe
-        uint64_t Spelunky2CodeSectionStart{0};
-        uint64_t Spelunky2CodeSectionSize{0};
-        uint64_t Spelunky2AfterBundle{0};
+        uintptr_t Spelunky2CodeSectionStart{0};
+        uintptr_t Spelunky2CodeSectionSize{0};
+        uintptr_t Spelunky2AfterBundle{0};
 
         MEMMAP memoryMap = {0};
         DbgMemMap(&memoryMap);
@@ -37,7 +37,7 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
         {
             MEMORY_BASIC_INFORMATION mbi = (memoryMap.page)[i].mbi;
             auto info = std::string((memoryMap.page)[i].info);
-            uint64_t baseAddress = (uint64_t)mbi.BaseAddress;
+            uintptr_t baseAddress = (uintptr_t)mbi.BaseAddress;
 
             char name[MAX_MODULE_SIZE] = {0};
             Script::Module::NameFromAddr(baseAddress, name);
@@ -67,7 +67,7 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
         }
 
         THREADLIST threadList;
-        size_t heapBase{0};
+        uintptr_t heapBase{0};
         DbgGetThreadList(&threadList);
         for (auto x = 0; x < threadList.count; ++x)
         {
@@ -75,7 +75,7 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
             if (threadAllInfo.BasicInfo.ThreadNumber == 0) // main thread
             {
                 auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
-                auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
+                auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(uintptr_t)));
                 auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
                 heapBase = Script::Memory::ReadQword(tebAddress11Value + TEB_offset);
                 break;
@@ -159,7 +159,7 @@ uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset) const
     return Script::Memory::ReadDword(entityDBPtr + 20);
 }
 
-size_t S2Plugin::Spelunky2::find(const char* pattern, size_t start, size_t size) const
+uintptr_t S2Plugin::Spelunky2::find(const char* pattern, uintptr_t start, size_t size) const
 {
     if (start == 0)
         start = afterBundle;
@@ -170,7 +170,7 @@ size_t S2Plugin::Spelunky2::find(const char* pattern, size_t start, size_t size)
     return Script::Pattern::FindMem(start, size, pattern);
 }
 
-size_t S2Plugin::Spelunky2::find_between(const char* pattern, size_t start, size_t end) const
+uintptr_t S2Plugin::Spelunky2::find_between(const char* pattern, uintptr_t start, uintptr_t end) const
 {
     if (start == 0)
         start = afterBundle;

@@ -1,18 +1,14 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 
-struct Configuration;
-
 namespace S2Plugin
 {
-    class GameManager : public MemoryMappedData
+    class GameManager
     {
       public:
-        explicit GameManager(Configuration* config);
         bool loadGameManager();
 
         std::unordered_map<std::string, size_t>& offsets();

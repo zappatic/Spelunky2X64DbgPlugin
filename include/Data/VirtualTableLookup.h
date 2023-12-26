@@ -7,8 +7,6 @@
 
 namespace S2Plugin
 {
-    struct Configuration;
-
     struct VirtualTableEntry
     {
         size_t value;
@@ -24,13 +22,12 @@ namespace S2Plugin
     class VirtualTableLookup
     {
       public:
-        explicit VirtualTableLookup(Configuration* config);
         bool loadTable();
 
         const VirtualTableEntry& entryForOffset(size_t tableOffset);
         std::unordered_set<uint32_t> tableOffsetForFunctionAddress(size_t functionAddress);
         VirtualTableEntry findPrecedingEntryWithSymbols(size_t tableOffset);
-        size_t tableAddressForEntry(const VirtualTableEntry& entry);
+        size_t tableAddressForEntry(const VirtualTableEntry& entry) const;
 
         void setSymbolNameForOffsetAddress(size_t offsetAddress, const std::string& name);
 
@@ -39,7 +36,6 @@ namespace S2Plugin
         void reset();
 
       private:
-        Configuration* mConfiguration;
         std::unordered_map<uint32_t, VirtualTableEntry> mOffsetToTableEntries;
         size_t mTableStartAddress = 0;
     };

@@ -6,8 +6,6 @@
 
 namespace S2Plugin
 {
-    struct Configuration;
-
     struct StringEntry
     {
         uint32_t id;
@@ -19,7 +17,6 @@ namespace S2Plugin
     class StringsTable
     {
       public:
-        explicit StringsTable(Configuration* config);
         bool loadStringsTable();
 
         const std::unordered_map<uint32_t, StringEntry>& entries();
@@ -29,7 +26,6 @@ namespace S2Plugin
         void reset();
 
       private:
-        Configuration* mConfiguration;
         size_t mStringsTablePtr = 0;
         std::unordered_map<uint32_t, StringEntry> mStringEntries;
     };

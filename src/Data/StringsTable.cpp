@@ -3,8 +3,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-S2Plugin::StringsTable::StringsTable(Configuration* config) : mConfiguration(config) {}
-
 bool S2Plugin::StringsTable::loadStringsTable()
 {
     auto spel2 = Spelunky2::get();

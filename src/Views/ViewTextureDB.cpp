@@ -67,9 +67,9 @@ void S2Plugin::ViewTextureDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, mToolbar->textureDB(), this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::TextureDB))
+        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::TextureDB))
         {
             mMainTreeView->addMemoryField(field, "TextureDB." + field.name);
         }
@@ -87,7 +87,7 @@ void S2Plugin::ViewTextureDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::TextureDB))
+        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::TextureDB))
         {
             switch (field.type)
             {
@@ -211,7 +211,7 @@ void S2Plugin::ViewTextureDB::showID(size_t id)
     mLookupID = id;
     auto& offsets = mToolbar->textureDB()->offsetsForTextureID(mLookupID);
     auto deltaReference = offsets.at("TextureDB.id");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::TextureDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::TextureDB))
     {
         mMainTreeView->updateValueForField(field, "TextureDB." + field.name, offsets, deltaReference);
     }
@@ -240,7 +240,7 @@ void S2Plugin::ViewTextureDB::updateFieldValues()
 {
     auto& offsets = mToolbar->textureDB()->offsetsForTextureID(mLookupID);
     auto deltaReference = offsets.at("TextureDB.id");
-    for (const auto& field : mToolbar->configuration()->typeFields(MemoryFieldType::TextureDB))
+    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::TextureDB))
     {
         mMainTreeView->updateValueForField(field, "TextureDB." + field.name, offsets, deltaReference);
     }

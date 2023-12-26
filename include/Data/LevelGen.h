@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Data/MemoryMappedData.h"
 #include <QColor>
+#include <unordered_map>
 
 namespace S2Plugin
 {
@@ -14,17 +14,17 @@ namespace S2Plugin
         QColor color;
     };
 
-    class LevelGen : public MemoryMappedData
+    class LevelGen
     {
       public:
-        LevelGen(Configuration* config, State* state);
+        LevelGen(State* state);
         void setState(State* state);
         bool loadLevelGen();
 
         std::unordered_map<std::string, size_t>& offsets();
         void refreshOffsets();
         size_t offsetForField(const std::string& fieldName) const;
-        std::string themeNameOfOffset(size_t offset);
+        std::string themeNameOfOffset(size_t offset) const;
         RoomCode roomCodeForID(uint16_t code) const;
 
         void reset();
