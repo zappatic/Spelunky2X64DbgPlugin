@@ -146,7 +146,7 @@ void S2Plugin::Entity::populateMemoryView()
 
 void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fieldNameOverride, const QColor& color)
 {
-    uint8_t fieldSize = 0;
+    uint8_t fieldSize = 0; // TODO use sizeof function
     switch (field.type)
     {
         case MemoryFieldType::Flag:

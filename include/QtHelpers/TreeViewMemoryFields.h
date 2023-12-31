@@ -18,7 +18,7 @@ namespace S2Plugin
         Q_OBJECT
       public:
         TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent = nullptr);
-        //void setMemoryMappedData(MemoryMappedData* mmd);
+        // void setMemoryMappedData(MemoryMappedData* mmd);
 
         QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
         void clear();

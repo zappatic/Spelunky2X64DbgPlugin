@@ -7,7 +7,7 @@
 
 namespace S2Plugin
 {
-    class TextureDB 
+    class TextureDB
     {
       public:
         bool loadTextureDB();

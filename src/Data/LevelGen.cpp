@@ -2,7 +2,6 @@
 #include "Configuration.h"
 #include "Data/State.h"
 #include "Spelunky2.h"
-#include "Configuration.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>
@@ -65,7 +64,7 @@ void S2Plugin::LevelGen::reset()
 {
     mLevelGenPtr = 0;
     mMemoryOffsets.clear();
-    //processJSON();
+    // processJSON();
 }
 
 std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset) const

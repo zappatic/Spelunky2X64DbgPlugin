@@ -1,6 +1,6 @@
 #include "QtHelpers/WidgetSamplesPlot.h"
-#include "Data/Logger.h"
 #include "Configuration.h"
+#include "Data/Logger.h"
 #include "pluginmain.h"
 #include <QFont>
 #include <QFontMetrics>

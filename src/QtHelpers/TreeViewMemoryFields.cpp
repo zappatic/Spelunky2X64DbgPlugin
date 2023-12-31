@@ -50,11 +50,6 @@ S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidg
     QObject::connect(this, &QTreeView::clicked, this, &TreeViewMemoryFields::cellClicked);
 }
 
-//void S2Plugin::TreeViewMemoryFields::setMemoryMappedData(MemoryMappedData* mmd)
-//{
-//    mMemoryMappedData = mmd;
-//}
-
 QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent)
 {
     auto createAndInsertItem = [](const MemoryField& field, const std::string& fieldNameUID, QStandardItem* itemParent) -> QStandardItem*
@@ -199,18 +194,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
                 flagFieldItem->setData(32, gsRoleFlagsSize);
-                if (!field.parentPointerJsonName.empty())
-                {
-                    flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
-                }
-                else if (!field.parentStructJsonName.empty())
-                {
-                    flagFieldItem->setData(QString::fromStdString(field.parentStructJsonName + "." + field.name), gsRoleFlagFieldName);
-                }
-                else
-                {
-                    flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
-                }
+                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
             }
             returnField = flagsParent;
             break;
@@ -226,18 +210,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
                 flagFieldItem->setData(16, gsRoleFlagsSize);
-                if (!field.parentPointerJsonName.empty())
-                {
-                    flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
-                }
-                else if (!field.parentStructJsonName.empty())
-                {
-                    flagFieldItem->setData(QString::fromStdString(field.parentStructJsonName + "." + field.name), gsRoleFlagFieldName);
-                }
-                else
-                {
-                    flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
-                }
+                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
             }
             returnField = flagsParent;
             break;
@@ -253,18 +226,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
                 auto flagFieldItem = createAndInsertItem(flagField, fieldNameOverride + "." + flagField.name, flagsParent);
                 flagFieldItem->setData(x, gsRoleFlagIndex);
                 flagFieldItem->setData(8, gsRoleFlagsSize);
-                if (!field.parentPointerJsonName.empty())
-                {
-                    flagFieldItem->setData(QString::fromStdString(field.parentPointerJsonName + "." + field.name), gsRoleFlagFieldName);
-                }
-                else if (!field.parentStructJsonName.empty())
-                {
-                    flagFieldItem->setData(QString::fromStdString(field.parentStructJsonName + "." + field.name), gsRoleFlagFieldName);
-                }
-                else
-                {
-                    flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
-                }
+                flagFieldItem->setData(QString::fromStdString(fieldNameOverride), gsRoleFlagFieldName);
             }
             returnField = flagsParent;
             break;
@@ -896,25 +858,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::State8:
         {
-            std::string stateFieldName = "";
-            if (!field.parentPointerJsonName.empty())
-            {
-                stateFieldName = field.parentPointerJsonName + "." + field.name;
-            }
-            else if (!field.parentStructJsonName.empty())
-            {
-                stateFieldName = field.parentStructJsonName + "." + field.name;
-            }
-            else
-            {
-                stateFieldName = fieldNameOverride;
-            }
-
             auto config = Configuration::get();
             int8_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
-            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(stateFieldName, value));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(fieldNameOverride, value));
             itemValue->setData(stateTitle, Qt::DisplayRole);
-            itemValue->setData(QString::fromStdString(stateFieldName), gsRoleBaseFieldName);
+            itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleBaseFieldName);
             auto newHexValue = QString::asprintf("0x%02X", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
@@ -922,7 +870,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int8_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadByte(comparisonMemoryOffset));
-            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(stateFieldName, comparisonValue));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(fieldNameOverride, comparisonValue));
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -930,25 +878,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::State16:
         {
-            std::string stateFieldName = "";
-            if (!field.parentPointerJsonName.empty())
-            {
-                stateFieldName = field.parentPointerJsonName + "." + field.name;
-            }
-            else if (!field.parentStructJsonName.empty())
-            {
-                stateFieldName = field.parentStructJsonName + "." + field.name;
-            }
-            else
-            {
-                stateFieldName = fieldNameOverride;
-            }
-
             auto config = Configuration::get();
             int16_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadWord(memoryOffset));
-            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(stateFieldName, value));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(fieldNameOverride, value));
             itemValue->setData(stateTitle, Qt::DisplayRole);
-            itemValue->setData(QString::fromStdString(stateFieldName), gsRoleBaseFieldName);
+            itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleBaseFieldName);
             auto newHexValue = QString::asprintf("0x%04X", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
@@ -956,7 +890,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int16_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadWord(comparisonMemoryOffset));
-            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(stateFieldName, comparisonValue));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(fieldNameOverride, comparisonValue));
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -964,25 +898,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         }
         case MemoryFieldType::State32:
         {
-            std::string stateFieldName = "";
-            if (!field.parentPointerJsonName.empty())
-            {
-                stateFieldName = field.parentPointerJsonName + "." + field.name;
-            }
-            else if (!field.parentStructJsonName.empty())
-            {
-                stateFieldName = field.parentStructJsonName + "." + field.name;
-            }
-            else
-            {
-                stateFieldName = fieldNameOverride;
-            }
-
             auto config = Configuration::get();
             int32_t value = (memoryOffset == 0 ? 0 : Script::Memory::ReadDword(memoryOffset));
-            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(stateFieldName, value));
+            auto stateTitle = QString::fromStdString(std::to_string(value) + ": " + config->stateTitle(fieldNameOverride, value));
             itemValue->setData(stateTitle, Qt::DisplayRole);
-            itemValue->setData(QString::fromStdString(stateFieldName), gsRoleBaseFieldName);
+            itemValue->setData(QString::fromStdString(fieldNameOverride), gsRoleBaseFieldName);
             auto newHexValue = QString::asprintf("0x%08X", value);
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
@@ -990,7 +910,7 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemValueHex->setData(value, gsRoleRawValue);
 
             int32_t comparisonValue = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadDword(comparisonMemoryOffset));
-            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(stateFieldName, comparisonValue));
+            auto comparisonStateTitle = QString::fromStdString(std::to_string(comparisonValue) + ": " + config->stateTitle(fieldNameOverride, comparisonValue));
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
@@ -1967,8 +1887,8 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
                         {
                             // TODO fix
-                            //auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
-                            //if (entity != nullptr)
+                            // auto entity = dynamic_cast<Entity*>(mMemoryMappedData);
+                            // if (entity != nullptr)
                             //{
                             //    mToolbar->showVirtualFunctions(offset, entity->entityType());
                             //}

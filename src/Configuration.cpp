@@ -9,6 +9,7 @@
 #include <fstream>
 #include <nlohmann/json.hpp>
 #include <regex>
+#include <string>
 
 using nlohmann::ordered_json;
 
@@ -88,7 +89,7 @@ S2Plugin::Configuration* S2Plugin::Configuration::get()
     if (ptr == nullptr)
     {
         auto new_config = new Configuration{};
-        if (new_config->mIsValid)
+        if (new_config->initialisedCorrectly)
             ptr = new_config;
         else
             delete new_config;
@@ -99,7 +100,7 @@ S2Plugin::Configuration* S2Plugin::Configuration::get()
 bool S2Plugin::Configuration::reset()
 {
     auto new_config = new Configuration{};
-    if (new_config->mIsValid)
+    if (new_config->initialisedCorrectly)
     {
         delete ptr;
         ptr = new_config;
@@ -112,8 +113,7 @@ bool S2Plugin::Configuration::reset()
 
 bool S2Plugin::Configuration::is_loaded()
 {
-    get();
-    return (ptr != nullptr);
+    return get() != nullptr;
 }
 
 S2Plugin::Configuration::Configuration()
@@ -124,7 +124,7 @@ S2Plugin::Configuration::Configuration()
     if (!QFile(path).exists())
     {
         displayError("Could not find " + path.toStdString());
-        mIsValid = false;
+        initialisedCorrectly = false;
         return;
     }
 
@@ -137,26 +137,34 @@ S2Plugin::Configuration::Configuration()
     catch (const ordered_json::exception& e)
     {
         displayError("Exception while parsing Spelunky2.json: " + std::string(e.what()));
-        mIsValid = false;
+        initialisedCorrectly = false;
         return;
     }
     catch (const std::exception& e)
     {
         displayError("Exception while parsing Spelunky2.json: " + std::string(e.what()));
-        mIsValid = false;
+        initialisedCorrectly = false;
         return;
     }
     catch (...)
     {
         displayError("Unknown exception while parsing Spelunky2.json");
-        mIsValid = false;
+        initialisedCorrectly = false;
         return;
     }
-    mIsValid = true;
+    initialisedCorrectly = true;
+}
+
+template <class T>
+inline T value_or(const nlohmann::ordered_json& j, const std::string name, T value_if_not_found)
+{
+    return j.contains(name) ? j[name].get<T>() : value_if_not_found;
 }
 
 void S2Plugin::Configuration::processJSON(ordered_json& j)
 {
+    using namespace std::string_literals;
+
     const auto& entityClassHierarchy = j["entity_class_hierarchy"];
     for (const auto& [key, jsonValue] : entityClassHierarchy.items())
     {
@@ -195,38 +203,31 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
         auto isEntitySubclass = isKnownEntitySubclass(key);
         auto isPointer = (pointerTypes.count(key) > 0);
         auto isInlineStruct = (inlineStructTypes.count(key) > 0);
-        if (!gsMemoryFieldType.contains(key) && !isEntitySubclass && !isPointer && !isInlineStruct)
-        {
-            throw std::runtime_error("Unknown type specified in fields(1): " + key);
-        }
+        // if (!gsMemoryFieldType.contains(key) && !isEntitySubclass && !isPointer && !isInlineStruct)
+        //{
+        //     throw std::runtime_error("Type not declared in pointer_types nor inline_struct_types: " + key);
+        // }
         std::vector<MemoryField> vec;
         for (const auto& field : jsonArray)
         {
-            if (field.contains("vftablefunctions"))
+            if (field.contains("vftablefunctions")) // for the vtable in entity subclasses
             {
                 for (const auto& [funcIndex, func] : field["vftablefunctions"].items())
                 {
                     VirtualFunction f;
                     f.index = std::stoll(funcIndex);
-                    f.name = func.contains("name") ? func["name"].get<std::string>() : "unnamed function";
-                    f.params = func.contains("params") ? func["params"].get<std::string>() : "";
-                    f.returnValue = func.contains("return") ? func["return"].get<std::string>() : "";
+                    f.name = value_or(func, "name", "unnamed function"s);
+                    f.name = value_or(func, "name", "unnamed function"s);
+                    f.params = value_or(func, "params", ""s);
+                    f.returnValue = value_or(func, "return", "void"s);
                     f.type = key;
                     mVirtualFunctions[key].emplace_back(f);
                 }
-
                 continue;
             }
 
             MemoryField memField;
-            if (isPointer)
-            {
-                memField.parentPointerJsonName = key;
-            }
-            if (isInlineStruct)
-            {
-                memField.parentStructJsonName = key;
-            }
+
             memField.name = field["field"].get<std::string>();
             if (field.contains("offset"))
             {
@@ -238,7 +239,7 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
             }
 
             auto fieldTypeStr = field["type"].get<std::string>();
-            if (pointerTypes.count(fieldTypeStr))
+            if (pointerTypes.count(fieldTypeStr) || value_or(field, "Pointer", false))
             {
                 memField.type = MemoryFieldType::PointerType;
                 memField.jsonName = fieldTypeStr;
@@ -247,24 +248,6 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
             {
                 memField.type = MemoryFieldType::InlineStructType;
                 memField.jsonName = fieldTypeStr;
-            }
-            else if (fieldTypeStr == "VirtualFunctionTable")
-            {
-                memField.type = MemoryFieldType::VirtualFunctionTable;
-                memField.virtualFunctionTableType = key;
-            }
-            else if (fieldTypeStr == "StdVector")
-            {
-                memField.type = MemoryFieldType::StdVector;
-                if (field.contains("vectortype"))
-                {
-                    memField.firstParameterType = field["vectortype"].get<std::string>();
-                }
-                else
-                {
-                    memField.firstParameterType = "UnsignedQword";
-                    dprintf("No vectortype specified for StdVector %s\n", key.c_str());
-                }
             }
             else if (fieldTypeStr == "StdMap")
             {
@@ -313,87 +296,120 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
                 memField.type = it->first;
             }
 
-            if ((memField.type == MemoryFieldType::Flags32 || memField.type == MemoryFieldType::Flags16 || memField.type == MemoryFieldType::Flags8) &&
-                (field.contains("flags") || field.contains("ref")))
+            switch (memField.type)
             {
-                nlohmann::json flagsObject;
-                if (field.contains("flags"))
+                case MemoryFieldType::StdVector:
                 {
-                    flagsObject = field["flags"];
-                }
-                else
-                {
-                    auto ref = field["ref"].get<std::string>();
-                    if (j["refs"].contains(ref))
+                    if (field.contains("vectortype"))
                     {
-                        flagsObject = j["refs"][ref];
+                        memField.firstParameterType = field["vectortype"].get<std::string>();
                     }
-                }
-
-                std::unordered_map<uint8_t, std::string> flagTitles;
-                for (const auto& [flagNumber, flagTitle] : flagsObject.items())
-                {
-                    flagTitles[std::stoi(flagNumber)] = flagTitle.get<std::string>();
-                }
-                mFlagTitles[key + "." + memField.name] = flagTitles;
-            }
-
-            if ((memField.type == MemoryFieldType::State8 || memField.type == MemoryFieldType::State16 || memField.type == MemoryFieldType::State32) &&
-                (field.contains("states") || field.contains("ref")))
-            {
-                nlohmann::json statesObject;
-                if (field.contains("states"))
-                {
-                    statesObject = field["states"];
-                }
-                else
-                {
-                    auto ref = field["ref"].get<std::string>();
-                    if (j["refs"].contains(ref))
+                    else
                     {
-                        statesObject = j["refs"][ref];
+                        memField.firstParameterType = "UnsignedQword";
+                        dprintf("No vectortype specified for StdVector %s\n", key.c_str());
                     }
+                    break;
                 }
-                std::unordered_map<int64_t, std::string> stateTitles;
-                for (const auto& [state, stateTitle] : statesObject.items())
+                case MemoryFieldType::Skip:
                 {
-                    stateTitles[std::stoll(state)] = stateTitle.get<std::string>();
+                    memField.size = memField.extraInfo;
+                    break;
                 }
-                mStateTitles[key + "." + memField.name] = stateTitles;
-            }
-
-            if (memField.type == MemoryFieldType::VirtualFunctionTable && field.contains("functions"))
-            {
-                for (const auto& [funcIndex, func] : field["functions"].items())
+                case MemoryFieldType::Flags32:
+                case MemoryFieldType::Flags16:
+                case MemoryFieldType::Flags8:
                 {
-                    VirtualFunction f;
-                    f.index = std::stoll(funcIndex);
-                    f.name = func.contains("name") ? func["name"].get<std::string>() : "unnamed function";
-                    f.params = func.contains("params") ? func["params"].get<std::string>() : "";
-                    f.returnValue = func.contains("return") ? func["return"].get<std::string>() : "";
-                    f.type = key;
-                    mVirtualFunctions[key].emplace_back(f);
+                    if (field.contains("flags") || field.contains("ref")) // TODO: what if they are missing?
+                    {
+                        nlohmann::json flagsObject;
+                        if (field.contains("flags"))
+                        {
+                            flagsObject = field["flags"];
+                        }
+                        else
+                        {
+                            auto ref = field["ref"].get<std::string>();
+                            if (j["refs"].contains(ref))
+                            {
+                                flagsObject = j["refs"][ref];
+                            }
+                        }
+
+                        std::unordered_map<uint8_t, std::string> flagTitles;
+                        for (const auto& [flagNumber, flagTitle] : flagsObject.items())
+                        {
+                            flagTitles[std::stoi(flagNumber)] = flagTitle.get<std::string>();
+                        }
+                        mFlagTitles[key + "." + memField.name] = flagTitles; // TODO save inside memfield?
+                    }
+                    break;
+                }
+                case MemoryFieldType::State8:
+                case MemoryFieldType::State16:
+                case MemoryFieldType::State32:
+                {
+                    if (field.contains("states") || field.contains("ref")) // TODO: what if they are missing?
+                    {
+                        nlohmann::json statesObject;
+                        if (field.contains("states"))
+                        {
+                            statesObject = field["states"];
+                        }
+                        else
+                        {
+                            auto ref = field["ref"].get<std::string>();
+                            if (j["refs"].contains(ref))
+                            {
+                                statesObject = j["refs"][ref];
+                            }
+                        }
+                        std::unordered_map<int64_t, std::string> stateTitles;
+                        for (const auto& [state, stateTitle] : statesObject.items())
+                        {
+                            stateTitles[std::stoll(state)] = stateTitle.get<std::string>();
+                        }
+                        mStateTitles[key + "." + memField.name] = stateTitles;
+                    }
+                    break;
+                }
+                case MemoryFieldType::VirtualFunctionTable:
+                {
+                    memField.virtualFunctionTableType = key;
+                    if (field.contains("functions"))
+                    {
+                        for (const auto& [funcIndex, func] : field["functions"].items())
+                        {
+                            VirtualFunction f;
+                            f.index = std::stoll(funcIndex);
+                            f.name = value_or(func, "name", "unnamed function"s);
+                            f.params = value_or(func, "params", ""s);
+                            f.returnValue = value_or(func, "return", "void"s);
+                            f.type = key;
+                            mVirtualFunctions[key].emplace_back(f);
+                        }
+                    }
+                    break;
                 }
             }
-
             vec.emplace_back(memField);
         }
 
         if (isPointer)
         {
-            mTypeFieldsPointers[key] = vec;
+            mTypeFieldsPointers[key] = std::move(vec);
         }
         else if (isInlineStruct)
         {
-            mTypeFieldsInlineStructs[key] = vec;
+            mTypeFieldsInlineStructs[key] = std::move(vec);
         }
         else if (isEntitySubclass)
         {
-            mTypeFieldsEntitySubclasses[key] = vec;
+            mTypeFieldsEntitySubclasses[key] = std::move(vec);
         }
         else
         {
-            mTypeFields[gsMemoryFieldType.find(key)->first] = vec;
+            mTypeFields[gsMemoryFieldType.find(key)->first] = std::move(vec);
         }
     }
 }

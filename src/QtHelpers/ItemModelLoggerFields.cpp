@@ -1,7 +1,7 @@
 #include "QtHelpers/ItemModelLoggerFields.h"
+#include "Configuration.h"
 #include "Data/Logger.h"
 #include "QtHelpers/TableViewLogger.h"
-#include "Configuration.h"
 
 S2Plugin::ItemModelLoggerFields::ItemModelLoggerFields(Logger* logger, QObject* parent) : QAbstractItemModel(parent), mLogger(logger) {}
 

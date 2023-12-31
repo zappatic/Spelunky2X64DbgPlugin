@@ -9,7 +9,7 @@ namespace S2Plugin
 {
     struct StringsTable;
 
-    class CharacterDB 
+    class CharacterDB
     {
       public:
         bool loadCharacters(StringsTable* stringsTable);

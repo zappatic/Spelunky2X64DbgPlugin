@@ -184,7 +184,7 @@ namespace S2Plugin
         std::unordered_map<std::string_view, map_type::iterator> json_names_map;
     };
 
-    struct VirtualFunction
+    struct VirtualFunction // TODO
     {
         size_t index;
         std::string name;
@@ -211,19 +211,17 @@ namespace S2Plugin
     struct MemoryField
     {
         std::string name;
+        size_t size;
         MemoryFieldType type;
         uint64_t extraInfo = 0;
+
         // jsonName only if applicable: if a type is not a MemoryFieldType, but fully defined in the json file
         // then save its name so we can compare later
         std::string jsonName;
         std::string comment;
-        std::string parentPointerJsonName;
-        std::string parentStructJsonName;
         std::string virtualFunctionTableType;
         std::string firstParameterType;
         std::string secondParameterType;
-        bool isPointer = false;
-        bool isInlineStruct = false;
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(S2Plugin::MemoryField)
@@ -263,7 +261,7 @@ namespace S2Plugin
 
       private:
         static Configuration* ptr;
-        bool mIsValid = false;
+        bool initialisedCorrectly = false;
 
         std::unordered_map<std::string, std::string> mEntityClassHierarchy;
         std::vector<std::pair<std::string, std::string>> mDefaultEntityClassTypes;

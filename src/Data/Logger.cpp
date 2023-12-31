@@ -1,6 +1,6 @@
 #include "Data/Logger.h"
-#include "QtHelpers/ItemModelLoggerFields.h"
 #include "Configuration.h"
+#include "QtHelpers/ItemModelLoggerFields.h"
 #include "pluginmain.h"
 
 S2Plugin::Logger::Logger(QObject* parent) : QObject(parent) {}

@@ -17,7 +17,7 @@ S2Plugin::ViewJournalPage::ViewJournalPage(ViewToolbar* toolbar, size_t offset, 
     setWindowIcon(QIcon(":/icons/caveman.png"));
     setWindowTitle("JournalPage");
 
-    //mMainTreeView->setMemoryMappedData(mJournalPage.get());
+    // mMainTreeView->setMemoryMappedData(mJournalPage.get());
 
     refreshJournalPage();
     mMainTreeView->setColumnWidth(gsColField, 125);

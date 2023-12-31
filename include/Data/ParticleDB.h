@@ -9,7 +9,7 @@ namespace S2Plugin
 {
     struct ParticleEmittersList;
 
-    class ParticleDB 
+    class ParticleDB
     {
       public:
         bool loadParticleDB();

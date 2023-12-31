@@ -3,7 +3,6 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-
 bool S2Plugin::GameManager::loadGameManager()
 {
     auto spel2 = Spelunky2::get();

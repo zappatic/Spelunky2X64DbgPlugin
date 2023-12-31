@@ -1,8 +1,8 @@
 #include "QtHelpers/TableViewLogger.h"
+#include "Configuration.h"
 #include "Data/Logger.h"
 #include "QtHelpers/ItemModelLoggerFields.h"
 #include "QtHelpers/StyledItemDelegateColorPicker.h"
-#include "Configuration.h"
 #include "pluginmain.h"
 #include <QColorDialog>
 #include <QFont>

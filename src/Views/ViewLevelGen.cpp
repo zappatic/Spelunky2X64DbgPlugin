@@ -77,7 +77,7 @@ void S2Plugin::ViewLevelGen::initializeUI()
 
     // TAB DATA
     {
-        mMainTreeView = new TreeViewMemoryFields(mToolbar,this);
+        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
         {
             mMainTreeView->addMemoryField(field, "LevelGen." + field.name);
