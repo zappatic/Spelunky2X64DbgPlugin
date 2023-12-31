@@ -55,7 +55,6 @@ namespace S2Plugin
         {MemoryFieldType::TextureDB, "TextureDB", "TextureDB*", "TextureDB"},
         {MemoryFieldType::TextureDBID, "TextureDB ID", "uint32_t", "TextureDBID"},
         {MemoryFieldType::TextureDBPointer, "TextureDB pointer", "Texture*", "TextureDBPointer"},
-        {MemoryFieldType::Vector, "Vector", "Vector", "Vector"},
         {MemoryFieldType::StdVector, "StdVector", "std::vector<T>", "StdVector"},
         {MemoryFieldType::StdMap, "StdMap", "std::map<K, V>", "StdMap"},
         {MemoryFieldType::StdSet, "StdSet", "std::set<T>", "StdSet"},
@@ -656,7 +655,6 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
             case MemoryFieldType::TextureDBPointer:
             case MemoryFieldType::ConstCharPointer:
             case MemoryFieldType::ConstCharPointerPointer:
-            case MemoryFieldType::Vector:
             case MemoryFieldType::StdVector:
             case MemoryFieldType::StdMap:
             case MemoryFieldType::StdSet:

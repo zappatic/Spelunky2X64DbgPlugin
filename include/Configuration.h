@@ -86,7 +86,6 @@ namespace S2Plugin
         TextureDB,
         TextureDBID,
         TextureDBPointer,
-        Vector,
         StdVector,
         StdMap,
         StdSet,

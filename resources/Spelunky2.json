@@ -8841,7 +8841,7 @@
       },
       { "field": "type", "type": "EntityDBPointer" },
       { "field": "overlay", "type": "EntityPointer" },
-      { "field": "items", "type": "Vector" },
+      { "field": "items", "type": "EntityList" },
       {
         "field": "flags",
         "type": "Flags32",
@@ -9799,12 +9799,6 @@
       { "field": "green", "type": "Float" },
       { "field": "blue", "type": "Float" },
       { "field": "alpha", "type": "Float" }
-    ],
-    "Vector": [
-      { "field": "heap", "type": "DataPointer" },
-      { "field": "begin", "type": "DataPointer" },
-      { "field": "size", "type": "UnsignedDword" },
-      { "field": "count", "type": "UnsignedDword" }
     ],
     "StdVector": [
       { "field": "begin", "type": "DataPointer" },

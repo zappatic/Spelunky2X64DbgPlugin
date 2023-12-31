@@ -170,7 +170,6 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::LevelGenRoomsMetaPointer:
         case MemoryFieldType::JournalPagePointer:
         case MemoryFieldType::ThemeInfoName:
-        case MemoryFieldType::Vector:
         case MemoryFieldType::UTF16Char:
         case MemoryFieldType::UTF16StringFixedSize:
         case MemoryFieldType::UTF8StringFixedSize:
@@ -914,30 +913,6 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValue->setData(comparisonStateTitle, Qt::DisplayRole);
             itemComparisonValue->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
             itemComparisonValueHex->setBackground(value != comparisonValue ? comparisonDifferenceColor : Qt::transparent);
-            break;
-        }
-        case MemoryFieldType::Vector:
-        {
-            if (itemField->hasChildren())
-            {
-                itemField->removeRows(0, itemField->rowCount());
-            }
-
-            auto vectorCount = (memoryOffset == 0 ? 0 : (std::min)(50u, Script::Memory::ReadDword(memoryOffset + 20)));
-            auto vectorItemsOffset = Script::Memory::ReadQword(memoryOffset + 8);
-            for (auto x = 0; x < vectorCount; ++x)
-            {
-                MemoryField f;
-                f.name = std::to_string(x);
-                f.type = MemoryFieldType::EntityUID;
-                auto subItemOffset = vectorItemsOffset + (x * sizeof(uint32_t));
-                offsets[fieldNameOverride + "." + f.name] = subItemOffset;
-
-                auto subItemValue = addMemoryField(f, fieldNameOverride + "." + f.name, itemField);
-                subItemValue->setData(subItemOffset, gsRoleRawValue);
-
-                updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField, true);
-            }
             break;
         }
         case MemoryFieldType::Flag:
