@@ -18,68 +18,75 @@ S2Plugin::Configuration* S2Plugin::Configuration::ptr = nullptr;
 namespace S2Plugin
 {
     const MemoryFieldData gsMemoryFieldType = {
-        // MemoryFieldEnum, Name for desplay, c++ type name, name in json
-        {MemoryFieldType::CodePointer, "Code pointer", "size_t*", "CodePointer"},
-        {MemoryFieldType::DataPointer, "Data pointer", "size_t*", "DataPointer"},
-        {MemoryFieldType::Byte, "8-bit", "int8_t", "Byte"},
-        {MemoryFieldType::UnsignedByte, "8-bit unsigned", "uint8_t", "UnsignedByte"},
-        {MemoryFieldType::Word, "16-bit", "int16_t", "Word"},
-        {MemoryFieldType::UnsignedWord, "16-bit unsigned", "uint16_t", "UnsignedWord"},
-        {MemoryFieldType::Dword, "32-bit", "int32_t", "Dword"},
-        {MemoryFieldType::UnsignedDword, "32-bit unsigned", "uint32_t", "UnsignedDword"},
-        {MemoryFieldType::Qword, "64-bit", "int64_t", "Qword"},
-        {MemoryFieldType::UnsignedQword, "64-bit unsigned", "uint64_t", "UnsignedQword"},
-        {MemoryFieldType::Float, "Float", "float", "Float"},
-        {MemoryFieldType::Bool, "Bool", "bool", "Bool"},
-        {MemoryFieldType::Flag, "Flag", "", ""},
-        {MemoryFieldType::Flags32, "32-bit flags", "uint32_t", "Flags32"},
-        {MemoryFieldType::Flags16, "16-bit flags", "uint16_t", "Flags16"},
-        {MemoryFieldType::Flags8, "8-bit flags", "uint8_t", "Flags8"},
-        {MemoryFieldType::State8, "8-bit state", "int8_t", "State8"},
-        {MemoryFieldType::State16, "16-bit state", "int16_t", "State16"},
-        {MemoryFieldType::State32, "32-bit state", "int32_t", "State32"},
-        {MemoryFieldType::Skip, "skip", "uint8_t", "Skip"},
-        {MemoryFieldType::GameManager, "GameManager", "", "GameManager"},
-        {MemoryFieldType::State, "State", "", "State"},
-        {MemoryFieldType::SaveGame, "SaveGame", "", "SaveGame"},
-        {MemoryFieldType::LevelGen, "LevelGen", "", "LevelGen"},
-        {MemoryFieldType::EntityDB, "EntityDB", "", "EntityDB"},
-        {MemoryFieldType::EntityPointer, "Entity pointer", "Entity*", "EntityPointer"},
-        {MemoryFieldType::EntityUIDPointer, "Entity UID pointer", "uint32_t*", "EntityUIDPointer"},
-        {MemoryFieldType::EntityDBPointer, "EntityDB pointer", "EntityDB*", "EntityDBPointer"},
-        {MemoryFieldType::EntityDBID, "EntityDB ID", "uint32_t", "EntityDBID"},
-        {MemoryFieldType::EntityUID, "Entity UID", "int32_t", "EntityUID"},
-        {MemoryFieldType::ParticleDB, "ParticleDB", "ParticleDB*", "ParticleDB"},
-        {MemoryFieldType::ParticleDBID, "ParticleDB ID", "uint32_t", "ParticleDBID"},
-        {MemoryFieldType::ParticleDBPointer, "ParticleDB pointer", "ParticleDB**", "ParticleDBPointer"},
-        {MemoryFieldType::TextureDB, "TextureDB", "TextureDB*", "TextureDB"},
-        {MemoryFieldType::TextureDBID, "TextureDB ID", "uint32_t", "TextureDBID"},
-        {MemoryFieldType::TextureDBPointer, "TextureDB pointer", "Texture*", "TextureDBPointer"},
-        {MemoryFieldType::StdVector, "StdVector", "std::vector<T>", "StdVector"},
-        {MemoryFieldType::StdMap, "StdMap", "std::map<K, V>", "StdMap"},
-        {MemoryFieldType::StdSet, "StdSet", "std::set<T>", "StdSet"},
-        {MemoryFieldType::ConstCharPointerPointer, "Const char**", "const char**", "ConstCharPointerPointer"},
-        {MemoryFieldType::ConstCharPointer, "Const char*", "const char*", "ConstCharPointer"},
-        {MemoryFieldType::StdString, "StdString", "std::string", "StdString"},
-        {MemoryFieldType::StdWstring, "StdWstring", "std::wstring", "StdWstring"},
+        // MemoryFieldEnum, Name for desplay, c++ type name, name in json, size (if 0 will be determinated from struct)
+
+        // Basic types
+        {MemoryFieldType::CodePointer, "Code pointer", "size_t*", "CodePointer", 8},
+        {MemoryFieldType::DataPointer, "Data pointer", "size_t*", "DataPointer", 8},
+        {MemoryFieldType::Byte, "8-bit", "int8_t", "Byte", 1},
+        {MemoryFieldType::UnsignedByte, "8-bit unsigned", "uint8_t", "UnsignedByte", 1},
+        {MemoryFieldType::Word, "16-bit", "int16_t", "Word", 2},
+        {MemoryFieldType::UnsignedWord, "16-bit unsigned", "uint16_t", "UnsignedWord", 2},
+        {MemoryFieldType::Dword, "32-bit", "int32_t", "Dword", 4},
+        {MemoryFieldType::UnsignedDword, "32-bit unsigned", "uint32_t", "UnsignedDword", 4},
+        {MemoryFieldType::Qword, "64-bit", "int64_t", "Qword", 8},
+        {MemoryFieldType::UnsignedQword, "64-bit unsigned", "uint64_t", "UnsignedQword", 8},
+        {MemoryFieldType::Float, "Float", "float", "Float", 4},
+        {MemoryFieldType::Double, "Double", "double", "Double", 8},
+        {MemoryFieldType::Bool, "Bool", "bool", "Bool", 1},
+        {MemoryFieldType::Flags8, "8-bit flags", "uint8_t", "Flags8", 1},
+        {MemoryFieldType::Flags16, "16-bit flags", "uint16_t", "Flags16", 2},
+        {MemoryFieldType::Flags32, "32-bit flags", "uint32_t", "Flags32", 4},
+        {MemoryFieldType::State8, "8-bit state", "int8_t", "State8", 1},
+        {MemoryFieldType::State16, "16-bit state", "int16_t", "State16", 2},
+        {MemoryFieldType::State32, "32-bit state", "int32_t", "State32", 4},
+        {MemoryFieldType::UTF16Char, "UTF16Char", "char16_t", "UTF16Char", 2},
+        {MemoryFieldType::UTF16StringFixedSize, "UTF16StringFixedSize", "std::array<char16_t, S>", "UTF16StringFixedSize", 0},
+        {MemoryFieldType::UTF8StringFixedSize, "UTF8StringFixedSize", "std::array<char, S>", "UTF8StringFixedSize", 0},
+        {MemoryFieldType::Skip, "skip", "uint8_t", "Skip", 0},
+        // STD lib
+        {MemoryFieldType::StdVector, "StdVector", "std::vector<T>", "StdVector", 24},
+        {MemoryFieldType::StdMap, "StdMap", "std::map<K, V>", "StdMap", 16},
+        {MemoryFieldType::StdSet, "StdSet", "std::set<T>", "StdSet", 16},
+        {MemoryFieldType::StdString, "StdString", "std::string", "StdString", 32},
+        {MemoryFieldType::StdWstring, "StdWstring", "std::wstring", "StdWstring", 32},
+        // Main structs
+        {MemoryFieldType::GameManager, "GameManager", "", "GameManager", 0},
+        {MemoryFieldType::State, "State", "", "State", 0},
+        {MemoryFieldType::SaveGame, "SaveGame", "", "SaveGame", 0},
+        {MemoryFieldType::LevelGen, "LevelGen", "", "LevelGen", 0},
+        {MemoryFieldType::EntityDB, "EntityDB", "", "EntityDB", 0},
+        {MemoryFieldType::ParticleDB, "ParticleDB", "", "ParticleDB", 0},
+        {MemoryFieldType::TextureDB, "TextureDB", "", "TextureDB", 0},
+        {MemoryFieldType::CharacterDB, "CharacterDB", "", "CharacterDB", 0},
+        {MemoryFieldType::Online, "Online", "", "Online", 0},
+        // Special Types
+        {MemoryFieldType::EntityPointer, "Entity pointer", "Entity*", "EntityPointer", 8},
+        {MemoryFieldType::EntityUIDPointer, "Entity UID pointer", "uint32_t*", "EntityUIDPointer", 8},
+        {MemoryFieldType::EntityDBPointer, "EntityDB pointer", "EntityDB*", "EntityDBPointer", 8},
+        {MemoryFieldType::EntityDBID, "EntityDB ID", "uint32_t", "EntityDBID", 4},
+        {MemoryFieldType::EntityUID, "Entity UID", "int32_t", "EntityUID", 4},
+        {MemoryFieldType::ParticleDBID, "ParticleDB ID", "uint32_t", "ParticleDBID", 4},
+        {MemoryFieldType::ParticleDBPointer, "ParticleDB pointer", "ParticleDB*", "ParticleDBPointer", 8},
+        {MemoryFieldType::TextureDBID, "TextureDB ID", "uint32_t", "TextureDBID", 4},
+        {MemoryFieldType::TextureDBPointer, "TextureDB pointer", "Texture*", "TextureDBPointer", 8},
+        {MemoryFieldType::ConstCharPointer, "Const char*", "const char*", "ConstCharPointer", 8},
+        {MemoryFieldType::ConstCharPointerPointer, "Const char**", "const char**", "ConstCharPointerPointer", 8},                         // there is more then just pointer to pointer?
+        {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer", "ThemeInfo*", "UndeterminedThemeInfoPointer", 8}, // display theme name and
+        {MemoryFieldType::ThemeInfoName, "ThemeInfoName", "ThemeInfo*", "ThemeInfoName", 8},
+        {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer", "LevelGenRooms*", "LevelGenRoomsPointer", 8},
+        {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer", "LevelGenRoomsMeta*", "LevelGenRoomsMetaPointer", 8},
+        {MemoryFieldType::JournalPagePointer, "JournalPagePointer", "JournalPage*", "JournalPagePointer", 8},
+        {MemoryFieldType::LevelGenPointer, "LevelGenPointer", "LevelGen*", "LevelGenPointer", 8},
+        {MemoryFieldType::StringsTableID, "StringsTableID", "uint32_t", "StringsTableID", 4},
+        {MemoryFieldType::CharacterDBID, "CharacterDBID", "uint8_t", "CharacterDBID", 1},
+        {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable", "size_t*", "VirtualFunctionTable", 8},
+        {MemoryFieldType::IPv4Address, "IPv4Address", "uint32_t", "IPv4Address", 4},
+        // Other
         //{MemoryFieldType::EntitySubclass, "", "", ""},
-        {MemoryFieldType::PointerType, "Pointer", "", ""},
-        {MemoryFieldType::InlineStructType, "Inline struct", "", ""},
-        {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer", "ThemeInfo*", "UndeterminedThemeInfoPointer"},
-        {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer", "LevelGenRooms*", "LevelGenRoomsPointer"},
-        {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer", "LevelGenRoomsMeta*", "LevelGenRoomsMetaPointer"},
-        {MemoryFieldType::JournalPagePointer, "JournalPagePointer", "JournalPage*", "JournalPagePointer"},
-        {MemoryFieldType::ThemeInfoName, "ThemeInfoName", "ThemeInfo*", "ThemeInfoName"},
-        {MemoryFieldType::LevelGenPointer, "LevelGenPointer", "LevelGen*", "LevelGenPointer"},
-        {MemoryFieldType::UTF16Char, "UTF16Char", "char16_t", "UTF16Char"},
-        {MemoryFieldType::UTF16StringFixedSize, "UTF16StringFixedSize", "std::array<char16_t, S>", "UTF16StringFixedSize"},
-        {MemoryFieldType::UTF8StringFixedSize, "UTF8StringFixedSize", "std::array<char, S>", "UTF8StringFixedSize"},
-        {MemoryFieldType::StringsTableID, "StringsTableID", "uint32_t", "StringsTableID"},
-        {MemoryFieldType::CharacterDB, "CharacterDB", "CharacterDB*", "CharacterDB"},
-        {MemoryFieldType::CharacterDBID, "CharacterDBID", "uint8_t", "CharacterDBID"},
-        {MemoryFieldType::VirtualFunctionTable, "VirtualFunctionTable", "size_t*", "VirtualFunctionTable"},
-        {MemoryFieldType::Online, "Online", "", "Online"},
-        {MemoryFieldType::IPv4Address, "IPv4Address", "uint32_t", "IPv4Address"},
+        {MemoryFieldType::PointerType, "Pointer", "", "", 8},
+        //{MemoryFieldType::InlineStructType, "Inline struct", "", "", 0},
+        {MemoryFieldType::Flag, "Flag", "", "", 0},
     };
 }
 
@@ -96,7 +103,7 @@ S2Plugin::Configuration* S2Plugin::Configuration::get()
     return ptr;
 }
 
-bool S2Plugin::Configuration::reset()
+bool S2Plugin::Configuration::reload()
 {
     auto new_config = new Configuration{};
     if (new_config->initialisedCorrectly)
@@ -230,7 +237,7 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
             memField.name = field["field"].get<std::string>();
             if (field.contains("offset"))
             {
-                memField.extraInfo = field["offset"].get<uint64_t>();
+                memField.size = field["offset"].get<size_t>();
             }
             if (field.contains("comment"))
             {
@@ -238,10 +245,17 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
             }
 
             auto fieldTypeStr = field["type"].get<std::string>();
-            if (pointerTypes.count(fieldTypeStr) || value_or(field, "Pointer", false))
+            if (value_or(field, "Pointer", false))
+            {
+                memField.isPointer = true;
+                memField.size = sizeof(void*);
+            }
+
+            if (pointerTypes.count(fieldTypeStr))
             {
                 memField.type = MemoryFieldType::PointerType;
                 memField.jsonName = fieldTypeStr;
+                memField.size = sizeof(void*);
             }
             else if (inlineStructTypes.count(fieldTypeStr))
             {
@@ -310,11 +324,6 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
                     }
                     break;
                 }
-                case MemoryFieldType::Skip:
-                {
-                    memField.size = memField.extraInfo;
-                    break;
-                }
                 case MemoryFieldType::Flags32:
                 case MemoryFieldType::Flags16:
                 case MemoryFieldType::Flags8:
@@ -374,7 +383,7 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
                 }
                 case MemoryFieldType::VirtualFunctionTable:
                 {
-                    memField.virtualFunctionTableType = key;
+                    memField.firstParameterType = key; // use firstParameterType to hold the parrent type of the vtable
                     if (field.contains("functions"))
                     {
                         for (const auto& [funcIndex, func] : field["functions"].items())
@@ -662,6 +671,7 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
             case MemoryFieldType::DataPointer:
             case MemoryFieldType::Qword:
             case MemoryFieldType::UnsignedQword:
+            case MemoryFieldType::Double:
                 return sizeof(size_t);
             case MemoryFieldType::InlineStructType:
             default:
@@ -704,7 +714,7 @@ size_t S2Plugin::Configuration::setOffsetForField(const MemoryField& field, cons
         case MemoryFieldType::Skip:
         case MemoryFieldType::UTF16StringFixedSize:
         case MemoryFieldType::UTF8StringFixedSize:
-            offset += field.extraInfo;
+            offset += field.size;
             break;
         case MemoryFieldType::Bool:
         case MemoryFieldType::Byte:
@@ -751,6 +761,7 @@ size_t S2Plugin::Configuration::setOffsetForField(const MemoryField& field, cons
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::VirtualFunctionTable:
+        case MemoryFieldType::Double:
             offset += 8;
             break;
         case MemoryFieldType::UndeterminedThemeInfoPointer:

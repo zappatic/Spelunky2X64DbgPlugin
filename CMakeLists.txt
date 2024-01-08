@@ -127,6 +127,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/Logger.cpp
 	src/Data/Online.cpp
 	src/Data/JournalPage.cpp
+	src/Data/Lookup.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
 	src/Views/ViewParticleDB.cpp

@@ -151,6 +151,7 @@ QStandardItem* S2Plugin::TreeViewMemoryFields::addMemoryField(const MemoryField&
         case MemoryFieldType::Qword:
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::Float:
+        case MemoryFieldType::Double:
         case MemoryFieldType::Bool:
         case MemoryFieldType::StringsTableID:
         case MemoryFieldType::ParticleDBID:
@@ -631,6 +632,26 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             itemComparisonValueHex->setBackground(dword != comparisonDword ? comparisonDifferenceColor : Qt::transparent);
             break;
         }
+        case MemoryFieldType::Double:
+        {
+            size_t qword = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
+            double value = reinterpret_cast<double&>(qword);
+            itemValue->setData(QString::asprintf("%lf", value), Qt::DisplayRole);
+            auto newHexValue = QString::asprintf("0x%016lX", qword);
+            itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
+            itemValueHex->setData(newHexValue, Qt::DisplayRole);
+            itemValue->setData(value, gsRoleRawValue);
+            itemValueHex->setData(value, gsRoleRawValue);
+
+            size_t comparisonQword = (comparisonMemoryOffset == 0 ? 0 : Script::Memory::ReadQword(comparisonMemoryOffset));
+            double comparisonValue = reinterpret_cast<double&>(comparisonQword);
+            itemComparisonValue->setData(QString::asprintf("%lf", comparisonValue), Qt::DisplayRole);
+            auto hexComparisonValue = QString::asprintf("0x%016lX", comparisonQword);
+            itemComparisonValueHex->setData(hexComparisonValue, Qt::DisplayRole);
+            itemComparisonValue->setBackground(qword != comparisonQword ? comparisonDifferenceColor : Qt::transparent);
+            itemComparisonValueHex->setBackground(qword != comparisonQword ? comparisonDifferenceColor : Qt::transparent);
+            break;
+        }
         case MemoryFieldType::Bool:
         {
             uint8_t b = (memoryOffset == 0 ? 0 : Script::Memory::ReadByte(memoryOffset));
@@ -960,13 +981,13 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::UTF16StringFixedSize:
         {
             char buffer[1024] = {0};
-            Script::Memory::Read(memoryOffset, buffer, field.extraInfo, nullptr);
+            Script::Memory::Read(memoryOffset, buffer, field.size, nullptr);
             auto valueString = QString::fromUtf16(reinterpret_cast<const ushort*>(buffer));
             itemValue->setData(valueString, Qt::DisplayRole);
             itemValueHex->setData("", Qt::DisplayRole);
 
             char comparisonBuffer[1024] = {0};
-            Script::Memory::Read(comparisonMemoryOffset, comparisonBuffer, field.extraInfo, nullptr);
+            Script::Memory::Read(comparisonMemoryOffset, comparisonBuffer, field.size, nullptr);
             auto comparisonValueString = QString::fromUtf16(reinterpret_cast<const ushort*>(comparisonBuffer));
             itemComparisonValue->setData(comparisonValueString, Qt::DisplayRole);
             itemComparisonValueHex->setData("", Qt::DisplayRole);
@@ -976,13 +997,13 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
         case MemoryFieldType::UTF8StringFixedSize:
         {
             char buffer[1024] = {0};
-            Script::Memory::Read(memoryOffset, buffer, field.extraInfo, nullptr);
+            Script::Memory::Read(memoryOffset, buffer, field.size, nullptr);
             auto valueString = QString::fromUtf8(reinterpret_cast<const char*>(buffer));
             itemValue->setData(valueString, Qt::DisplayRole);
             itemValueHex->setData("", Qt::DisplayRole);
 
             char comparisonBuffer[1024] = {0};
-            Script::Memory::Read(comparisonMemoryOffset, comparisonBuffer, field.extraInfo, nullptr);
+            Script::Memory::Read(comparisonMemoryOffset, comparisonBuffer, field.size, nullptr);
             auto comparisonValueString = QString::fromUtf8(reinterpret_cast<const char*>(comparisonBuffer));
             itemComparisonValue->setData(comparisonValueString, Qt::DisplayRole);
             itemComparisonValueHex->setData("", Qt::DisplayRole);
@@ -1858,7 +1879,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     auto offset = clickedItem->data(gsRoleRawValue).toULongLong();
                     if (offset != 0)
                     {
-                        auto& vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().virtualFunctionTableType;
+                        auto& vftType = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>().firstParameterType;
                         if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
                         {
                             // TODO fix
@@ -1905,6 +1926,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::Qword:
                 case MemoryFieldType::UnsignedQword:
                 case MemoryFieldType::Float:
+                case MemoryFieldType::Double:
                 case MemoryFieldType::UTF16Char:
                 case MemoryFieldType::StringsTableID:
                 {

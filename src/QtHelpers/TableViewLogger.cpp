@@ -47,16 +47,7 @@ void S2Plugin::TableViewLogger::dragMoveEvent(QDragMoveEvent* event)
 
 void S2Plugin::TableViewLogger::dropEvent(QDropEvent* event)
 {
-    static constexpr uint8_t defaultColorCount = 6;
-    static const std::array<QColor, defaultColorCount> defaultColors = {
-        QColor(255, 102, 99), QColor(254, 177, 68), QColor(253, 253, 151), QColor(158, 224, 158), QColor(158, 193, 207), QColor(204, 153, 201),
-    };
-    static const std::unordered_set<MemoryFieldType> allowedMemoryFieldTypes = {
-        MemoryFieldType::Byte,        MemoryFieldType::UnsignedByte,   MemoryFieldType::Bool,    MemoryFieldType::Flags8,        MemoryFieldType::State8,    MemoryFieldType::CharacterDBID,
-        MemoryFieldType::Word,        MemoryFieldType::UnsignedWord,   MemoryFieldType::Flags16, MemoryFieldType::State16,       MemoryFieldType::Dword,     MemoryFieldType::UnsignedDword,
-        MemoryFieldType::Float,       MemoryFieldType::Flags32,        MemoryFieldType::State32, MemoryFieldType::EntityDBID,    MemoryFieldType::EntityUID, MemoryFieldType::ParticleDBID,
-        MemoryFieldType::TextureDBID, MemoryFieldType::StringsTableID, MemoryFieldType::Qword,   MemoryFieldType::UnsignedQword,
-    };
+    static const std::array defaultColors = {QColor(255, 102, 99), QColor(254, 177, 68), QColor(253, 253, 151), QColor(158, 224, 158), QColor(158, 193, 207), QColor(204, 153, 201)};
 
     auto fieldsModel = qobject_cast<ItemModelLoggerFields*>(model());
 
@@ -68,20 +59,48 @@ void S2Plugin::TableViewLogger::dropEvent(QDropEvent* event)
 
     LoggerField field;
     field.type = static_cast<MemoryFieldType>(j[gsJSONDragDropMemoryField_Type].get<uint64_t>());
-    if (allowedMemoryFieldTypes.count(field.type) == 0)
+    switch (field.type)
     {
-        QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
-        msgBox.setText("This field type is not supported for logging");
-        msgBox.setWindowTitle("Spelunky2");
-        msgBox.exec();
-        return;
+        // List allowed types
+        case MemoryFieldType::Byte:
+        case MemoryFieldType::UnsignedByte:
+        case MemoryFieldType::Bool:
+        case MemoryFieldType::Flags8:
+        case MemoryFieldType::State8:
+        case MemoryFieldType::CharacterDBID:
+        case MemoryFieldType::Word:
+        case MemoryFieldType::UnsignedWord:
+        case MemoryFieldType::Flags16:
+        case MemoryFieldType::State16:
+        case MemoryFieldType::Dword:
+        case MemoryFieldType::UnsignedDword:
+        case MemoryFieldType::Float:
+        case MemoryFieldType::Flags32:
+        case MemoryFieldType::State32:
+        case MemoryFieldType::EntityDBID:
+        case MemoryFieldType::EntityUID:
+        case MemoryFieldType::ParticleDBID:
+        case MemoryFieldType::TextureDBID:
+        case MemoryFieldType::StringsTableID:
+        case MemoryFieldType::Qword:
+        case MemoryFieldType::UnsignedQword:
+        case MemoryFieldType::Double:
+            break;
+        default:
+        {
+            QMessageBox msgBox;
+            msgBox.setIcon(QMessageBox::Critical);
+            msgBox.setWindowIcon(QIcon(":/icons/caveman.png"));
+            msgBox.setText("This field type is not supported for logging");
+            msgBox.setWindowTitle("Spelunky2");
+            msgBox.exec();
+            return;
+        }
     }
     field.uuid = QUuid::createUuid().toString().toStdString();
     field.memoryOffset = j[gsJSONDragDropMemoryField_Offset].get<uint64_t>();
     field.name = j[gsJSONDragDropMemoryField_UID].get<std::string>();
-    field.color = defaultColors[fieldsModel->rowCount() % defaultColorCount];
+    field.color = defaultColors[fieldsModel->rowCount() % defaultColors.size()];
 
     mLogger->addField(field);
 

@@ -265,10 +265,10 @@ void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefi
                 for (uint8_t x = 1; x <= flagCount; ++x)
                 {
                     MemoryField flagField;
-                    flagField.name = field.name; // + ".flag_" + std::to_string(x);
+                    flagField.name = field.name;
                     flagField.type = MemoryFieldType::Flag;
-                    flagField.extraInfo = x - 1;
-                    flagField.comment = std::to_string(flagCount); // abuse the comment field to transmit the size to fetch
+                    flagField.flag_index = x - 1;
+                    flagField.flag_parrent_size = flagCount;
 
                     ComparisonField tmp;
                     tmp.prefix = prefix;
@@ -450,6 +450,12 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const std::st
             float value = reinterpret_cast<float&>(dword);
             return std::make_pair(QString::asprintf("%f", value), QVariant::fromValue(value));
         }
+        case MemoryFieldType::Double:
+        {
+            size_t qword = Script::Memory::ReadQword(offset);
+            double value = reinterpret_cast<double&>(qword);
+            return std::make_pair(QString::asprintf("%lf", value), QVariant::fromValue(value));
+        }
         case MemoryFieldType::Bool:
         {
             auto b = Script::Memory::ReadByte(offset);
@@ -458,19 +464,19 @@ std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const std::st
         }
         case MemoryFieldType::Flag:
         {
-            uint8_t flagToCheck = field.extraInfo;
+            uint8_t flagToCheck = field.flag_index;
             bool isFlagSet = false;
-            if (field.comment == "32")
+            switch (field.flag_parrent_size)
             {
-                isFlagSet = ((Script::Memory::ReadDword(offset) & (1 << flagToCheck)) > 0);
-            }
-            else if (field.comment == "16")
-            {
-                isFlagSet = ((Script::Memory::ReadWord(offset) & (1 << flagToCheck)) > 0);
-            }
-            else if (field.comment == "8")
-            {
-                isFlagSet = ((Script::Memory::ReadByte(offset) & (1 << flagToCheck)) > 0);
+                case 32:
+                    isFlagSet = ((Script::Memory::ReadDword(offset) & (1 << flagToCheck)) > 0);
+                    break;
+                case 16:
+                    isFlagSet = ((Script::Memory::ReadWord(offset) & (1 << flagToCheck)) > 0);
+                    break;
+                case 8:
+                    isFlagSet = ((Script::Memory::ReadByte(offset) & (1 << flagToCheck)) > 0);
+                    break;
             }
 
             bool value = reinterpret_cast<bool&>(isFlagSet);

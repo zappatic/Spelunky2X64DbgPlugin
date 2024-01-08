@@ -36,6 +36,10 @@ namespace S2Plugin
             return get() != nullptr;
         };
 
+        //
+        uintptr_t get_GameManager();
+        uintptr_t get_SaveData();
+        //
         std::string getEntityName(size_t offset, EntityDB* entityDB) const;
         uint32_t getEntityTypeID(size_t offset) const;
 
@@ -56,6 +60,7 @@ namespace S2Plugin
         static Spelunky2* ptr;
 
         uintptr_t heapBaseAddr{0};
+        uintptr_t gameManager{0};
 
         Spelunky2() = default;
         ~Spelunky2(){};

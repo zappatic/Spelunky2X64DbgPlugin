@@ -111,6 +111,7 @@ namespace S2Plugin
         VirtualFunctionTable,
         Online,
         IPv4Address,
+        Double,
     };
 
     class MemoryFieldData
@@ -120,17 +121,17 @@ namespace S2Plugin
         {
             std::string_view display_name;
             std::string_view cpp_type_name;
+            uint32_t size;
         };
 
-        using value_type = std::tuple<MemoryFieldType, const char*, const char*, const char*>;
         using map_type = std::map<MemoryFieldType, Data>;
 
-        MemoryFieldData(std::initializer_list<value_type> init)
+        MemoryFieldData(std::initializer_list<std::tuple<MemoryFieldType, const char*, const char*, const char*, uint32_t>> init)
         {
-            // MemoryFieldType type, const char* d_name, const char* cpp_type, const char* j_name
+            // MemoryFieldType type, const char* d_name, const char* cpp_type, const char* j_name, uint32_t size
             for (auto& val : init)
             {
-                auto it = fields.emplace(std::get<0>(val), Data{std::get<1>(val), std::get<2>(val)});
+                auto it = fields.emplace(std::get<0>(val), Data{std::get<1>(val), std::get<2>(val), std::get<4>(val)});
                 if (it.second)
                 {
                     auto size = strlen(std::get<3>(val));
@@ -210,17 +211,24 @@ namespace S2Plugin
     struct MemoryField
     {
         std::string name;
-        size_t size;
+        union
+        {
+            size_t size{0};
+            uint8_t flag_index;
+        };
         MemoryFieldType type;
-        uint64_t extraInfo = 0;
 
         // jsonName only if applicable: if a type is not a MemoryFieldType, but fully defined in the json file
         // then save its name so we can compare later
         std::string jsonName;
-        std::string comment;
-        std::string virtualFunctionTableType;
+
         std::string firstParameterType;
         std::string secondParameterType;
+        std::string comment;
+        bool isPointer{false};
+        uint8_t flag_parrent_size{0};
+
+        // TODO: add comparison operator ?
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(S2Plugin::MemoryField)
@@ -232,7 +240,7 @@ namespace S2Plugin
     {
       public:
         static Configuration* get();
-        static bool reset();
+        static bool reload();
         static bool is_loaded();
 
         const std::unordered_map<std::string, std::string>& entityClassHierarchy() const noexcept;
@@ -264,7 +272,9 @@ namespace S2Plugin
 
         std::unordered_map<std::string, std::string> mEntityClassHierarchy;
         std::vector<std::pair<std::string, std::string>> mDefaultEntityClassTypes;
-        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFields;
+
+        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFields; // for the hardcoded main types only
+
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsEntitySubclasses;
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsPointers;
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsInlineStructs;

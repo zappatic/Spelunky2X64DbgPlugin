@@ -65,6 +65,10 @@ QVariant S2Plugin::ItemModelLoggerSamples::data(const QModelIndex& index, int ro
                 {
                     return std::any_cast<float>(samples.at(index.row()));
                 }
+                case MemoryFieldType::Double:
+                {
+                    return std::any_cast<double>(samples.at(index.row()));
+                }
                 case MemoryFieldType::Qword:
                 {
                     return std::any_cast<int64_t>(samples.at(index.row()));

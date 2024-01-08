@@ -183,3 +183,10 @@ uintptr_t S2Plugin::Spelunky2::find_between(const char* pattern, uintptr_t start
 
     return Script::Pattern::FindMem(start, size, pattern);
 }
+
+uintptr_t S2Plugin::Spelunky2::get_SaveData()
+{
+    auto gm = get_GameManager();
+    auto heapOffsetSaveGame = Script::Memory::ReadQword(Script::Memory::ReadQword(gm + 8));
+    return heapBaseAddr + heapOffsetSaveGame;
+}

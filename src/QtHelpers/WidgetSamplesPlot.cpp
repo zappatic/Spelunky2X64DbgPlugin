@@ -91,6 +91,11 @@ void S2Plugin::WidgetSamplesPlot::paintEvent(QPaintEvent* event)
                     mappedY = ((std::any_cast<float>(sample) - lowerBound) / (float)(upperBound - lowerBound)) * drawHeight;
                     break;
                 }
+                case MemoryFieldType::Double:
+                {
+                    mappedY = ((std::any_cast<double>(sample) - lowerBound) / (double)(upperBound - lowerBound)) * drawHeight;
+                    break;
+                }
                 case MemoryFieldType::Qword:
                 {
                     mappedY = ((std::any_cast<int64_t>(sample) - lowerBound) / (float)(upperBound - lowerBound)) * drawHeight;
@@ -196,6 +201,11 @@ void S2Plugin::WidgetSamplesPlot::paintEvent(QPaintEvent* event)
                     case MemoryFieldType::Float:
                     {
                         caption = QString("%1 (%2)").arg(std::any_cast<float>(sample)).arg(QString::fromStdString(field.name));
+                        break;
+                    }
+                    case MemoryFieldType::Double:
+                    {
+                        caption = QString("%1 (%2)").arg(std::any_cast<double>(sample)).arg(QString::fromStdString(field.name));
                         break;
                     }
                     case MemoryFieldType::Qword:

@@ -2307,10 +2307,10 @@
       { "field": "padding_probably5", "type": "Dword" },
       { "field": "unknown27", "type": "DataPointer" },
       { "field": "unknown28", "type": "Qword" },
-      { "field": "unknown29a", "type": "Qword", "comment": "it's double" },
-      { "field": "unknown29b", "type": "Qword", "comment": "it's double" },
-      { "field": "unknown29c", "type": "Qword", "comment": "it's double" },
-      { "field": "unknown29d", "type": "Qword", "comment": "it's double" },
+      { "field": "unknown29a", "type": "Double" },
+      { "field": "unknown29b", "type": "Double" },
+      { "field": "unknown29c", "type": "Double" },
+      { "field": "unknown29d", "type": "Double" },
       { "field": "unknown30", "type": "Dword" },
       { "field": "unknown31", "type": "Dword" },
       { "field": "unknown32", "type": "Qword" },
@@ -13569,13 +13569,13 @@
         "vftablefunctions": {
           "93": {
             "name": "light_up",
-            "params": "bool",
+            "params": "bool lit",
             "return": ""
           },
           "94": {
             "name": "v_94",
-            "params": "double& value",
-            "return": ""
+            "params": "std::pair<float, float>& value",
+            "return": "std::pair<float, float>&"
           },
           "95": {
             "name": "get_flame_type",

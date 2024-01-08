@@ -137,6 +137,13 @@ void S2Plugin::Logger::sample()
                 mSamples[field.uuid].emplace_back(value);
                 break;
             }
+            case MemoryFieldType::Double:
+            {
+                uint32_t tmp = Script::Memory::ReadDword(field.memoryOffset);
+                double value = reinterpret_cast<double&>(tmp);
+                mSamples[field.uuid].emplace_back(value);
+                break;
+            }
             case MemoryFieldType::Qword:
             {
                 int64_t value = Script::Memory::ReadQword(field.memoryOffset);
@@ -172,6 +179,19 @@ std::pair<int64_t, int64_t> S2Plugin::Logger::sampleBounds(const LoggerField& fi
             {
                 int64_t v_ceil = std::ceil(std::any_cast<float>(value));
                 int64_t v_floor = std::floor(std::any_cast<float>(value));
+                if (v_ceil > highest)
+                {
+                    highest = v_ceil;
+                }
+                if (v_floor < lowest)
+                {
+                    lowest = v_floor;
+                }
+            }
+            else if (field.type == MemoryFieldType::Double)
+            {
+                int64_t v_ceil = std::ceil(std::any_cast<double>(value));
+                int64_t v_floor = std::floor(std::any_cast<double>(value));
                 if (v_ceil > highest)
                 {
                     highest = v_ceil;

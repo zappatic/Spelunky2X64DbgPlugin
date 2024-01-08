@@ -144,7 +144,7 @@ void S2Plugin::Entity::populateMemoryView()
     }
 }
 
-void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fieldNameOverride, const QColor& color)
+void S2Plugin::Entity::highlightField(const MemoryField& field, const std::string& fieldNameOverride, const QColor& color)
 {
     uint8_t fieldSize = 0; // TODO use sizeof function
     switch (field.type)
@@ -154,7 +154,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::Skip:
         case MemoryFieldType::UTF16StringFixedSize:
         case MemoryFieldType::UTF8StringFixedSize:
-            fieldSize = field.extraInfo;
+            fieldSize = field.size;
             break;
         case MemoryFieldType::Bool:
         case MemoryFieldType::Byte:
@@ -196,13 +196,10 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::VirtualFunctionTable:
-            fieldSize = 8;
-            break;
+        case MemoryFieldType::Double:
         case MemoryFieldType::PointerType:
-        {
             fieldSize = 8;
             break;
-        }
         case MemoryFieldType::InlineStructType:
         {
             for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
@@ -235,7 +232,7 @@ void S2Plugin::Entity::highlightField(MemoryField field, const std::string& fiel
     mTotalMemorySize += fieldSize;
 }
 
-void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::string& fieldNameOverride)
+void S2Plugin::Entity::highlightComparisonField(const MemoryField& field, const std::string& fieldNameOverride)
 {
     uint8_t fieldSize = 0;
     bool isDifferent = false;
@@ -289,15 +286,11 @@ void S2Plugin::Entity::highlightComparisonField(MemoryField field, const std::st
         case MemoryFieldType::UnsignedQword:
         case MemoryFieldType::ConstCharPointerPointer:
         case MemoryFieldType::ConstCharPointer:
-            isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
-            fieldSize = 8;
-            break;
+        case MemoryFieldType::Double:
         case MemoryFieldType::PointerType:
-        {
             isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
             fieldSize = 8;
             break;
-        }
         case MemoryFieldType::InlineStructType:
         {
             for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))

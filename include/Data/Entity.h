@@ -52,7 +52,7 @@ namespace S2Plugin
         std::unordered_map<std::string, QStandardItem*> mTreeViewSectionItems;
 
         size_t mTotalMemorySize = 0;
-        void highlightField(MemoryField field, const std::string& fieldNameOverride, const QColor& color);
-        void highlightComparisonField(MemoryField field, const std::string& fieldNameOverride);
+        void highlightField(const MemoryField& field, const std::string& fieldNameOverride, const QColor& color);
+        void highlightComparisonField(const MemoryField& field, const std::string& fieldNameOverride);
     };
 } // namespace S2Plugin

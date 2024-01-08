@@ -424,7 +424,7 @@ void S2Plugin::ViewToolbar::reloadConfig()
             window->close();
         }
     }
-    if (Configuration::reset())
+    if (Configuration::reload())
     {
         // TODO
         mState->reset();
