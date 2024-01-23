@@ -15,7 +15,7 @@ S2Plugin::ViewStdVector::ViewStdVector(ViewToolbar* toolbar, const std::string& 
 {
     mMainLayout = new QVBoxLayout(this);
 
-    mVectorTypeSize = Configuration::get()->sizeOf(mVectorType);
+    mVectorTypeSize = Configuration::get()->getTypeSize(mVectorType);
 
     initializeRefreshLayout();
     initializeTreeView();
@@ -90,19 +90,20 @@ void S2Plugin::ViewStdVector::refreshVectorContents()
     {
         MemoryField field;
         field.name = "obj_" + std::to_string(x);
-        if (config->isPointer(mVectorType))
+        if (config->isPermanentPointer(mVectorType))
         {
-            field.type = MemoryFieldType::PointerType;
+            field.type = MemoryFieldType::DefaultStructType;
+            field.jsonName = mVectorType;
+            field.isPointer = true;
+        }
+        else if (config->isJsonStruct(mVectorType))
+        {
+            field.type = MemoryFieldType::DefaultStructType;
             field.jsonName = mVectorType;
         }
-        else if (config->isInlineStruct(mVectorType))
+        else if (auto type = config->getBuiltInType(mVectorType); type != MemoryFieldType::None)
         {
-            field.type = MemoryFieldType::InlineStructType;
-            field.jsonName = mVectorType;
-        }
-        else if (config->isBuiltInType(mVectorType))
-        {
-            field.type = gsMemoryFieldType.find(mVectorType)->first;
+            field.type = type;
         }
         else
         {

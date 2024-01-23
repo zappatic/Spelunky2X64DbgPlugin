@@ -196,11 +196,15 @@ else()
 						COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_BINARY_DIR}/Release/Spelunky2.dp64" ${X64DBG_PLUGINS_ROOT})
 endif()
 
-# Copy Spelunky2.json to the x64dbg plugins folder
+# Copy .json files to the x64dbg plugins folder
 add_custom_target(deploy-auxfiles)
 add_custom_command(	TARGET deploy-auxfiles 
 					POST_BUILD
 					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2.json" ${X64DBG_PLUGINS_ROOT})
+
+add_custom_command(	TARGET deploy-auxfiles 
+					POST_BUILD
+					COMMAND  ${CMAKE_COMMAND} -E "copy" "${CMAKE_CURRENT_SOURCE_DIR}/resources/Spelunky2Entities.json" ${X64DBG_PLUGINS_ROOT})
 
 # Copy Spelunky2Entities.txt to the x64dbg plugins folder
 add_custom_command(	TARGET deploy-auxfiles

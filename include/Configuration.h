@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 
 namespace S2Plugin
 {
@@ -18,24 +19,22 @@ namespace S2Plugin
     constexpr uint8_t gsColType = 7;
     constexpr uint8_t gsColComment = 8;
 
-    constexpr uint16_t gsRoleField = Qt::UserRole + gsColField;
+    /*constexpr uint16_t gsRoleField = Qt::UserRole + gsColField;
     constexpr uint16_t gsRoleValue = Qt::UserRole + gsColValue;
     constexpr uint16_t gsRoleValueHex = Qt::UserRole + gsColValueHex;
     constexpr uint16_t gsRoleComparisonValue = Qt::UserRole + gsColComparisonValue;
-    constexpr uint16_t gsRoleComparisonValueHex = Qt::UserRole + gsColComparisonValueHex;
+    constexpr uint16_t gsRoleComparisonValueHex = Qt::UserRole + gsColComparisonValueHex;*/
     constexpr uint16_t gsRoleType = Qt::UserRole + gsColMemoryOffset;
     constexpr uint16_t gsRoleMemoryOffset = Qt::UserRole + gsColType;
     constexpr uint16_t gsRoleRawValue = Qt::UserRole + 10;
     constexpr uint16_t gsRoleRawComparisonValue = Qt::UserRole + 11;
     constexpr uint16_t gsRoleUID = Qt::UserRole + 12;
     constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 13;
-    constexpr uint16_t gsRoleFlagFieldName = Qt::UserRole + 14;
-    constexpr uint16_t gsRoleFlagsSize = Qt::UserRole + 15;
-    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 16;
-    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 17;
-    constexpr uint16_t gsRoleBaseFieldName = Qt::UserRole + 18;
-    constexpr uint16_t gsRoleEntireMemoryField = Qt::UserRole + 19;
-    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 20;
+    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 14;
+    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 15;
+    constexpr uint16_t gsRoleRefName = Qt::UserRole + 16;
+    constexpr uint16_t gsRoleEntireMemoryField = Qt::UserRole + 17;
+    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 18;
 
     constexpr char* gsJSONDragDropMemoryField_UID = "uid";
     constexpr char* gsJSONDragDropMemoryField_Offset = "offset";
@@ -43,13 +42,17 @@ namespace S2Plugin
 
     // new types need to be added to
     // - the MemoryFieldType enum
-    // - gsMemoryFieldType in .cpp
-    // - Spelunky2.json
-    // new subclasses of Entity can just be added to the class hierarchy in Spelunky2.json
+    // - gsMemoryFieldType in Configuration.cpp
+    // - optionally in Spelunky2.json
+    // - handling of the json is done in populateMemoryField in Configuration.cpp
+    // - displaying the data and handling the click event is done in TreeViewMemoryFields.cpp
+    // - if it's common use/basic type, you may also want to add it in getAlingment function
+    // new subclasses of Entity can just be added to the class hierarchy in Spelunky2Entities.json
     // and have its fields defined there
 
     enum class MemoryFieldType
     {
+        None, // special type just for error handling
         CodePointer,
         DataPointer,
         Byte,
@@ -76,7 +79,7 @@ namespace S2Plugin
         LevelGen,
         EntityDB,
         EntityPointer,
-        EntityUIDPointer,
+        EntityUIDPointer, // TODO: remove
         EntityDBPointer,
         EntityDBID,
         EntityUID,
@@ -94,8 +97,7 @@ namespace S2Plugin
         StdString,
         StdWstring,
         EntitySubclass,               // a subclass of an entity defined in json
-        PointerType,                  // a pointer defined in json
-        InlineStructType,             // an inline struct defined in json
+        DefaultStructType,            // a struct defined in json
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
         LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
@@ -124,7 +126,7 @@ namespace S2Plugin
             uint32_t size;
         };
 
-        using map_type = std::map<MemoryFieldType, Data>;
+        using map_type = std::unordered_map<MemoryFieldType, Data>;
 
         MemoryFieldData(std::initializer_list<std::tuple<MemoryFieldType, const char*, const char*, const char*, uint32_t>> init)
         {
@@ -137,24 +139,24 @@ namespace S2Plugin
                     auto size = strlen(std::get<3>(val));
                     if (size != 0)
                     {
-                        json_names_map.emplace(std::get<3>(val), it.first);
+                        json_names_map.emplace(std::string_view(std::get<3>(val), size), it.first);
                     }
                 }
             }
         };
 
-        map_type::const_iterator find(const MemoryFieldType& key) const
+        map_type::const_iterator find(const MemoryFieldType key) const
         {
             return fields.find(key);
         }
-        map_type::const_iterator find(const std::string_view key) const
-        {
-            auto it = json_names_map.find(key);
-            if (it == json_names_map.end())
-                return fields.end();
+        ////map_type::const_iterator find(const std::string_view key) const
+        ////{
+        ////    auto it = json_names_map.find(key);
+        ////    if (it == json_names_map.end())
+        ////        return fields.end();
 
-            return it->second;
-        }
+        ////    return it->second;
+        ////}
         map_type::const_iterator end() const
         {
             return fields.end();
@@ -163,7 +165,7 @@ namespace S2Plugin
         {
             return fields.begin();
         }
-        const Data& at(const MemoryFieldType& key) const
+        const Data& at(const MemoryFieldType key) const
         {
             return fields.at(key);
         }
@@ -171,7 +173,7 @@ namespace S2Plugin
         {
             return json_names_map.at(key)->second;
         }
-        bool contains(const MemoryFieldType& key) const
+        bool contains(const MemoryFieldType key) const
         {
             return fields.count(key) != 0;
         }
@@ -181,7 +183,7 @@ namespace S2Plugin
         }
 
         map_type fields;
-        std::unordered_map<std::string_view, map_type::iterator> json_names_map;
+        std::unordered_map<std::string_view, map_type::const_iterator> json_names_map;
     };
 
     struct VirtualFunction // TODO
@@ -191,6 +193,8 @@ namespace S2Plugin
         std::string params;
         std::string returnValue;
         std::string type;
+
+        VirtualFunction(size_t i, std::string n, std::string p, std::string r, std::string t) : index(i), name(n), params(p), returnValue(r), type(t){};
     };
 
     enum class VIRT_FUNC
@@ -204,31 +208,25 @@ namespace S2Plugin
         MOVABLE_DAMAGE = 48,
     };
 
-    Q_DECLARE_METATYPE(S2Plugin::VirtualFunction)
-
-    extern const MemoryFieldData gsMemoryFieldType; // TODO: make functions to get what's needed, not relay on global
+    // Q_DECLARE_METATYPE(S2Plugin::VirtualFunction) // TODO hope this is not nedded
 
     struct MemoryField
     {
         std::string name;
-        union
-        {
-            size_t size{0};
-            uint8_t flag_index;
-        };
-        MemoryFieldType type;
+        size_t size{0};
+
+        MemoryFieldType type{MemoryFieldType::None};
+        bool isPointer{false};
+        uint8_t flag_parrent_size{0};
+        uint8_t flag_index;
 
         // jsonName only if applicable: if a type is not a MemoryFieldType, but fully defined in the json file
         // then save its name so we can compare later
         std::string jsonName;
-
         std::string firstParameterType;
         std::string secondParameterType;
         std::string comment;
-        bool isPointer{false};
-        uint8_t flag_parrent_size{0};
-
-        // TODO: add comparison operator ?
+        size_t get_size();
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(S2Plugin::MemoryField)
@@ -249,22 +247,25 @@ namespace S2Plugin
 
         const std::vector<MemoryField>& typeFields(const MemoryFieldType& type) const;
         const std::vector<MemoryField>& typeFieldsOfEntitySubclass(const std::string& type) const;
-        const std::vector<MemoryField>& typeFieldsOfPointer(const std::string& type) const;
-        const std::vector<MemoryField>& typeFieldsOfInlineStruct(const std::string& type) const;
+        const std::vector<MemoryField>& typeFieldsOfDefaultStruct(const std::string& type) const;
         std::vector<VirtualFunction> virtualFunctionsOfType(const std::string& field) const;
 
         bool isEntitySubclass(const std::string& type) const;
-        bool isPointer(const std::string& type) const;
-        bool isInlineStruct(const std::string& type) const;
-        bool isBuiltInType(const std::string& type) const;
-        int getAlingment(const std::string& type) const;
 
-        std::string flagTitle(const std::string& fieldName, uint8_t flagNumber);
-        std::string stateTitle(const std::string& fieldName, int64_t state);
-        const std::unordered_map<int64_t, std::string>& stateTitlesOfField(const std::string& fieldName);
+        static MemoryFieldType getBuiltInType(const std::string& type);
+        static std::string_view getCPPTypeName(MemoryFieldType type);
+        static std::string_view getTypeDisplayName(MemoryFieldType type);
+
+        int getAlingment(const std::string& type) const;
+        bool isPermanentPointer(const std::string& type) const;
+        bool isJsonStruct(const std::string type) const;
+
+        std::string flagTitle(const std::string& fieldName, uint8_t flagNumber) const;
+        std::string stateTitle(const std::string& fieldName, int64_t state) const;
+        const std::vector<std::pair<int64_t, std::string>>& refTitlesOfField(const std::string& fieldName) const;
 
         size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true) const;
-        size_t sizeOf(const std::string& typeName) const;
+        size_t getTypeSize(const std::string& typeName, bool entitySubclass = false);
 
       private:
         static Configuration* ptr;
@@ -273,17 +274,20 @@ namespace S2Plugin
         std::unordered_map<std::string, std::string> mEntityClassHierarchy;
         std::vector<std::pair<std::string, std::string>> mDefaultEntityClassTypes;
 
-        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFields; // for the hardcoded main types only
-
+        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFieldsMain; // for build in types defined in json
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsEntitySubclasses;
-        std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsPointers;
-        std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsInlineStructs;
-        std::unordered_map<std::string, std::unordered_map<uint8_t, std::string>> mFlagTitles;  // fieldname => (flagnr 1-based => title)
-        std::unordered_map<std::string, std::unordered_map<int64_t, std::string>> mStateTitles; // fieldname => (state => title)
+        std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsStructs;
+        std::unordered_set<std::string> mPointerTypes; // pointers defined in pointer_types in json
+
+        std::unordered_map<std::string, size_t> mTypeFieldsStructsSizes;
+
         std::unordered_map<std::string, std::vector<VirtualFunction>> mVirtualFunctions;
         std::unordered_map<std::string, uint8_t> mAlignments;
+        std::unordered_map<std::string, std::vector<std::pair<int64_t, std::string>>> mRefs; // for flags and states
 
+        void processEntitiesJSON(nlohmann::ordered_json& json);
         void processJSON(nlohmann::ordered_json& json);
+        MemoryField populateMemoryField(const nlohmann::ordered_json& field, const std::string& struct_name);
         bool isKnownEntitySubclass(const std::string& typeName) const;
 
         Configuration();

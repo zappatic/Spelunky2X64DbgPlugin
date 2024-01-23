@@ -1,6 +1,6 @@
 #include "QtHelpers/ItemModelStates.h"
 
-S2Plugin::ItemModelStates::ItemModelStates(const std::unordered_map<int64_t, std::string>& states, QObject* parent) : QAbstractItemModel(parent)
+S2Plugin::ItemModelStates::ItemModelStates(const std::vector<std::pair<int64_t, std::string>>& states, QObject* parent) : QAbstractItemModel(parent)
 {
     for (const auto& [stateID, state] : states)
     {
@@ -47,7 +47,7 @@ QModelIndex S2Plugin::ItemModelStates::parent(const QModelIndex& index) const
     return QModelIndex();
 }
 
-S2Plugin::SortFilterProxyModelStates::SortFilterProxyModelStates(const std::unordered_map<int64_t, std::string>& states, QObject* parent) : QSortFilterProxyModel(parent)
+S2Plugin::SortFilterProxyModelStates::SortFilterProxyModelStates(const std::vector<std::pair<int64_t, std::string>>& states, QObject* parent) : QSortFilterProxyModel(parent)
 {
     for (const auto& [stateID, state] : states)
     {

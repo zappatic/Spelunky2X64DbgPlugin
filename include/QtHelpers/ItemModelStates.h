@@ -4,7 +4,6 @@
 #include <QSortFilterProxyModel>
 #include <cstdint>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 namespace S2Plugin
@@ -13,7 +12,7 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ItemModelStates(const std::unordered_map<int64_t, std::string>& states, QObject* parent = nullptr);
+        ItemModelStates(const std::vector<std::pair<int64_t, std::string>>& states, QObject* parent = nullptr);
 
         Qt::ItemFlags flags(const QModelIndex& index) const override;
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -31,7 +30,7 @@ namespace S2Plugin
         Q_OBJECT
 
       public:
-        SortFilterProxyModelStates(const std::unordered_map<int64_t, std::string>& states, QObject* parent = nullptr);
+        SortFilterProxyModelStates(const std::vector<std::pair<int64_t, std::string>>& states, QObject* parent = nullptr);
 
       protected:
         bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const;

@@ -31,7 +31,7 @@ QVariant S2Plugin::ItemModelLoggerFields::data(const QModelIndex& index, int rol
             }
             case gsLogFieldColFieldType:
             {
-                auto str = gsMemoryFieldType.at(field.type).display_name;
+                auto str = Configuration::getTypeDisplayName(field.type);
                 return QString::fromUtf8(str.data(), str.size());
             }
         }

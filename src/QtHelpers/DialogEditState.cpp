@@ -10,7 +10,7 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 
-S2Plugin::DialogEditState::DialogEditState(const QString& fieldName, size_t memoryOffset, MemoryFieldType type, QWidget* parent)
+S2Plugin::DialogEditState::DialogEditState(const QString& fieldName, const std::string& refName, size_t memoryOffset, MemoryFieldType type, QWidget* parent)
     : QDialog(parent, Qt::WindowCloseButtonHint | Qt::WindowTitleHint), mMemoryOffset(memoryOffset), mFieldType(type)
 {
     setModal(true);
@@ -46,7 +46,7 @@ S2Plugin::DialogEditState::DialogEditState(const QString& fieldName, size_t memo
         }
     }
 
-    const auto& states = Configuration::get()->stateTitlesOfField(fieldName.toStdString());
+    const auto& states = Configuration::get()->refTitlesOfField(refName);
     mStatesComboBox = new QComboBox(this);
     mStatesModel = new ItemModelStates(states, this);
     mStatesSortProxy = new SortFilterProxyModelStates(states, this);

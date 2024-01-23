@@ -31,18 +31,9 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
             dependencies.emplace_back("Entity");
         }
     }
-    else if (config->isPointer(className))
+    else if (auto& vec = config->typeFieldsOfDefaultStruct(className); !vec.empty())
     {
-        fields = config->typeFieldsOfPointer(className);
-        auto pointerIndex = className.find("Pointer");
-        if (pointerIndex != std::string::npos)
-        {
-            className.replace(pointerIndex, 7, "");
-        }
-    }
-    else if (config->isInlineStruct(className))
-    {
-        fields = config->typeFieldsOfInlineStruct(className);
+        fields = vec;
     }
     else
     {
@@ -75,11 +66,11 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
             variableType = "uint8_t";
             variableName = "skip[" + std::to_string(field.size) + "]";
         }
-        else if (auto it = gsMemoryFieldType.find(field.type); it != gsMemoryFieldType.end())
+        else if (auto str = Configuration::getCPPTypeName(field.type); !str.empty())
         {
-            variableType = it->second.cpp_type_name;
+            variableType = str;
         }
-        else if (field.type == MemoryFieldType::PointerType)
+        else if (field.isPointer)
         {
             std::string pointerLessFieldType = field.jsonName;
             auto pointerIndex = pointerLessFieldType.find("Pointer");
@@ -90,7 +81,7 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
             variableType = pointerLessFieldType + "*";
             dependencies.emplace_back(field.jsonName);
         }
-        else if (field.type == MemoryFieldType::InlineStructType)
+        else if (field.type == MemoryFieldType::DefaultStructType)
         {
             variableType = field.jsonName;
             dependencies.emplace_back(field.jsonName);

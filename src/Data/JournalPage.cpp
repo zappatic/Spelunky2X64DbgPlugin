@@ -15,7 +15,7 @@ void S2Plugin::JournalPage::refreshOffsets()
     mMemoryOffsets.clear();
     auto offset = mJournalPagePtr;
     auto config = Configuration::get();
-    for (const auto& field : config->typeFieldsOfInlineStruct(mJournalPageType))
+    for (const auto& field : config->typeFieldsOfDefaultStruct(mJournalPageType))
     {
         offset = config->setOffsetForField(field, mJournalPageType + "." + field.name, offset, mMemoryOffsets);
     }

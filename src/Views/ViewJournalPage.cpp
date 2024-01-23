@@ -84,7 +84,7 @@ void S2Plugin::ViewJournalPage::initializeUI()
     mRefreshLayout->addWidget(labelButton);
 
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : Configuration::get()->typeFieldsOfInlineStruct(mPageType))
+    for (const auto& field : Configuration::get()->typeFieldsOfDefaultStruct(mPageType))
     {
         mMainTreeView->addMemoryField(field, mPageType + "." + field.name);
     }
@@ -110,7 +110,7 @@ void S2Plugin::ViewJournalPage::refreshJournalPage()
     mJournalPage->refreshOffsets();
     auto& offsets = mJournalPage->offsets();
     auto deltaReference = offsets.at(mPageType + ".__vftable");
-    for (const auto& field : Configuration::get()->typeFieldsOfInlineStruct(mPageType))
+    for (const auto& field : Configuration::get()->typeFieldsOfDefaultStruct(mPageType))
     {
         mMainTreeView->updateValueForField(field, mPageType + "." + field.name, offsets, deltaReference);
     }
@@ -170,7 +170,7 @@ void S2Plugin::ViewJournalPage::interpretAsChanged(const QString& text)
         mJournalPage->interpretAs(textStr);
         mPageType = textStr;
         mMainTreeView->clear();
-        for (const auto& field : Configuration::get()->typeFieldsOfInlineStruct(mPageType))
+        for (const auto& field : Configuration::get()->typeFieldsOfDefaultStruct(mPageType))
         {
             mMainTreeView->addMemoryField(field, mPageType + "." + field.name);
         }

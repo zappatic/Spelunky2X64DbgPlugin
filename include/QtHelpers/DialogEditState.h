@@ -15,7 +15,7 @@ namespace S2Plugin
         Q_OBJECT
 
       public:
-        DialogEditState(const QString& fieldName, size_t memoryOffset, MemoryFieldType type, QWidget* parent = nullptr);
+        DialogEditState(const QString& fieldName, const std::string& refName, size_t memoryOffset, MemoryFieldType type, QWidget* parent = nullptr);
 
       protected:
         QSize minimumSizeHint() const override;

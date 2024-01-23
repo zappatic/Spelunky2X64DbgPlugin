@@ -71,17 +71,21 @@ void S2Plugin::Entity::refreshValues()
     // if there's a pointer in the list of fields of the entity subclass hierarchy then
     // refresh all the offsets, as the pointer value may have changed, so in order to show
     // the correct values of the pointer contents, we need to set the new offset
+
+    // TODO: this will then not cover the build in types that are pinters by default?
     bool pointerFieldFound = false;
     for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it)
     {
         for (const auto& field : Configuration::get()->typeFieldsOfEntitySubclass(*it))
         {
-            if (field.type == MemoryFieldType::PointerType)
+            if (field.isPointer)
             {
                 pointerFieldFound = true;
                 break;
             }
         }
+        if (pointerFieldFound)
+            break;
     }
     if (pointerFieldFound)
     {
@@ -144,85 +148,91 @@ void S2Plugin::Entity::populateMemoryView()
     }
 }
 
-void S2Plugin::Entity::highlightField(const MemoryField& field, const std::string& fieldNameOverride, const QColor& color)
+void S2Plugin::Entity::highlightField(const MemoryField& field, const std::string& fieldNameOverride, const QColor& color) // TODO use sizeof or global highlight function function
 {
-    uint8_t fieldSize = 0; // TODO use sizeof function
-    switch (field.type)
+    uint8_t fieldSize = 0;
+    if (field.isPointer)
     {
-        case MemoryFieldType::Flag:
-            break;
-        case MemoryFieldType::Skip:
-        case MemoryFieldType::UTF16StringFixedSize:
-        case MemoryFieldType::UTF8StringFixedSize:
-            fieldSize = field.size;
-            break;
-        case MemoryFieldType::Bool:
-        case MemoryFieldType::Byte:
-        case MemoryFieldType::UnsignedByte:
-        case MemoryFieldType::Flags8:
-        case MemoryFieldType::State8:
-        case MemoryFieldType::CharacterDBID:
-            fieldSize = 1;
-            break;
-        case MemoryFieldType::Word:
-        case MemoryFieldType::UnsignedWord:
-        case MemoryFieldType::Flags16:
-        case MemoryFieldType::State16:
-        case MemoryFieldType::UTF16Char:
-            fieldSize = 2;
-            break;
-        case MemoryFieldType::Dword:
-        case MemoryFieldType::UnsignedDword:
-        case MemoryFieldType::Float:
-        case MemoryFieldType::Flags32:
-        case MemoryFieldType::State32:
-        case MemoryFieldType::ParticleDBID:
-        case MemoryFieldType::EntityDBID:
-        case MemoryFieldType::EntityUID:
-        case MemoryFieldType::TextureDBID:
-        case MemoryFieldType::StringsTableID:
-            fieldSize = 4;
-            break;
-        case MemoryFieldType::CodePointer:
-        case MemoryFieldType::DataPointer:
-        case MemoryFieldType::EntityDBPointer:
-        case MemoryFieldType::TextureDBPointer:
-        case MemoryFieldType::LevelGenPointer:
-        case MemoryFieldType::EntityPointer:
-        case MemoryFieldType::EntityUIDPointer:
-        case MemoryFieldType::ParticleDBPointer:
-        case MemoryFieldType::Qword:
-        case MemoryFieldType::UnsignedQword:
-        case MemoryFieldType::ConstCharPointerPointer:
-        case MemoryFieldType::ConstCharPointer:
-        case MemoryFieldType::VirtualFunctionTable:
-        case MemoryFieldType::Double:
-        case MemoryFieldType::PointerType:
-            fieldSize = 8;
-            break;
-        case MemoryFieldType::InlineStructType:
+        fieldSize = sizeof(uintptr_t);
+    }
+    else
+    {
+        switch (field.type)
         {
-            for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
+            case MemoryFieldType::Flag:
+                break;
+            case MemoryFieldType::Skip:
+            case MemoryFieldType::UTF16StringFixedSize:
+            case MemoryFieldType::UTF8StringFixedSize:
+                fieldSize = field.size;
+                break;
+            case MemoryFieldType::Bool:
+            case MemoryFieldType::Byte:
+            case MemoryFieldType::UnsignedByte:
+            case MemoryFieldType::Flags8:
+            case MemoryFieldType::State8:
+            case MemoryFieldType::CharacterDBID:
+                fieldSize = 1;
+                break;
+            case MemoryFieldType::Word:
+            case MemoryFieldType::UnsignedWord:
+            case MemoryFieldType::Flags16:
+            case MemoryFieldType::State16:
+            case MemoryFieldType::UTF16Char:
+                fieldSize = 2;
+                break;
+            case MemoryFieldType::Dword:
+            case MemoryFieldType::UnsignedDword:
+            case MemoryFieldType::Float:
+            case MemoryFieldType::Flags32:
+            case MemoryFieldType::State32:
+            case MemoryFieldType::ParticleDBID:
+            case MemoryFieldType::EntityDBID:
+            case MemoryFieldType::EntityUID:
+            case MemoryFieldType::TextureDBID:
+            case MemoryFieldType::StringsTableID:
+                fieldSize = 4;
+                break;
+            case MemoryFieldType::CodePointer:
+            case MemoryFieldType::DataPointer:
+            case MemoryFieldType::EntityDBPointer:
+            case MemoryFieldType::TextureDBPointer:
+            case MemoryFieldType::LevelGenPointer:
+            case MemoryFieldType::EntityPointer:
+            case MemoryFieldType::EntityUIDPointer:
+            case MemoryFieldType::ParticleDBPointer:
+            case MemoryFieldType::Qword:
+            case MemoryFieldType::UnsignedQword:
+            case MemoryFieldType::ConstCharPointerPointer:
+            case MemoryFieldType::ConstCharPointer:
+            case MemoryFieldType::VirtualFunctionTable:
+            case MemoryFieldType::Double:
+                fieldSize = 8;
+                break;
+            case MemoryFieldType::DefaultStructType:
             {
-                highlightField(f, fieldNameOverride + "." + f.name, color);
+                for (const auto& f : Configuration::get()->typeFieldsOfDefaultStruct(field.jsonName))
+                {
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                }
+                break;
             }
-            break;
-        }
-        case MemoryFieldType::EntitySubclass:
-        {
-            for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
+            case MemoryFieldType::EntitySubclass:
             {
-                highlightField(f, fieldNameOverride + "." + f.name, color);
+                for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                }
+                break;
             }
-            break;
-        }
-        default:
-        {
-            for (const auto& f : Configuration::get()->typeFields(field.type))
+            default:
             {
-                highlightField(f, fieldNameOverride + "." + f.name, color);
+                for (const auto& f : Configuration::get()->typeFields(field.type))
+                {
+                    highlightField(f, fieldNameOverride + "." + f.name, color);
+                }
+                break;
             }
-            break;
         }
     }
     if (fieldSize > 0)
@@ -236,84 +246,91 @@ void S2Plugin::Entity::highlightComparisonField(const MemoryField& field, const 
 {
     uint8_t fieldSize = 0;
     bool isDifferent = false;
-    switch (field.type)
+    if (field.isPointer)
     {
-        case MemoryFieldType::Flag:
-        case MemoryFieldType::Skip:
-        case MemoryFieldType::UTF16StringFixedSize:
-        case MemoryFieldType::UTF8StringFixedSize:
-            break;
-        case MemoryFieldType::Bool:
-        case MemoryFieldType::Byte:
-        case MemoryFieldType::UnsignedByte:
-        case MemoryFieldType::Flags8:
-        case MemoryFieldType::State8:
-        case MemoryFieldType::CharacterDBID:
-            isDifferent = Script::Memory::ReadByte(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadByte(mMemoryOffsets.at("comparison." + fieldNameOverride));
-            fieldSize = 1;
-            break;
-        case MemoryFieldType::Word:
-        case MemoryFieldType::UnsignedWord:
-        case MemoryFieldType::Flags16:
-        case MemoryFieldType::State16:
-        case MemoryFieldType::UTF16Char:
-            isDifferent = Script::Memory::ReadWord(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadWord(mMemoryOffsets.at("comparison." + fieldNameOverride));
-            fieldSize = 2;
-            break;
-        case MemoryFieldType::Dword:
-        case MemoryFieldType::UnsignedDword:
-        case MemoryFieldType::Float:
-        case MemoryFieldType::Flags32:
-        case MemoryFieldType::State32:
-        case MemoryFieldType::ParticleDBID:
-        case MemoryFieldType::EntityDBID:
-        case MemoryFieldType::EntityUID:
-        case MemoryFieldType::TextureDBID:
-        case MemoryFieldType::StringsTableID:
-            isDifferent = Script::Memory::ReadDword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadDword(mMemoryOffsets.at("comparison." + fieldNameOverride));
-            fieldSize = 4;
-            break;
-        case MemoryFieldType::CodePointer:
-        case MemoryFieldType::DataPointer:
-        case MemoryFieldType::EntityDBPointer:
-        case MemoryFieldType::TextureDBPointer:
-        case MemoryFieldType::LevelGenPointer:
-        case MemoryFieldType::EntityPointer:
-        case MemoryFieldType::EntityUIDPointer:
-        case MemoryFieldType::ParticleDBPointer:
-        case MemoryFieldType::VirtualFunctionTable:
-        case MemoryFieldType::Qword:
-        case MemoryFieldType::UnsignedQword:
-        case MemoryFieldType::ConstCharPointerPointer:
-        case MemoryFieldType::ConstCharPointer:
-        case MemoryFieldType::Double:
-        case MemoryFieldType::PointerType:
-            isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
-            fieldSize = 8;
-            break;
-        case MemoryFieldType::InlineStructType:
+        isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
+        fieldSize = 8;
+    }
+    else
+    {
+        switch (field.type)
         {
-            for (const auto& f : Configuration::get()->typeFieldsOfInlineStruct(field.jsonName))
+            case MemoryFieldType::Flag:
+            case MemoryFieldType::Skip:
+            case MemoryFieldType::UTF16StringFixedSize:
+            case MemoryFieldType::UTF8StringFixedSize:
+                break;
+            case MemoryFieldType::Bool:
+            case MemoryFieldType::Byte:
+            case MemoryFieldType::UnsignedByte:
+            case MemoryFieldType::Flags8:
+            case MemoryFieldType::State8:
+            case MemoryFieldType::CharacterDBID:
+                isDifferent = Script::Memory::ReadByte(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadByte(mMemoryOffsets.at("comparison." + fieldNameOverride));
+                fieldSize = 1;
+                break;
+            case MemoryFieldType::Word:
+            case MemoryFieldType::UnsignedWord:
+            case MemoryFieldType::Flags16:
+            case MemoryFieldType::State16:
+            case MemoryFieldType::UTF16Char:
+                isDifferent = Script::Memory::ReadWord(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadWord(mMemoryOffsets.at("comparison." + fieldNameOverride));
+                fieldSize = 2;
+                break;
+            case MemoryFieldType::Dword:
+            case MemoryFieldType::UnsignedDword:
+            case MemoryFieldType::Float:
+            case MemoryFieldType::Flags32:
+            case MemoryFieldType::State32:
+            case MemoryFieldType::ParticleDBID:
+            case MemoryFieldType::EntityDBID:
+            case MemoryFieldType::EntityUID:
+            case MemoryFieldType::TextureDBID:
+            case MemoryFieldType::StringsTableID:
+                isDifferent = Script::Memory::ReadDword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadDword(mMemoryOffsets.at("comparison." + fieldNameOverride));
+                fieldSize = 4;
+                break;
+            case MemoryFieldType::CodePointer:
+            case MemoryFieldType::DataPointer:
+            case MemoryFieldType::EntityDBPointer:
+            case MemoryFieldType::TextureDBPointer:
+            case MemoryFieldType::LevelGenPointer:
+            case MemoryFieldType::EntityPointer:
+            case MemoryFieldType::EntityUIDPointer:
+            case MemoryFieldType::ParticleDBPointer:
+            case MemoryFieldType::VirtualFunctionTable:
+            case MemoryFieldType::Qword:
+            case MemoryFieldType::UnsignedQword:
+            case MemoryFieldType::ConstCharPointerPointer:
+            case MemoryFieldType::ConstCharPointer:
+            case MemoryFieldType::Double:
+                isDifferent = Script::Memory::ReadQword(mMemoryOffsets.at(fieldNameOverride)) != Script::Memory::ReadQword(mMemoryOffsets.at("comparison." + fieldNameOverride));
+                fieldSize = 8;
+                break;
+            case MemoryFieldType::DefaultStructType:
             {
-                highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                for (const auto& f : Configuration::get()->typeFieldsOfDefaultStruct(field.jsonName))
+                {
+                    highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                }
+                break;
             }
-            break;
-        }
-        case MemoryFieldType::EntitySubclass:
-        {
-            for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
+            case MemoryFieldType::EntitySubclass:
             {
-                highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                for (const auto& f : Configuration::get()->typeFieldsOfEntitySubclass(field.jsonName))
+                {
+                    highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                }
+                break;
             }
-            break;
-        }
-        default:
-        {
-            for (const auto& f : Configuration::get()->typeFields(field.type))
+            default:
             {
-                highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                for (const auto& f : Configuration::get()->typeFields(field.type))
+                {
+                    highlightComparisonField(f, fieldNameOverride + "." + f.name);
+                }
+                break;
             }
-            break;
         }
     }
     if (fieldSize > 0 && isDifferent)
@@ -353,7 +370,7 @@ std::vector<std::string> S2Plugin::Entity::classHierarchy() const
     return hierarchy;
 }
 
-size_t S2Plugin::Entity::findEntityByUID(uint32_t uidToSearch, State* state)
+size_t S2Plugin::Entity::findEntityByUID(uint32_t uidToSearch, State* state) // TODO robinhood table
 {
     auto searchUID = [state](uint32_t uid, size_t layerOffset) -> size_t
     {

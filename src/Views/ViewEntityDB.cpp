@@ -251,10 +251,11 @@ void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefi
 {
     for (const auto& field : fields)
     {
+        if (field.isPointer)
+            continue;
         switch (field.type)
         {
             case MemoryFieldType::Skip:
-            case MemoryFieldType::PointerType:
                 continue;
             case MemoryFieldType::Flags32:
             case MemoryFieldType::Flags16:
@@ -277,9 +278,9 @@ void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefi
                 }
                 break;
             }
-            case MemoryFieldType::InlineStructType:
+            case MemoryFieldType::DefaultStructType:
             {
-                populateComparisonCombobox(field.name + ".", Configuration::get()->typeFieldsOfInlineStruct(field.jsonName));
+                populateComparisonCombobox(field.name + ".", Configuration::get()->typeFieldsOfDefaultStruct(field.jsonName));
                 break;
             }
             default:
