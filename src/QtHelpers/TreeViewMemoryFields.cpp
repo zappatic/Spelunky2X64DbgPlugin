@@ -40,7 +40,7 @@ S2Plugin::TreeViewMemoryFields::TreeViewMemoryFields(ViewToolbar* toolbar, QWidg
     mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     setItemDelegate(mHTMLDelegate.get());
     setAlternatingRowColors(true);
-    mModel = new QStandardItemModel();
+    mModel = new QStandardItemModel(this);
     setModel(mModel);
 
     setDragDropMode(QAbstractItemView::DragDropMode::DragOnly);
