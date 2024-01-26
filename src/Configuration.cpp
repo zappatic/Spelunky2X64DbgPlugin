@@ -311,7 +311,7 @@ S2Plugin::MemoryField S2Plugin::Configuration::populateMemoryField(const nlohman
         case MemoryFieldType::VirtualFunctionTable:
         {
             memField.firstParameterType = struct_name; // use firstParameterType to hold the parrent type of the vtable
-            // memField.isPointer = true;
+            memField.isPointer = true;
             if (field.contains("functions"))
             {
                 auto& vector = mVirtualFunctions[struct_name];
@@ -330,23 +330,23 @@ S2Plugin::MemoryField S2Plugin::Configuration::populateMemoryField(const nlohman
         }
         case MemoryFieldType::DefaultStructType:
             memField.jsonName = fieldTypeStr;
-
-            // case MemoryFieldType::CodePointer:
-            // case MemoryFieldType::DataPointer:
-            // case MemoryFieldType::EntityPointer:
-            // case MemoryFieldType::EntityUIDPointer:
-            // case MemoryFieldType::EntityDBPointer:
-            // case MemoryFieldType::ParticleDBPointer:
-            // case MemoryFieldType::TextureDBPointer:
-            // case MemoryFieldType::ConstCharPointer:
-            // case MemoryFieldType::ConstCharPointerPointer:
-            // case MemoryFieldType::UndeterminedThemeInfoPointer:
-            // case MemoryFieldType::ThemeInfoName:
-            // case MemoryFieldType::LevelGenRoomsPointer:
-            // case MemoryFieldType::LevelGenRoomsMetaPointer:
-            // case MemoryFieldType::JournalPagePointer:
-            // case MemoryFieldType::LevelGenPointer:
-            //     memField.isPointer = true;
+            break;
+        case MemoryFieldType::CodePointer:
+        case MemoryFieldType::DataPointer:
+        case MemoryFieldType::EntityPointer:
+        case MemoryFieldType::EntityUIDPointer:
+        case MemoryFieldType::EntityDBPointer:
+        case MemoryFieldType::ParticleDBPointer:
+        case MemoryFieldType::TextureDBPointer:
+        case MemoryFieldType::ConstCharPointer:
+        case MemoryFieldType::ConstCharPointerPointer:
+        case MemoryFieldType::UndeterminedThemeInfoPointer:
+        case MemoryFieldType::ThemeInfoName:
+        case MemoryFieldType::LevelGenRoomsPointer:
+        case MemoryFieldType::LevelGenRoomsMetaPointer:
+        case MemoryFieldType::JournalPagePointer:
+        case MemoryFieldType::LevelGenPointer:
+            memField.isPointer = true;
     }
     return memField;
 }

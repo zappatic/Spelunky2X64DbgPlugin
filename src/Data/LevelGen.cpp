@@ -64,7 +64,7 @@ void S2Plugin::LevelGen::reset()
 {
     mLevelGenPtr = 0;
     mMemoryOffsets.clear();
-    // processJSON();
+    processJSON();
 }
 
 std::string S2Plugin::LevelGen::themeNameOfOffset(size_t offset) const

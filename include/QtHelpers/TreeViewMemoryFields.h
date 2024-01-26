@@ -18,7 +18,6 @@ namespace S2Plugin
         Q_OBJECT
       public:
         TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent = nullptr);
-        // void setMemoryMappedData(MemoryMappedData* mmd);
 
         QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
         void clear();
@@ -26,7 +25,6 @@ namespace S2Plugin
         void setEnableChangeHighlighting(bool b) noexcept;
 
         void expandItem(QStandardItem* item);
-        QStandardItem* lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);
         void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, size_t memoryOffsetDeltaReference = 0,
                                  QStandardItem* parent = nullptr, bool disableChangeHighlightingForField = false);
 
@@ -45,6 +43,8 @@ namespace S2Plugin
         void cellClicked(const QModelIndex& index);
 
       private:
+        int lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);
+
         ViewToolbar* mToolbar;
         QStandardItemModel* mModel;
         std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;

@@ -317,21 +317,17 @@ void S2Plugin::TreeViewMemoryFields::updateTableHeader(bool restoreColumnWidths)
     }
 }
 
-QStandardItem* S2Plugin::TreeViewMemoryFields::lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent)
+int S2Plugin::TreeViewMemoryFields::lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent)
 {
-    if (parent == nullptr)
-    {
-        parent = mModel->invisibleRootItem();
-    }
     for (size_t x = 0; x < parent->rowCount(); ++x)
     {
         auto child = parent->child(x, column);
         if (child->data(gsRoleUID).toString().compare(QString::fromStdString(fieldName)) == 0)
         {
-            return child;
+            return x;
         }
     }
-    return nullptr;
+    return -1;
 }
 
 void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets,
@@ -359,13 +355,17 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
 
     if (field.type != MemoryFieldType::Skip)
     {
-        itemField = lookupTreeViewItem(fieldNameOverride, gsColField, parent);
-        itemValue = lookupTreeViewItem(fieldNameOverride, gsColValue, parent);
-        itemValueHex = lookupTreeViewItem(fieldNameOverride, gsColValueHex, parent);
-        itemComparisonValue = lookupTreeViewItem(fieldNameOverride, gsColComparisonValue, parent);
-        itemComparisonValueHex = lookupTreeViewItem(fieldNameOverride, gsColComparisonValueHex, parent);
-        itemMemoryOffset = lookupTreeViewItem(fieldNameOverride, gsColMemoryOffset, parent);
-        itemMemoryOffsetDelta = lookupTreeViewItem(fieldNameOverride, gsColMemoryOffsetDelta, parent);
+        if (parent == nullptr)
+            parent = mModel->invisibleRootItem();
+
+        int row = lookupTreeViewItem(fieldNameOverride, gsColField, parent);
+        itemField = parent->child(row, gsColField);
+        itemValue = parent->child(row, gsColValue);
+        itemValueHex = parent->child(row, gsColValueHex);
+        itemComparisonValue = parent->child(row, gsColComparisonValue);
+        itemComparisonValueHex = parent->child(row, gsColComparisonValueHex);
+        itemMemoryOffset = parent->child(row, gsColMemoryOffset);
+        itemMemoryOffsetDelta = parent->child(row, gsColMemoryOffsetDelta);
 
         if (itemField == nullptr || itemValue == nullptr || itemValueHex == nullptr || itemMemoryOffset == nullptr)
         {
@@ -433,6 +433,10 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             if (value == 0)
             {
                 newHexValue = "<font color='#aaa'>nullptr</font>";
+            }
+            else if (!Script::Memory::IsValidPtr(value))
+            {
+                newHexValue = "<font color='#aaa'>bad ptr</font>";
             }
             else
             {
@@ -1661,21 +1665,26 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
             GuiShowCpu();
             break;
         }
-        case gsColValue:
         case gsColValueHex:
         {
-            auto dataType = clickedItem->data(gsRoleType).value<MemoryFieldType>();
             auto memoryField = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>();
-            auto addr = clickedItem->data(gsRoleRawValue).toULongLong();
 
-            if (column == gsColValueHex && memoryField.isPointer) // if it's pointer and we clicked in the hex, we always do the same thing
+            if (memoryField.isPointer)
             {
+                auto addr = clickedItem->data(gsRoleRawValue).toULongLong();
                 if (addr != 0)
                 {
                     GuiDumpAt(addr);
                     GuiShowCpu();
                 }
             }
+            break;
+        }
+        case gsColValue:
+        {
+            auto dataType = clickedItem->data(gsRoleType).value<MemoryFieldType>();
+            auto memoryField = clickedItem->data(gsRoleEntireMemoryField).value<MemoryField>();
+            auto addr = clickedItem->data(gsRoleRawValue).toULongLong();
             switch (dataType)
             {
                 case MemoryFieldType::CodePointer:
