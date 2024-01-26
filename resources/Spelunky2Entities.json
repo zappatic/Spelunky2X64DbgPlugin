@@ -1514,7 +1514,7 @@
       { "field": "linked_companion_child", "type": "EntityUID" },
       { "field": "linked_companion_parent", "type": "EntityUID" },
       { "field": "ai_func", "type": "Ai_func" },
-      { "field": "input_ptr", "type": "PlayerSlotPointer" },
+      { "field": "input_ptr", "type": "PlayerSlot", "pointer": true },
       { "field": "basecamp_button", "type": "EntityPointer" },
       { "field": "special_sound", "type": "SoundMeta", "comment": "For Lise System walking and looking up sounds" },
       { "field": "y_pos?", "type": "Float" },

@@ -1514,14 +1514,14 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             }
             itemField->setBackground(itemValueHex->data(Qt::DisplayRole) == newHexValue ? Qt::transparent : highlightColor);
             itemValueHex->setData(newHexValue, Qt::DisplayRole);
-            itemValue->setData(0, gsRoleRawValue);
+            itemValue->setData(value, gsRoleRawValue);
             itemValueHex->setData(value, gsRoleRawValue);
 
-            if (field.type == MemoryFieldType::UndeterminedThemeInfoPointer)
+            if (shouldUpdateChildren && field.type == MemoryFieldType::UndeterminedThemeInfoPointer)
             {
                 for (const auto& f : Configuration::get()->typeFieldsOfDefaultStruct("ThemeInfoPointer"))
                 {
-                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, memoryOffset, itemField);
+                    updateValueForField(f, fieldNameOverride + "." + f.name, offsets, value, itemField);
                 }
             }
             // no comparison in Entity
@@ -1615,11 +1615,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             auto value = memoryOffsetDeltaReference;
             if (field.isPointer)
             {
-                value = Script::Memory::ReadQword(memoryOffset);
+                value = (memoryOffset == 0 ? 0 : Script::Memory::ReadQword(memoryOffset));
                 if (value == 0)
                 {
                     itemValue->setData("<font color='#aaa'>nullptr</font>", Qt::DisplayRole);
-                    itemValueHex->setData("", Qt::DisplayRole);
+                    itemValueHex->setData("<font color='#aaa'>nullptr</font>", Qt::DisplayRole);
                 }
                 else
                 {

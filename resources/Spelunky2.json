@@ -103,7 +103,6 @@
     "PointerToPushBlocksMap",
     "PointerToFloorsMap",
     "PointerToFloatSet",
-    "PlayerSlotPointer",
     "MultiLineTextRenderingPointer",
     "EntityLogicPointer",
     "PointerToPointerToEntityList",
@@ -5389,7 +5388,6 @@
       { "field": "unknown5", "type": "UnsignedByte" },
       { "field": "unknown6", "type": "UnsignedDword" }
     ],
-    "PlayerSlotPointer": [{ "field": "input", "type": "PlayerSlot" }],
     "PlayerSlotSettings": [
       { "field": "controller_vibration", "type": "Bool" },
       { "field": "auto_run_enabled", "type": "Bool" },

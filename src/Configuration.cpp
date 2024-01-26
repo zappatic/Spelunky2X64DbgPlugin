@@ -72,8 +72,8 @@ namespace S2Plugin
         {MemoryFieldType::TextureDBPointer, "TextureDB pointer", "Texture*", "TextureDBPointer", 8},
         {MemoryFieldType::ConstCharPointer, "Const char*", "const char*", "ConstCharPointer", 8},
         {MemoryFieldType::ConstCharPointerPointer, "Const char**", "const char**", "ConstCharPointerPointer", 8},                         // there is more then just pointer to pointer?
-        {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer", "ThemeInfo*", "UndeterminedThemeInfoPointer", 8}, // display theme name and
-        {MemoryFieldType::ThemeInfoName, "ThemeInfoName", "ThemeInfo*", "ThemeInfoName", 8},
+        {MemoryFieldType::UndeterminedThemeInfoPointer, "UndeterminedThemeInfoPointer", "ThemeInfo*", "UndeterminedThemeInfoPointer", 8}, // display theme name and add ThemeInfo fields
+        {MemoryFieldType::ThemeInfoName, "ThemeInfoName", "ThemeInfo*", "ThemeInfoName", 8},                                              // just theme name
         {MemoryFieldType::LevelGenRoomsPointer, "LevelGenRoomsPointer", "LevelGenRooms*", "LevelGenRoomsPointer", 8},
         {MemoryFieldType::LevelGenRoomsMetaPointer, "LevelGenRoomsMetaPointer", "LevelGenRoomsMeta*", "LevelGenRoomsMetaPointer", 8},
         {MemoryFieldType::JournalPagePointer, "JournalPagePointer", "JournalPage*", "JournalPagePointer", 8},
@@ -331,6 +331,12 @@ S2Plugin::MemoryField S2Plugin::Configuration::populateMemoryField(const nlohman
         case MemoryFieldType::DefaultStructType:
             memField.jsonName = fieldTypeStr;
             break;
+        case MemoryFieldType::UndeterminedThemeInfoPointer:
+        {
+            memField.isPointer = true;
+            memField.jsonName = "ThemeInfoPointer"; 
+            break;
+        }
         case MemoryFieldType::CodePointer:
         case MemoryFieldType::DataPointer:
         case MemoryFieldType::EntityPointer:
@@ -340,7 +346,6 @@ S2Plugin::MemoryField S2Plugin::Configuration::populateMemoryField(const nlohman
         case MemoryFieldType::TextureDBPointer:
         case MemoryFieldType::ConstCharPointer:
         case MemoryFieldType::ConstCharPointerPointer:
-        case MemoryFieldType::UndeterminedThemeInfoPointer:
         case MemoryFieldType::ThemeInfoName:
         case MemoryFieldType::LevelGenRoomsPointer:
         case MemoryFieldType::LevelGenRoomsMetaPointer:
@@ -713,7 +718,7 @@ size_t S2Plugin::Configuration::setOffsetForField(const MemoryField& field, cons
 
     if (field.isPointer)
     {
-        if (field.type == MemoryFieldType::DefaultStructType)
+        if (field.type == MemoryFieldType::DefaultStructType || field.type == MemoryFieldType::UndeterminedThemeInfoPointer)
         {
             size_t pointerOffset = Script::Memory::ReadQword(offset);
             for (const auto& f : typeFieldsOfDefaultStruct(field.jsonName))
@@ -786,20 +791,6 @@ size_t S2Plugin::Configuration::setOffsetForField(const MemoryField& field, cons
         case MemoryFieldType::Double:
             offset += 8;
             break;
-        case MemoryFieldType::UndeterminedThemeInfoPointer:
-        {
-            size_t pointerOffset = Script::Memory::ReadQword(offset);
-            for (const auto& f : typeFieldsOfDefaultStruct("ThemeInfoPointer"))
-            {
-                auto newOffset = setOffsetForField(f, fieldNameOverride + "." + f.name, pointerOffset, offsets);
-                if (pointerOffset != 0)
-                {
-                    pointerOffset = newOffset;
-                }
-            }
-            offset += 8;
-            break;
-        }
         case MemoryFieldType::DefaultStructType:
         {
             for (const auto& f : typeFieldsOfDefaultStruct(field.jsonName))
