@@ -77,9 +77,8 @@ void S2Plugin::ViewCharacterDB::initializeUI()
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewCharacterDB::fieldExpanded);
         mTabLookup->layout()->addWidget(mMainTreeView);
         mMainTreeView->setColumnWidth(gsColValue, 250);
+        mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
         mMainTreeView->updateTableHeader();
-        mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-        mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
     }
 
     // COMPARE

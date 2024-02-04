@@ -88,8 +88,7 @@ void S2Plugin::ViewJournalPage::initializeUI()
     {
         mMainTreeView->addMemoryField(field, mPageType + "." + field.name);
     }
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);
@@ -174,8 +173,6 @@ void S2Plugin::ViewJournalPage::interpretAsChanged(const QString& text)
         {
             mMainTreeView->addMemoryField(field, mPageType + "." + field.name);
         }
-        mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-        mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
         mMainTreeView->setColumnWidth(gsColValue, 250);
         mMainTreeView->updateTableHeader();
         refreshJournalPage();

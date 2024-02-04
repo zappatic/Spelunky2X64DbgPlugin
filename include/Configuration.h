@@ -19,22 +19,18 @@ namespace S2Plugin
     constexpr uint8_t gsColType = 7;
     constexpr uint8_t gsColComment = 8;
 
-    /*constexpr uint16_t gsRoleField = Qt::UserRole + gsColField;
-    constexpr uint16_t gsRoleValue = Qt::UserRole + gsColValue;
-    constexpr uint16_t gsRoleValueHex = Qt::UserRole + gsColValueHex;
-    constexpr uint16_t gsRoleComparisonValue = Qt::UserRole + gsColComparisonValue;
-    constexpr uint16_t gsRoleComparisonValueHex = Qt::UserRole + gsColComparisonValueHex;*/
-    constexpr uint16_t gsRoleType = Qt::UserRole + gsColMemoryOffset;
-    constexpr uint16_t gsRoleMemoryOffset = Qt::UserRole + gsColType;
-    constexpr uint16_t gsRoleRawValue = Qt::UserRole + 10;
-    constexpr uint16_t gsRoleRawComparisonValue = Qt::UserRole + 11;
-    constexpr uint16_t gsRoleUID = Qt::UserRole + 12;
-    constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 13;
-    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 14;
-    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 15;
-    constexpr uint16_t gsRoleRefName = Qt::UserRole + 16;
-    constexpr uint16_t gsRoleEntireMemoryField = Qt::UserRole + 17;
-    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 18;
+    constexpr uint16_t gsRoleType = Qt::UserRole + 0;
+    constexpr uint16_t gsRoleMemoryOffset = Qt::UserRole + 1;
+    constexpr uint16_t gsRoleRawValue = Qt::UserRole + 2;
+    constexpr uint16_t gsRoleIsPointer = Qt::UserRole + 3;
+    constexpr uint16_t gsRoleUID = Qt::UserRole + 4;
+
+    constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 5;
+    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 6; // vtable
+    constexpr uint16_t gsRoleRefName = Qt::UserRole + 7;   // ref name for flags and states
+    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 8;
+    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 9;
+    constexpr uint16_t gsRoleRawComparisonValue = Qt::UserRole + 10; // just for flag field
 
     constexpr char* gsJSONDragDropMemoryField_UID = "uid";
     constexpr char* gsJSONDragDropMemoryField_Offset = "offset";
@@ -149,14 +145,6 @@ namespace S2Plugin
         {
             return fields.find(key);
         }
-        ////map_type::const_iterator find(const std::string_view key) const
-        ////{
-        ////    auto it = json_names_map.find(key);
-        ////    if (it == json_names_map.end())
-        ////        return fields.end();
-
-        ////    return it->second;
-        ////}
         map_type::const_iterator end() const
         {
             return fields.end();
@@ -230,6 +218,7 @@ namespace S2Plugin
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(S2Plugin::MemoryField)
+    Q_DECLARE_METATYPE(std::string)
 
     struct VirtualFunction;
     struct Spelunky2;
@@ -256,6 +245,7 @@ namespace S2Plugin
         static std::string_view getCPPTypeName(MemoryFieldType type);
         static std::string_view getTypeDisplayName(MemoryFieldType type);
 
+        // equivalent to alignof operator
         int getAlingment(const std::string& type) const;
         bool isPermanentPointer(const std::string& type) const;
         bool isJsonStruct(const std::string type) const;
@@ -274,7 +264,8 @@ namespace S2Plugin
         std::unordered_map<std::string, std::string> mEntityClassHierarchy;
         std::vector<std::pair<std::string, std::string>> mDefaultEntityClassTypes;
 
-        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFieldsMain; // for build in types defined in json
+        // for build in types defined in json
+        std::unordered_map<MemoryFieldType, std::vector<MemoryField>> mTypeFieldsMain;
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsEntitySubclasses;
         std::unordered_map<std::string, std::vector<MemoryField>> mTypeFieldsStructs;
         std::unordered_set<std::string> mPointerTypes; // pointers defined in pointer_types in json

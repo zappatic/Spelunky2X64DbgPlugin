@@ -41,6 +41,7 @@ S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytyp
         setWindowTitle(QString("std::map<%1, %2>").arg(QString::fromStdString(keytypeName), QString::fromStdString(valuetypeName)));
     mMainTreeView->setVisible(true);
 
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex).disable(gsColMemoryOffsetDelta).disable(gsColComment);
     refreshMapContents();
     toggleAutoRefresh(Qt::Checked);
 }
@@ -182,11 +183,6 @@ void S2Plugin::ViewStdMap::refreshMapContents()
     refreshData();
 
     mMainTreeView->updateTableHeader();
-
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
-    mMainTreeView->setColumnHidden(gsColMemoryOffsetDelta, true);
-    mMainTreeView->setColumnHidden(gsColComment, true);
     mMainTreeView->setColumnWidth(gsColField, 145);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);

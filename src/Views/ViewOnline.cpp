@@ -62,8 +62,7 @@ void S2Plugin::ViewOnline::initializeUI()
     {
         mMainTreeView->addMemoryField(field, "Online." + field.name);
     }
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);

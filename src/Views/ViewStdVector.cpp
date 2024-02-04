@@ -115,10 +115,8 @@ void S2Plugin::ViewStdVector::refreshVectorContents()
     }
     refreshData();
 
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex).disable(gsColComment);
     mMainTreeView->updateTableHeader();
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
-    mMainTreeView->setColumnHidden(gsColMemoryOffsetDelta, true);
     mMainTreeView->setColumnWidth(gsColField, 145);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);

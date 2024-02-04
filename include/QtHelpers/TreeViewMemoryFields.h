@@ -13,6 +13,27 @@ namespace S2Plugin
     struct MemoryField;
     class StyledItemDelegateHTML;
 
+    struct ColumnFilter
+    {
+        constexpr ColumnFilter& enable(uint8_t h)
+        {
+            activeColumns = activeColumns | (1U << h);
+            return *this;
+        }
+        constexpr ColumnFilter& disable(uint8_t h)
+        {
+            activeColumns = activeColumns & ~(1U << h);
+            return *this;
+        }
+        constexpr bool test(uint8_t h) const
+        {
+            return (activeColumns & (1U << h)) != 0;
+        }
+
+      private:
+        uint16_t activeColumns{0xFFFF};
+    };
+
     class TreeViewMemoryFields : public QTreeView
     {
         Q_OBJECT
@@ -28,6 +49,8 @@ namespace S2Plugin
         void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, size_t memoryOffsetDeltaReference = 0,
                                  QStandardItem* parent = nullptr, bool disableChangeHighlightingForField = false);
 
+        ColumnFilter activeColumns;
+
       protected:
         void dragEnterEvent(QDragEnterEvent* event) override;
         void dragMoveEvent(QDragMoveEvent* event) override;
@@ -36,7 +59,7 @@ namespace S2Plugin
 
       signals:
         void memoryFieldValueUpdated(const QString& fieldName);
-        void levelGenRoomsPointerClicked(const QString& fieldName);
+        void levelGenRoomsPointerClicked();
         void entityOffsetDropped(size_t offset);
 
       private slots:

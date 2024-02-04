@@ -125,8 +125,8 @@ S2Plugin::Configuration::Configuration()
 {
     char buffer[MAX_PATH + 1] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
-    auto path = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2.json");
-    auto pathENT = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2Entities.json");
+    static auto path = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2.json");
+    static auto pathENT = QFileInfo(QString(buffer)).dir().filePath("plugins/Spelunky2Entities.json");
     if (!QFile(path).exists())
     {
         displayError("Could not find " + path.toStdString());
@@ -365,13 +365,12 @@ void S2Plugin::Configuration::processEntitiesJSON(ordered_json& j)
         auto value = jsonValue.get<std::string>();
         if (key != value)
         {
-            mEntityClassHierarchy[key] = value;
+            mEntityClassHierarchy[key] = std::move(value);
         }
     }
     for (const auto& [key, jsonValue] : j["default_entity_types"].items())
     {
-        auto value = jsonValue.get<std::string>();
-        mDefaultEntityClassTypes.emplace_back(key, std::move(value));
+        mDefaultEntityClassTypes.emplace_back(key, jsonValue.get<std::string>());
     }
     for (const auto& [key, jsonArray] : j["fields"].items())
     {
@@ -442,6 +441,7 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
             mTypeFieldsStructs.try_emplace(key, std::move(vec));
         }
     }
+    // TODO: maybe add check for unused structs?
 }
 
 const std::unordered_map<std::string, std::string>& S2Plugin::Configuration::entityClassHierarchy() const noexcept
@@ -866,6 +866,7 @@ size_t S2Plugin::Configuration::getTypeSize(const std::string& typeName, bool en
         if (json_it != gsMemoryFieldType.json_names_map.end())
             return json_it->second->second.size;
 
+        dprintf("could not determinate size for (%s)\n", typeName);
         return 0;
     }
 

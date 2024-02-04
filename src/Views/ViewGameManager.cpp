@@ -61,8 +61,7 @@ void S2Plugin::ViewGameManager::initializeUI()
     {
         mMainTreeView->addMemoryField(field, "GameManager." + field.name);
     }
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mMainLayout->addWidget(mMainTreeView);
 
     mMainTreeView->setColumnWidth(gsColValue, 250);

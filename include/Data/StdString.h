@@ -63,7 +63,7 @@ namespace S2Plugin
             if (l != other_l)
                 return false;
 
-            if (l == 0) // both lengths the same, so both are 0
+            if (l == 0) // both lengths the same at this point, so both are 0
                 return true;
 
             auto this_str = get_string();
@@ -74,6 +74,8 @@ namespace S2Plugin
         {
             return !operator==(other);
         }
+
+      private:
         size_t offset;
     };
 } // namespace S2Plugin

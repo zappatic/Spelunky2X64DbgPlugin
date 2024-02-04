@@ -36,7 +36,7 @@ S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWid
 
     mEntity->refreshOffsets();
     mEntity->refreshValues();
-    mMainTreeView->updateTableHeader();
+    // mMainTreeView->updateTableHeader(); // already done in initializeUI
     mMainTreeView->setColumnWidth(gsColField, 175);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
@@ -130,11 +130,10 @@ void S2Plugin::ViewEntity::initializeUI()
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
     mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setVisible(false);
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mMainTreeView->updateTableHeader();
     mMainTreeView->setDragDropMode(QAbstractItemView::DragDropMode::DragDrop);
     mMainTreeView->setAcceptDrops(true);
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
     QObject::connect(mMainTreeView, &TreeViewMemoryFields::entityOffsetDropped, this, &ViewEntity::entityOffsetDropped);
     mTabFields->layout()->addWidget(mMainTreeView);
 
@@ -315,6 +314,7 @@ void S2Plugin::ViewEntity::entityOffsetDropped(size_t entityOffset)
     }
 
     mEntity->compareToEntity(entityOffset);
+    mMainTreeView->activeColumns.enable(gsColComparisonValue).enable(gsColComparisonValueHex);
     mMainTreeView->setColumnHidden(gsColComparisonValue, false);
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, false);
     mMemoryComparisonScrollArea->setVisible(true);

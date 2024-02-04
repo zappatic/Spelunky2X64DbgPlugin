@@ -122,6 +122,7 @@ void S2Plugin::Entity::populateTreeView()
             mTree->expandItem(item);
         }
     }
+    mTree->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mTree->setColumnHidden(gsColComparisonValue, true);
     mTree->setColumnHidden(gsColComparisonValueHex, true);
 }

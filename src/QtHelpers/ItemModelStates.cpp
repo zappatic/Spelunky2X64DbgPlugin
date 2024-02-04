@@ -2,10 +2,7 @@
 
 S2Plugin::ItemModelStates::ItemModelStates(const std::vector<std::pair<int64_t, std::string>>& states, QObject* parent) : QAbstractItemModel(parent)
 {
-    for (const auto& [stateID, state] : states)
-    {
-        mStates.emplace_back(std::make_pair(stateID, state));
-    }
+    mStates = states;
 }
 
 Qt::ItemFlags S2Plugin::ItemModelStates::flags(const QModelIndex& index) const
@@ -49,10 +46,7 @@ QModelIndex S2Plugin::ItemModelStates::parent(const QModelIndex& index) const
 
 S2Plugin::SortFilterProxyModelStates::SortFilterProxyModelStates(const std::vector<std::pair<int64_t, std::string>>& states, QObject* parent) : QSortFilterProxyModel(parent)
 {
-    for (const auto& [stateID, state] : states)
-    {
-        mStates.emplace_back(std::make_pair(stateID, state));
-    }
+    mStates = states;
     setSortRole(Qt::UserRole);
 }
 

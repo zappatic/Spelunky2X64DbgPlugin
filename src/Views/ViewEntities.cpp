@@ -29,6 +29,7 @@ S2Plugin::ViewEntities::ViewEntities(ViewToolbar* toolbar, QWidget* parent) : QW
     setWindowTitle("Entities");
     mMainTreeView->setVisible(true);
 
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex).disable(gsColMemoryOffsetDelta);
     refreshEntities();
     mFilterLineEdit->setFocus();
 }
@@ -221,9 +222,6 @@ void S2Plugin::ViewEntities::refreshEntities()
     setWindowTitle(QString("%1 Entities").arg(totalEntities));
 
     mMainTreeView->updateTableHeader();
-    mMainTreeView->setColumnHidden(gsColComparisonValue, true);
-    mMainTreeView->setColumnHidden(gsColComparisonValueHex, true);
-    mMainTreeView->setColumnHidden(gsColMemoryOffsetDelta, true);
     mMainTreeView->setColumnWidth(gsColField, 145);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
