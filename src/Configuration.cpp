@@ -149,6 +149,14 @@ S2Plugin::Configuration::Configuration()
         std::ifstream fpENT(pathENT.toStdString());
         auto jENT = ordered_json::parse(fpENT, nullptr, true, true);
         processEntitiesJSON(jENT);
+
+        static std::vector<std::pair<int64_t, std::string>> unknown_flags = {
+            {1, "unknown_01"},  {2, "unknown_02"},  {3, "unknown_03"},  {4, "unknown_04"},  {5, "unknown_05"},  {6, "unknown_06"},  {7, "unknown_07"},  {8, "unknown_08"},
+            {9, "unknown_09"},  {10, "unknown_10"}, {11, "unknown_11"}, {12, "unknown_12"}, {13, "unknown_13"}, {14, "unknown_14"}, {15, "unknown_15"}, {16, "unknown_16"},
+            {17, "unknown_17"}, {18, "unknown_18"}, {19, "unknown_19"}, {20, "unknown_20"}, {21, "unknown_21"}, {22, "unknown_22"}, {23, "unknown_23"}, {24, "unknown_24"},
+            {25, "unknown_25"}, {26, "unknown_26"}, {27, "unknown_27"}, {28, "unknown_28"}, {29, "unknown_29"}, {30, "unknown_30"}, {31, "unknown_31"}, {32, "unknown_32"}};
+
+        mRefs.emplace("unknown", unknown_flags);
     }
     catch (const ordered_json::exception& e)
     {
@@ -279,6 +287,7 @@ S2Plugin::MemoryField S2Plugin::Configuration::populateMemoryField(const nlohman
             }
             else
             {
+                memField.firstParameterType = "unknown";
                 dprintf("missing `flags` or `ref` in field: (%s.%s)\n", struct_name.c_str(), memField.name.c_str());
             }
             break;
@@ -334,7 +343,7 @@ S2Plugin::MemoryField S2Plugin::Configuration::populateMemoryField(const nlohman
         case MemoryFieldType::UndeterminedThemeInfoPointer:
         {
             memField.isPointer = true;
-            memField.jsonName = "ThemeInfoPointer"; 
+            memField.jsonName = "ThemeInfoPointer";
             break;
         }
         case MemoryFieldType::CodePointer:
@@ -818,33 +827,6 @@ size_t S2Plugin::Configuration::setOffsetForField(const MemoryField& field, cons
     }
     return offset;
 }
-
-// size_t S2Plugin::Configuration::sizeOf(const std::string& typeName) const
-//{
-//     if (isPointer(typeName))
-//     {
-//         return sizeof(size_t);
-//     }
-//     else if (isBuiltInType(typeName))
-//     {
-//         MemoryField tmp;
-//         tmp.type = gsMemoryFieldType.find(typeName)->first;
-//         std::unordered_map<std::string, size_t> offsetsDummy;
-//         return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
-//     }
-//     else if (isInlineStruct(typeName))
-//     {
-//         MemoryField tmp;
-//         tmp.type = MemoryFieldType::InlineStructType;
-//         tmp.jsonName = typeName;
-//         std::unordered_map<std::string, size_t> offsetsDummy;
-//         return setOffsetForField(tmp, "dummy", 0, offsetsDummy, true);
-//     }
-//     else
-//     {
-//         return 0;
-//     }
-// }
 
 size_t S2Plugin::Configuration::getTypeSize(const std::string& typeName, bool entitySubclass)
 {

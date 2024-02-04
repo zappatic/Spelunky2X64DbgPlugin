@@ -938,7 +938,11 @@ void S2Plugin::TreeViewMemoryFields::updateValueForField(const MemoryField& fiel
             auto mask = (1 << (flagIndex - 1));
             auto flagSet = ((value & mask) == mask);
             auto flagRef = qvariant_cast<std::string>(itemField->parent()->data(gsRoleRefName));
-            auto flagTitle = QString::fromStdString(Configuration::get()->flagTitle(flagRef, flagIndex));
+            auto flagName = Configuration::get()->flagTitle(flagRef, flagIndex);
+            auto flagTitle = QString::fromStdString(flagName.empty() ? Configuration::get()->flagTitle("unknown", flagIndex) : flagName); // TODO don't show empty unless it was chosen in settings
+
+            // TODO: would love to instead get the names and save them in addMemoryField and then just use itemValue->setForeground or itemValue->setData(Qt::TextColorRole) for the color
+            // but it doesn't work with HTML delagate, and i don't know how to edit it to make it work
             auto caption = QString("<font color='%1'>%2</font>").arg(flagSet ? "green" : "red", flagTitle);
             itemValue->setData(caption, Qt::DisplayRole);
             itemMemoryOffset->setData("", Qt::DisplayRole);
@@ -1914,7 +1918,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 }
                 case MemoryFieldType::Flag:
                 {
-                    auto flagIndex = clickedItem->data(gsRoleFlagIndex).toUInt();
+                    auto flagIndex = getDataFrom(index, gsColField, gsRoleFlagIndex).toUInt();
                     auto offset = clickedItem->parent()->data(gsRoleMemoryOffset).toULongLong();
                     if (offset != 0)
                     {
