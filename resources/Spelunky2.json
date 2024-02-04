@@ -9413,6 +9413,59 @@
       },
       { "field": "length", "type": "UnsignedQword" },
       { "field": "capacity", "type": "UnsignedQword" }
+    ],
+    "Ai_func": [
+      { "field": "unknown1a", "type": "Flags32", "comment": "flags?" },
+      { "field": "unknown1b", "type": "Flags32", "comment": "flags?" },
+      { "field": "unknown2a", "type": "Word" },
+      { "field": "unknown2b", "type": "Word", "comment": "garbage/padding?" },
+      { "field": "unknown3", "type": "Dword", "comment": "garbage/padding?" },
+      {
+        "field": "unknown4",
+        "type": "DataPointer",
+        "comment": "array of targets? (uids)"
+      },
+      { "field": "button_sequence?", "type": "DataPointer" },
+      { "field": "self_pointer", "type": "EntityPointer" },
+      { "field": "unknown7", "type": "DataPointer" },
+      { "field": "target", "type": "EntityPointer" },
+      { "field": "unknown9", "type": "DataPointer" },
+      { "field": "unknown10", "type": "DataPointer" },
+      { "field": "unknown11", "type": "Word" },
+      { "field": "unknown11b", "type": "Word" },
+      { "field": "timer", "type": "Dword" },
+      {
+        "field": "ai_state",
+        "type": "Byte",
+        "comment": "8 = HH agro, flags maybe?"
+      },
+      { "field": "last_ai_state", "type": "Byte" },
+      { "field": "trust", "type": "Byte" },
+      { "field": "whipped", "type": "Byte" },
+      { "field": "unknown15", "type": "Byte" },
+      { "field": "unknown16", "type": "Byte" },
+      {
+        "field": "walk_pause_timer",
+        "type": "Word",
+        "comment": "positive: walking, negative: wating/idle"
+      },
+      { "field": "unknown19", "type": "Word" },
+      {
+        "field": "unknown20",
+        "type": "Word",
+        "comment": "distance to target?"
+      },
+      { "field": "targer_uid", "type": "EntityUID" },
+      { "field": "unknown22", "type": "Byte" },
+      { "field": "unknown23", "type": "Byte" },
+      { "field": "unknown24", "type": "Byte" },
+      { "field": "unknown25", "type": "Byte" },
+      { "field": "unknown26", "type": "Dword" },
+      {
+        "field": "unknown27",
+        "type": "StdMap",
+        "comment": "added map for now, the size seam to always be 0"
+      }
     ]
   }
 }
