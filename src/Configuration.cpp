@@ -18,7 +18,7 @@ S2Plugin::Configuration* S2Plugin::Configuration::ptr = nullptr;
 namespace S2Plugin
 {
     const MemoryFieldData gsMemoryFieldType = {
-        // MemoryFieldEnum, Name for desplay, c++ type name, name in json, size (if 0 will be determinated from struct)
+        // MemoryFieldEnum, Name for desplay, c++ type name, name in json, size (if 0 will be determinated from json struct)
 
         // Basic types
         {MemoryFieldType::CodePointer, "Code pointer", "size_t*", "CodePointer", 8},
@@ -403,6 +403,9 @@ void S2Plugin::Configuration::processEntitiesJSON(ordered_json& j)
                 continue;
             }
             MemoryField memField = populateMemoryField(field, key);
+            if (std::find(vec.begin(), vec.end(), memField) != vec.end())
+                throw std::runtime_error("Struct (" + key + ") contains duplicate field name: (" + memField.name + ")");
+
             vec.emplace_back(std::move(memField));
         }
         mTypeFieldsEntitySubclasses[key] = std::move(vec);
@@ -437,6 +440,9 @@ void S2Plugin::Configuration::processJSON(ordered_json& j)
         for (const auto& jsonField : jsonArray)
         {
             MemoryField memField = populateMemoryField(jsonField, key);
+            if (std::find(vec.begin(), vec.end(), memField) != vec.end())
+                throw std::runtime_error("Struct (" + key + ") contains duplicate field name: (" + memField.name + ")");
+
             vec.emplace_back(std::move(memField));
         }
 
@@ -465,7 +471,7 @@ const std::vector<std::pair<std::string, std::string>>& S2Plugin::Configuration:
 
 std::vector<std::string> S2Plugin::Configuration::classHierarchyOfEntity(const std::string& entityName) const
 {
-    std::vector<std::string> returnSet;
+    std::vector<std::string> returnVec;
     std::string entityClass;
     for (const auto& [regexStr, entityClassType] : mDefaultEntityClassTypes)
     {
@@ -478,15 +484,15 @@ std::vector<std::string> S2Plugin::Configuration::classHierarchyOfEntity(const s
     }
     if (!entityClass.empty())
     {
-        std::string p = entityClass;
-        while (p != "Entity" && p != "")
+        std::string p = std::move(entityClass);
+        while (p != "Entity" && !p.empty())
         {
-            returnSet.emplace_back(p);
-            p = mEntityClassHierarchy.at(p);
+            returnVec.emplace_back(p);
+            p = mEntityClassHierarchy.at(p); // TODO: (at) will throw exception if the element is not found
         }
     }
-    returnSet.emplace_back("Entity");
-    return returnSet;
+    returnVec.emplace_back("Entity");
+    return returnVec;
 }
 
 const std::vector<S2Plugin::MemoryField>& S2Plugin::Configuration::typeFieldsOfDefaultStruct(const std::string& type) const
@@ -856,11 +862,12 @@ size_t S2Plugin::Configuration::getTypeSize(const std::string& typeName, bool en
     for (auto& field : it->second)
         struct_size += field.get_size();
 
+    // cache the size
     mTypeFieldsStructsSizes[typeName] = struct_size;
     return struct_size;
 }
 
-size_t S2Plugin::MemoryField::get_size()
+size_t S2Plugin::MemoryField::get_size() const
 {
     if (isPointer)
         return sizeof(uintptr_t);
@@ -868,9 +875,9 @@ size_t S2Plugin::MemoryField::get_size()
     if (size == 0)
     {
         if (type == MemoryFieldType::EntitySubclass)
-            size = Configuration::get()->getTypeSize(jsonName, true);
+            const_cast<MemoryField*>(this)->size = Configuration::get()->getTypeSize(jsonName, true);
         else
-            size = Configuration::get()->getTypeSize(jsonName, false);
+            const_cast<MemoryField*>(this)->size = Configuration::get()->getTypeSize(jsonName, false);
     }
     return size;
 }

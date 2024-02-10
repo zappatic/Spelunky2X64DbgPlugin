@@ -215,7 +215,7 @@ void S2Plugin::ViewToolbar::showGameManager()
     }
 }
 
-void S2Plugin::ViewToolbar::showLevelGen()
+void S2Plugin::ViewToolbar::showLevelGen() // TODO: add pointer param
 {
     if (Spelunky2::is_loaded() && Configuration::is_loaded() && mState->loadState() && mLevelGen->loadLevelGen())
     {

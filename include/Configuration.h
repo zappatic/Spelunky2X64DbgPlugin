@@ -19,18 +19,35 @@ namespace S2Plugin
     constexpr uint8_t gsColType = 7;
     constexpr uint8_t gsColComment = 8;
 
+    /*
+     * [[ Roles explanation: ]]
+     * The first 5 roles are all saved to the name field
+     * those are used as information about the row
+     * memory offsets in the name field are used just for row update and should not be used by anything else
+     *
+     * value, hex value, comparison value, comparison hex value, memoryoffset and delta fields all should contain the RawValue data
+     * (may differ with some special types)
+     *
+     * value and comparison value also contain `gsRoleMemoryOffset` for field editing purposes
+     * for pointers, that will be pointer itself, not it's memory offset of the pointer
+     *
+     * The rest of the roles are type specific
+     */
+
     constexpr uint16_t gsRoleType = Qt::UserRole + 0;
     constexpr uint16_t gsRoleMemoryOffset = Qt::UserRole + 1;
-    constexpr uint16_t gsRoleRawValue = Qt::UserRole + 2;
+    constexpr uint16_t gsRoleComparisonMemoryOffset = Qt::UserRole + 2;
     constexpr uint16_t gsRoleIsPointer = Qt::UserRole + 3;
     constexpr uint16_t gsRoleUID = Qt::UserRole + 4;
+    constexpr uint16_t gsRoleRawValue = Qt::UserRole + 5;
 
-    constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 5;
-    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 6; // vtable
-    constexpr uint16_t gsRoleRefName = Qt::UserRole + 7;   // ref name for flags and states
-    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 8;
-    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 9;
-    constexpr uint16_t gsRoleRawComparisonValue = Qt::UserRole + 10; // just for flag field
+    constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 6;
+    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 7; // vtable
+    constexpr uint16_t gsRoleRefName = Qt::UserRole + 8;   // ref name for flags and states
+    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 9;
+    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 10;
+    constexpr uint16_t gsRoleRawComparisonValue = Qt::UserRole + 11; // just for flag field
+    constexpr uint16_t gsRoleSize = Qt::UserRole + 12;
 
     constexpr char* gsJSONDragDropMemoryField_UID = "uid";
     constexpr char* gsJSONDragDropMemoryField_Offset = "offset";
@@ -48,7 +65,7 @@ namespace S2Plugin
 
     enum class MemoryFieldType
     {
-        None, // special type just for error handling
+        None = 0, // special type just for error handling
         CodePointer,
         DataPointer,
         Byte,
@@ -214,10 +231,15 @@ namespace S2Plugin
         std::string firstParameterType;
         std::string secondParameterType;
         std::string comment;
-        size_t get_size();
+        size_t get_size() const;
+
+        // For checking duplicate names
+        bool operator==(const MemoryField& other) const
+        {
+            return name == other.name;
+        }
     };
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
-    Q_DECLARE_METATYPE(S2Plugin::MemoryField)
     Q_DECLARE_METATYPE(std::string)
 
     struct VirtualFunction;
@@ -228,6 +250,7 @@ namespace S2Plugin
       public:
         static Configuration* get();
         static bool reload();
+        // tries to load Configuration if not loaded already
         static bool is_loaded();
 
         const std::unordered_map<std::string, std::string>& entityClassHierarchy() const noexcept;
