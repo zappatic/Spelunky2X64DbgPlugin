@@ -1,9 +1,14 @@
 #pragma once
 
+#include "data/EntityList.h"
+#include "data/ParticleEmittersList.h"
+#include <QColor>
 #include <QMetaEnum>
+#include <cstdint>
 #include <memory>
 #include <nlohmann/json.hpp>
 #include <string>
+#include <string_view>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -23,13 +28,14 @@ namespace S2Plugin
      * [[ Roles explanation: ]]
      * The first 5 roles are all saved to the name field
      * those are used as information about the row
-     * memory offsets in the name field are used just for row update and should not be used by anything else
+     * memory offsets in the name field are used just for row update and should not be used for anything else
      *
-     * value, hex value, comparison value, comparison hex value, memoryoffset and delta fields all should contain the RawValue data
+     * value, comparison value, memoryoffset and delta fields all should contain the `gsRoleRawValue` data
      * (may differ with some special types)
      *
+     * valueHex and comparison valuehex contain `gsRoleRawValue` only when it's a pointer (only used for update check)
      * value and comparison value also contain `gsRoleMemoryOffset` for field editing purposes
-     * for pointers, that will be pointer itself, not it's memory offset of the pointer
+     * for pointers, that will be the pointer itself, not memory offset of the pointer
      *
      * The rest of the roles are type specific
      */
@@ -42,12 +48,10 @@ namespace S2Plugin
     constexpr uint16_t gsRoleRawValue = Qt::UserRole + 5;
 
     constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 6;
-    constexpr uint16_t gsRoleFieldName = Qt::UserRole + 7; // vtable
-    constexpr uint16_t gsRoleRefName = Qt::UserRole + 8;   // ref name for flags and states
-    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 9;
-    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 10;
-    constexpr uint16_t gsRoleRawComparisonValue = Qt::UserRole + 11; // just for flag field
-    constexpr uint16_t gsRoleSize = Qt::UserRole + 12;
+    constexpr uint16_t gsRoleRefName = Qt::UserRole + 7;   // ref name for flags and states and vtable
+    constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 8;
+    constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 9;
+    constexpr uint16_t gsRoleSize = Qt::UserRole + 10;
 
     constexpr char* gsJSONDragDropMemoryField_UID = "uid";
     constexpr char* gsJSONDragDropMemoryField_Offset = "offset";
@@ -56,16 +60,18 @@ namespace S2Plugin
     // new types need to be added to
     // - the MemoryFieldType enum
     // - gsMemoryFieldType in Configuration.cpp
-    // - optionally in Spelunky2.json
+    // - optionally in Spelunky2.json if they have static structure
     // - handling of the json is done in populateMemoryField in Configuration.cpp
     // - displaying the data and handling the click event is done in TreeViewMemoryFields.cpp
     // - if it's common use/basic type, you may also want to add it in getAlingment function
+    // - there are some specific conditions for comparison in database handled in DatabaseHelper.cpp
     // new subclasses of Entity can just be added to the class hierarchy in Spelunky2Entities.json
     // and have its fields defined there
 
     enum class MemoryFieldType
     {
         None = 0, // special type just for error handling
+        Dummy,    // dummy type for uses like fake parent type in StdMap
         CodePointer,
         DataPointer,
         Byte,
@@ -112,10 +118,10 @@ namespace S2Plugin
         EntitySubclass,               // a subclass of an entity defined in json
         DefaultStructType,            // a struct defined in json
         UndeterminedThemeInfoPointer, // used to look up the theme pointer in the levelgen and show the correct theme name
+        ThemeInfoName,                // same as above, but does not add struct tree
         LevelGenRoomsPointer,         // used to make the level gen rooms title clickable
         LevelGenRoomsMetaPointer,     // used to make the level gen rooms title clickable
         JournalPagePointer,           // used to make journal page in vector clickable
-        ThemeInfoName,
         LevelGenPointer,
         UTF16Char,
         UTF16StringFixedSize,
@@ -129,69 +135,7 @@ namespace S2Plugin
         Double,
     };
 
-    class MemoryFieldData
-    {
-      public:
-        struct Data
-        {
-            std::string_view display_name;
-            std::string_view cpp_type_name;
-            uint32_t size;
-        };
-
-        using map_type = std::unordered_map<MemoryFieldType, Data>;
-
-        MemoryFieldData(std::initializer_list<std::tuple<MemoryFieldType, const char*, const char*, const char*, uint32_t>> init)
-        {
-            // MemoryFieldType type, const char* d_name, const char* cpp_type, const char* j_name, uint32_t size
-            for (auto& val : init)
-            {
-                auto it = fields.emplace(std::get<0>(val), Data{std::get<1>(val), std::get<2>(val), std::get<4>(val)});
-                if (it.second)
-                {
-                    auto size = strlen(std::get<3>(val));
-                    if (size != 0)
-                    {
-                        json_names_map.emplace(std::string_view(std::get<3>(val), size), it.first);
-                    }
-                }
-            }
-        };
-
-        map_type::const_iterator find(const MemoryFieldType key) const
-        {
-            return fields.find(key);
-        }
-        map_type::const_iterator end() const
-        {
-            return fields.end();
-        }
-        map_type::const_iterator begin() const
-        {
-            return fields.begin();
-        }
-        const Data& at(const MemoryFieldType key) const
-        {
-            return fields.at(key);
-        }
-        const Data& at(const std::string_view key) const
-        {
-            return json_names_map.at(key)->second;
-        }
-        bool contains(const MemoryFieldType key) const
-        {
-            return fields.count(key) != 0;
-        }
-        bool contains(const std::string_view key) const
-        {
-            return json_names_map.count(key) != 0;
-        }
-
-        map_type fields;
-        std::unordered_map<std::string_view, map_type::const_iterator> json_names_map;
-    };
-
-    struct VirtualFunction // TODO
+    struct VirtualFunction
     {
         size_t index;
         std::string name;
@@ -202,19 +146,6 @@ namespace S2Plugin
         VirtualFunction(size_t i, std::string n, std::string p, std::string r, std::string t) : index(i), name(n), params(p), returnValue(r), type(t){};
     };
 
-    enum class VIRT_FUNC
-    {
-        ENTITY_STATEMACHINE = 2,
-        ENTITY_KILL = 3,
-        ENTITY_COLLISION1 = 4,
-        ENTITY_DESTROY = 5,
-        ENTITY_OPEN = 24,
-        ENTITY_COLLISION2 = 26,
-        MOVABLE_DAMAGE = 48,
-    };
-
-    // Q_DECLARE_METATYPE(S2Plugin::VirtualFunction) // TODO hope this is not nedded
-
     struct MemoryField
     {
         std::string name;
@@ -222,8 +153,6 @@ namespace S2Plugin
 
         MemoryFieldType type{MemoryFieldType::None};
         bool isPointer{false};
-        uint8_t flag_parrent_size{0};
-        uint8_t flag_index;
 
         // jsonName only if applicable: if a type is not a MemoryFieldType, but fully defined in the json file
         // then save its name so we can compare later
@@ -239,6 +168,15 @@ namespace S2Plugin
             return name == other.name;
         }
     };
+
+    struct RoomCode
+    {
+        uint16_t id;
+        std::string name;
+        QColor color;
+        RoomCode(uint16_t _id, std::string _name, QColor _color) : id(_id), name(_name), color(_color){};
+    };
+
     Q_DECLARE_METATYPE(S2Plugin::MemoryFieldType)
     Q_DECLARE_METATYPE(std::string)
 
@@ -267,6 +205,10 @@ namespace S2Plugin
         static MemoryFieldType getBuiltInType(const std::string& type);
         static std::string_view getCPPTypeName(MemoryFieldType type);
         static std::string_view getTypeDisplayName(MemoryFieldType type);
+        static bool isPointerType(MemoryFieldType type);
+
+        uintptr_t offsetForField(const std::vector<MemoryField>& fields, std::string_view fieldUID, uintptr_t addr = 0) const;
+        uintptr_t offsetForField(MemoryFieldType type, std::string_view fieldUID, uintptr_t addr = 0) const;
 
         // equivalent to alignof operator
         int getAlingment(const std::string& type) const;
@@ -277,8 +219,19 @@ namespace S2Plugin
         std::string stateTitle(const std::string& fieldName, int64_t state) const;
         const std::vector<std::pair<int64_t, std::string>>& refTitlesOfField(const std::string& fieldName) const;
 
-        size_t setOffsetForField(const MemoryField& field, const std::string& fieldNameOverride, size_t offset, std::unordered_map<std::string, size_t>& offsets, bool advanceOffset = true) const;
         size_t getTypeSize(const std::string& typeName, bool entitySubclass = false);
+        const EntityList& entityList() const
+        {
+            return entityNames;
+        };
+
+        const ParticleEmittersList& particleEmittersList() const
+        {
+            return particleEmitters;
+        }
+
+        RoomCode roomCodeForID(uint16_t code) const;
+        std::string getEntityName(uint32_t type) const;
 
       private:
         static Configuration* ptr;
@@ -299,10 +252,15 @@ namespace S2Plugin
         std::unordered_map<std::string, uint8_t> mAlignments;
         std::unordered_map<std::string, std::vector<std::pair<int64_t, std::string>>> mRefs; // for flags and states
 
+        std::unordered_map<uint16_t, RoomCode> mRoomCodes;
+
         void processEntitiesJSON(nlohmann::ordered_json& json);
         void processJSON(nlohmann::ordered_json& json);
+        void processRoomCodesJSON(nlohmann::ordered_json& json);
         MemoryField populateMemoryField(const nlohmann::ordered_json& field, const std::string& struct_name);
-        bool isKnownEntitySubclass(const std::string& typeName) const;
+
+        EntityList entityNames;
+        ParticleEmittersList particleEmitters;
 
         Configuration();
         ~Configuration(){};
