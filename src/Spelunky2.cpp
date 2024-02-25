@@ -1,5 +1,6 @@
 #include "Spelunky2.h"
 
+#include "Configuration.h"
 #include "Data/EntityDB.h"
 #include "pluginmain.h"
 #include <QIcon>
@@ -19,7 +20,6 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
             return nullptr;
         }
         // see if the main module is Spelunky 2
-        std::string mainModuleName = "spel2.exe";
         if (std::string{"spel2.exe"}.compare(moduleInfo.name) != 0)
         {
             displayError("Main module is not spel2.exe");
@@ -28,7 +28,7 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
 
         // retrieve the memory map and loop every entry, until we find the .text section of spel2.exe
         uintptr_t Spelunky2CodeSectionStart{0};
-        uintptr_t Spelunky2CodeSectionSize{0};
+        size_t Spelunky2CodeSectionSize{0};
         uintptr_t Spelunky2AfterBundle{0};
 
         MEMMAP memoryMap = {0};
@@ -39,12 +39,11 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
             auto info = std::string((memoryMap.page)[i].info);
             uintptr_t baseAddress = (uintptr_t)mbi.BaseAddress;
 
-            char name[MAX_MODULE_SIZE] = {0};
+            char name[MAX_MODULE_SIZE + 1] = {0};
             Script::Module::NameFromAddr(baseAddress, name);
             if (std::string{"spel2.exe"}.compare(name) != 0 || info.find(".text") == std::string::npos)
-            {
                 continue;
-            }
+
             Spelunky2CodeSectionStart = baseAddress;
             Spelunky2CodeSectionSize = mbi.RegionSize;
             break;
@@ -56,15 +55,9 @@ S2Plugin::Spelunky2* S2Plugin::Spelunky2::get()
             return false;
         }
 
-        // find the 'after_bundle' location, where the actual code is
-        // only search in the last 7 megabytes
-        constexpr size_t sevenMegs = 7 * 1024 * 1024;
-        Spelunky2AfterBundle = Script::Pattern::FindMem(Spelunky2CodeSectionStart + Spelunky2CodeSectionSize - sevenMegs, sevenMegs, "55 41 57 41 56 41 55 41 54");
+        Spelunky2AfterBundle = getAfterBundle(Spelunky2CodeSectionStart, Spelunky2CodeSectionSize);
         if (Spelunky2AfterBundle == 0)
-        {
-            displayError("Could not locate the 'after_bundle' location");
             return false;
-        }
 
         THREADLIST threadList;
         uintptr_t heapBase{0};
@@ -124,41 +117,6 @@ void S2Plugin::Spelunky2::reset()
 //     return offset;
 // }
 
-std::string S2Plugin::Spelunky2::getEntityName(size_t offset, EntityDB* entityDB) const
-{
-    std::string entityName = "";
-    if (offset == 0)
-    {
-        return entityName;
-    }
-
-    auto entityID = getEntityTypeID(offset);
-
-    if (entityID > 0 && entityID <= entityDB->entityList()->highestID())
-    {
-        entityName = entityDB->entityList()->nameForID(entityID);
-    }
-    else
-    {
-        entityName = "UNKNOWN/DEAD ENTITY";
-    }
-    return entityName;
-}
-
-uint32_t S2Plugin::Spelunky2::getEntityTypeID(size_t offset) const
-{
-    if (offset == 0)
-    {
-        return 0;
-    }
-    size_t entityDBPtr = Script::Memory::ReadQword(offset + 8);
-    if (entityDBPtr == 0)
-    {
-        return 0;
-    }
-    return Script::Memory::ReadDword(entityDBPtr + 20);
-}
-
 uintptr_t S2Plugin::Spelunky2::find(const char* pattern, uintptr_t start, size_t size) const
 {
     if (start == 0)
@@ -184,9 +142,32 @@ uintptr_t S2Plugin::Spelunky2::find_between(const char* pattern, uintptr_t start
     return Script::Pattern::FindMem(start, size, pattern);
 }
 
-uintptr_t S2Plugin::Spelunky2::get_SaveData()
+uintptr_t S2Plugin::Spelunky2::get_SaveDataPtr()
 {
-    auto gm = get_GameManager();
+    auto gm = get_GameManagerPtr();
+    if (gm == 0)
+        return 0;
     auto heapOffsetSaveGame = Script::Memory::ReadQword(Script::Memory::ReadQword(gm + 8));
+    if (heapOffsetSaveGame == 0)
+        return 0;
     return heapBaseAddr + heapOffsetSaveGame;
+}
+
+std::string S2Plugin::Spelunky2::themeNameOfOffset(uintptr_t offset) const // TODO use QString?
+{
+    auto config = Configuration::get();
+    uintptr_t firstThemeOffset = config->offsetForField(MemoryFieldType::LevelGen, "theme_dwelling", get_LevelGenPtr());
+
+    const static auto themeNames = {
+        "DWELLING",     "JUNGLE",       "VOLCANA", "OLMEC", "TIDE POOL", "TEMPLE",         "ICE CAVES", "NEO BABYLON", "SUNKEN CITY",
+        "COSMIC OCEAN", "CITY OF GOLD", "DUAT",    "ABZU",  "TIAMAT",    "EGGPLANT WORLD", "HUNDUN",    "BASE CAMP",   "ARENA",
+    };
+    for (uint8_t idx = 0; idx < themeNames.size(); ++idx)
+    {
+        uintptr_t testPtr = Script::Memory::ReadQword(firstThemeOffset + idx * 0x8u);
+        if (testPtr == offset)
+            return *(themeNames.begin() + idx);
+    }
+
+    return "UNKNOWN THEME";
 }
