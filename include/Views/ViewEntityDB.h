@@ -52,7 +52,8 @@ namespace S2Plugin
         QWidget* mTabCompare;
 
         // LOOKUP
-        size_t mLookupIndex;
+        //size_t mLookupIndex;
+        uintptr_t mEntityDBPtr;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
         QCompleter* mEntityNameCompleter;
@@ -64,9 +65,7 @@ namespace S2Plugin
 
         void initializeUI();
         void updateFieldValues();
-        void populateComparisonCombobox(const std::string& prefix, const std::vector<S2Plugin::MemoryField>& fields);
         void populateComparisonTableWidget();
         void populateComparisonTreeWidget();
-        std::pair<QString, QVariant> valueForField(const std::string& prefix, const MemoryField& field, size_t entityDBIndex);
     };
 } // namespace S2Plugin

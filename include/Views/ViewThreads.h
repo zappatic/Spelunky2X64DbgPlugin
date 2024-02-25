@@ -10,7 +10,6 @@ namespace S2Plugin
 {
     struct ViewToolbar;
     struct StyledItemDelegateHTML;
-    struct State;
 
     class ViewThreads : public QWidget
     {
@@ -33,7 +32,6 @@ namespace S2Plugin
 
         QVBoxLayout* mMainLayout;
         QTableWidget* mMainTable;
-        std::vector<std::unique_ptr<State>> mThreadStates;
 
         void initializeUI();
     };

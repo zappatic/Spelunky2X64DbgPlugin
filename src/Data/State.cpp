@@ -3,128 +3,109 @@
 #include "Spelunky2.h"
 #include "pluginmain.h"
 
-bool S2Plugin::State::loadState()
-{
-    auto spel2 = Spelunky2::get();
-    auto afterBundle = spel2->afterBundle;
-    auto afterBundleSize = spel2->afterBundleSize;
-    if (afterBundle == 0)
-    {
-        return false;
-    }
-    if (mStatePtr != 0)
-    {
-        return true;
-    }
+// bool S2Plugin::State::loadState()
+//{
+//     auto spel2 = Spelunky2::get();
+//     auto afterBundle = spel2->afterBundle;
+//     auto afterBundleSize = spel2->afterBundleSize;
+//     if (afterBundle == 0)
+//     {
+//         return false;
+//     }
+//     if (mStatePtr != 0)
+//     {
+//         return true;
+//     }
+//
+//     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "49 0F 44 C0");
+//     instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, afterBundleSize, "49 0F 44 C0");
+//     instructionOffset = Script::Pattern::FindMem(instructionOffset - 25, afterBundleSize, "48 8B");
+//     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
+//     auto heapOffsetPtr = instructionOffset + pcOffset + 7;
+//     mHeapOffset = Script::Memory::ReadDword(heapOffsetPtr); // 4A0
+//
+//     THREADLIST threadList;
+//     DbgGetThreadList(&threadList);
+//     for (auto x = 0; x < threadList.count; ++x)
+//     {
+//         auto threadAllInfo = threadList.list[x];
+//         if (threadAllInfo.BasicInfo.ThreadNumber == 0)
+//         {
+//             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
+//             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
+//             auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
+//             auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x120);
+//             mStatePtr = heapBase + mHeapOffset;
+//             break;
+//         }
+//     }
+//     return true;
+// }
 
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "49 0F 44 C0");
-    instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, afterBundleSize, "49 0F 44 C0");
-    instructionOffset = Script::Pattern::FindMem(instructionOffset - 25, afterBundleSize, "48 8B");
-    auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
-    auto heapOffsetPtr = instructionOffset + pcOffset + 7;
-    mHeapOffset = Script::Memory::ReadDword(heapOffsetPtr); // 4A0
+// uint32_t S2Plugin::State::heapOffset()
+//{
+//     loadState();
+//     return mHeapOffset;
+// }
+//
+// uint32_t S2Plugin::State::TEBOffset() const
+//{
+//     return 0x120;
+// }
 
-    THREADLIST threadList;
-    DbgGetThreadList(&threadList);
-    for (auto x = 0; x < threadList.count; ++x)
-    {
-        auto threadAllInfo = threadList.list[x];
-        if (threadAllInfo.BasicInfo.ThreadNumber == 0)
-        {
-            auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
-            auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
-            auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
-            auto heapBase = Script::Memory::ReadQword(tebAddress11Value + TEBOffset());
-            mStatePtr = heapBase + mHeapOffset;
-            break;
-        }
-    }
+// void S2Plugin::State::refreshOffsets()
+//{
+//     mMemoryOffsets.clear();
+//     auto offset = mStatePtr;
+//     auto config = Configuration::get();
+//     for (const auto& field : config->typeFields(MemoryFieldType::State))
+//     {
+//         offset = config->setOffsetForField(field, "State." + field.name, offset, mMemoryOffsets);
+//     }
+// }
+//
+// size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
+//{
+//     auto full = "State." + fieldName;
+//     auto r = mMemoryOffsets.find(full);
+//     if (r == mMemoryOffsets.end())
+//     {
+//         return 0;
+//     }
+//     return r->second;
+// }
 
-    refreshOffsets();
-    return true;
-}
-
-void S2Plugin::State::loadThreadSpecificState(size_t offset)
-{
-    mStatePtr = offset;
-    refreshOffsets();
-}
-
-uint32_t S2Plugin::State::heapOffset()
-{
-    loadState();
-    return mHeapOffset;
-}
-
-uint32_t S2Plugin::State::TEBOffset() const
-{
-    return 0x120;
-}
-
-std::unordered_map<std::string, size_t>& S2Plugin::State::offsets()
-{
-    return mMemoryOffsets;
-}
-
-void S2Plugin::State::refreshOffsets()
-{
-    mMemoryOffsets.clear();
-    auto offset = mStatePtr;
-    auto config = Configuration::get();
-    for (const auto& field : config->typeFields(MemoryFieldType::State))
-    {
-        offset = config->setOffsetForField(field, "State." + field.name, offset, mMemoryOffsets);
-    }
-}
-
-size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
-{
-    auto full = "State." + fieldName;
-    auto r = mMemoryOffsets.find(full);
-    if (r == mMemoryOffsets.end())
-    {
-        return 0;
-    }
-    return r->second;
-}
-
-size_t S2Plugin::State::findNextEntity(size_t entityOffset)
-{
-    size_t nextOffset = (std::numeric_limits<size_t>::max)();
-
-    auto loopEntities = [&nextOffset, entityOffset](size_t entities, uint32_t entityCount)
-    {
-        for (auto x = 0; x < (std::min)(10000u, entityCount); ++x)
-        {
-            auto entityPtr = Script::Memory::ReadQword(entities + (x * sizeof(size_t)));
-            if (entityPtr <= entityOffset)
-            {
-                continue;
-            }
-            if (entityPtr < nextOffset)
-            {
-                nextOffset = entityPtr;
-            }
-        }
-    };
-
-    auto layer0Entities = Script::Memory::ReadQword(offsetForField("layer0.first_entity*"));
-    auto layer0EntityCount = Script::Memory::ReadDword(offsetForField("layer0.size"));
-    loopEntities(layer0Entities, layer0EntityCount);
-
-    auto layer1Entities = Script::Memory::ReadQword(offsetForField("layer1.first_entity*"));
-    auto layer1EntityCount = Script::Memory::ReadDword(offsetForField("layer1.size"));
-    loopEntities(layer1Entities, layer1EntityCount);
-
-    if (nextOffset == (std::numeric_limits<size_t>::max)())
-    {
-        return 0;
-    }
-    return nextOffset;
-}
-
-void S2Plugin::State::reset()
-{
-    mStatePtr = 0;
-    mMemoryOffsets.clear();
-}
+// size_t S2Plugin::State::findNextEntity(size_t entityOffset)
+//{
+//     size_t nextOffset = (std::numeric_limits<size_t>::max)();
+//
+//     auto loopEntities = [&nextOffset, entityOffset](size_t entities, uint32_t entityCount)
+//     {
+//         for (auto x = 0; x < (std::min)(10000u, entityCount); ++x)
+//         {
+//             auto entityPtr = Script::Memory::ReadQword(entities + (x * sizeof(size_t)));
+//             if (entityPtr <= entityOffset)
+//             {
+//                 continue;
+//             }
+//             if (entityPtr < nextOffset)
+//             {
+//                 nextOffset = entityPtr;
+//             }
+//         }
+//     };
+//
+//     // auto layer0Entities = Script::Memory::ReadQword(offsetForField("layer0.first_entity*"));
+//     // auto layer0EntityCount = Script::Memory::ReadDword(offsetForField("layer0.size"));
+//     // loopEntities(layer0Entities, layer0EntityCount);
+//
+//     // auto layer1Entities = Script::Memory::ReadQword(offsetForField("layer1.first_entity*"));
+//     // auto layer1EntityCount = Script::Memory::ReadDword(offsetForField("layer1.size"));
+//     // loopEntities(layer1Entities, layer1EntityCount);
+//
+//     if (nextOffset == (std::numeric_limits<size_t>::max)())
+//     {
+//         return 0;
+//     }
+//     return nextOffset;
+// }

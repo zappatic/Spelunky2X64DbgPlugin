@@ -17,7 +17,7 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        ViewStdVector(ViewToolbar* toolbar, const std::string& vectorType, size_t vectorOffset, QWidget* parent = nullptr);
+        ViewStdVector(ViewToolbar* toolbar, const std::string& vectorType, uintptr_t vectorOffset, QWidget* parent = nullptr);
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -33,10 +33,8 @@ namespace S2Plugin
 
       private:
         std::string mVectorType;
-        size_t mVectorOffset;
-        size_t mVectorBegin;
+        uintptr_t mVectorOffset;
         size_t mVectorTypeSize;
-        std::vector<MemoryField> mMemoryFields;
 
         QVBoxLayout* mMainLayout;
         TreeViewMemoryFields* mMainTreeView;

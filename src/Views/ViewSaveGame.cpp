@@ -1,6 +1,5 @@
 #include "Views/ViewSaveGame.h"
 #include "Configuration.h"
-#include "Data/SaveGame.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -57,10 +56,8 @@ void S2Plugin::ViewSaveGame::initializeUI()
     mRefreshLayout->addWidget(labelButton);
 
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::SaveGame))
-    {
-        mMainTreeView->addMemoryField(field, "SaveGame." + field.name);
-    }
+    mMainTreeView->addMemoryFields(Configuration::get()->typeFields(MemoryFieldType::SaveGame), "SaveGame", Spelunky2::get()->get_SaveDataPtr());
+
     mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mMainLayout->addWidget(mMainTreeView);
 
@@ -79,13 +76,7 @@ void S2Plugin::ViewSaveGame::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewSaveGame::refreshSaveGame()
 {
-    mToolbar->savegame()->refreshOffsets();
-    auto& offsets = mToolbar->savegame()->offsets();
-    auto deltaReference = offsets.at("SaveGame.places");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::SaveGame))
-    {
-        mMainTreeView->updateValueForField(field, "SaveGame." + field.name, offsets, deltaReference);
-    }
+    mMainTreeView->updateTree();
 }
 
 void S2Plugin::ViewSaveGame::toggleAutoRefresh(int newState)
@@ -128,8 +119,5 @@ QSize S2Plugin::ViewSaveGame::minimumSizeHint() const
 
 void S2Plugin::ViewSaveGame::label()
 {
-    for (const auto& [fieldName, offset] : mToolbar->savegame()->offsets())
-    {
-        DbgSetAutoLabelAt(offset, fieldName.c_str());
-    }
+    mMainTreeView->labelAll();
 }

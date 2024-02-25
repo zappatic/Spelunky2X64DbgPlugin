@@ -1,9 +1,6 @@
 #pragma once
 
 #include <cstdint>
-#include <memory>
-#include <string>
-#include <unordered_map>
 
 namespace S2Plugin
 {
@@ -12,16 +9,22 @@ namespace S2Plugin
     class ParticleDB
     {
       public:
-        bool loadParticleDB();
-        ParticleEmittersList* particleEmittersList() const noexcept;
+        uintptr_t offsetForIndex(uint32_t particleDBIndex) const
+        {
+            if (ptr == 0)
+                return 0;
 
-        std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t particleDBIndex);
-
-        void reset();
+            constexpr size_t particleDBEntrySize = 0xA0;
+            return ptr + particleDBIndex * particleDBEntrySize;
+        }
+        bool isValid() const
+        {
+            return (ptr != 0);
+        }
 
       private:
-        size_t mParticleDBPtr = 0;
-        std::unique_ptr<ParticleEmittersList> mParticleEmittersList;
-        std::unordered_map<uint16_t, std::unordered_map<std::string, size_t>> mMemoryOffsets; // map of particleDBID -> ( fieldname -> offset ) of field value in memory
+        uintptr_t ptr{0};
+
+        friend class Spelunky2;
     };
 } // namespace S2Plugin

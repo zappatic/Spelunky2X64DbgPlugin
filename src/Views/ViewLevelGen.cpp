@@ -18,7 +18,7 @@ S2Plugin::ViewLevelGen::ViewLevelGen(ViewToolbar* toolbar, QWidget* parent) : QW
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
     setWindowTitle("LevelGen");
-    refreshLevelGen();
+    mMainTreeView->updateTree(0, 0, true);
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
@@ -78,10 +78,7 @@ void S2Plugin::ViewLevelGen::initializeUI()
     // TAB DATA
     {
         mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-        for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
-        {
-            mMainTreeView->addMemoryField(field, "LevelGen." + field.name);
-        }
+        mMainTreeView->addMemoryFields(Configuration::get()->typeFields(MemoryFieldType::LevelGen), "LevelGen", Spelunky2::get()->get_LevelGenPtr());
         mTabData->layout()->addWidget(mMainTreeView);
 
         mMainTreeView->setColumnWidth(gsColValue, 250);
@@ -126,22 +123,21 @@ void S2Plugin::ViewLevelGen::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewLevelGen::refreshLevelGen()
 {
-    mToolbar->levelGen()->refreshOffsets();
-    auto& offsets = mToolbar->levelGen()->offsets();
-    auto deltaReference = offsets.at("LevelGen.data");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
-    {
-        mMainTreeView->updateValueForField(field, "LevelGen." + field.name, offsets, deltaReference);
-        if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer))
-        {
-            auto pointerOffset = mToolbar->levelGen()->offsetForField(field.name);
-            if (pointerOffset != 0)
-            {
-                size_t offset = Script::Memory::ReadQword(pointerOffset);
-                mRoomsWidgets.at(field.name)->setOffset(offset);
-            }
-        }
-    }
+    mMainTreeView->updateTree();
+
+    // TODO: update rooms tab
+    // for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::LevelGen))
+    //{
+    //    if (mMainTabWidget->currentWidget() == mTabRooms && (field.type == MemoryFieldType::LevelGenRoomsPointer || field.type == MemoryFieldType::LevelGenRoomsMetaPointer))
+    //    {
+    //        auto pointerOffset = mToolbar->levelGen()->offsetForField(field.name);
+    //        if (pointerOffset != 0)
+    //        {
+    //            size_t offset = Script::Memory::ReadQword(pointerOffset);
+    //            mRoomsWidgets.at(field.name)->setOffset(offset);
+    //        }
+    //    }
+    //}
 }
 
 void S2Plugin::ViewLevelGen::toggleAutoRefresh(int newLevelGen)
@@ -184,10 +180,7 @@ QSize S2Plugin::ViewLevelGen::minimumSizeHint() const
 
 void S2Plugin::ViewLevelGen::label()
 {
-    for (const auto& [fieldName, offset] : mToolbar->levelGen()->offsets())
-    {
-        DbgSetAutoLabelAt(offset, fieldName.c_str());
-    }
+    mMainTreeView->labelAll();
 }
 
 void S2Plugin::ViewLevelGen::levelGenRoomsPointerClicked()

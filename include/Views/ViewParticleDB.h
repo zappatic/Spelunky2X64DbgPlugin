@@ -61,10 +61,11 @@ namespace S2Plugin
         QTableWidget* mCompareTableWidget;
         QTreeWidget* mCompareTreeWidget;
 
+        uintptr_t mParticleDBPtr{0};
+
         void initializeUI();
         void updateFieldValues();
         void populateComparisonTableWidget();
         void populateComparisonTreeWidget();
-        std::pair<QString, QVariant> valueForField(const MemoryField& field, size_t particleDBIndex);
     };
 } // namespace S2Plugin

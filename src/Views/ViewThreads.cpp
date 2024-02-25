@@ -2,6 +2,7 @@
 #include "Configuration.h"
 #include "Data/State.h"
 #include "QtHelpers/StyledItemDelegateHTML.h"
+#include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QHeaderView>
@@ -52,9 +53,7 @@ void S2Plugin::ViewThreads::initializeUI()
 
 void S2Plugin::ViewThreads::refreshThreads()
 {
-    auto mainState = mToolbar->state();
-    auto heapOffset = mainState->heapOffset();
-    auto tebOffset = mainState->TEBOffset();
+    auto heapOffset = Spelunky2::get()->get_HeapBase();
     auto feedCodeOffset = 0x60;
 
     mMainTable->clear();
@@ -100,7 +99,7 @@ void S2Plugin::ViewThreads::refreshThreads()
             continue;
         }
         auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
-        auto heapBase = Script::Memory::ReadQword(tebAddress11Value + tebOffset);
+        auto heapBase = Script::Memory::ReadQword(tebAddress11Value + TEB_offset);
         if (!Script::Memory::IsValidPtr(heapBase))
         {
             continue;
@@ -152,9 +151,7 @@ void S2Plugin::ViewThreads::cellClicked(int row, int column)
     }
     else if (column == gsColStateAddress)
     {
-        auto threadState = std::make_unique<State>();
-        threadState->loadThreadSpecificState(clickedItem->data(gsRoleMemoryAddress).toULongLong());
-        mToolbar->showState(threadState.get());
-        mThreadStates.emplace_back(std::move(threadState));
+        auto statePtr = clickedItem->data(gsRoleMemoryAddress).toULongLong();
+        mToolbar->showState(statePtr);
     }
 }

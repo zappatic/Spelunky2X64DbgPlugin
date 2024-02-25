@@ -10,18 +10,39 @@ namespace S2Plugin
     class TextureDB
     {
       public:
-        bool loadTextureDB();
-
-        std::unordered_map<std::string, size_t>& offsetsForTextureID(uint32_t textureDBID);
-        std::string nameForID(uint32_t id) const; // id != index !!
-        const QStringList& namesStringList() const noexcept;
-        size_t count();
-        void reset();
+        bool isValid() const
+        {
+            return (ptr != 0);
+        }
+        const std::string& nameForID(uint32_t id) const; // id != index since there is no id 325
+        uintptr_t offsetForID(uint32_t id) const;
+        const QStringList& namesStringList() const noexcept
+        {
+            return mTextureNamesStringList;
+        }
+        size_t count() const
+        {
+            return mTextures.size();
+        }
+        bool isValidID(uint32_t id) const
+        {
+            return mTextures.count(id) != 0;
+        }
+        const auto textures() const
+        {
+            return mTextures;
+        }
 
       private:
-        size_t mTextureDBPtr = 0;
-        std::unordered_map<uint32_t, std::unordered_map<std::string, size_t>> mMemoryOffsets; // texture id -> (fieldname -> offset of field value in memory)
-        std::unordered_map<uint32_t, std::string> mTextureNames;                              // id -> name
+        size_t ptr{0};
+        std::unordered_map<uint32_t, std::pair<std::string, uintptr_t>> mTextures; // id -> name, offset
         QStringList mTextureNamesStringList;
+
+        TextureDB() = default;
+        ~TextureDB(){};
+        TextureDB(const TextureDB&) = delete;
+        TextureDB& operator=(const TextureDB&) = delete;
+
+        friend class Spelunky2;
     };
 } // namespace S2Plugin

@@ -2,54 +2,41 @@
 #include "Configuration.h"
 #include "Data/CPPGenerator.h"
 #include "Data/Entity.h"
-#include "Data/EntityDB.h"
-#include "Data/EntityList.h"
-#include "Data/State.h"
 #include "QtHelpers/CPPSyntaxHighlighter.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "QtHelpers/WidgetMemoryView.h"
 #include "QtHelpers/WidgetSpelunkyLevel.h"
-#include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
-#include "pluginmain.h"
 #include <QCloseEvent>
 #include <QFont>
-#include <QHeaderView>
 #include <QLabel>
 #include <string>
 
-S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewEntity::ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar), mEntityPtr(entityOffset)
 {
     mMainLayout = new QVBoxLayout(this);
 
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
 
-    mEntity = std::make_unique<Entity>(entityOffset, mMainTreeView, mMemoryView, mMemoryComparisonView, mToolbar->entityDB());
-    mEntity->populateTreeView();
-
     mMainLayout->setMargin(5);
     setLayout(mMainLayout);
 
-    setWindowTitle(QString::asprintf("Entity %s 0x%016llX", Spelunky2::get()->getEntityName(entityOffset, toolbar->entityDB()).c_str(), entityOffset));
+    setWindowTitle(QString::asprintf("Entity %s 0x%016llX", Entity{mEntityPtr}.entityTypeName().c_str(), entityOffset));
     mMainTreeView->setVisible(true);
 
-    mEntity->refreshOffsets();
-    mEntity->refreshValues();
-    // mMainTreeView->updateTableHeader(); // already done in initializeUI
     mMainTreeView->setColumnWidth(gsColField, 175);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
     mMainTreeView->setColumnWidth(gsColType, 100);
-
-    mEntity->populateMemoryView();
     updateMemoryViewOffsetAndSize();
 
-    mSpelunkyLevel->paintEntityMask(0x100, QColor(160, 160, 160)); // 0x100 = FLOOR
-    mSpelunkyLevel->paintEntityUID(mEntity->uid(), QColor(222, 52, 235));
+    mSpelunkyLevel->paintEntityMask(0x100, QColor(160, 160, 160)); // 0x100 = FLOOR // TODO: add paint floor and use grid entity matrix
+    mSpelunkyLevel->paintEntityUID(Entity{mEntityPtr}.uid(), QColor(222, 52, 235));
     updateLevel();
     toggleAutoRefresh(Qt::Checked);
+    mInterpretAsComboBox->setCurrentText(QString::fromStdString(Entity{mEntityPtr}.entityClassName()));
 }
 
 void S2Plugin::ViewEntity::initializeUI()
@@ -110,7 +97,7 @@ void S2Plugin::ViewEntity::initializeUI()
 
     mTopLayout->addWidget(new QLabel("Interpret as:", this));
     mInterpretAsComboBox = new QComboBox(this);
-    mInterpretAsComboBox->addItem("");
+    // mInterpretAsComboBox->addItem("");
     mInterpretAsComboBox->addItem("Entity");
     mInterpretAsComboBox->insertSeparator(2);
     std::vector<std::string> classNames;
@@ -188,13 +175,13 @@ void S2Plugin::ViewEntity::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewEntity::refreshEntity()
 {
-    mEntity->refreshValues();
-    mMainTreeView->updateTableHeader(false);
+    // mMainTreeView->updateTableHeader(false);
+    mMainTreeView->updateTree();
     if (mMainTabWidget->currentWidget() == mTabMemory)
     {
         mMemoryView->update();
         mMemoryComparisonView->update();
-        mEntity->updateComparedMemoryViewHighlights();
+        updateComparedMemoryViewHighlights();
     }
     else if (mMainTabWidget->currentWidget() == mTabLevel)
     {
@@ -227,7 +214,7 @@ void S2Plugin::ViewEntity::autoRefreshIntervalChanged(const QString& text)
 
 void S2Plugin::ViewEntity::autoRefreshTimerTrigger()
 {
-    refreshEntity();
+    refreshEntity(); // TODO maybe connect with refreshEntity directly?
 }
 
 QSize S2Plugin::ViewEntity::sizeHint() const
@@ -240,84 +227,142 @@ QSize S2Plugin::ViewEntity::minimumSizeHint() const
     return QSize(150, 150);
 }
 
-void S2Plugin::ViewEntity::interpretAsChanged(const QString& text)
+void S2Plugin::ViewEntity::interpretAsChanged(const QString& classType)
 {
-    if (!text.isEmpty())
+    if (!classType.isEmpty())
     {
-        auto textStr = text.toStdString();
-        mEntity->interpretAs(textStr);
-        updateMemoryViewOffsetAndSize();
-        mInterpretAsComboBox->setCurrentText("");
+        auto textStr = classType.toStdString();
+        static const auto colors = {QColor(255, 214, 222), QColor(232, 206, 227), QColor(199, 186, 225), QColor(187, 211, 236), QColor(236, 228, 197), QColor(193, 219, 204)};
+        auto config = Configuration::get();
+
+        Entity entity{mEntityPtr};
+        // populate tree view
+        auto hierarchy = Entity::classHierarchy(classType.toStdString());
+
+        mMainTreeView->clear();
+        mMemoryView->clearHighlights();
+        mMainTreeView->updateTableHeader();
+        uint8_t counter = 0;
+        size_t delta = 0;
+        uint8_t colorIndex = 0;
+        auto recursiveHighlight = [&](std::string prefix, const std::vector<MemoryField>& fields, auto&& self) -> void
+        {
+            for (auto& field : fields)
+            {
+                if (!field.isPointer)
+                {
+                    if (field.type == MemoryFieldType::DefaultStructType)
+                    {
+                        self(prefix + field.name + ".", config->typeFieldsOfDefaultStruct(field.jsonName), self);
+                        continue;
+                    }
+                    else if (auto& typeFields = config->typeFields(field.type); !typeFields.empty())
+                    {
+                        // paint elements of types like map, vector etc.
+                        self(prefix + field.name + ".", typeFields, self);
+                        continue;
+                    }
+                }
+
+                auto size = field.get_size();
+                if (size == 0)
+                    continue;
+                mMemoryView->addHighlightedField(prefix + field.name, mEntityPtr + delta, size, *(colors.begin() + colorIndex));
+                delta += size;
+            }
+        };
+
+        for (auto it = hierarchy.rbegin(); it != hierarchy.rend(); ++it, ++colorIndex)
+        {
+            if (colorIndex > colors.size())
+                colorIndex = 0;
+
+            MemoryField headerField;
+            headerField.name = "<b>" + *it + "</b>";
+            headerField.type = MemoryFieldType::EntitySubclass;
+            headerField.jsonName = *it;
+            auto item = mMainTreeView->addMemoryField(headerField, *it, mEntityPtr + delta, delta);
+            // delta = mMainTreeView->getLastItemDelta();
+            if (++counter == hierarchy.size())
+            {
+                mMainTreeView->expandItem(item);
+            }
+
+            recursiveHighlight(*it + ".", config->typeFieldsOfEntitySubclass(*it), recursiveHighlight);
+        }
+
+        // updateMemoryViewOffsetAndSize();
+        // mInterpretAsComboBox->setCurrentText("");
+        mMainTreeView->updateTree(0, 0, true);
     }
 }
 
 void S2Plugin::ViewEntity::updateMemoryViewOffsetAndSize()
 {
-    static const size_t defaultExtraBytesShown = 500;
-    auto entityOffset = mEntity->memoryOffset();
-    auto entitySize = mEntity->totalMemorySize();
-    auto nextEntityOffset = mToolbar->state()->findNextEntity(entityOffset);
-    if (nextEntityOffset != 0)
-    {
-        mExtraBytesShown = (std::min)(defaultExtraBytesShown, nextEntityOffset - (entityOffset + entitySize));
-    }
-    else
-    {
-        mExtraBytesShown = defaultExtraBytesShown;
-    }
-    mMemoryView->setOffsetAndSize(entityOffset, entitySize + mExtraBytesShown);
+    static const size_t defaultBytesShown = 0x188; // max Movable size, non movable size: 0xD0
 
-    auto comparedEntityOffset = mEntity->comparedEntityMemoryOffset();
-    mMemoryComparisonView->setOffsetAndSize(comparedEntityOffset, entitySize + mExtraBytesShown);
+    mMemoryView->setOffsetAndSize(mEntityPtr, defaultBytesShown);
+    mMemoryComparisonView->setOffsetAndSize(mComparisonEntityPtr, defaultBytesShown);
+}
+
+void S2Plugin::ViewEntity::updateComparedMemoryViewHighlights()
+{
+    // TODO
+    // const auto color = QColor(255, 221, 184);
+    // take difference from mMainTreeView
+    // mMemoryComparisonView->addHighlightedField(fieldNameOverride, mMemoryOffsets.at("comparison." + fieldNameOverride), fieldSize, color);
 }
 
 void S2Plugin::ViewEntity::updateLevel()
 {
-    auto layerName = "layer0";
-    auto entityCameraLayer = mEntity->cameraLayer();
-    if (entityCameraLayer == 1)
-    {
-        layerName = "layer1";
-    }
+    // TODO
+    //
+    // auto layerName = "layer0";
+    // auto entityCameraLayer = mEntity->cameraLayer();
+    // if (entityCameraLayer == 1)
+    //{
+    //     layerName = "layer1";
+    // }
 
-    if (mEntity->comparedEntityMemoryOffset() != 0)
-    {
-        if (entityCameraLayer == mEntity->comparisonCameraLayer())
-        {
-            mSpelunkyLevel->paintEntityUID(mEntity->comparisonUid(), QColor(232, 134, 30));
-        }
-        else
-        {
-            mSpelunkyLevel->paintEntityUID(mEntity->comparisonUid(), Qt::transparent);
-        }
-    }
+    // if (mEntity->comparedEntityMemoryOffset() != 0)
+    //{
+    //     if (entityCameraLayer == mEntity->comparisonCameraLayer())
+    //     {
+    //         mSpelunkyLevel->paintEntityUID(mEntity->comparisonUid(), QColor(232, 134, 30));
+    //     }
+    //     else
+    //     {
+    //         mSpelunkyLevel->paintEntityUID(mEntity->comparisonUid(), Qt::transparent);
+    //     }
+    // }
 
-    auto layer = Script::Memory::ReadQword(mToolbar->state()->offsetForField(layerName));
-    auto entityCount = (std::min)(Script::Memory::ReadDword(layer + 28), 10000u);
-    auto entities = Script::Memory::ReadQword(layer + 8);
+    // auto layer = Script::Memory::ReadQword(mToolbar->state()->offsetForField(layerName));
+    // auto entityCount = (std::min)(Script::Memory::ReadDword(layer + 28), 10000u);
+    // auto entities = Script::Memory::ReadQword(layer + 8);
 
-    mSpelunkyLevel->loadEntities(entities, entityCount);
+    // mSpelunkyLevel->loadEntities(entities, entityCount);
 
     mSpelunkyLevel->update();
 }
 
 void S2Plugin::ViewEntity::label()
 {
-    mEntity->label();
+    mMainTreeView->labelAll();
 }
 
 void S2Plugin::ViewEntity::entityOffsetDropped(size_t entityOffset)
 {
-    if (mEntity->comparedEntityMemoryOffset() != 0)
+    if (mComparisonEntityPtr != 0)
     {
-        mSpelunkyLevel->clearPaintedEntityUID(mEntity->comparisonUid());
+        mSpelunkyLevel->clearPaintedEntityUID(Entity{mComparisonEntityPtr}.uid());
     }
 
-    mEntity->compareToEntity(entityOffset);
+    mComparisonEntityPtr = entityOffset;
     mMainTreeView->activeColumns.enable(gsColComparisonValue).enable(gsColComparisonValueHex);
     mMainTreeView->setColumnHidden(gsColComparisonValue, false);
     mMainTreeView->setColumnHidden(gsColComparisonValueHex, false);
     mMemoryComparisonScrollArea->setVisible(true);
+    mMainTreeView->updateTree(0, mComparisonEntityPtr);
     updateMemoryViewOffsetAndSize();
 }
 
@@ -327,13 +372,8 @@ void S2Plugin::ViewEntity::tabChanged(int index)
     {
         mCPPSyntaxHighlighter->clearRules();
         CPPGenerator g{};
-        g.generate(mEntity->entityType(), mCPPSyntaxHighlighter);
+        g.generate(mInterpretAsComboBox->currentText().toStdString(), mCPPSyntaxHighlighter);
         mCPPSyntaxHighlighter->finalCustomRuleAdded();
         mCPPTextEdit->setText(QString::fromStdString(g.result()));
     }
-}
-
-S2Plugin::Entity* S2Plugin::ViewEntity::entity() const
-{
-    return mEntity.get();
 }

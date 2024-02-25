@@ -2,29 +2,45 @@
 
 #include <QStringList>
 #include <cstdint>
-#include <string>
 #include <unordered_map>
 
 namespace S2Plugin
 {
-    struct StringsTable;
-
     class CharacterDB
     {
       public:
-        bool loadCharacters(StringsTable* stringsTable);
-        uint8_t charactersCount() const noexcept;
-
-        std::unordered_map<std::string, size_t>& offsetsForIndex(uint8_t characterIndex);
-        const std::unordered_map<uint8_t, QString>& characterNames() const noexcept;
-        QStringList characterNamesStringList() const noexcept;
-
-        void reset();
+        static uint8_t charactersCount() noexcept
+        {
+            return 20;
+        }
+        const std::unordered_map<uint8_t, QString>& characterNames() const noexcept
+        {
+            return mCharacterNames;
+        }
+        const QStringList& characterNamesStringList() const noexcept
+        {
+            return mCharacterNamesStringList;
+        }
+        bool isValid() const
+        {
+            return ptr != 0;
+        }
+        uintptr_t offsetFromIndex(uint8_t id) const
+        {
+            constexpr size_t characterSize = 0x2C;
+            return ptr + id * characterSize;
+        }
 
       private:
-        size_t mCharactersPtr = 0;
-        std::unordered_map<uint8_t, std::unordered_map<std::string, size_t>> mMemoryOffsets; // map of character id -> ( fieldname -> offset ) of field value in memory
+        uintptr_t ptr{0};
         std::unordered_map<uint8_t, QString> mCharacterNames;
         QStringList mCharacterNamesStringList;
+
+        CharacterDB() = default;
+        ~CharacterDB(){};
+        CharacterDB(const CharacterDB&) = delete;
+        CharacterDB& operator=(const CharacterDB&) = delete;
+
+        friend class Spelunky2;
     };
 } // namespace S2Plugin

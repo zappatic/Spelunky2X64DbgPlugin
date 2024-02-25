@@ -1,75 +1,19 @@
 #include "Data/StringsTable.h"
-#include "Configuration.h"
-#include "Spelunky2.h"
 #include "pluginmain.h"
+#include "read_helpers.h"
+#include <QString>
 
-bool S2Plugin::StringsTable::loadStringsTable()
+QString S2Plugin::StringsTable::stringForIndex(uint32_t id) const
 {
-    auto spel2 = Spelunky2::get();
-    const auto afterBundle = spel2->afterBundle;
-    const auto afterBundleSize = spel2->afterBundleSize;
-    if (afterBundle == 0)
-    {
-        return false;
-    }
-    if (mStringsTablePtr != 0)
-    {
-        return true;
-    }
-
-    auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "48 8D 15 ?? ?? ?? ?? 4C 8B 0C CA");
-    auto relativeOffset = Script::Memory::ReadDword(instructionOffset + 3);
-    mStringsTablePtr = instructionOffset + 7 + relativeOffset;
-
-    mStringEntries.clear();
-
-    for (auto stringIndex = 0; stringIndex < 5000; ++stringIndex)
-    {
-        size_t stringPointer = Script::Memory::ReadQword(mStringsTablePtr + (stringIndex * sizeof(size_t)));
-        if (!Script::Memory::IsValidPtr(stringPointer))
-        {
-            break;
-        }
-        uint16_t buffer[2048] = {0};
-        uint16_t charBuffer = 0;
-        size_t charCounter = 0;
-        do
-        {
-            charBuffer = Script::Memory::ReadWord(stringPointer + (charCounter * sizeof(uint16_t)));
-            buffer[charCounter++] = charBuffer;
-        } while (charBuffer != 0);
-
-        StringEntry e;
-        e.id = stringIndex;
-        e.stringTableOffset = mStringsTablePtr + (stringIndex * sizeof(size_t));
-        e.memoryOffset = stringPointer;
-        e.str = QString::fromUtf16(buffer);
-        mStringEntries[e.id] = e;
-    }
-    return true;
-}
-
-void S2Plugin::StringsTable::reset()
-{
-    mStringsTablePtr = 0;
-    mStringEntries.clear();
-}
-
-const std::unordered_map<uint32_t, S2Plugin::StringEntry>& S2Plugin::StringsTable::entries()
-{
-    return mStringEntries;
-}
-
-S2Plugin::StringEntry S2Plugin::StringsTable::entryForID(uint32_t id)
-{
-    return mStringEntries.at(id);
-}
-
-QString S2Plugin::StringsTable::nameForID(uint32_t id)
-{
-    if (mStringEntries.count(id) == 0)
+    if (count() < id)
     {
         return QString("INVALID OR NOT APPLICABLE");
     }
-    return mStringEntries.at(id).str;
+    auto str = ReadConstBasicString<ushort>(Script::Memory::ReadQword(offsetForIndex(id)));
+    return QString::fromUtf16(str.c_str(), str.size());
+}
+
+uintptr_t S2Plugin::StringsTable::offsetForIndex(size_t idx) const
+{
+    return ptr + idx * sizeof(uintptr_t);
 }

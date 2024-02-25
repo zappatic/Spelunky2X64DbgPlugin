@@ -10,7 +10,7 @@
 #include <QLineEdit>
 #include <QTimer>
 
-S2Plugin::ViewStdVector::ViewStdVector(ViewToolbar* toolbar, const std::string& vectorType, size_t vectorOffset, QWidget* parent)
+S2Plugin::ViewStdVector::ViewStdVector(ViewToolbar* toolbar, const std::string& vectorType, uintptr_t vectorOffset, QWidget* parent)
     : mVectorType(vectorType), mVectorOffset(vectorOffset), QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
@@ -34,8 +34,7 @@ S2Plugin::ViewStdVector::ViewStdVector(ViewToolbar* toolbar, const std::string& 
 void S2Plugin::ViewStdVector::initializeTreeView()
 {
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    mMainTreeView->setEnableChangeHighlighting(false);
-
+    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex).disable(gsColComment);
     mMainLayout->addWidget(mMainTreeView);
 }
 
@@ -80,42 +79,49 @@ void S2Plugin::ViewStdVector::refreshVectorContents()
 {
     auto config = Configuration::get();
     mMainTreeView->clear();
-    mMemoryFields.clear();
 
-    mVectorBegin = Script::Memory::ReadQword(mVectorOffset);
-    auto vectorEnd = Script::Memory::ReadQword(mVectorOffset + sizeof(size_t));
-    auto vectorItemCount = (vectorEnd - mVectorBegin) / mVectorTypeSize;
+    uintptr_t vectorBegin = Script::Memory::ReadQword(mVectorOffset);
+    uintptr_t vectorEnd = Script::Memory::ReadQword(mVectorOffset + sizeof(uintptr_t));
+    if (vectorBegin > vectorEnd && Script::Memory::IsValidPtr(vectorBegin) && Script::Memory::IsValidPtr(vectorEnd))
+        return;
 
+    auto vectorItemCount = (vectorEnd - vectorBegin) / mVectorTypeSize;
+    if ((vectorEnd - vectorBegin) % mVectorTypeSize != 0)
+        return; // TODO display error
+
+    // limit big vectors
+    vectorItemCount = std::min(300ull, vectorItemCount);
+
+    MemoryField field;
+    if (config->isPermanentPointer(mVectorType))
+    {
+        field.type = MemoryFieldType::DefaultStructType;
+        field.jsonName = mVectorType;
+        field.isPointer = true;
+    }
+    else if (config->isJsonStruct(mVectorType))
+    {
+        field.type = MemoryFieldType::DefaultStructType;
+        field.jsonName = mVectorType;
+    }
+    else if (auto type = config->getBuiltInType(mVectorType); type != MemoryFieldType::None)
+    {
+        field.type = type;
+        if (Configuration::isPointerType(type))
+            field.isPointer = true;
+    }
+    else
+    {
+        dprintf("unknown type in ViewStdVector::refreshVectorContents() (%s)\n", mVectorType.c_str());
+        return;
+    }
     for (auto x = 0; x < vectorItemCount; ++x)
     {
-        MemoryField field;
         field.name = "obj_" + std::to_string(x);
-        if (config->isPermanentPointer(mVectorType))
-        {
-            field.type = MemoryFieldType::DefaultStructType;
-            field.jsonName = mVectorType;
-            field.isPointer = true;
-        }
-        else if (config->isJsonStruct(mVectorType))
-        {
-            field.type = MemoryFieldType::DefaultStructType;
-            field.jsonName = mVectorType;
-        }
-        else if (auto type = config->getBuiltInType(mVectorType); type != MemoryFieldType::None)
-        {
-            field.type = type;
-        }
-        else
-        {
-            dprintf("%s is UNKNOWN\n", mVectorType.c_str());
-            // not implemented
-        }
-        mMemoryFields.emplace_back(field);
-        mMainTreeView->addMemoryField(field, field.name);
+        mMainTreeView->addMemoryField(field, field.name, vectorBegin + x * mVectorTypeSize, x * mVectorTypeSize);
     }
     refreshData();
 
-    mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex).disable(gsColComment);
     mMainTreeView->updateTableHeader();
     mMainTreeView->setColumnWidth(gsColField, 145);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
@@ -126,16 +132,7 @@ void S2Plugin::ViewStdVector::refreshVectorContents()
 
 void S2Plugin::ViewStdVector::refreshData()
 {
-    size_t counter = 0;
-    std::unordered_map<std::string, size_t> offsets;
-    auto config = Configuration::get();
-
-    for (const auto& field : mMemoryFields)
-    {
-        config->setOffsetForField(field, field.name, mVectorBegin + (counter++ * mVectorTypeSize), offsets);
-
-        mMainTreeView->updateValueForField(field, field.name, offsets);
-    }
+    mMainTreeView->updateTree();
 }
 
 QSize S2Plugin::ViewStdVector::sizeHint() const

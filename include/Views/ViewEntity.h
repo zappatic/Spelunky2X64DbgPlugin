@@ -27,7 +27,6 @@ namespace S2Plugin
         Q_OBJECT
       public:
         ViewEntity(size_t entityOffset, ViewToolbar* toolbar, QWidget* parent = nullptr);
-        Entity* entity() const;
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -67,7 +66,6 @@ namespace S2Plugin
         WidgetMemoryView* mMemoryView;
         WidgetMemoryView* mMemoryComparisonView;
         QScrollArea* mMemoryComparisonScrollArea;
-        uint32_t mExtraBytesShown = 100;
 
         // TAB LEVEL
         WidgetSpelunkyLevel* mSpelunkyLevel;
@@ -75,12 +73,13 @@ namespace S2Plugin
         // TAB CPP
         QTextEdit* mCPPTextEdit;
         CPPSyntaxHighlighter* mCPPSyntaxHighlighter;
-
-        std::unique_ptr<Entity> mEntity;
+        uintptr_t mEntityPtr;
+        uintptr_t mComparisonEntityPtr{0};
         ViewToolbar* mToolbar;
 
         void initializeUI();
         void updateMemoryViewOffsetAndSize();
+        void updateComparedMemoryViewHighlights();
         void updateLevel();
     };
 } // namespace S2Plugin

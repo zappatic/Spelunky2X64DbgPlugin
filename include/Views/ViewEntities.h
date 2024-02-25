@@ -78,6 +78,9 @@ namespace S2Plugin
         QLineEdit* mFilterLineEdit;
 
         ViewToolbar* mToolbar;
+        uintptr_t mLayer0Offset = 0;
+        uintptr_t mLayer1Offset = 0;
+        uintptr_t mLayerMapOffset = 0;
 
         void initializeTreeView();
         void initializeRefreshAndFilter();

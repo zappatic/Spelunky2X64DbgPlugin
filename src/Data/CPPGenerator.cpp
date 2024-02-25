@@ -2,6 +2,8 @@
 #include "Configuration.h"
 #include "QtHelpers/CPPSyntaxHighlighter.h"
 
+// TODO a lot
+
 void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHighlighter* highlighter)
 {
     std::string className = typeName;

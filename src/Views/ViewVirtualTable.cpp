@@ -4,6 +4,7 @@
 #include "QtHelpers/ItemModelVirtualTable.h"
 #include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
+#include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QCheckBox>
@@ -19,8 +20,8 @@
 S2Plugin::ViewVirtualTable::ViewVirtualTable(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
     mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
-    mModel = std::make_unique<ItemModelVirtualTable>(toolbar->virtualTableLookup(), this);
-    mSortFilterProxy = std::make_unique<SortFilterProxyModelVirtualTable>(toolbar->virtualTableLookup(), this);
+    mModel = std::make_unique<ItemModelVirtualTable>(this);
+    mSortFilterProxy = std::make_unique<SortFilterProxyModelVirtualTable>(this);
     mGatherModel = std::make_unique<ItemModelGatherVirtualData>(toolbar, this);
     mGatherSortFilterProxy = std::make_unique<SortFilterProxyModelGatherVirtualData>(toolbar, this);
     mGatherSortFilterProxy->sort(gsColGatherID);
@@ -223,7 +224,7 @@ void S2Plugin::ViewVirtualTable::tableEntryClicked(const QModelIndex& index)
 {
     auto mappedIndex = mSortFilterProxy->mapToSource(index);
     auto offset = mappedIndex.row();
-    const auto& entry = mToolbar->virtualTableLookup()->entryForOffset(offset);
+    const auto& entry = Spelunky2::get()->get_VirtualTableLookup().entryForOffset(offset);
     auto column = mappedIndex.column();
     switch (column)
     {
@@ -239,7 +240,7 @@ void S2Plugin::ViewVirtualTable::tableEntryClicked(const QModelIndex& index)
             }
             break;
         case gsColTableAddress:
-            GuiDumpAt(mToolbar->virtualTableLookup()->tableAddressForEntry(entry));
+            GuiDumpAt(Spelunky2::get()->get_VirtualTableLookup().tableAddressForEntry(entry));
             GuiShowCpu();
             break;
     }
@@ -304,9 +305,9 @@ void S2Plugin::ViewVirtualTable::lookupAddress(size_t address)
 {
     mLookupResultsTable->setSortingEnabled(false);
     mLookupResultsTable->clearContents();
-    auto vtl = mToolbar->virtualTableLookup();
     std::vector<std::vector<QTableWidgetItem*>> items;
-    auto tableOffsets = vtl->tableOffsetForFunctionAddress(address);
+    auto& vtl = Spelunky2::get()->get_VirtualTableLookup();
+    auto tableOffsets = vtl.tableOffsetForFunctionAddress(address);
 
     if (tableOffsets.size() == 0)
     {
@@ -317,7 +318,7 @@ void S2Plugin::ViewVirtualTable::lookupAddress(size_t address)
     {
         for (const auto& tableOffset : tableOffsets)
         {
-            auto precedingEntry = vtl->findPrecedingEntryWithSymbols(tableOffset);
+            auto precedingEntry = vtl.findPrecedingEntryWithSymbols(tableOffset);
             if (precedingEntry.symbols.size() > 0)
             {
                 for (const auto& symbol : precedingEntry.symbols)

@@ -13,12 +13,12 @@ namespace S2Plugin
       public:
         IDNameList(const std::string& relFilePath, const std::regex& regex);
 
-        uint32_t idForName(const std::string& name);
-        std::string nameForID(uint32_t id);
+        uint32_t idForName(const std::string& name) const;
+        std::string nameForID(uint32_t id) const;
         uint32_t highestID() const noexcept;
         size_t count() const noexcept;
         QStringList names() const noexcept;
-        bool isValidID(uint32_t id);
+        bool isValidID(uint32_t id) const;
         const std::unordered_map<uint32_t, std::string>& entries() const;
 
       private:

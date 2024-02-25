@@ -1,58 +1,47 @@
 #pragma once
 
-#include <QStandardItem>
-#include <memory>
+#include <cstdint>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 namespace S2Plugin
 {
-    struct EntityDB;
-    struct TreeViewMemoryFields;
-    struct WidgetMemoryView;
-    struct State;
-    struct MemoryField;
-
     class Entity
     {
       public:
-        Entity(size_t offset, TreeViewMemoryFields* tree, WidgetMemoryView* memoryView, WidgetMemoryView* comparisonMemoryView, EntityDB* entityDB);
+        Entity(uintptr_t offset) : mEntityPtr(offset){};
 
-        void refreshOffsets();
-        void refreshValues();
-        void interpretAs(const std::string& classType);
-        std::string entityType() const noexcept;
-        std::vector<std::string> classHierarchy() const;
-        void populateTreeView();
-        void populateMemoryView();
+        std::string entityClassName() const;
+        uint32_t entityTypeID() const;
+        std::string entityTypeName() const;
+        static std::vector<std::string> classHierarchy(std::string validClassName);
+        std::vector<std::string> classHierarchy() const
+        {
+            return classHierarchy(entityClassName());
+        }
 
-        size_t totalMemorySize() const noexcept;
-        size_t memoryOffset() const noexcept;
-        uint32_t uid() const noexcept;
-        uint32_t comparisonUid() const noexcept;
-        uint8_t cameraLayer() const noexcept;
-        uint8_t comparisonCameraLayer() const noexcept;
-        void label() const;
-        void compareToEntity(size_t comparisonOffset);
-        size_t comparedEntityMemoryOffset() const noexcept;
-        void updateComparedMemoryViewHighlights();
-
-        static size_t findEntityByUID(uint32_t uid, State* state);
+        uint8_t cameraLayer() const;
+        uint32_t uid() const;
+        uintptr_t ptr() const
+        {
+            return mEntityPtr;
+        }
+        std::pair<float, float> position() const;
+        std::pair<int, int> position_floor() const
+        {
+            return static_cast<std::pair<int, int>>(position());
+        }
 
       private:
-        size_t mEntityPtr = 0;
-        size_t mComparisonEntityPtr = 0;
-        TreeViewMemoryFields* mTree;
-        WidgetMemoryView* mMemoryView;
-        WidgetMemoryView* mComparisonMemoryView;
-        std::string mEntityType = "Entity";
-        std::string mEntityName;
-        std::unordered_map<std::string, size_t> mMemoryOffsets; // fieldname -> offset of field value in memory
-        std::unordered_map<std::string, QStandardItem*> mTreeViewSectionItems;
+        uintptr_t mEntityPtr;
 
-        size_t mTotalMemorySize = 0;
-        void highlightField(const MemoryField& field, const std::string& fieldNameOverride, const QColor& color);
-        void highlightComparisonField(const MemoryField& field, const std::string& fieldNameOverride);
+        enum ENTITY_OFFSETS
+        {
+            UID = 0x38,
+            LAYER = 0xA0,
+            TYPE_PTR = 0x8,
+            DB_TYPE_ID = 0x14,
+            POS = 0x40,
+        };
     };
 } // namespace S2Plugin

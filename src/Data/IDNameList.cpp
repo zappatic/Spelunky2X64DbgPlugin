@@ -10,6 +10,7 @@
 
 S2Plugin::IDNameList::IDNameList(const std::string& relFilePath, const std::regex& regex)
 {
+    // TODO move to configuration
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
     auto pathQStr = QFileInfo(QString(buffer)).dir().filePath(QString::fromStdString(relFilePath));
@@ -43,7 +44,7 @@ S2Plugin::IDNameList::IDNameList(const std::string& relFilePath, const std::rege
     fp.close();
 }
 
-uint32_t S2Plugin::IDNameList::idForName(const std::string& searchName)
+uint32_t S2Plugin::IDNameList::idForName(const std::string& searchName) const
 {
     for (const auto& [id, name] : mEntries)
     {
@@ -55,11 +56,11 @@ uint32_t S2Plugin::IDNameList::idForName(const std::string& searchName)
     return 0;
 }
 
-std::string S2Plugin::IDNameList::nameForID(uint32_t id)
+std::string S2Plugin::IDNameList::nameForID(uint32_t id) const
 {
-    if (mEntries.count(id) > 0)
+    if (auto it = mEntries.find(id); it != mEntries.end())
     {
-        return mEntries.at(id);
+        return it->second;
     }
     return "UNKNOWN ID: " + std::to_string(id);
 }
@@ -74,7 +75,7 @@ QStringList S2Plugin::IDNameList::names() const noexcept
     return mNames;
 }
 
-bool S2Plugin::IDNameList::isValidID(uint32_t id)
+bool S2Plugin::IDNameList::isValidID(uint32_t id) const
 {
     return (mEntries.count(id) > 0);
 }

@@ -10,6 +10,8 @@ struct PostponedEntity
     PostponedEntity(float x_, float y_, const QColor& color_) : x(x_), y(y_), color(color_) {}
 };
 
+// TODO review the code
+
 S2Plugin::WidgetSpelunkyLevel::WidgetSpelunkyLevel(QWidget* parent) : QWidget(parent) {}
 
 void S2Plugin::WidgetSpelunkyLevel::paintEvent(QPaintEvent* event)

@@ -1,6 +1,5 @@
 #include "Views/ViewGameManager.h"
 #include "Configuration.h"
-#include "Data/GameManager.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
@@ -57,10 +56,7 @@ void S2Plugin::ViewGameManager::initializeUI()
     mRefreshLayout->addWidget(labelButton);
 
     mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::GameManager))
-    {
-        mMainTreeView->addMemoryField(field, "GameManager." + field.name);
-    }
+    mMainTreeView->addMemoryFields(Configuration::get()->typeFields(MemoryFieldType::GameManager), "GameManager", Spelunky2::get()->get_GameManagerPtr());
     mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
     mMainLayout->addWidget(mMainTreeView);
 
@@ -79,13 +75,7 @@ void S2Plugin::ViewGameManager::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewGameManager::refreshGameManager()
 {
-    mToolbar->gameManager()->refreshOffsets();
-    auto& offsets = mToolbar->gameManager()->offsets();
-    auto deltaReference = offsets.at("GameManager.backgroundmusic");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::GameManager))
-    {
-        mMainTreeView->updateValueForField(field, "GameManager." + field.name, offsets, deltaReference);
-    }
+    mMainTreeView->updateTree();
 }
 
 void S2Plugin::ViewGameManager::toggleAutoRefresh(int newState)
@@ -128,8 +118,5 @@ QSize S2Plugin::ViewGameManager::minimumSizeHint() const
 
 void S2Plugin::ViewGameManager::label()
 {
-    for (const auto& [fieldName, offset] : mToolbar->gameManager()->offsets())
-    {
-        DbgSetAutoLabelAt(offset, fieldName.c_str());
-    }
+    mMainTreeView->labelAll();
 }

@@ -1,7 +1,6 @@
 #include "QtHelpers/ItemModelGatherVirtualData.h"
 #include "Configuration.h"
 #include "Data/EntityDB.h"
-#include "Data/GameManager.h"
 #include "Data/LevelGen.h"
 #include "Data/State.h"
 #include "Data/VirtualTableLookup.h"
@@ -15,6 +14,17 @@
 #include <nlohmann/json.hpp>
 #include <sstream>
 #include <string>
+
+enum VIRT_FUNC : uint32_t
+{
+    ENTITY_STATEMACHINE = 2,
+    ENTITY_KILL = 3,
+    ENTITY_COLLISION1 = 4,
+    ENTITY_DESTROY = 5,
+    ENTITY_OPEN = 24,
+    ENTITY_COLLISION2 = 26,
+    MOVABLE_DAMAGE = 48,
+};
 
 S2Plugin::ItemModelGatherVirtualData::ItemModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent) : QAbstractItemModel(parent), mToolbar(toolbar)
 {
@@ -111,10 +121,9 @@ QVariant S2Plugin::ItemModelGatherVirtualData::headerData(int section, Qt::Orien
 
 void S2Plugin::ItemModelGatherVirtualData::gatherEntities()
 {
-    auto state = mToolbar->state();
     auto spel2 = Spelunky2::get();
-    auto entityDB = mToolbar->entityDB();
-    auto vtl = mToolbar->virtualTableLookup();
+    auto config = Configuration::get();
+    auto& vtl = spel2->get_VirtualTableLookup();
 
     auto processEntities = [&](size_t layerEntities, uint32_t count)
     {
@@ -131,7 +140,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherEntities()
             {
                 if (entry.virtualTableOffset == 0 && entry.id == entityType)
                 {
-                    auto tableOffset = (entityVTableOffset - vtl->tableStartAddress()) / sizeof(size_t);
+                    auto tableOffset = (entityVTableOffset - vtl.tableStartAddress()) / sizeof(size_t);
                     entry.virtualTableOffset = tableOffset;
                 }
             }
@@ -139,12 +148,14 @@ void S2Plugin::ItemModelGatherVirtualData::gatherEntities()
     };
 
     beginResetModel();
-    auto layer0 = Script::Memory::ReadQword(state->offsetForField("layer0"));
+    auto layer0Offset = config->offsetForField(config->typeFields(MemoryFieldType::State), "layer0", spel2->get_StatePtr());
+    auto layer0 = Script::Memory::ReadQword(layer0Offset);
     auto layer0Count = Script::Memory::ReadDword(layer0 + 28);
     auto layer0Entities = Script::Memory::ReadQword(layer0 + 8);
     processEntities(layer0Entities, layer0Count);
 
-    auto layer1 = Script::Memory::ReadQword(state->offsetForField("layer1"));
+    auto layer1Offset = config->offsetForField(config->typeFields(MemoryFieldType::State), "layer1", spel2->get_StatePtr());
+    auto layer1 = Script::Memory::ReadQword(layer1Offset);
     auto layer1Count = Script::Memory::ReadDword(layer1 + 28);
     auto layer1Entities = Script::Memory::ReadQword(layer1 + 8);
     processEntities(layer1Entities, layer1Count);
@@ -154,16 +165,20 @@ void S2Plugin::ItemModelGatherVirtualData::gatherEntities()
 void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
 {
     beginResetModel();
-    auto vtl = mToolbar->virtualTableLookup();
+    auto spel2 = Spelunky2::get();
+    auto config = Configuration::get();
+    auto& vtl = spel2->get_VirtualTableLookup();
 
-    auto themes = std::vector<std::string>{"theme_dwelling", "theme_jungle",     "theme_volcana",       "theme_olmec",       "theme_tidepool",     "theme_temple",
-                                           "theme_icecaves", "theme_neobabylon", "theme_sunkencity",    "theme_cosmicocean", "theme_city_of_gold", "theme_duat",
-                                           "theme_abzu",     "theme_tiamat",     "theme_eggplantworld", "theme_hundun",      "theme_basecamp",     "theme_arena"};
+    static const auto themes = {"theme_dwelling", "theme_jungle",     "theme_volcana",       "theme_olmec",       "theme_tidepool",     "theme_temple",
+                                "theme_icecaves", "theme_neobabylon", "theme_sunkencity",    "theme_cosmicocean", "theme_city_of_gold", "theme_duat",
+                                "theme_abzu",     "theme_tiamat",     "theme_eggplantworld", "theme_hundun",      "theme_basecamp",     "theme_arena"};
     size_t index = 1000;
+    auto firstThemeOffset = config->offsetForField(config->typeFields(MemoryFieldType::LevelGen), "theme_dwelling", spel2->get_LevelGenPtr());
+    uint8_t counter = 0;
     for (const auto& themeName : themes)
     {
-        auto themeAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(mToolbar->levelGen()->offsetForField(themeName)));
-        auto tableOffset = (themeAddress - vtl->tableStartAddress()) / sizeof(size_t);
+        auto themeAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(firstThemeOffset + counter));
+        auto tableOffset = (themeAddress - vtl.tableStartAddress()) / sizeof(size_t);
         bool foundInEntries = false;
         for (auto& entry : mEntries)
         {
@@ -186,46 +201,42 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
             mEntries.emplace_back(std::move(g));
         }
         index++;
+        counter++;
     }
 
-    auto logics = std::vector<std::string>{
-        "tutorial",
-        "ouroboros",
-        "basecamp_speedrun",
-        "ghost_trigger",
-        "ghost_toast_trigger",
-        "tun_aggro",
-        "diceshop",
-        "tun_pre_challenge",
-        "tun_moon_challenge",
-        "tun_star_challenge",
-        "tun_sun_challenge",
-        "volcana_related",
-        "water_related",
-        "olmec_cutscene",
-        "tiamat_cutscene",
-        "apep_trigger",
-        "city_of_gold_ankh_sacrifice",
-        "duat_bosses_trigger",
-        "tiamat",
-        "tusk_pleasure_palace",
-        "discovery_info",
-        "black_market",
-        "cosmic_ocean",
-        "arena_1",
-        "arena_2",
-        "arena_3",
-        "arena_alien_blast",
-        "arena_loose_bombs",
-    };
+    std::vector<std::string> logics;
+    uintptr_t firstLogicPtr = spel2->get_StatePtr();
+    if (firstLogicPtr != 0)
+    {
+        auto& stateFields = config->typeFields(MemoryFieldType::State);
+        size_t delta = 0;
+        std::string logicTypeName;
+        for (auto& field : stateFields)
+        {
+            if (field.name == "logic")
+            {
+                logicTypeName = field.jsonName;
+                break;
+            }
+            delta += field.get_size();
+        }
+        auto& logicListFields = config->typeFieldsOfDefaultStruct(logicTypeName);
+        logics.reserve(logicListFields.size());
+        for (auto& field : logicListFields)
+            logics.push_back(field.name);
+
+        firstLogicPtr = Script::Memory::ReadQword(firstLogicPtr + delta);
+    }
+
     index = 2000;
+    counter = 0;
     for (const auto& logicName : logics)
     {
-        auto logicAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(mToolbar->state()->offsetForField("logic." + logicName)));
+        auto logicAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(firstLogicPtr + counter));
         auto tableOffset = 0;
         if (logicAddress != 0)
         {
-            tableOffset = (logicAddress - vtl->tableStartAddress()) / sizeof(size_t);
+            tableOffset = (logicAddress - vtl.tableStartAddress()) / sizeof(size_t);
         }
         bool foundInEntries = false;
         for (auto& entry : mEntries)
@@ -252,6 +263,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
             mEntries.emplace_back(std::move(g));
         }
         index++;
+        counter++;
     }
 
     auto screens_gamemanager = std::vector<std::string>{
@@ -261,11 +273,12 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     index = 3000;
     for (const auto& screenName : screens_gamemanager)
     {
-        auto screenAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(mToolbar->gameManager()->offsetForField(screenName)));
+        auto offset = config->offsetForField(config->typeFields(MemoryFieldType::GameManager), screenName, spel2->get_GameManagerPtr());
+        auto screenAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(offset));
         auto tableOffset = 0;
         if (screenAddress != 0)
         {
-            tableOffset = (screenAddress - vtl->tableStartAddress()) / sizeof(size_t);
+            tableOffset = (screenAddress - vtl.tableStartAddress()) / sizeof(size_t);
         }
         bool foundInEntries = false;
         for (auto& entry : mEntries)
@@ -314,11 +327,11 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     index = 3500;
     for (const auto& screenName : screens_state)
     {
-        auto screenAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(mToolbar->state()->offsetForField(screenName)));
+        auto screenAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(config->offsetForField(config->typeFields(MemoryFieldType::State), screenName, spel2->get_StatePtr())));
         auto tableOffset = 0;
         if (screenAddress != 0)
         {
-            tableOffset = (screenAddress - vtl->tableStartAddress()) / sizeof(size_t);
+            tableOffset = (screenAddress - vtl.tableStartAddress()) / sizeof(size_t);
         }
         bool foundInEntries = false;
         for (auto& entry : mEntries)
@@ -353,11 +366,11 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     index = 4000;
     for (const auto& questName : quests)
     {
-        auto questAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(mToolbar->state()->offsetForField("quests." + questName)));
+        auto questAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(config->offsetForField(config->typeFields(MemoryFieldType::State), "quests." + questName, spel2->get_StatePtr())));
         auto tableOffset = 0;
         if (questAddress != 0)
         {
-            tableOffset = (questAddress - vtl->tableStartAddress()) / sizeof(size_t);
+            tableOffset = (questAddress - vtl.tableStartAddress()) / sizeof(size_t);
         }
         bool foundInEntries = false;
         for (auto& entry : mEntries)
@@ -472,8 +485,8 @@ void S2Plugin::ItemModelGatherVirtualData::parseJSON()
     }
     else
     {
-        auto entitiesList = mToolbar->entityDB()->entityList();
-        for (const auto& [entityID, entityName] : entitiesList->entries())
+        auto& entitiesList = Configuration::get()->entityList();
+        for (const auto& [entityID, entityName] : entitiesList.entries())
         {
             auto g = GatheredDataEntry();
             g.id = entityID;
@@ -544,11 +557,11 @@ bool S2Plugin::ItemModelGatherVirtualData::isEntryCompleted(size_t index) const
 
 void S2Plugin::ItemModelGatherVirtualData::gatherAvailableVirtuals()
 {
-    auto vtl = mToolbar->virtualTableLookup();
+    auto& vtl = Spelunky2::get()->get_VirtualTableLookup();
 
-    auto isVirtImplemented = [=](size_t functionIndex)
+    auto isVirtImplemented = [&vtl](size_t functionIndex)
     {
-        auto tableAddress = vtl->tableAddressForEntry(vtl->entryForOffset(functionIndex));
+        auto tableAddress = vtl.tableAddressForEntry(vtl.entryForOffset(functionIndex));
         auto functionStart = Script::Memory::ReadQword(tableAddress);
         auto firstByte = Script::Memory::ReadByte(functionStart);
 
@@ -592,13 +605,13 @@ void S2Plugin::ItemModelGatherVirtualData::gatherAvailableVirtuals()
                 }
             }
 
-            entry.collision1Present = isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::ENTITY_COLLISION1));
-            entry.collision2Present = isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::ENTITY_COLLISION2));
-            entry.openPresent = isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::ENTITY_OPEN));
-            entry.killPresent = isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::ENTITY_KILL));
-            entry.damagePresent = isMovable ? isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::MOVABLE_DAMAGE)) : false;
-            entry.destroyPresent = isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::ENTITY_DESTROY));
-            entry.statemachinePresent = isVirtImplemented(entry.virtualTableOffset + static_cast<uint32_t>(VIRT_FUNC::ENTITY_STATEMACHINE));
+            entry.collision1Present = isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::ENTITY_COLLISION1);
+            entry.collision2Present = isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::ENTITY_COLLISION2);
+            entry.openPresent = isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::ENTITY_OPEN);
+            entry.killPresent = isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::ENTITY_KILL);
+            entry.damagePresent = isMovable ? isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::MOVABLE_DAMAGE) : false;
+            entry.destroyPresent = isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::ENTITY_DESTROY);
+            entry.statemachinePresent = isVirtImplemented(entry.virtualTableOffset + VIRT_FUNC::ENTITY_STATEMACHINE);
         }
     }
     endResetModel();

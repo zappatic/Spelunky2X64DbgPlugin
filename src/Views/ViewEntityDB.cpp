@@ -2,6 +2,7 @@
 #include "Configuration.h"
 #include "Data/EntityDB.h"
 #include "Data/EntityList.h"
+#include "QtHelpers/DatabaseHelper.h"
 #include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
@@ -15,18 +16,12 @@
 #include <QPushButton>
 #include <QTreeWidgetItem>
 
-struct ComparisonField
-{
-    std::string prefix;
-    S2Plugin::MemoryField field;
-};
-Q_DECLARE_METATYPE(ComparisonField)
-
 S2Plugin::ViewEntityDB::ViewEntityDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
 {
+    mEntityDBPtr = Spelunky2::get()->get_EntityDB().offsetFromIndex(0); // TODO: add as view parameter - pointer
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
-    setWindowTitle(QString("Entity DB (%1 entities)").arg(mToolbar->entityDB()->entityList()->highestID()));
+    setWindowTitle(QString("Entity DB (%1 entities)").arg(Configuration::get()->entityList().highestID()));
     showIndex(index);
 }
 
@@ -65,7 +60,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewEntityDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mEntityNameCompleter = new QCompleter(mToolbar->entityDB()->entityList()->names(), this);
+        mEntityNameCompleter = new QCompleter(config->entityList().names(), this);
         mEntityNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
         mEntityNameCompleter->setFilterMode(Qt::MatchContains);
         QObject::connect(mEntityNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewEntityDB::searchFieldCompleterActivated);
@@ -79,10 +74,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
         mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : config->typeFields(MemoryFieldType::EntityDB))
-        {
-            mMainTreeView->addMemoryField(field, "EntityDB." + field.name);
-        }
+        mMainTreeView->addMemoryFields(config->typeFields(MemoryFieldType::EntityDB), "EntityDB", 0);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::memoryFieldValueUpdated, this, &ViewEntityDB::fieldUpdated);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewEntityDB::fieldExpanded);
         mTabLookup->layout()->addWidget(mMainTreeView);
@@ -93,10 +85,11 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
     // COMPARE
     {
-        auto topLayout = new QHBoxLayout();
+        auto topLayout = new QHBoxLayout(); // TODO: add parrent?
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        populateComparisonCombobox("", config->typeFields(MemoryFieldType::EntityDB));
+        DB::populateComparisonCombobox(mCompareFieldComboBox, config->typeFields(MemoryFieldType::EntityDB));
+
         QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewEntityDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
 
@@ -106,7 +99,7 @@ void S2Plugin::ViewEntityDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabCompare->layout())->addLayout(topLayout);
 
-        mCompareTableWidget = new QTableWidget(mToolbar->entityDB()->entityList()->count(), 3, this);
+        mCompareTableWidget = new QTableWidget(config->entityList().count(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
         mCompareTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
@@ -159,13 +152,15 @@ void S2Plugin::ViewEntityDB::searchFieldReturnPressed()
     auto text = mSearchLineEdit->text();
     bool isNumeric = false;
     auto enteredID = text.toUInt(&isNumeric);
-    if (isNumeric && enteredID <= mToolbar->entityDB()->entityList()->highestID())
+    auto& entityList = Configuration::get()->entityList();
+
+    if (isNumeric && enteredID <= entityList.highestID())
     {
         showIndex(enteredID);
     }
     else
     {
-        auto entityID = mToolbar->entityDB()->entityList()->idForName(text.toStdString());
+        auto entityID = entityList.idForName(text.toStdString());
         if (entityID != 0)
         {
             showIndex(entityID);
@@ -181,13 +176,9 @@ void S2Plugin::ViewEntityDB::searchFieldCompleterActivated(const QString& text)
 void S2Plugin::ViewEntityDB::showIndex(size_t index)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
-    mLookupIndex = index;
-    auto& offsets = mToolbar->entityDB()->offsetsForIndex(index);
-    auto deltaReference = offsets.at("EntityDB.create_func");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::EntityDB))
-    {
-        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, offsets, deltaReference);
-    }
+    // mLookupIndex = index;
+    mMainTreeView->updateTree(Spelunky2::get()->get_EntityDB().offsetFromIndex(index), 0);
+
     mMainTreeView->setColumnWidth(gsColField, 125);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
@@ -197,12 +188,7 @@ void S2Plugin::ViewEntityDB::showIndex(size_t index)
 
 void S2Plugin::ViewEntityDB::label()
 {
-    auto entityDB = mToolbar->entityDB();
-    auto entityName = entityDB->entityList()->nameForID(mLookupIndex);
-    for (const auto& [fieldName, offset] : entityDB->offsetsForIndex(mLookupIndex))
-    {
-        DbgSetAutoLabelAt(offset, (entityName + "." + fieldName).c_str());
-    }
+    mMainTreeView->labelAll();
 }
 
 void S2Plugin::ViewEntityDB::fieldUpdated(const QString& fieldName)
@@ -217,12 +203,7 @@ void S2Plugin::ViewEntityDB::fieldExpanded(const QModelIndex& index)
 
 void S2Plugin::ViewEntityDB::updateFieldValues()
 {
-    auto& offsets = mToolbar->entityDB()->offsetsForIndex(mLookupIndex);
-    auto deltaReference = offsets.at("EntityDB.create_func");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::EntityDB))
-    {
-        mMainTreeView->updateValueForField(field, "EntityDB." + field.name, offsets, deltaReference);
-    }
+    mMainTreeView->updateTree();
 }
 
 void S2Plugin::ViewEntityDB::compareGroupByCheckBoxClicked(int state)
@@ -246,69 +227,18 @@ void S2Plugin::ViewEntityDB::comparisonFieldChosen(const QString& fieldName)
     populateComparisonTreeWidget();
 }
 
-void S2Plugin::ViewEntityDB::populateComparisonCombobox(const std::string& prefix, const std::vector<S2Plugin::MemoryField>& fields)
-{
-    for (const auto& field : fields)
-    {
-        if (field.isPointer)
-            continue;
-        switch (field.type)
-        {
-            case MemoryFieldType::Skip:
-                continue;
-            case MemoryFieldType::Flags32:
-            case MemoryFieldType::Flags16:
-            case MemoryFieldType::Flags8:
-            {
-                mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                uint8_t flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
-                for (uint8_t x = 1; x <= flagCount; ++x)
-                {
-                    MemoryField flagField;
-                    flagField.name = field.name;
-                    flagField.type = MemoryFieldType::Flag;
-                    flagField.flag_index = x - 1;
-                    flagField.flag_parrent_size = flagCount;
-
-                    ComparisonField tmp;
-                    tmp.prefix = prefix;
-                    tmp.field = flagField;
-                    mCompareFieldComboBox->addItem(QString::fromStdString(prefix + field.name + ".flag_" + std::to_string(x)), QVariant::fromValue(tmp));
-                }
-                break;
-            }
-            case MemoryFieldType::DefaultStructType:
-            {
-                populateComparisonCombobox(field.name + ".", Configuration::get()->typeFieldsOfDefaultStruct(field.jsonName));
-                break;
-            }
-            default:
-            {
-                ComparisonField tmp;
-                tmp.prefix = prefix;
-                tmp.field = field;
-                mCompareFieldComboBox->addItem(QString::fromStdString(prefix + field.name), QVariant::fromValue(tmp));
-                break;
-            }
-        }
-    }
-}
-
 void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
 {
     mCompareTableWidget->setSortingEnabled(false);
 
-    auto tmp = mCompareFieldComboBox->currentData().value<ComparisonField>();
-    const auto& field = tmp.field;
-    const auto& prefix = tmp.prefix;
-
-    auto entityDB = mToolbar->entityDB();
-    auto entityList = entityDB->entityList();
+    auto comboboxData = mCompareFieldComboBox->currentData();
+    auto& entityDB = Spelunky2::get()->get_EntityDB();
+    auto& entityList = Configuration::get()->entityList();
 
     size_t row = 0;
-    for (auto x = 1; x <= entityDB->entityList()->highestID(); ++x)
+    for (auto x = 1; x <= entityList.highestID(); ++x)
     {
-        if (!entityList->isValidID(x))
+        if (!entityList.isValidID(x))
         {
             continue;
         }
@@ -316,9 +246,9 @@ void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(QString::fromStdString(entityList->nameForID(x)))));
+        mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(QString::fromStdString(entityList.nameForID(x)))));
 
-        auto [caption, value] = valueForField(prefix, field, x);
+        auto [caption, value] = DB::valueForField(comboboxData, entityDB.offsetFromIndex(x));
         auto item = new TableWidgetItemNumeric(caption);
         item->setData(Qt::UserRole, value);
         mCompareTableWidget->setItem(row, 2, item);
@@ -333,23 +263,20 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
 {
     mCompareTreeWidget->setSortingEnabled(false);
 
-    auto tmp = mCompareFieldComboBox->currentData().value<ComparisonField>();
-    const auto& field = tmp.field;
-    const auto& prefix = tmp.prefix;
-
-    auto entityDB = mToolbar->entityDB();
-    auto entityList = entityDB->entityList();
+    auto comboboxData = mCompareFieldComboBox->currentData();
+    auto& entityDB = Spelunky2::get()->get_EntityDB();
+    auto& entityList = Configuration::get()->entityList();
 
     std::unordered_map<std::string, QVariant> rootValues;
     std::unordered_map<std::string, std::unordered_set<uint32_t>> groupedValues; // valueString -> set<entity id's>
-    for (uint32_t x = 1; x <= entityDB->entityList()->highestID(); ++x)
+    for (uint32_t x = 1; x <= entityList.highestID(); ++x)
     {
-        if (!entityList->isValidID(x))
+        if (!entityList.isValidID(x))
         {
             continue;
         }
 
-        auto [caption, value] = valueForField(prefix, field, x);
+        auto [caption, value] = DB::valueForField(comboboxData, entityDB.offsetFromIndex(x));
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;
 
@@ -370,7 +297,7 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
         mCompareTreeWidget->insertTopLevelItem(0, rootItem);
         for (const auto& entityId : entityIds)
         {
-            auto entityName = entityList->nameForID(entityId);
+            auto entityName = entityList.nameForID(entityId);
             auto caption = QString("<font color='blue'><u>%1</u></font>").arg(QString::fromStdString(entityName));
             auto childItem = new QTreeWidgetItem(rootItem, QStringList(caption));
             childItem->setData(0, Qt::UserRole, entityId);
@@ -380,110 +307,6 @@ void S2Plugin::ViewEntityDB::populateComparisonTreeWidget()
 
     mCompareTreeWidget->setSortingEnabled(true);
     mCompareTreeWidget->sortItems(0, Qt::AscendingOrder);
-}
-
-std::pair<QString, QVariant> S2Plugin::ViewEntityDB::valueForField(const std::string& prefix, const MemoryField& field, size_t entityDBIndex)
-{
-    auto offset = mToolbar->entityDB()->offsetsForIndex(entityDBIndex).at("EntityDB." + prefix + field.name);
-    switch (field.type)
-    {
-        case MemoryFieldType::CodePointer:
-        case MemoryFieldType::DataPointer:
-        {
-            size_t value = Script::Memory::ReadQword(offset);
-            return std::make_pair(QString::asprintf("0x%016llX", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Byte:
-        case MemoryFieldType::State8:
-        case MemoryFieldType::CharacterDBID:
-        {
-            int8_t value = Script::Memory::ReadByte(offset);
-            return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedByte:
-        case MemoryFieldType::Flags8:
-        {
-            uint8_t value = Script::Memory::ReadByte(offset);
-            return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Word:
-        case MemoryFieldType::State16:
-        {
-            int16_t value = Script::Memory::ReadWord(offset);
-            return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedWord:
-        case MemoryFieldType::Flags16:
-        {
-            uint16_t value = Script::Memory::ReadWord(offset);
-            return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Dword:
-        case MemoryFieldType::State32:
-        case MemoryFieldType::TextureDBID:
-        {
-            int32_t value = Script::Memory::ReadDword(offset);
-            return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::ParticleDBID:
-        case MemoryFieldType::EntityDBID:
-        case MemoryFieldType::StringsTableID:
-        case MemoryFieldType::UnsignedDword:
-        case MemoryFieldType::Flags32:
-        {
-            uint32_t value = Script::Memory::ReadDword(offset);
-            return std::make_pair(QString::asprintf("%lu", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Qword:
-        {
-            int64_t value = Script::Memory::ReadQword(offset);
-            return std::make_pair(QString::asprintf("%lld", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedQword:
-        {
-            uint64_t value = Script::Memory::ReadQword(offset);
-            return std::make_pair(QString::asprintf("%llu", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Float:
-        {
-            uint32_t dword = Script::Memory::ReadDword(offset);
-            float value = reinterpret_cast<float&>(dword);
-            return std::make_pair(QString::asprintf("%f", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Double:
-        {
-            size_t qword = Script::Memory::ReadQword(offset);
-            double value = reinterpret_cast<double&>(qword);
-            return std::make_pair(QString::asprintf("%lf", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Bool:
-        {
-            auto b = Script::Memory::ReadByte(offset);
-            bool value = reinterpret_cast<bool&>(b);
-            return std::make_pair(value ? "True" : "False", QVariant::fromValue(b));
-        }
-        case MemoryFieldType::Flag:
-        {
-            uint8_t flagToCheck = field.flag_index;
-            bool isFlagSet = false;
-            switch (field.flag_parrent_size)
-            {
-                case 32:
-                    isFlagSet = ((Script::Memory::ReadDword(offset) & (1 << flagToCheck)) > 0);
-                    break;
-                case 16:
-                    isFlagSet = ((Script::Memory::ReadWord(offset) & (1 << flagToCheck)) > 0);
-                    break;
-                case 8:
-                    isFlagSet = ((Script::Memory::ReadByte(offset) & (1 << flagToCheck)) > 0);
-                    break;
-            }
-
-            bool value = reinterpret_cast<bool&>(isFlagSet);
-            return std::make_pair(value ? "True" : "False", QVariant::fromValue(isFlagSet));
-        }
-    }
-    return std::make_pair("unknown", 0);
 }
 
 void S2Plugin::ViewEntityDB::comparisonCellClicked(int row, int column)

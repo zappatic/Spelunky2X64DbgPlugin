@@ -1,12 +1,12 @@
 #pragma once
 
 #include <QAbstractItemModel>
+#include <QObject>
 #include <QSortFilterProxyModel>
 
 namespace S2Plugin
 {
     struct ViewToolbar;
-    struct VirtualTableLookup;
 
     static const uint8_t gsColTableOffset = 0;
     static const uint8_t gsColCodeAddress = 1;
@@ -18,7 +18,7 @@ namespace S2Plugin
         Q_OBJECT
 
       public:
-        ItemModelVirtualTable(VirtualTableLookup* vtl, QObject* parent = nullptr);
+        ItemModelVirtualTable(QObject* parent = nullptr);
 
         Qt::ItemFlags flags(const QModelIndex& index) const override;
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -31,7 +31,8 @@ namespace S2Plugin
         void detectEntities(ViewToolbar* toolbar);
 
       private:
-        VirtualTableLookup* mVirtualTableLookup;
+        uintptr_t mLayer0Offset;
+        uintptr_t mLayer1Offset;
     };
 
     class SortFilterProxyModelVirtualTable : public QSortFilterProxyModel
@@ -39,7 +40,7 @@ namespace S2Plugin
         Q_OBJECT
 
       public:
-        SortFilterProxyModelVirtualTable(VirtualTableLookup* vtl, QObject* parent = nullptr);
+        SortFilterProxyModelVirtualTable(QObject* parent = nullptr);
 
         bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
         void setShowImportedSymbols(bool b);
@@ -50,7 +51,6 @@ namespace S2Plugin
         bool symbollessEntriesShown() const noexcept;
 
       private:
-        VirtualTableLookup* mVirtualTableLookup;
         bool mShowImportedSymbols = true;
         bool mShowNonAddressEntries = true;
         bool mShowSymbollessEntries = true;

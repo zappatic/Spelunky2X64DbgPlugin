@@ -24,11 +24,11 @@ namespace S2Plugin
         }
         size_t begin() const
         {
-            return offset;
+            return string_ptr();
         }
         size_t end() const
         {
-            return offset + lenght() * sizeof(T);
+            return string_ptr() + lenght() * sizeof(T);
         }
         bool empty() const
         {
@@ -41,17 +41,17 @@ namespace S2Plugin
 
             return offset;
         }
-        std::unique_ptr<T[]> get_string() const
+        std::basic_string<T> get_string() const
         {
             size_t string_offset = string_ptr();
             size_t string_lenght = lenght();
-            std::unique_ptr<T[]> data = std::make_unique<T[]>(string_lenght + 1);
+            std::basic_string<T> buffer;
+            buffer.resize(string_lenght);
             if (string_lenght != 0)
             {
-                Script::Memory::Read(string_offset, data.get(), sizeof(T) * string_lenght, nullptr);
+                Script::Memory::Read(string_offset, buffer.data(), (string_lenght + 1) * sizeof(T), nullptr); // +1 to include the 0 character
             }
-            data.get()[string_lenght] = (T)NULL;
-            return data;
+            return buffer;
         }
         bool operator==(const StdString<T> other) const
         {
@@ -66,13 +66,7 @@ namespace S2Plugin
             if (l == 0) // both lengths the same at this point, so both are 0
                 return true;
 
-            auto this_str = get_string();
-            auto other_str = other.get_string();
-            return memcmp(this_str.get(), other_str.get(), l * sizeof(T)) == 0;
-        }
-        bool operator!=(const StdString<T> other) const
-        {
-            return !operator==(other);
+            return get_string() == other.get_string();
         }
 
       private:

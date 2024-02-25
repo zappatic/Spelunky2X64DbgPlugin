@@ -65,6 +65,5 @@ namespace S2Plugin
         void updateFieldValues();
         void populateComparisonTableWidget();
         void populateComparisonTreeWidget();
-        std::pair<QString, QVariant> valueForField(const MemoryField& field, size_t textureDBIndex);
     };
 } // namespace S2Plugin

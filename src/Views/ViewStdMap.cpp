@@ -16,7 +16,7 @@
 #include <QTimer>
 #include <Qlayout>
 
-S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytypeName, const std::string& valuetypeName, size_t mapOffset, QWidget* parent)
+S2Plugin::ViewStdMap::ViewStdMap(ViewToolbar* toolbar, const std::string& keytypeName, const std::string& valuetypeName, uintptr_t mapOffset, QWidget* parent)
     : mMapKeyType(keytypeName), mMapValueType(valuetypeName), mmapOffset(mapOffset), QWidget(parent), mToolbar(toolbar)
 {
     mMainLayout = new QVBoxLayout(this);
@@ -93,15 +93,12 @@ void S2Plugin::ViewStdMap::closeEvent(QCloseEvent* event)
 
 void S2Plugin::ViewStdMap::refreshMapContents()
 {
+    if (!Script::Memory::IsValidPtr(Script::Memory::ReadQword(mmapOffset)))
+        return;
+
     StdMap the_map{mmapOffset, mMapKeyAlignment, mMapValueAlignment, mMapKeyTypeSize};
     auto config = Configuration::get();
     mMainTreeView->clear();
-    mMemoryFields.clear();
-    mMemoryFields.reserve(the_map.size());
-
-    bool add_parrent_object = false;
-    MemoryField parent_field;
-    parent_field.type = MemoryFieldType::Byte;
 
     MemoryField key_field;
     key_field.name = "key";
@@ -110,19 +107,17 @@ void S2Plugin::ViewStdMap::refreshMapContents()
         key_field.type = MemoryFieldType::DefaultStructType;
         key_field.jsonName = mMapKeyType;
         key_field.isPointer = true;
-        add_parrent_object = true;
     }
     else if (config->isJsonStruct(mMapKeyType))
     {
         key_field.type = MemoryFieldType::DefaultStructType;
         key_field.jsonName = mMapKeyType;
-        add_parrent_object = true;
     }
     else if (auto type = config->getBuiltInType(mMapKeyType); type != MemoryFieldType::None)
     {
         key_field.type = type;
-        // check for the line below
-        // add_parrent_object = true;
+        if (Configuration::isPointerType(type))
+            key_field.isPointer = true;
     }
     else
     {
@@ -148,6 +143,8 @@ void S2Plugin::ViewStdMap::refreshMapContents()
         else if (auto type = config->getBuiltInType(mMapValueType); type != MemoryFieldType::None)
         {
             value_field.type = type;
+            if (Configuration::isPointerType(type))
+                value_field.isPointer = true;
         }
         else
         {
@@ -158,27 +155,20 @@ void S2Plugin::ViewStdMap::refreshMapContents()
 
     auto _end = the_map.end();
     auto _cur = the_map.begin();
-    for (int x = 0; _cur != _end && x < 100; ++x, ++_cur)
+    MemoryField parent_field;
+    parent_field.type = MemoryFieldType::Dummy;
+    for (int x = 0; _cur != _end && x < 300; ++x, ++_cur)
     {
         QStandardItem* parent{nullptr};
-        if (add_parrent_object)
-        {
-            parent_field.name = "obj_" + std::to_string(x);
-            parent = mMainTreeView->addMemoryField(parent_field, parent_field.name);
-        }
-        else
-            key_field.name = "key_" + std::to_string(x);
+        parent_field.name = "obj_" + std::to_string(x);
+        parent = mMainTreeView->addMemoryField(parent_field, parent_field.name, 0, 0);
 
-        mMemoryFields.emplace_back(std::make_tuple(key_field, _cur.key_ptr(), parent));
-        auto key_StandardItem = mMainTreeView->addMemoryField(key_field, key_field.name, parent);
-        if (!add_parrent_object)
-            parent = key_StandardItem;
+        auto key_StandardItem = mMainTreeView->addMemoryField(key_field, key_field.name, _cur.key_ptr(), 0, parent);
 
         if (mMapValueTypeSize == 0) // StdSet
             continue;
 
-        mMemoryFields.emplace_back(std::make_tuple(value_field, _cur.value_ptr(), parent));
-        mMainTreeView->addMemoryField(value_field, value_field.name, parent);
+        mMainTreeView->addMemoryField(value_field, value_field.name, _cur.value_ptr(), 0, parent);
     }
     refreshData();
 
@@ -192,18 +182,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
 
 void S2Plugin::ViewStdMap::refreshData()
 {
-    std::unordered_map<std::string, size_t> offsets;
-    auto config = Configuration::get();
-
-    for (const auto& field : mMemoryFields)
-    {
-        const auto& mem_field = std::get<0>(field);
-        const auto& mem_offset = std::get<1>(field);
-        const auto& parrent = std::get<2>(field);
-
-        config->setOffsetForField(mem_field, mem_field.name, mem_offset, offsets);
-        mMainTreeView->updateValueForField(mem_field, mem_field.name, offsets, 0, parrent);
-    }
+    mMainTreeView->updateTree();
 }
 
 QSize S2Plugin::ViewStdMap::sizeHint() const

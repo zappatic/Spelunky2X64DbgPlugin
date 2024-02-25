@@ -1,6 +1,7 @@
 #include "Views/ViewCharacterDB.h"
 #include "Configuration.h"
 #include "Data/CharacterDB.h"
+#include "QtHelpers/DatabaseHelper.h"
 #include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
@@ -55,7 +56,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewCharacterDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mCharacterNameCompleter = new QCompleter(mToolbar->characterDB()->characterNamesStringList(), this);
+        mCharacterNameCompleter = new QCompleter(Spelunky2::get()->get_CharacterDB().characterNamesStringList(), this);
         mCharacterNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
         mCharacterNameCompleter->setFilterMode(Qt::MatchContains);
         QObject::connect(mCharacterNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewCharacterDB::searchFieldCompleterActivated);
@@ -69,10 +70,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
 
         mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
-        for (const auto& field : config->typeFields(MemoryFieldType::CharacterDB))
-        {
-            mMainTreeView->addMemoryField(field, "CharacterDB." + field.name);
-        }
+        mMainTreeView->addMemoryFields(config->typeFields(MemoryFieldType::CharacterDB), "CharacterDB", 0);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::memoryFieldValueUpdated, this, &ViewCharacterDB::fieldUpdated);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewCharacterDB::fieldExpanded);
         mTabLookup->layout()->addWidget(mMainTreeView);
@@ -86,36 +84,8 @@ void S2Plugin::ViewCharacterDB::initializeUI()
         auto topLayout = new QHBoxLayout();
         mCompareFieldComboBox = new QComboBox(this);
         mCompareFieldComboBox->addItem(QString::fromStdString(""), QVariant::fromValue(QString::fromStdString("")));
-        for (const auto& field : config->typeFields(MemoryFieldType::CharacterDB))
-        {
-            switch (field.type)
-            {
-                case MemoryFieldType::Skip:
-                    continue;
-                case MemoryFieldType::Flags32:
-                case MemoryFieldType::Flags16:
-                case MemoryFieldType::Flags8:
-                {
-                    mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                    uint8_t flagCount = (field.type == MemoryFieldType::Flags16 ? 16 : (field.type == MemoryFieldType::Flags8 ? 8 : 32));
-                    for (uint8_t x = 1; x <= flagCount; ++x)
-                    {
-                        MemoryField flagField;
-                        flagField.name = field.name;
-                        flagField.type = MemoryFieldType::Flag;
-                        flagField.flag_index = x - 1;
-                        flagField.flag_parrent_size = flagCount;
-                        mCompareFieldComboBox->addItem(QString::fromStdString(field.name + ".flag_" + std::to_string(x)), QVariant::fromValue(flagField));
-                    }
-                    break;
-                }
-                default:
-                {
-                    mCompareFieldComboBox->addItem(QString::fromStdString(field.name), QVariant::fromValue(field));
-                    break;
-                }
-            }
-        }
+        DB::populateComparisonCombobox(mCompareFieldComboBox, config->typeFields(MemoryFieldType::CharacterDB));
+
         QObject::connect(mCompareFieldComboBox, &QComboBox::currentTextChanged, this, &ViewCharacterDB::comparisonFieldChosen);
         topLayout->addWidget(mCompareFieldComboBox);
 
@@ -125,7 +95,7 @@ void S2Plugin::ViewCharacterDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabCompare->layout())->addLayout(topLayout);
 
-        mCompareTableWidget = new QTableWidget(mToolbar->characterDB()->charactersCount(), 3, this);
+        mCompareTableWidget = new QTableWidget(Spelunky2::get()->get_CharacterDB().charactersCount(), 3, this);
         mCompareTableWidget->setAlternatingRowColors(true);
         mCompareTableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
         mCompareTableWidget->setHorizontalHeaderLabels(QStringList() << "ID"
@@ -183,13 +153,14 @@ void S2Plugin::ViewCharacterDB::searchFieldReturnPressed()
     auto text = mSearchLineEdit->text();
     bool isNumeric = false;
     auto enteredID = text.toUInt(&isNumeric);
-    if (isNumeric && enteredID < mToolbar->characterDB()->charactersCount())
+    auto& characterDB = Spelunky2::get()->get_CharacterDB();
+    if (isNumeric && enteredID < characterDB.charactersCount())
     {
         showIndex(enteredID);
     }
     else
     {
-        for (const auto& [cID, cName] : mToolbar->characterDB()->characterNames())
+        for (const auto& [cID, cName] : characterDB.characterNames())
         {
             if (text == cName)
             {
@@ -208,21 +179,13 @@ void S2Plugin::ViewCharacterDB::showIndex(size_t index)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
     mLookupIndex = index;
-    auto& offsets = mToolbar->characterDB()->offsetsForIndex(mLookupIndex);
-    auto deltaReference = offsets.at("CharacterDB.is_female");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::CharacterDB))
-    {
-        mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, offsets, deltaReference);
-    }
+    auto offset = Spelunky2::get()->get_CharacterDB().offsetFromIndex(mLookupIndex);
+    mMainTreeView->updateTree(offset);
 }
 
 void S2Plugin::ViewCharacterDB::label()
 {
-    auto characterDB = mToolbar->characterDB();
-    for (const auto& [fieldName, offset] : characterDB->offsetsForIndex(mLookupIndex))
-    {
-        DbgSetAutoLabelAt(offset, (mToolbar->characterDB()->characterNames().at(mLookupIndex).toStdString() + "." + fieldName).c_str());
-    }
+    mMainTreeView->labelAll(); // TODO: label all indexes, not only the visible one
 }
 
 void S2Plugin::ViewCharacterDB::fieldUpdated(const QString& fieldName)
@@ -237,12 +200,7 @@ void S2Plugin::ViewCharacterDB::fieldExpanded(const QModelIndex& index)
 
 void S2Plugin::ViewCharacterDB::updateFieldValues()
 {
-    auto& offsets = mToolbar->characterDB()->offsetsForIndex(mLookupIndex);
-    auto deltaReference = offsets.at("CharacterDB.is_female");
-    for (const auto& field : Configuration::get()->typeFields(MemoryFieldType::CharacterDB))
-    {
-        mMainTreeView->updateValueForField(field, "CharacterDB." + field.name, offsets, deltaReference);
-    }
+    mMainTreeView->updateTree();
 }
 
 void S2Plugin::ViewCharacterDB::compareGroupByCheckBoxClicked(int state)
@@ -270,19 +228,19 @@ void S2Plugin::ViewCharacterDB::populateComparisonTableWidget()
 {
     mCompareTableWidget->setSortingEnabled(false);
 
-    auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
-    auto characterDB = mToolbar->characterDB();
+    auto comboboxData = mCompareFieldComboBox->currentData();
+    auto& characterDB = Spelunky2::get()->get_CharacterDB();
 
     size_t row = 0;
-    for (auto x = 0; x < characterDB->charactersCount(); ++x)
+    for (auto x = 0; x < characterDB.charactersCount(); ++x)
     {
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        const auto& name = mToolbar->characterDB()->characterNames().at(x);
+        const auto& name = characterDB.characterNames().at(x);
         mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(name)));
 
-        auto [caption, value] = valueForField(field, x);
+        auto [caption, value] = DB::valueForField(comboboxData, characterDB.offsetFromIndex(x));
         auto item = new TableWidgetItemNumeric(caption);
         item->setData(Qt::UserRole, value);
         mCompareTableWidget->setItem(row, 2, item);
@@ -297,14 +255,14 @@ void S2Plugin::ViewCharacterDB::populateComparisonTreeWidget()
 {
     mCompareTreeWidget->setSortingEnabled(false);
 
-    auto field = mCompareFieldComboBox->currentData().value<MemoryField>();
-    auto characterDB = mToolbar->characterDB();
+    auto comboboxData = mCompareFieldComboBox->currentData();
+    auto& characterDB = Spelunky2::get()->get_CharacterDB();
 
     std::unordered_map<std::string, QVariant> rootValues;
     std::unordered_map<std::string, std::unordered_set<uint32_t>> groupedValues; // valueString -> set<character id's>
-    for (uint32_t x = 0; x < mToolbar->characterDB()->charactersCount(); ++x)
+    for (uint32_t x = 0; x < characterDB.charactersCount(); ++x)
     {
-        auto [caption, value] = valueForField(field, x);
+        auto [caption, value] = DB::valueForField(comboboxData, characterDB.offsetFromIndex(x));
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;
 
@@ -325,7 +283,7 @@ void S2Plugin::ViewCharacterDB::populateComparisonTreeWidget()
         mCompareTreeWidget->insertTopLevelItem(0, rootItem);
         for (const auto& characterId : characterIDs)
         {
-            const auto& characterName = mToolbar->characterDB()->characterNames().at(characterId);
+            const auto& characterName = characterDB.characterNames().at(characterId);
             auto caption = QString("<font color='blue'><u>%1</u></font>").arg(characterName);
             auto childItem = new QTreeWidgetItem(rootItem, QStringList(caption));
             childItem->setData(0, Qt::UserRole, characterId);
@@ -335,105 +293,6 @@ void S2Plugin::ViewCharacterDB::populateComparisonTreeWidget()
 
     mCompareTreeWidget->setSortingEnabled(true);
     mCompareTreeWidget->sortItems(0, Qt::AscendingOrder);
-}
-
-std::pair<QString, QVariant> S2Plugin::ViewCharacterDB::valueForField(const MemoryField& field, size_t characterDBIndex)
-{
-    auto offset = mToolbar->characterDB()->offsetsForIndex(characterDBIndex).at("CharacterDB." + field.name);
-    switch (field.type)
-    {
-        case MemoryFieldType::CodePointer:
-        case MemoryFieldType::DataPointer:
-        {
-            size_t value = Script::Memory::ReadQword(offset);
-            return std::make_pair(QString::asprintf("0x%016llX", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Byte:
-        case MemoryFieldType::State8:
-        {
-            int8_t value = Script::Memory::ReadByte(offset);
-            return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedByte:
-        case MemoryFieldType::Flags8:
-        {
-            uint8_t value = Script::Memory::ReadByte(offset);
-            return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Word:
-        case MemoryFieldType::State16:
-        {
-            int16_t value = Script::Memory::ReadWord(offset);
-            return std::make_pair(QString::asprintf("%d", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedWord:
-        case MemoryFieldType::Flags16:
-        {
-            uint16_t value = Script::Memory::ReadWord(offset);
-            return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Dword:
-        case MemoryFieldType::State32:
-        {
-            int32_t value = Script::Memory::ReadDword(offset);
-            return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedDword:
-        case MemoryFieldType::Flags32:
-        {
-            uint32_t value = Script::Memory::ReadDword(offset);
-            return std::make_pair(QString::asprintf("%lu", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Qword:
-        {
-            int64_t value = Script::Memory::ReadQword(offset);
-            return std::make_pair(QString::asprintf("%lld", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::UnsignedQword:
-        {
-            uint64_t value = Script::Memory::ReadQword(offset);
-            return std::make_pair(QString::asprintf("%llu", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Float:
-        {
-            uint32_t dword = Script::Memory::ReadDword(offset);
-            float value = reinterpret_cast<float&>(dword);
-            return std::make_pair(QString::asprintf("%f", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Double:
-        {
-            size_t qword = Script::Memory::ReadQword(offset);
-            double value = reinterpret_cast<double&>(qword);
-            return std::make_pair(QString::asprintf("%lf", value), QVariant::fromValue(value));
-        }
-        case MemoryFieldType::Bool:
-        {
-            auto b = Script::Memory::ReadByte(offset);
-            bool value = reinterpret_cast<bool&>(b);
-            return std::make_pair(value ? "True" : "False", QVariant::fromValue(b));
-        }
-        case MemoryFieldType::Flag:
-        {
-            uint8_t flagToCheck = field.flag_index;
-            bool isFlagSet = false;
-            switch (field.flag_parrent_size)
-            {
-                case 32:
-                    isFlagSet = ((Script::Memory::ReadDword(offset) & (1 << flagToCheck)) > 0);
-                    break;
-                case 16:
-                    isFlagSet = ((Script::Memory::ReadWord(offset) & (1 << flagToCheck)) > 0);
-                    break;
-                case 8:
-                    isFlagSet = ((Script::Memory::ReadByte(offset) & (1 << flagToCheck)) > 0);
-                    break;
-            }
-
-            bool value = reinterpret_cast<bool&>(isFlagSet);
-            return std::make_pair(value ? "True" : "False", QVariant::fromValue(isFlagSet));
-        }
-    }
-    return std::make_pair("unknown", 0);
 }
 
 void S2Plugin::ViewCharacterDB::comparisonCellClicked(int row, int column)

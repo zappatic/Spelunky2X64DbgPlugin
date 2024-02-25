@@ -11,16 +11,15 @@ namespace S2Plugin
     class EntityDB
     {
       public:
-        bool loadEntityDB();
-        EntityList* entityList() const noexcept;
-
-        std::unordered_map<std::string, size_t>& offsetsForIndex(uint32_t entityDBIndex);
-
-        void reset();
+        uintptr_t offsetFromIndex(uint32_t idx) const; // as of right now id == index
+        bool isValid() const
+        {
+            return (ptr != 0);
+        }
 
       private:
-        size_t mEntityDBPtr = 0;
-        std::unique_ptr<EntityList> mEntityList;
-        std::vector<std::unordered_map<std::string, size_t>> mMemoryOffsets; // list of fieldname -> offset of field value in memory
+        uintptr_t ptr{0};
+
+        friend class Spelunky2;
     };
 } // namespace S2Plugin

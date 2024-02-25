@@ -15,11 +15,16 @@ namespace S2Plugin
     struct ItemModelStringsTable;
     struct StyledItemDelegateHTML;
 
+    static const uint8_t gsColStringID = 0;
+    static const uint8_t gsColStringTableOffset = 1;
+    static const uint8_t gsColStringMemoryOffset = 2;
+    static const uint8_t gsColStringValue = 3;
+
     class ViewStringsTable : public QWidget
     {
         Q_OBJECT
       public:
-        ViewStringsTable(ViewToolbar* toolbar, QWidget* parent = nullptr);
+        ViewStringsTable(QWidget* parent = nullptr);
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -27,15 +32,18 @@ namespace S2Plugin
         QSize minimumSizeHint() const override;
         void cellClicked(const QModelIndex& index);
         void filterTextChanged(const QString& text);
+        void reload();
 
       private:
         ViewToolbar* mToolbar;
         QVBoxLayout* mMainLayout;
         QLineEdit* mFilterLineEdit;
         QTableView* mMainTableView;
-        ItemModelStringsTable* mModel;
+        QStandardItemModel* mModel;
         SortFilterProxyModelStringsTable* mModelProxy;
         std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
+
+        QStringList mStringList;
 
         void initializeUI();
     };

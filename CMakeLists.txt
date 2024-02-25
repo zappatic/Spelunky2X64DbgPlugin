@@ -44,13 +44,13 @@ qt5_add_resources(SOURCES resources/spelunky2.qrc)
 x64dbg_plugin(${PROJECT_NAME}
 	src/pluginmain.cpp
 	src/QtPlugin.cpp
+	src/read_helpers.cpp
 	include/Spelunky2.h
 	include/Configuration.h
+	include/read_helpers.h
 	include/Data/EntityDB.h
 	include/Data/Entity.h
 	include/Data/State.h
-	include/Data/GameManager.h
-	include/Data/SaveGame.h
 	include/Data/LevelGen.h
 	include/Data/ParticleDB.h
 	include/Data/TextureDB.h
@@ -62,8 +62,6 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/StringsTable.h
 	include/Data/CPPGenerator.h
 	include/Data/Logger.h
-	include/Data/Online.h
-	include/Data/JournalPage.h
 	include/Data/StdString.h
 	include/Data/StdMap.h
 	include/Views/ViewToolbar.h
@@ -107,26 +105,21 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/WidgetSampling.h
 	include/QtHelpers/WidgetSamplesPlot.h
 	include/QtHelpers/ItemModelLoggerSamples.h
+	include/QtHelpers/DatabaseHelper.h
 	src/Spelunky2.cpp
 	src/Configuration.cpp
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
-	src/Data/GameManager.cpp
-	src/Data/SaveGame.cpp
 	src/Data/LevelGen.cpp
-	src/Data/ParticleDB.cpp
 	src/Data/TextureDB.cpp
 	src/Data/IDNameList.cpp
 	src/Data/EntityList.cpp
-	src/Data/CharacterDB.cpp
 	src/Data/ParticleEmittersList.cpp
 	src/Data/VirtualTableLookup.cpp
 	src/Data/StringsTable.cpp
 	src/Data/CPPGenerator.cpp
 	src/Data/Logger.cpp
-	src/Data/Online.cpp
-	src/Data/JournalPage.cpp
 	src/Data/Lookup.cpp
 	src/Views/ViewToolbar.cpp
 	src/Views/ViewEntityDB.cpp
@@ -169,6 +162,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/WidgetSampling.cpp
 	src/QtHelpers/WidgetSamplesPlot.cpp
 	src/QtHelpers/ItemModelLoggerSamples.cpp
+	src/QtHelpers/DatabaseHelper.cpp
 	${CMAKE_CURRENT_BINARY_DIR}/include/pluginconfig.h
 	resources/spelunky2.qrc
 )

@@ -6,7 +6,12 @@
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 
-S2Plugin::ItemModelVirtualTable::ItemModelVirtualTable(VirtualTableLookup* vtl, QObject* parent) : QAbstractItemModel(parent), mVirtualTableLookup(vtl) {}
+S2Plugin::ItemModelVirtualTable::ItemModelVirtualTable(QObject* parent) : QAbstractItemModel(parent)
+{
+    auto config = Configuration::get();
+    mLayer0Offset = config->offsetForField(config->typeFields(MemoryFieldType::State), "layer0", Spelunky2::get()->get_StatePtr());
+    mLayer1Offset = config->offsetForField(config->typeFields(MemoryFieldType::State), "layer1", Spelunky2::get()->get_StatePtr());
+}
 
 Qt::ItemFlags S2Plugin::ItemModelVirtualTable::flags(const QModelIndex& index) const
 {
@@ -17,7 +22,7 @@ QVariant S2Plugin::ItemModelVirtualTable::data(const QModelIndex& index, int rol
 {
     if (role == Qt::DisplayRole)
     {
-        const auto& entry = mVirtualTableLookup->entryForOffset(index.row());
+        const auto& entry = Spelunky2::get()->get_VirtualTableLookup().entryForOffset(index.row());
         switch (index.column())
         {
             case gsColTableOffset:
@@ -32,7 +37,7 @@ QVariant S2Plugin::ItemModelVirtualTable::data(const QModelIndex& index, int rol
                     return QString::asprintf("<span style='text-decoration: line-through'>0x%016llX</span>", entry.value);
                 }
             case gsColTableAddress:
-                return QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", mVirtualTableLookup->tableAddressForEntry(entry));
+                return QString::asprintf("<font color='blue'><u>0x%016llX</u></font>", Spelunky2::get()->get_VirtualTableLookup().tableAddressForEntry(entry));
             case gsColSymbolName:
             {
                 QStringList l;
@@ -49,7 +54,7 @@ QVariant S2Plugin::ItemModelVirtualTable::data(const QModelIndex& index, int rol
 
 int S2Plugin::ItemModelVirtualTable::rowCount(const QModelIndex& parent) const
 {
-    return mVirtualTableLookup->count();
+    return Spelunky2::get()->get_VirtualTableLookup().count();
 }
 
 int S2Plugin::ItemModelVirtualTable::columnCount(const QModelIndex& parent) const
@@ -88,11 +93,6 @@ QVariant S2Plugin::ItemModelVirtualTable::headerData(int section, Qt::Orientatio
 
 void S2Plugin::ItemModelVirtualTable::detectEntities(ViewToolbar* toolbar)
 {
-    auto state = toolbar->state();
-    auto spel2 = Spelunky2::get();
-    auto entityDB = toolbar->entityDB();
-    auto vtl = toolbar->virtualTableLookup();
-
     auto processEntities = [&](size_t layerEntities, uint32_t count)
     {
         size_t maximum = (std::min)(count, 10000u);
@@ -103,29 +103,29 @@ void S2Plugin::ItemModelVirtualTable::detectEntities(ViewToolbar* toolbar)
             auto entityVTableOffset = Script::Memory::ReadQword(entity);
 
             auto entityUid = Script::Memory::ReadDword(entity + 56);
-            auto entityName = spel2->getEntityName(entity, entityDB);
-            vtl->setSymbolNameForOffsetAddress(entityVTableOffset, entityName);
+            auto entityName = Configuration::get()->getEntityName(entity);
+            Spelunky2::get()->get_VirtualTableLookup().setSymbolNameForOffsetAddress(entityVTableOffset, entityName);
         }
     };
 
     beginResetModel();
-    auto layer0 = Script::Memory::ReadQword(state->offsetForField("layer0"));
+    auto layer0 = Script::Memory::ReadQword(mLayer0Offset);
     auto layer0Count = Script::Memory::ReadDword(layer0 + 28);
     auto layer0Entities = Script::Memory::ReadQword(layer0 + 8);
     processEntities(layer0Entities, layer0Count);
 
-    auto layer1 = Script::Memory::ReadQword(state->offsetForField("layer1"));
+    auto layer1 = Script::Memory::ReadQword(mLayer1Offset);
     auto layer1Count = Script::Memory::ReadDword(layer1 + 28);
     auto layer1Entities = Script::Memory::ReadQword(layer1 + 8);
     processEntities(layer1Entities, layer1Count);
     endResetModel();
 }
 
-S2Plugin::SortFilterProxyModelVirtualTable::SortFilterProxyModelVirtualTable(VirtualTableLookup* vtl, QObject* parent) : QSortFilterProxyModel(parent), mVirtualTableLookup(vtl) {}
+S2Plugin::SortFilterProxyModelVirtualTable::SortFilterProxyModelVirtualTable(QObject* parent) : QSortFilterProxyModel(parent) {}
 
 bool S2Plugin::SortFilterProxyModelVirtualTable::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {
-    const auto& entry = mVirtualTableLookup->entryForOffset(sourceRow);
+    const auto& entry = Spelunky2::get()->get_VirtualTableLookup().entryForOffset(sourceRow);
 
     // only do text filtering when symbolless entries are not shown
     // because we will just jump to the first match in ViewVirtualTable::filterTextChanged
