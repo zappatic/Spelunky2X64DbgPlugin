@@ -4,8 +4,10 @@
 #include <QTreeView>
 #include <array>
 #include <memory>
+#include <optional>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace S2Plugin
 {
@@ -40,14 +42,18 @@ namespace S2Plugin
       public:
         TreeViewMemoryFields(ViewToolbar* toolbar, QWidget* parent = nullptr);
 
-        QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, QStandardItem* parent = nullptr);
+        void addMemoryFields(const std::vector<MemoryField>& fields, const std::string& mainName, uintptr_t structAddr, size_t initialDelta = 0, QStandardItem* parent = nullptr);
+        QStandardItem* addMemoryField(const MemoryField& field, const std::string& fieldNameOverride, uintptr_t offset, size_t delta, QStandardItem* parent = nullptr);
         void clear();
         void updateTableHeader(bool restoreColumnWidths = true);
         void setEnableChangeHighlighting(bool b) noexcept;
 
         void expandItem(QStandardItem* item);
-        void updateValueForField(const MemoryField& field, const std::string& fieldNameOverride, const std::unordered_map<std::string, size_t>& offsets, size_t memoryOffsetDeltaReference = 0,
-                                 QStandardItem* parent = nullptr, bool disableChangeHighlightingForField = false);
+        void updateTree(uintptr_t newAddr = 0, uintptr_t newComparisonAddr = 0, bool initial = false);
+        void updateRow(int row, std::optional<uintptr_t> newAddr = std::nullopt, std::optional<uintptr_t> newAddrComparison = std::nullopt, QStandardItem* parent = nullptr,
+                       bool disableChangeHighlightingForField = false);
+ 
+        void labelAll(); // TODO
 
         ColumnFilter activeColumns;
 
@@ -66,8 +72,6 @@ namespace S2Plugin
         void cellClicked(const QModelIndex& index);
 
       private:
-        int lookupTreeViewItem(const std::string& fieldName, uint8_t column, QStandardItem* parent);
-
         ViewToolbar* mToolbar;
         QStandardItemModel* mModel;
         std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
