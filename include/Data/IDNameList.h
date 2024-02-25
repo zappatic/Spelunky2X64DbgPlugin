@@ -26,4 +26,14 @@ namespace S2Plugin
         QStringList mNames;
         uint32_t mHighestID = 0;
     };
+    class ParticleEmittersList : public IDNameList
+    {
+      public:
+        explicit ParticleEmittersList();
+    };
+    class EntityList : public IDNameList
+    {
+      public:
+        explicit EntityList();
+    };
 } // namespace S2Plugin

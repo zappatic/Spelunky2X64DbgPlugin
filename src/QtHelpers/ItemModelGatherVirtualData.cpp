@@ -1,7 +1,6 @@
 #include "QtHelpers/ItemModelGatherVirtualData.h"
 #include "Configuration.h"
 #include "Data/EntityDB.h"
-#include "Data/LevelGen.h"
 #include "Data/State.h"
 #include "Data/VirtualTableLookup.h"
 #include "Spelunky2.h"

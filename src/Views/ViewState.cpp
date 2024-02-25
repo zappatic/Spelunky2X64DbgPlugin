@@ -1,7 +1,6 @@
 #include "Views/ViewState.h"
 #include "Configuration.h"
 #include "Data/EntityDB.h"
-#include "Data/EntityList.h"
 #include "Data/State.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "Spelunky2.h"

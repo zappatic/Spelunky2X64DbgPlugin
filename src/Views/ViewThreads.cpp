@@ -14,6 +14,8 @@ static const uint32_t gsColStateAddress = 2;
 
 static const uint32_t gsRoleMemoryAddress = Qt::UserRole + 1;
 
+// TODO review (crashes)
+
 S2Plugin::ViewThreads::ViewThreads(ViewToolbar* toolbar) : QWidget(toolbar), mToolbar(toolbar)
 {
     initializeUI();

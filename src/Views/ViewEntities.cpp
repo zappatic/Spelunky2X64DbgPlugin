@@ -3,7 +3,6 @@
 #include "Configuration.h"
 #include "Data/Entity.h"
 #include "Data/EntityDB.h"
-#include "Data/EntityList.h"
 #include "Data/State.h"
 #include "Data/StdMap.h"
 #include "QtHelpers/TreeViewMemoryFields.h"

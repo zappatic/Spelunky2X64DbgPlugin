@@ -5,7 +5,6 @@
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
-#include <Data/LevelGen.h>
 #include <QEvent>
 #include <QFontMetrics>
 #include <QHelpEvent>

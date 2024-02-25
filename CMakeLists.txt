@@ -51,13 +51,10 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/Data/EntityDB.h
 	include/Data/Entity.h
 	include/Data/State.h
-	include/Data/LevelGen.h
 	include/Data/ParticleDB.h
 	include/Data/TextureDB.h
 	include/Data/IDNameList.h
-	include/Data/EntityList.h
 	include/Data/CharacterDB.h
-	include/Data/ParticleEmittersList.h
 	include/Data/VirtualTableLookup.h
 	include/Data/StringsTable.h
 	include/Data/CPPGenerator.h
@@ -111,11 +108,8 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
-	src/Data/LevelGen.cpp
 	src/Data/TextureDB.cpp
 	src/Data/IDNameList.cpp
-	src/Data/EntityList.cpp
-	src/Data/ParticleEmittersList.cpp
 	src/Data/VirtualTableLookup.cpp
 	src/Data/StringsTable.cpp
 	src/Data/CPPGenerator.cpp

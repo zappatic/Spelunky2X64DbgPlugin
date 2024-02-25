@@ -2,7 +2,6 @@
 #include "Configuration.h"
 #include "Data/CharacterDB.h"
 #include "Data/EntityDB.h"
-#include "Data/LevelGen.h"
 #include "Data/ParticleDB.h"
 #include "Data/State.h"
 #include "Data/StringsTable.h"

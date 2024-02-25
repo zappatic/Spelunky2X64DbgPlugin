@@ -52,7 +52,7 @@ namespace S2Plugin
         void updateTree(uintptr_t newAddr = 0, uintptr_t newComparisonAddr = 0, bool initial = false);
         void updateRow(int row, std::optional<uintptr_t> newAddr = std::nullopt, std::optional<uintptr_t> newAddrComparison = std::nullopt, QStandardItem* parent = nullptr,
                        bool disableChangeHighlightingForField = false);
- 
+
         void labelAll(); // TODO
 
         ColumnFilter activeColumns;

@@ -52,7 +52,6 @@ namespace S2Plugin
         QWidget* mTabCompare;
 
         // LOOKUP
-        //size_t mLookupIndex;
         uintptr_t mEntityDBPtr;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;

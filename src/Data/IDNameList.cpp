@@ -1,6 +1,4 @@
 #include "Data/IDNameList.h"
-#include "Configuration.h"
-#include "Spelunky2.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>
@@ -10,7 +8,6 @@
 
 S2Plugin::IDNameList::IDNameList(const std::string& relFilePath, const std::regex& regex)
 {
-    // TODO move to configuration
     char buffer[MAX_PATH] = {0};
     GetModuleFileNameA(nullptr, buffer, MAX_PATH);
     auto pathQStr = QFileInfo(QString(buffer)).dir().filePath(QString::fromStdString(relFilePath));
@@ -89,3 +86,11 @@ const std::unordered_map<uint32_t, std::string>& S2Plugin::IDNameList::entries()
 {
     return mEntries;
 }
+
+static const std::regex regexEntityLine("^([0-9]+): ENT_TYPE_(.*?)$", std::regex_constants::ECMAScript);
+
+S2Plugin::EntityList::EntityList() : IDNameList("plugins/Spelunky2Entities.txt", regexEntityLine) {}
+
+static const std::regex regexParticleLine("^([0-9]+): PARTICLEEMITTER_(.*?)$", std::regex_constants::ECMAScript);
+
+S2Plugin::ParticleEmittersList::ParticleEmittersList() : IDNameList("plugins/Spelunky2ParticleEmitters.txt", regexParticleLine) {}

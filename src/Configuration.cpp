@@ -110,7 +110,6 @@ namespace S2Plugin
         // STD lib
         {MemoryFieldType::StdVector, "StdVector", "std::vector<T>", "StdVector", 24, false},
         {MemoryFieldType::StdMap, "StdMap", "std::map<K, V>", "StdMap", 16, false},
-        {MemoryFieldType::StdSet, "StdSet", "std::set<T>", "StdSet", 16, false}, // TODO
         {MemoryFieldType::StdString, "StdString", "std::string", "StdString", 32, false},
         {MemoryFieldType::StdWstring, "StdWstring", "std::wstring", "StdWstring", 32, false},
         // Game Main structs
@@ -747,7 +746,6 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
             case MemoryFieldType::SaveGame:
             case MemoryFieldType::StdVector:
             case MemoryFieldType::StdMap:
-            case MemoryFieldType::StdSet:
             case MemoryFieldType::Qword:
             case MemoryFieldType::UnsignedQword:
             case MemoryFieldType::Double:

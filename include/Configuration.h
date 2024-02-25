@@ -1,7 +1,6 @@
 #pragma once
 
-#include "data/EntityList.h"
-#include "data/ParticleEmittersList.h"
+#include "data/IDNameList.h"
 #include <QColor>
 #include <QMetaEnum>
 #include <cstdint>
@@ -48,7 +47,7 @@ namespace S2Plugin
     constexpr uint16_t gsRoleRawValue = Qt::UserRole + 5;
 
     constexpr uint16_t gsRoleFlagIndex = Qt::UserRole + 6;
-    constexpr uint16_t gsRoleRefName = Qt::UserRole + 7;   // ref name for flags and states and vtable
+    constexpr uint16_t gsRoleRefName = Qt::UserRole + 7; // ref name for flags and states and vtable
     constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 8;
     constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 9;
     constexpr uint16_t gsRoleSize = Qt::UserRole + 10;
@@ -110,7 +109,6 @@ namespace S2Plugin
         TextureDBPointer,
         StdVector,
         StdMap,
-        StdSet,
         ConstCharPointer,
         ConstCharPointerPointer,
         StdString,
