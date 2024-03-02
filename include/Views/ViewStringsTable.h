@@ -1,24 +1,19 @@
 #pragma once
 
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include <QLineEdit>
-#include <QSortFilterProxyModel>
-#include <QStandardItemModel>
 #include <QTableView>
-#include <QVBoxLayout>
 #include <QWidget>
-#include <memory>
+#include <cstdint>
 
 namespace S2Plugin
 {
     class SortFilterProxyModelStringsTable;
-    struct ViewToolbar;
-    struct ItemModelStringsTable;
-    struct StyledItemDelegateHTML;
 
-    static const uint8_t gsColStringID = 0;
-    static const uint8_t gsColStringTableOffset = 1;
-    static const uint8_t gsColStringMemoryOffset = 2;
-    static const uint8_t gsColStringValue = 3;
+    constexpr uint8_t gsColStringID = 0;
+    constexpr uint8_t gsColStringTableOffset = 1;
+    constexpr uint8_t gsColStringMemoryOffset = 2;
+    constexpr uint8_t gsColStringValue = 3;
 
     class ViewStringsTable : public QWidget
     {
@@ -35,15 +30,10 @@ namespace S2Plugin
         void reload();
 
       private:
-        ViewToolbar* mToolbar;
-        QVBoxLayout* mMainLayout;
         QLineEdit* mFilterLineEdit;
         QTableView* mMainTableView;
-        QStandardItemModel* mModel;
         SortFilterProxyModelStringsTable* mModelProxy;
-        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
-
-        QStringList mStringList;
+        StyledItemDelegateHTML mHTMLDelegate;
 
         void initializeUI();
     };

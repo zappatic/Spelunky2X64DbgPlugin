@@ -93,7 +93,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	include/QtHelpers/TreeWidgetItemNumeric.h
 	include/QtHelpers/ItemModelVirtualTable.h
 	include/QtHelpers/ItemModelVirtualFunctions.h
-	include/QtHelpers/ItemModelStringsTable.h
+	include/QtHelpers/SortFilterProxyModelStringsTable.h
 	include/QtHelpers/ItemModelStates.h
 	include/QtHelpers/ItemModelGatherVirtualData.h
 	include/QtHelpers/CPPSyntaxHighlighter.h
@@ -147,7 +147,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/QtHelpers/TreeWidgetItemNumeric.cpp
 	src/QtHelpers/ItemModelVirtualTable.cpp
 	src/QtHelpers/ItemModelVirtualFunctions.cpp
-	src/QtHelpers/ItemModelStringsTable.cpp
+	src/QtHelpers/SortFilterProxyModelStringsTable.cpp
 	src/QtHelpers/ItemModelStates.cpp
 	src/QtHelpers/ItemModelGatherVirtualData.cpp
 	src/QtHelpers/CPPSyntaxHighlighter.cpp
