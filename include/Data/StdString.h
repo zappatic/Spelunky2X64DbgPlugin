@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pluginmain.h"
+#include <cstdint>
 #include <memory>
 
 namespace S2Plugin
@@ -36,7 +37,7 @@ namespace S2Plugin
         }
         size_t string_ptr() const
         {
-            if (capacity() > 15)
+            if (capacity() > (16 / sizeof(T)) - 1) // TODO only tested for char type
                 return Script::Memory::ReadQword(offset);
 
             return offset;
@@ -49,7 +50,7 @@ namespace S2Plugin
             buffer.resize(string_lenght);
             if (string_lenght != 0)
             {
-                Script::Memory::Read(string_offset, buffer.data(), (string_lenght + 1) * sizeof(T), nullptr); // +1 to include the 0 character
+                Script::Memory::Read(string_offset, buffer.data(), string_lenght * sizeof(T), nullptr);
             }
             return buffer;
         }

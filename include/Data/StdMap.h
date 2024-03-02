@@ -1,6 +1,8 @@
 #pragma once
 
 #include "pluginmain.h"
+#include <cstdint>
+#include <utility>
 
 namespace S2Plugin
 {
@@ -230,7 +232,7 @@ namespace S2Plugin
             // or if there is a padding added for aliment
             // the issue is, if key or value are a structs, we need to know their alignments, not just their size
 
-            uint8_t alignment = key_alignment > value_alignment ? key_alignment : value_alignment;
+            uint8_t alignment = std::max(key_alignment, value_alignment);
 
             switch (alignment)
             {
@@ -256,6 +258,7 @@ namespace S2Plugin
             {
                 case 0:
                 case 1:
+                    value_offset = offset;
                     break;
                 case 2:
                     value_offset = (offset + 1) & ~1;
