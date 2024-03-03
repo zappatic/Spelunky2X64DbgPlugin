@@ -28,14 +28,11 @@ S2Plugin::IDNameList::IDNameList(const std::string& relFilePath, const std::rege
         std::smatch m;
         if (std::regex_match(line, m, regex))
         {
-            auto id = std::stoi(m[1].str());
+            uint32_t id = std::stoi(m[1].str());
             auto name = m[2].str();
             mEntries[id] = name;
             mNames << QString::fromStdString(name);
-            if (id > mHighestID)
-            {
-                mHighestID = id;
-            }
+            mHighestID = std::max(mHighestID, id);
         }
     }
     fp.close();
@@ -44,12 +41,9 @@ S2Plugin::IDNameList::IDNameList(const std::string& relFilePath, const std::rege
 uint32_t S2Plugin::IDNameList::idForName(const std::string& searchName) const
 {
     for (const auto& [id, name] : mEntries)
-    {
         if (name == searchName)
-        {
             return id;
-        }
-    }
+
     return 0;
 }
 
@@ -60,31 +54,6 @@ std::string S2Plugin::IDNameList::nameForID(uint32_t id) const
         return it->second;
     }
     return "UNKNOWN ID: " + std::to_string(id);
-}
-
-uint32_t S2Plugin::IDNameList::highestID() const noexcept
-{
-    return mHighestID;
-}
-
-QStringList S2Plugin::IDNameList::names() const noexcept
-{
-    return mNames;
-}
-
-bool S2Plugin::IDNameList::isValidID(uint32_t id) const
-{
-    return (mEntries.count(id) > 0);
-}
-
-size_t S2Plugin::IDNameList::count() const noexcept
-{
-    return mEntries.size();
-}
-
-const std::unordered_map<uint32_t, std::string>& S2Plugin::IDNameList::entries() const
-{
-    return mEntries;
 }
 
 static const std::regex regexEntityLine("^([0-9]+): ENT_TYPE_(.*?)$", std::regex_constants::ECMAScript);
