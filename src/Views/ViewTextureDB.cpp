@@ -9,14 +9,16 @@
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
 #include "pluginmain.h"
-#include <QCloseEvent>
+#include <QCheckBox>
+#include <QCompleter>
 #include <QHeaderView>
-#include <QLineEdit>
 #include <QPushButton>
 #include <QTreeWidgetItem>
+#include <QVBoxLayout>
 
-S2Plugin::ViewTextureDB::ViewTextureDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewTextureDB::ViewTextureDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent)
 {
+    mMainTreeView = new TreeViewMemoryFields(toolbar, this);
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
     setWindowTitle(QString("Texture DB (%1 textures)").arg(Spelunky2::get()->get_TextureDB().count()));
@@ -25,21 +27,21 @@ S2Plugin::ViewTextureDB::ViewTextureDB(ViewToolbar* toolbar, size_t index, QWidg
 
 void S2Plugin::ViewTextureDB::initializeUI()
 {
-    mMainLayout = new QVBoxLayout(this);
-    mMainLayout->setMargin(5);
-    setLayout(mMainLayout);
+    auto mainLayout = new QVBoxLayout();
+    mainLayout->setMargin(5);
+    setLayout(mainLayout);
 
     mMainTabWidget = new QTabWidget(this);
     mMainTabWidget->setDocumentMode(false);
-    mMainLayout->addWidget(mMainTabWidget);
+    mainLayout->addWidget(mMainTabWidget);
 
     mTabLookup = new QWidget();  // ownership passed on via addTab
     mTabCompare = new QWidget(); // ovnership passed on via addTab
-    mTabLookup->setLayout(new QVBoxLayout(mTabLookup));
+    mTabLookup->setLayout(new QVBoxLayout());
     mTabLookup->layout()->setMargin(10);
     mTabLookup->setObjectName("lookupwidget");
     mTabLookup->setStyleSheet("QWidget#lookupwidget {border: 1px solid #999;}");
-    mTabCompare->setLayout(new QVBoxLayout(mTabCompare));
+    mTabCompare->setLayout(new QVBoxLayout());
     mTabCompare->layout()->setMargin(10);
     mTabCompare->setObjectName("comparewidget");
     mTabCompare->setStyleSheet("QWidget#comparewidget {border: 1px solid #999;}");
@@ -56,11 +58,11 @@ void S2Plugin::ViewTextureDB::initializeUI()
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewTextureDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mTextureNameCompleter = new QCompleter(Spelunky2::get()->get_TextureDB().namesStringList(), this);
-        mTextureNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-        mTextureNameCompleter->setFilterMode(Qt::MatchContains);
-        QObject::connect(mTextureNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewTextureDB::searchFieldCompleterActivated);
-        mSearchLineEdit->setCompleter(mTextureNameCompleter);
+        auto textureNameCompleter = new QCompleter(Spelunky2::get()->get_TextureDB().namesStringList(), this);
+        textureNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+        textureNameCompleter->setFilterMode(Qt::MatchContains);
+        QObject::connect(textureNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewTextureDB::searchFieldCompleterActivated);
+        mSearchLineEdit->setCompleter(textureNameCompleter);
 
         auto labelButton = new QPushButton("Label", this);
         QObject::connect(labelButton, &QPushButton::clicked, this, &ViewTextureDB::label);
@@ -68,14 +70,12 @@ void S2Plugin::ViewTextureDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
         mMainTreeView->addMemoryFields(Configuration::get()->typeFields(MemoryFieldType::TextureDB), "TextureDB", 0);
 
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::memoryFieldValueUpdated, this, &ViewTextureDB::fieldUpdated);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::expanded, this, &ViewTextureDB::fieldExpanded);
         mTabLookup->layout()->addWidget(mMainTreeView);
-        mMainTreeView->setColumnWidth(gsColValue, 250);
         mMainTreeView->activeColumns.disable(gsColComparisonValue).disable(gsColComparisonValueHex);
         mMainTreeView->updateTableHeader();
     }
@@ -109,15 +109,14 @@ void S2Plugin::ViewTextureDB::initializeUI()
         mCompareTableWidget->setColumnWidth(0, 40);
         mCompareTableWidget->setColumnWidth(1, 325);
         mCompareTableWidget->setColumnWidth(2, 150);
-        mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
-        mCompareTableWidget->setItemDelegate(mHTMLDelegate.get());
+        mCompareTableWidget->setItemDelegate(&mHTMLDelegate);
         QObject::connect(mCompareTableWidget, &QTableWidget::cellClicked, this, &ViewTextureDB::comparisonCellClicked);
 
         mCompareTreeWidget = new QTreeWidget(this);
         mCompareTreeWidget->setAlternatingRowColors(true);
         mCompareTreeWidget->headerItem()->setHidden(true);
         mCompareTreeWidget->setHidden(true);
-        mCompareTreeWidget->setItemDelegate(mHTMLDelegate.get());
+        mCompareTreeWidget->setItemDelegate(&mHTMLDelegate);
         QObject::connect(mCompareTreeWidget, &QTreeWidget::itemClicked, this, &ViewTextureDB::groupedComparisonItemClicked);
 
         mTabCompare->layout()->addWidget(mCompareTableWidget);
@@ -128,6 +127,7 @@ void S2Plugin::ViewTextureDB::initializeUI()
     mSearchLineEdit->setFocus();
     mMainTreeView->setVisible(true);
     mMainTreeView->setColumnWidth(gsColField, 125);
+    mMainTreeView->setColumnWidth(gsColValue, 250);
     mMainTreeView->setColumnWidth(gsColValueHex, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffset, 125);
     mMainTreeView->setColumnWidth(gsColMemoryOffsetDelta, 75);
@@ -175,11 +175,10 @@ void S2Plugin::ViewTextureDB::searchFieldCompleterActivated(const QString& text)
     searchFieldReturnPressed();
 }
 
-void S2Plugin::ViewTextureDB::showID(size_t id)
+void S2Plugin::ViewTextureDB::showID(uint32_t id)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
-    mLookupID = id;
-    auto offset = Spelunky2::get()->get_TextureDB().offsetForID(mLookupID);
+    auto offset = Spelunky2::get()->get_TextureDB().offsetForID(id);
     mMainTreeView->updateTree(offset);
 }
 
@@ -299,6 +298,7 @@ void S2Plugin::ViewTextureDB::comparisonCellClicked(int row, int column)
 {
     if (column == 1)
     {
+        mSearchLineEdit->clear();
         auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
         showID(clickedID);
     }
@@ -308,6 +308,7 @@ void S2Plugin::ViewTextureDB::groupedComparisonItemClicked(QTreeWidgetItem* item
 {
     if (item->childCount() == 0)
     {
+        mSearchLineEdit->clear();
         showID(item->data(0, Qt::UserRole).toUInt());
     }
 }

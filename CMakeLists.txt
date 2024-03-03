@@ -108,7 +108,7 @@ x64dbg_plugin(${PROJECT_NAME}
 	src/Data/EntityDB.cpp
 	src/Data/Entity.cpp
 	src/Data/State.cpp
-	src/Data/TextureDB.cpp
+	src/Data/ParticleDB.cpp
 	src/Data/IDNameList.cpp
 	src/Data/VirtualTableLookup.cpp
 	src/Data/StringsTable.cpp

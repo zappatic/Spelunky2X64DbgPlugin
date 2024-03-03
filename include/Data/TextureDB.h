@@ -14,8 +14,23 @@ namespace S2Plugin
         {
             return (ptr != 0);
         }
-        const std::string& nameForID(uint32_t id) const; // id != index since there is no id 325
-        uintptr_t offsetForID(uint32_t id) const;
+        const std::string& nameForID(uint32_t id) const // id != index since there is no id 325 and the order is different
+        {
+            if (auto it = mTextures.find(id); it != mTextures.end())
+            {
+                return it->second.first;
+            }
+            static std::string unknownName("UNKNOWN TEXTURE NAME");
+            return unknownName;
+        }
+        uintptr_t offsetForID(uint32_t id) const
+        {
+            if (auto it = mTextures.find(id); it != mTextures.end())
+            {
+                return it->second.second;
+            }
+            return 0;
+        }
         const QStringList& namesStringList() const noexcept
         {
             return mTextureNamesStringList;

@@ -1,22 +1,20 @@
 #include "Views/ViewCharacterDB.h"
 #include "Configuration.h"
-#include "Data/CharacterDB.h"
 #include "QtHelpers/DatabaseHelper.h"
-#include "QtHelpers/StyledItemDelegateHTML.h"
 #include "QtHelpers/TableWidgetItemNumeric.h"
 #include "QtHelpers/TreeViewMemoryFields.h"
 #include "QtHelpers/TreeWidgetItemNumeric.h"
 #include "Spelunky2.h"
 #include "Views/ViewToolbar.h"
-#include "pluginmain.h"
-#include <QCloseEvent>
+#include <QCheckBox>
+#include <QCompleter>
 #include <QHeaderView>
-#include <QLineEdit>
 #include <QPushButton>
-#include <QTreeWidgetItem>
+#include <QVBoxLayout>
 
-S2Plugin::ViewCharacterDB::ViewCharacterDB(ViewToolbar* toolbar, size_t index, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewCharacterDB::ViewCharacterDB(ViewToolbar* toolbar, uint8_t index, QWidget* parent) : QWidget(parent)
 {
+    mMainTreeView = new TreeViewMemoryFields(toolbar, this);
     initializeUI();
     setWindowIcon(QIcon(":/icons/caveman.png"));
     setWindowTitle("Character DB");
@@ -25,13 +23,13 @@ S2Plugin::ViewCharacterDB::ViewCharacterDB(ViewToolbar* toolbar, size_t index, Q
 
 void S2Plugin::ViewCharacterDB::initializeUI()
 {
-    mMainLayout = new QVBoxLayout(this);
-    mMainLayout->setMargin(5);
-    setLayout(mMainLayout);
+    auto mainLayout = new QVBoxLayout();
+    mainLayout->setMargin(5);
+    setLayout(mainLayout);
 
     mMainTabWidget = new QTabWidget(this);
     mMainTabWidget->setDocumentMode(false);
-    mMainLayout->addWidget(mMainTabWidget);
+    mainLayout->addWidget(mMainTabWidget);
 
     mTabLookup = new QWidget();
     mTabCompare = new QWidget();
@@ -51,16 +49,16 @@ void S2Plugin::ViewCharacterDB::initializeUI()
     {
         auto topLayout = new QHBoxLayout();
 
-        mSearchLineEdit = new QLineEdit();
+        mSearchLineEdit = new QLineEdit(); // TODO: maybe change into ComboBox since there is only 19 of them?
         mSearchLineEdit->setPlaceholderText("Search id");
         topLayout->addWidget(mSearchLineEdit);
         QObject::connect(mSearchLineEdit, &QLineEdit::returnPressed, this, &ViewCharacterDB::searchFieldReturnPressed);
         mSearchLineEdit->setVisible(false);
-        mCharacterNameCompleter = new QCompleter(Spelunky2::get()->get_CharacterDB().characterNamesStringList(), this);
-        mCharacterNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
-        mCharacterNameCompleter->setFilterMode(Qt::MatchContains);
-        QObject::connect(mCharacterNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewCharacterDB::searchFieldCompleterActivated);
-        mSearchLineEdit->setCompleter(mCharacterNameCompleter);
+        auto characterNameCompleter = new QCompleter(Spelunky2::get()->get_CharacterDB().characterNamesStringList(), this);
+        characterNameCompleter->setCaseSensitivity(Qt::CaseInsensitive);
+        characterNameCompleter->setFilterMode(Qt::MatchContains);
+        QObject::connect(characterNameCompleter, static_cast<void (QCompleter::*)(const QString&)>(&QCompleter::activated), this, &ViewCharacterDB::searchFieldCompleterActivated);
+        mSearchLineEdit->setCompleter(characterNameCompleter);
 
         auto labelButton = new QPushButton("Label", this);
         QObject::connect(labelButton, &QPushButton::clicked, this, &ViewCharacterDB::label);
@@ -68,7 +66,6 @@ void S2Plugin::ViewCharacterDB::initializeUI()
 
         dynamic_cast<QVBoxLayout*>(mTabLookup->layout())->addLayout(topLayout);
 
-        mMainTreeView = new TreeViewMemoryFields(mToolbar, this);
         mMainTreeView->setEnableChangeHighlighting(false);
         mMainTreeView->addMemoryFields(config->typeFields(MemoryFieldType::CharacterDB), "CharacterDB", 0);
         QObject::connect(mMainTreeView, &TreeViewMemoryFields::memoryFieldValueUpdated, this, &ViewCharacterDB::fieldUpdated);
@@ -108,15 +105,14 @@ void S2Plugin::ViewCharacterDB::initializeUI()
         mCompareTableWidget->setColumnWidth(0, 40);
         mCompareTableWidget->setColumnWidth(1, 325);
         mCompareTableWidget->setColumnWidth(2, 150);
-        mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
-        mCompareTableWidget->setItemDelegate(mHTMLDelegate.get());
+        mCompareTableWidget->setItemDelegate(&mHTMLDelegate);
         QObject::connect(mCompareTableWidget, &QTableWidget::cellClicked, this, &ViewCharacterDB::comparisonCellClicked);
 
         mCompareTreeWidget = new QTreeWidget(this);
         mCompareTreeWidget->setAlternatingRowColors(true);
         mCompareTreeWidget->headerItem()->setHidden(true);
         mCompareTreeWidget->setHidden(true);
-        mCompareTreeWidget->setItemDelegate(mHTMLDelegate.get());
+        mCompareTreeWidget->setItemDelegate(&mHTMLDelegate);
         QObject::connect(mCompareTreeWidget, &QTreeWidget::itemClicked, this, &ViewCharacterDB::groupedComparisonItemClicked);
 
         mTabCompare->layout()->addWidget(mCompareTableWidget);
@@ -160,12 +156,14 @@ void S2Plugin::ViewCharacterDB::searchFieldReturnPressed()
     }
     else
     {
-        for (const auto& [cID, cName] : characterDB.characterNames())
+        uint8_t cID = 0;
+        for (const auto& cName : characterDB.characterNamesStringList())
         {
             if (text == cName)
             {
                 showIndex(cID);
             }
+            cID++;
         }
     }
 }
@@ -175,11 +173,10 @@ void S2Plugin::ViewCharacterDB::searchFieldCompleterActivated(const QString& tex
     searchFieldReturnPressed();
 }
 
-void S2Plugin::ViewCharacterDB::showIndex(size_t index)
+void S2Plugin::ViewCharacterDB::showIndex(uint8_t index)
 {
     mMainTabWidget->setCurrentWidget(mTabLookup);
-    mLookupIndex = index;
-    auto offset = Spelunky2::get()->get_CharacterDB().offsetFromIndex(mLookupIndex);
+    auto offset = Spelunky2::get()->get_CharacterDB().offsetFromIndex(index);
     mMainTreeView->updateTree(offset);
 }
 
@@ -237,7 +234,7 @@ void S2Plugin::ViewCharacterDB::populateComparisonTableWidget()
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", x));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        const auto& name = characterDB.characterNames().at(x);
+        const auto& name = characterDB.characterNamesStringList().at(x);
         mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(name)));
 
         auto [caption, value] = DB::valueForField(comboboxData, characterDB.offsetFromIndex(x));
@@ -283,7 +280,7 @@ void S2Plugin::ViewCharacterDB::populateComparisonTreeWidget()
         mCompareTreeWidget->insertTopLevelItem(0, rootItem);
         for (const auto& characterId : characterIDs)
         {
-            const auto& characterName = characterDB.characterNames().at(characterId);
+            const auto& characterName = characterDB.characterNamesStringList().at(characterId);
             auto caption = QString("<font color='blue'><u>%1</u></font>").arg(characterName);
             auto childItem = new QTreeWidgetItem(rootItem, QStringList(caption));
             childItem->setData(0, Qt::UserRole, characterId);
@@ -299,7 +296,8 @@ void S2Plugin::ViewCharacterDB::comparisonCellClicked(int row, int column)
 {
     if (column == 1)
     {
-        auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toULongLong();
+        mSearchLineEdit->clear();
+        auto clickedID = mCompareTableWidget->item(row, 0)->data(Qt::DisplayRole).toUInt();
         showIndex(clickedID);
     }
 }
@@ -308,6 +306,7 @@ void S2Plugin::ViewCharacterDB::groupedComparisonItemClicked(QTreeWidgetItem* it
 {
     if (item->childCount() == 0)
     {
+        mSearchLineEdit->clear();
         showIndex(item->data(0, Qt::UserRole).toUInt());
     }
 }

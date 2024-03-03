@@ -1,30 +1,30 @@
 #pragma once
 
-#include <QCheckBox>
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include <QCloseEvent>
 #include <QComboBox>
-#include <QCompleter>
-#include <QStandardItemModel>
+#include <QLineEdit>
+#include <QModelIndex>
+#include <QSize>
+#include <QString>
+#include <QTabWidget>
 #include <QTableWidget>
-#include <QTreeView>
 #include <QTreeWidget>
-#include <QVBoxLayout>
+#include <QTreeWidgetItem>
 #include <QWidget>
-#include <memory>
-#include <vector>
+#include <cstdint>
 
 namespace S2Plugin
 {
     struct ViewToolbar;
-    struct StyledItemDelegateHTML;
     struct TreeViewMemoryFields;
-    struct MemoryField;
 
     class ViewEntityDB : public QWidget
     {
         Q_OBJECT
       public:
-        ViewEntityDB(ViewToolbar* toolbar, size_t index = 1, QWidget* parent = nullptr);
-        void showIndex(size_t index);
+        ViewEntityDB(ViewToolbar* toolbar, uint32_t id = 1, QWidget* parent = nullptr);
+        void showID(uint32_t id);
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -43,19 +43,15 @@ namespace S2Plugin
         void groupedComparisonItemClicked(QTreeWidgetItem* item, int column);
 
       private:
-        ViewToolbar* mToolbar;
-        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
+        StyledItemDelegateHTML mHTMLDelegate;
 
-        QVBoxLayout* mMainLayout;
         QTabWidget* mMainTabWidget;
         QWidget* mTabLookup;
         QWidget* mTabCompare;
 
         // LOOKUP
-        uintptr_t mEntityDBPtr;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
-        QCompleter* mEntityNameCompleter;
 
         // COMPARE
         QComboBox* mCompareFieldComboBox;

@@ -1,16 +1,13 @@
 #pragma once
 
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <vector>
+#include <cstdint>
 
 namespace S2Plugin
 {
     class EntityDB
     {
       public:
-        uintptr_t offsetFromIndex(uint32_t idx) const; // as of right now id == index
+        uintptr_t offsetForIndex(uint32_t idx) const; // as of right now id == index
         bool isValid() const
         {
             return (ptr != 0);

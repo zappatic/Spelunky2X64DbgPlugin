@@ -2,7 +2,6 @@
 
 #include <QStringList>
 #include <cstdint>
-#include <unordered_map>
 
 namespace S2Plugin
 {
@@ -12,10 +11,6 @@ namespace S2Plugin
         static uint8_t charactersCount() noexcept
         {
             return 20;
-        }
-        const std::unordered_map<uint8_t, QString>& characterNames() const noexcept
-        {
-            return mCharacterNames;
         }
         const QStringList& characterNamesStringList() const noexcept
         {
@@ -33,7 +28,6 @@ namespace S2Plugin
 
       private:
         uintptr_t ptr{0};
-        std::unordered_map<uint8_t, QString> mCharacterNames;
         QStringList mCharacterNamesStringList;
 
         CharacterDB() = default;

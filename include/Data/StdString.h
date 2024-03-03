@@ -6,7 +6,7 @@
 
 namespace S2Plugin
 {
-    // template just in case we want wstring or something, probably basic_string would fit this better
+    // template just in case we want wstring or something, probably basic_string would be a better name
     template <typename T = char>
     struct StdString
     {

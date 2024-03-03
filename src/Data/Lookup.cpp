@@ -1,12 +1,10 @@
 #pragma once
 
-#include "Data/CharacterDB.h"
-#include "Data/StringsTable.h"
-#include "Data/TextureDB.h"
 #include "Spelunky2.h"
 #include "pluginmain.h"
 #include "read_helpers.h"
 #include <QString>
+#include <memory>
 
 uintptr_t S2Plugin::Spelunky2::getAfterBundle(uintptr_t sectionStart, size_t sectionSize)
 {
@@ -145,7 +143,6 @@ const S2Plugin::CharacterDB& S2Plugin::Spelunky2::get_CharacterDB()
         QString characterName = stringsTable.stringForIndex(Script::Memory::ReadDword(offset + 0x14));
 
         mCharacterDB.mCharacterNamesStringList << characterName;
-        mCharacterDB.mCharacterNames.emplace(x, std::move(characterName));
     }
     return mCharacterDB;
 }

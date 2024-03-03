@@ -1,29 +1,30 @@
 #pragma once
 
-#include <QCheckBox>
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include <QCloseEvent>
 #include <QComboBox>
-#include <QCompleter>
-#include <QStandardItemModel>
+#include <QLineEdit>
+#include <QModelIndex>
+#include <QSize>
+#include <QString>
+#include <QTabWidget>
 #include <QTableWidget>
-#include <QTreeView>
 #include <QTreeWidget>
-#include <QVBoxLayout>
+#include <QTreeWidgetItem>
 #include <QWidget>
-#include <memory>
+#include <cstdint>
 
 namespace S2Plugin
 {
     struct ViewToolbar;
-    struct StyledItemDelegateHTML;
     struct TreeViewMemoryFields;
-    struct MemoryField;
 
     class ViewTextureDB : public QWidget
     {
         Q_OBJECT
       public:
         ViewTextureDB(ViewToolbar* toolbar, size_t index = 1, QWidget* parent = nullptr);
-        void showID(size_t id);
+        void showID(uint32_t id);
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -42,19 +43,15 @@ namespace S2Plugin
         void groupedComparisonItemClicked(QTreeWidgetItem* item, int column);
 
       private:
-        ViewToolbar* mToolbar;
-        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
+        StyledItemDelegateHTML mHTMLDelegate;
 
-        QVBoxLayout* mMainLayout;
         QTabWidget* mMainTabWidget;
         QWidget* mTabLookup;
         QWidget* mTabCompare;
 
         // LOOKUP
-        size_t mLookupID;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
-        QCompleter* mTextureNameCompleter;
 
         // COMPARE
         QComboBox* mCompareFieldComboBox;

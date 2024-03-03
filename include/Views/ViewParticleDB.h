@@ -1,29 +1,30 @@
 #pragma once
 
-#include <QCheckBox>
+#include "QtHelpers/StyledItemDelegateHTML.h"
+#include <QCloseEvent>
 #include <QComboBox>
-#include <QCompleter>
-#include <QStandardItemModel>
+#include <QLineEdit>
+#include <QModelIndex>
+#include <QSize>
+#include <QString>
+#include <QTabWidget>
 #include <QTableWidget>
-#include <QTreeView>
 #include <QTreeWidget>
-#include <QVBoxLayout>
+#include <QTreeWidgetItem>
 #include <QWidget>
-#include <memory>
+#include <cstdint>
 
 namespace S2Plugin
 {
     struct ViewToolbar;
-    struct StyledItemDelegateHTML;
     struct TreeViewMemoryFields;
-    struct MemoryField;
 
     class ViewParticleDB : public QWidget
     {
         Q_OBJECT
       public:
-        ViewParticleDB(ViewToolbar* toolbar, size_t index = 1, QWidget* parent = nullptr);
-        void showIndex(size_t index);
+        ViewParticleDB(ViewToolbar* toolbar, uint32_t id = 1, QWidget* parent = nullptr);
+        void showID(uint32_t id);
 
       protected:
         void closeEvent(QCloseEvent* event) override;
@@ -42,26 +43,20 @@ namespace S2Plugin
         void groupedComparisonItemClicked(QTreeWidgetItem* item, int column);
 
       private:
-        ViewToolbar* mToolbar;
-        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
+        StyledItemDelegateHTML mHTMLDelegate;
 
-        QVBoxLayout* mMainLayout;
         QTabWidget* mMainTabWidget;
         QWidget* mTabLookup;
         QWidget* mTabCompare;
 
         // LOOKUP
-        size_t mLookupIndex;
         TreeViewMemoryFields* mMainTreeView;
         QLineEdit* mSearchLineEdit;
-        QCompleter* mParticleNameCompleter;
 
         // COMPARE
         QComboBox* mCompareFieldComboBox;
         QTableWidget* mCompareTableWidget;
         QTreeWidget* mCompareTreeWidget;
-
-        uintptr_t mParticleDBPtr{0};
 
         void initializeUI();
         void updateFieldValues();

@@ -1518,7 +1518,7 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
             {
                 auto& characterDB = Spelunky2::get()->get_CharacterDB();
                 bool isValidCharacter = value.value() < characterDB.charactersCount();
-                auto& characterName = isValidCharacter ? Spelunky2::get()->get_CharacterDB().characterNames().at(value.value()) : "";
+                auto& characterName = isValidCharacter ? Spelunky2::get()->get_CharacterDB().characterNamesStringList().at(value.value()) : "";
                 itemValue->setData(QString("<font color='blue'><u>%1 (%2)</u></font>").arg(value.value()).arg(characterName), Qt::DisplayRole);
             }
 
@@ -1531,7 +1531,7 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
                 {
                     auto& characterDB = Spelunky2::get()->get_CharacterDB();
                     bool isValidCharacter = comparisonValue.value() < characterDB.charactersCount();
-                    auto& characterName = isValidCharacter ? Spelunky2::get()->get_CharacterDB().characterNames().at(comparisonValue.value()) : "";
+                    auto& characterName = isValidCharacter ? Spelunky2::get()->get_CharacterDB().characterNamesStringList().at(comparisonValue.value()) : "";
                     itemComparisonValue->setData(QString("<font color='blue'><u>%1 (%2)</u></font>").arg(comparisonValue.value()).arg(characterName), Qt::DisplayRole);
                 }
 
@@ -2095,7 +2095,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto view = mToolbar->showEntityDB();
                         if (view != nullptr)
                         {
-                            view->showIndex(id);
+                            view->showID(id);
                         }
                     }
                     break;
@@ -2134,7 +2134,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto view = mToolbar->showParticleDB();
                         if (view != nullptr)
                         {
-                            view->showIndex(id.toUInt());
+                            view->showID(id.toUInt());
                         }
                     }
                     break;
@@ -2148,7 +2148,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto view = mToolbar->showEntityDB();
                         if (view != nullptr)
                         {
-                            view->showIndex(id); // TODO: use pointer, not ID
+                            view->showID(id); // TODO: use pointer, not ID
                         }
                     }
                     break;
@@ -2220,7 +2220,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                         auto view = mToolbar->showParticleDB();
                         if (view != nullptr)
                         {
-                            view->showIndex(id);
+                            view->showID(id);
                         }
                     }
                     break;
