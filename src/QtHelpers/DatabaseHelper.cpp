@@ -49,7 +49,7 @@ size_t S2Plugin::DB::populateComparisonCombobox(QComboBox* CompareFieldComboBox,
             case MemoryFieldType::DefaultStructType:
             {
                 offset = populateComparisonCombobox(CompareFieldComboBox, Configuration::get()->typeFieldsOfDefaultStruct(field.jsonName), offset, prefix + field.name + ".");
-                break;
+                continue;
             }
             default:
             {
@@ -67,7 +67,7 @@ size_t S2Plugin::DB::populateComparisonCombobox(QComboBox* CompareFieldComboBox,
 
 std::pair<QString, QVariant> S2Plugin::DB::valueForField(const QVariant& data, uintptr_t addr)
 {
-    ComparisonField compData = data.value<ComparisonField>();
+    ComparisonField compData = qvariant_cast<ComparisonField>(data);
 
     auto offset = addr + compData.offset;
     switch (compData.type)
@@ -98,13 +98,13 @@ std::pair<QString, QVariant> S2Plugin::DB::valueForField(const QVariant& data, u
             uint16_t value = Script::Memory::ReadWord(offset);
             return std::make_pair(QString::asprintf("%u", value), QVariant::fromValue(value));
         }
+        case MemoryFieldType::TextureDBID:
         case MemoryFieldType::Dword:
         case MemoryFieldType::State32:
         {
             int32_t value = Script::Memory::ReadDword(offset);
             return std::make_pair(QString::asprintf("%ld", value), QVariant::fromValue(value));
         }
-        case MemoryFieldType::TextureDBID:
         case MemoryFieldType::ParticleDBID:
         case MemoryFieldType::EntityDBID:
         case MemoryFieldType::StringsTableID:

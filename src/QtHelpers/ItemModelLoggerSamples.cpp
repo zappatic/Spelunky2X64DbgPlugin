@@ -47,16 +47,16 @@ QVariant S2Plugin::ItemModelLoggerSamples::data(const QModelIndex& index, int ro
                     return std::any_cast<uint16_t>(samples.at(index.row()));
                 }
                 case MemoryFieldType::Dword:
+                case MemoryFieldType::TextureDBID:
+                case MemoryFieldType::State32:
+                case MemoryFieldType::EntityUID:
                 {
                     return std::any_cast<int32_t>(samples.at(index.row()));
                 }
                 case MemoryFieldType::UnsignedDword:
                 case MemoryFieldType::Flags32:
-                case MemoryFieldType::State32:
                 case MemoryFieldType::EntityDBID:
-                case MemoryFieldType::EntityUID:
                 case MemoryFieldType::ParticleDBID:
-                case MemoryFieldType::TextureDBID:
                 case MemoryFieldType::StringsTableID:
                 {
                     return std::any_cast<uint32_t>(samples.at(index.row()));

@@ -3,8 +3,6 @@
 #include "QtHelpers/ItemModelLoggerFields.h"
 #include "pluginmain.h"
 
-S2Plugin::Logger::Logger(QObject* parent) : QObject(parent) {}
-
 void S2Plugin::Logger::addField(const LoggerField& field)
 {
     if (mTableModel != nullptr)
@@ -27,26 +25,6 @@ void S2Plugin::Logger::removeFieldAt(size_t fieldIndex)
         mSamples.clear();
         emit fieldsChanged();
     }
-}
-
-void S2Plugin::Logger::updateFieldColor(size_t fieldIndex, const QColor& newColor)
-{
-    mFields.at(fieldIndex).color = newColor;
-}
-
-const S2Plugin::LoggerField& S2Plugin::Logger::fieldAt(size_t fieldIndex) const
-{
-    return mFields.at(fieldIndex);
-}
-
-void S2Plugin::Logger::setTableModel(ItemModelLoggerFields* tableModel)
-{
-    mTableModel = tableModel;
-}
-
-size_t S2Plugin::Logger::fieldCount() const noexcept
-{
-    return mFields.size();
 }
 
 void S2Plugin::Logger::start(size_t samplePeriod, size_t duration)
@@ -112,6 +90,9 @@ void S2Plugin::Logger::sample()
                 break;
             }
             case MemoryFieldType::Dword:
+            case MemoryFieldType::State32:
+            case MemoryFieldType::EntityUID:
+            case MemoryFieldType::TextureDBID:
             {
                 int32_t value = Script::Memory::ReadDword(field.memoryOffset);
                 mSamples[field.uuid].emplace_back(value);
@@ -119,11 +100,8 @@ void S2Plugin::Logger::sample()
             }
             case MemoryFieldType::UnsignedDword:
             case MemoryFieldType::Flags32:
-            case MemoryFieldType::State32:
             case MemoryFieldType::EntityDBID:
-            case MemoryFieldType::EntityUID:
             case MemoryFieldType::ParticleDBID:
-            case MemoryFieldType::TextureDBID:
             case MemoryFieldType::StringsTableID:
             {
                 uint32_t value = Script::Memory::ReadDword(field.memoryOffset);
@@ -272,18 +250,4 @@ std::pair<int64_t, int64_t> S2Plugin::Logger::sampleBounds(const LoggerField& fi
         }
     }
     return std::make_pair(lowest, highest);
-}
-
-const std::vector<std::any>& S2Plugin::Logger::samplesForField(const std::string& fieldUUID) const
-{
-    return mSamples.at(fieldUUID);
-}
-
-size_t S2Plugin::Logger::sampleCount() const noexcept
-{
-    for (const auto& [uuid, samples] : mSamples)
-    {
-        return samples.size();
-    }
-    return 0;
 }

@@ -70,17 +70,17 @@ void S2Plugin::WidgetSamplesPlot::paintEvent(QPaintEvent* event)
                     break;
                 }
                 case MemoryFieldType::Dword:
+                case MemoryFieldType::TextureDBID:
+                case MemoryFieldType::EntityUID:
+                case MemoryFieldType::State32:
                 {
                     mappedY = ((std::any_cast<int32_t>(sample) - lowerBound) / (float)(upperBound - lowerBound)) * drawHeight;
                     break;
                 }
                 case MemoryFieldType::UnsignedDword:
                 case MemoryFieldType::Flags32:
-                case MemoryFieldType::State32:
                 case MemoryFieldType::EntityDBID:
-                case MemoryFieldType::EntityUID:
                 case MemoryFieldType::ParticleDBID:
-                case MemoryFieldType::TextureDBID:
                 case MemoryFieldType::StringsTableID:
                 {
                     mappedY = ((std::any_cast<uint32_t>(sample) - lowerBound) / (float)(upperBound - lowerBound)) * drawHeight;
@@ -182,17 +182,17 @@ void S2Plugin::WidgetSamplesPlot::paintEvent(QPaintEvent* event)
                         break;
                     }
                     case MemoryFieldType::Dword:
+                    case MemoryFieldType::TextureDBID:
+                    case MemoryFieldType::EntityUID:
+                    case MemoryFieldType::State32:
                     {
                         caption = QString("%1 (%2)").arg(std::any_cast<int32_t>(sample)).arg(QString::fromStdString(field.name));
                         break;
                     }
                     case MemoryFieldType::UnsignedDword:
                     case MemoryFieldType::Flags32:
-                    case MemoryFieldType::State32:
                     case MemoryFieldType::EntityDBID:
-                    case MemoryFieldType::EntityUID:
                     case MemoryFieldType::ParticleDBID:
-                    case MemoryFieldType::TextureDBID:
                     case MemoryFieldType::StringsTableID:
                     {
                         caption = QString("%1 (%2)").arg(std::any_cast<uint32_t>(sample)).arg(QString::fromStdString(field.name));

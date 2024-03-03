@@ -1,9 +1,4 @@
 #include "Data/VirtualTableLookup.h"
-#include "Configuration.h"
-#include "Spelunky2.h"
-#include "pluginmain.h"
-#include <QString>
-#include <string>
 
 std::unordered_set<uint32_t> S2Plugin::VirtualTableLookup::tableOffsetForFunctionAddress(size_t functionAddress) const
 {

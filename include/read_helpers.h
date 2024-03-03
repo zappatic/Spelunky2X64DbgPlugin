@@ -57,6 +57,7 @@ namespace S2Plugin
     template <typename T>
     T Read(uintptr_t addr)
     {
+        // did so much for it to work, and the source for each of the functions is just using the Script::Memory::Read xd
         return _ReadMem<T, sizeof(T)>()(addr);
     }
 
@@ -65,7 +66,7 @@ namespace S2Plugin
     {
         if (addr == 0)
             return {};
-        // reads thru the characters twice but avoids static buffers
+        // reads thru the characters twice but avoids static buffers or resizing string by adding characters one by one
         constexpr auto char_size = sizeof(T);
 
         size_t size = 0;

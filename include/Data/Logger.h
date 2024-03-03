@@ -1,9 +1,9 @@
 #pragma once
 
 #include <QColor>
-#include <QString>
 #include <QTimer>
 #include <any>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -27,19 +27,40 @@ namespace S2Plugin
     {
         Q_OBJECT
       public:
-        explicit Logger(QObject* parent = nullptr);
+        explicit Logger(QObject* parent = nullptr) : QObject(parent){};
+        void setTableModel(ItemModelLoggerFields* tableModel)
+        {
+            mTableModel = tableModel;
+        }
 
-        void setTableModel(ItemModelLoggerFields* tableModel);
-
-        const LoggerField& fieldAt(size_t fieldIndex) const;
-        size_t fieldCount() const noexcept;
+        const LoggerField& fieldAt(size_t fieldIndex) const
+        {
+            return mFields.at(fieldIndex);
+        }
+        size_t fieldCount() const noexcept
+        {
+            return mFields.size();
+        }
 
         void addField(const LoggerField& field);
         void removeFieldAt(size_t fieldIndex);
-        void updateFieldColor(size_t fieldIndex, const QColor& newColor);
+        void updateFieldColor(size_t fieldIndex, const QColor& newColor)
+        {
+            mFields.at(fieldIndex).color = newColor;
+        }
 
-        const std::vector<std::any>& samplesForField(const std::string& fieldUUID) const;
-        size_t sampleCount() const noexcept;
+        const std::vector<std::any>& samplesForField(const std::string& fieldUUID) const
+        {
+            return mSamples.at(fieldUUID);
+        }
+        size_t sampleCount() const noexcept
+        {
+            for (const auto& [uuid, samples] : mSamples)
+            {
+                return samples.size();
+            }
+            return 0;
+        }
         std::pair<int64_t, int64_t> sampleBounds(const LoggerField& field) const;
 
         void start(size_t samplePeriod, size_t duration);

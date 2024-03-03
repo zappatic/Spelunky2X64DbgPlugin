@@ -81,6 +81,8 @@ void S2Plugin::ViewStringsTable::reload()
 
         parrent->appendRow(QList<QStandardItem*>() << fieldID << fieldTableOfset << fieldMemoryOffset << fieldValue);
     }
+    // [Known Issue]: Because we use the same model for potentially multiple StringsTable windows
+    // the size will only be updated for this window when using "Reload" button
     mMainTableView->setColumnWidth(gsColStringID, 50);
     mMainTableView->setColumnWidth(gsColStringTableOffset, 130);
     mMainTableView->setColumnWidth(gsColStringMemoryOffset, 130);
