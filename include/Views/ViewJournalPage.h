@@ -13,9 +13,9 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct TreeViewMemoryFields;
-    struct JournalPage;
+    class ViewToolbar;
+    class TreeViewMemoryFields;
+    class JournalPage;
 
     class ViewJournalPage : public QWidget
     {

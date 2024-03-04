@@ -1,10 +1,6 @@
 #include "QtHelpers/ItemModelGatherVirtualData.h"
 #include "Configuration.h"
-#include "Data/EntityDB.h"
-#include "Data/State.h"
-#include "Data/VirtualTableLookup.h"
 #include "Spelunky2.h"
-#include "Views/ViewToolbar.h"
 #include "pluginmain.h"
 #include <QDir>
 #include <QFile>
@@ -25,7 +21,7 @@ enum VIRT_FUNC : uint32_t
     MOVABLE_DAMAGE = 48,
 };
 
-S2Plugin::ItemModelGatherVirtualData::ItemModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent) : QAbstractItemModel(parent), mToolbar(toolbar)
+S2Plugin::ItemModelGatherVirtualData::ItemModelGatherVirtualData(QObject* parent) : QAbstractItemModel(parent)
 {
     parseJSON();
 }
@@ -232,7 +228,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     for (const auto& logicName : logics)
     {
         auto logicAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(firstLogicPtr + counter));
-        auto tableOffset = 0;
+        size_t tableOffset = 0;
         if (logicAddress != 0)
         {
             tableOffset = (logicAddress - vtl.tableStartAddress()) / sizeof(size_t);
@@ -274,7 +270,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     {
         auto offset = config->offsetForField(config->typeFields(MemoryFieldType::GameManager), screenName, spel2->get_GameManagerPtr());
         auto screenAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(offset));
-        auto tableOffset = 0;
+        size_t tableOffset = 0;
         if (screenAddress != 0)
         {
             tableOffset = (screenAddress - vtl.tableStartAddress()) / sizeof(size_t);
@@ -327,7 +323,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     for (const auto& screenName : screens_state)
     {
         auto screenAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(config->offsetForField(config->typeFields(MemoryFieldType::State), screenName, spel2->get_StatePtr())));
-        auto tableOffset = 0;
+        size_t tableOffset = 0;
         if (screenAddress != 0)
         {
             tableOffset = (screenAddress - vtl.tableStartAddress()) / sizeof(size_t);
@@ -366,7 +362,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherExtraObjects()
     for (const auto& questName : quests)
     {
         auto questAddress = Script::Memory::ReadQword(Script::Memory::ReadQword(config->offsetForField(config->typeFields(MemoryFieldType::State), "quests." + questName, spel2->get_StatePtr())));
-        auto tableOffset = 0;
+        size_t tableOffset = 0;
         if (questAddress != 0)
         {
             tableOffset = (questAddress - vtl.tableStartAddress()) / sizeof(size_t);
@@ -616,7 +612,7 @@ void S2Plugin::ItemModelGatherVirtualData::gatherAvailableVirtuals()
     endResetModel();
 }
 
-S2Plugin::SortFilterProxyModelGatherVirtualData::SortFilterProxyModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent) : QSortFilterProxyModel(parent), mToolbar(toolbar) {}
+S2Plugin::SortFilterProxyModelGatherVirtualData::SortFilterProxyModelGatherVirtualData(QObject* parent) : QSortFilterProxyModel(parent) {}
 
 bool S2Plugin::SortFilterProxyModelGatherVirtualData::filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const
 {

@@ -15,12 +15,11 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct Entity;
-    struct TreeViewMemoryFields;
-    struct WidgetMemoryView;
-    struct CPPSyntaxHighlighter;
-    struct WidgetSpelunkyLevel;
+    class ViewToolbar;
+    class TreeViewMemoryFields;
+    class WidgetMemoryView;
+    class CPPSyntaxHighlighter;
+    class WidgetSpelunkyLevel;
 
     class ViewEntity : public QWidget
     {

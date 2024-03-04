@@ -18,17 +18,16 @@ bool S2Plugin::SortFilterProxyModelStringsTable::filterAcceptsRow(int sourceRow,
     }
 
     bool isNumeric = false;
-    auto enteredID = mFilterString.toUInt(&isNumeric);
+    auto enteredID = mFilterString.toInt(&isNumeric);
     if (isNumeric)
     {
         return enteredID == sourceRow;
     }
     else
     {
-        auto& str = model->data(model->index(sourceRow, gsColStringValue), Qt::DisplayRole).toString();
+        auto str = model->data(model->index(sourceRow, gsColStringValue), Qt::DisplayRole).toString();
         return str.contains(mFilterString, Qt::CaseInsensitive);
     }
-    return false;
 }
 
 void S2Plugin::SortFilterProxyModelStringsTable::setFilterString(const QString& f)

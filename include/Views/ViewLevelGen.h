@@ -13,9 +13,9 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct TreeViewMemoryFields;
-    struct WidgetSpelunkyRooms;
+    class ViewToolbar;
+    class TreeViewMemoryFields;
+    class WidgetSpelunkyRooms;
 
     class ViewLevelGen : public QWidget
     {

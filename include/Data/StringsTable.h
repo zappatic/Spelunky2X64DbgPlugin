@@ -35,6 +35,6 @@ namespace S2Plugin
         size_t size{0};
         // Use the model as cache
         QStandardItemModel cache;
-        friend class Spelunky2;
+        friend struct Spelunky2;
     };
 } // namespace S2Plugin

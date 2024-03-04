@@ -1,8 +1,8 @@
 #include "Data/VirtualTableLookup.h"
 
-std::unordered_set<uint32_t> S2Plugin::VirtualTableLookup::tableOffsetForFunctionAddress(size_t functionAddress) const
+std::unordered_set<size_t> S2Plugin::VirtualTableLookup::tableOffsetForFunctionAddress(size_t functionAddress) const
 {
-    std::unordered_set<uint32_t> offsets;
+    std::unordered_set<size_t> offsets;
     for (const auto& [tableOffset, tableEntry] : mOffsetToTableEntries)
     {
         if (tableEntry.value == functionAddress)

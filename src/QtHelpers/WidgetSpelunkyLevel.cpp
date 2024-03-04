@@ -34,7 +34,7 @@ void S2Plugin::WidgetSpelunkyLevel::paintEvent(QPaintEvent* event)
         auto entityUID = Script::Memory::ReadDword(entity + 56);
         auto entityType = Script::Memory::ReadDword(entityDB + 20);
         auto entityMask = Script::Memory::ReadDword(entityDB + 24);
-        auto entityOverlay = Script::Memory::ReadQword(entity + 16);
+        // auto entityOverlay = Script::Memory::ReadQword(entity + 16);
 
         auto foundInIDs = (mEntityIDsToPaint.count(entityType) == 1);
         auto foundInUIDs = (mEntityUIDsToPaint.count(entityUID) == 1);

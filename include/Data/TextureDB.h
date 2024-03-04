@@ -58,6 +58,6 @@ namespace S2Plugin
         TextureDB(const TextureDB&) = delete;
         TextureDB& operator=(const TextureDB&) = delete;
 
-        friend class Spelunky2;
+        friend struct Spelunky2;
     };
 } // namespace S2Plugin

@@ -91,7 +91,7 @@ QVariant S2Plugin::ItemModelVirtualTable::headerData(int section, Qt::Orientatio
     return QVariant();
 }
 
-void S2Plugin::ItemModelVirtualTable::detectEntities(ViewToolbar* toolbar)
+void S2Plugin::ItemModelVirtualTable::detectEntities()
 {
     auto processEntities = [&](size_t layerEntities, uint32_t count)
     {
@@ -102,7 +102,7 @@ void S2Plugin::ItemModelVirtualTable::detectEntities(ViewToolbar* toolbar)
             auto entity = Script::Memory::ReadQword(entityPtr);
             auto entityVTableOffset = Script::Memory::ReadQword(entity);
 
-            auto entityUid = Script::Memory::ReadDword(entity + 56);
+            // auto entityUid = Script::Memory::ReadDword(entity + 56);
             auto entityName = Configuration::get()->getEntityName(entity);
             Spelunky2::get()->get_VirtualTableLookup().setSymbolNameForOffsetAddress(entityVTableOffset, entityName);
         }

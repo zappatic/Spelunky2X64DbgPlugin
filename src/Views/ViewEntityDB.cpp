@@ -230,7 +230,7 @@ void S2Plugin::ViewEntityDB::populateComparisonTableWidget()
     auto& entityList = Configuration::get()->entityList();
 
     size_t row = 0;
-    for (auto x = 1; x <= entityList.highestID(); ++x)
+    for (uint x = 1; x <= entityList.highestID(); ++x)
     {
         if (!entityList.isValidID(x))
         {

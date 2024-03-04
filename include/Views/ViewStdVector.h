@@ -9,9 +9,8 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct MemoryField;
-    struct TreeViewMemoryFields;
+    class ViewToolbar;
+    class TreeViewMemoryFields;
 
     class ViewStdVector : public QWidget
     {

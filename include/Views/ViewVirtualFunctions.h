@@ -1,5 +1,6 @@
 #pragma once
 
+#include "QtHelpers/StyledItemDelegateHTML.h"
 #include <QLineEdit>
 #include <QTableView>
 #include <QVBoxLayout>
@@ -7,10 +8,9 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct StyledItemDelegateHTML;
-    struct ItemModelVirtualFunctions;
-    struct SortFilterProxyModelVirtualFunctions;
+    class ViewToolbar;
+    class ItemModelVirtualFunctions;
+    class SortFilterProxyModelVirtualFunctions;
 
     class ViewVirtualFunctions : public QWidget
     {
@@ -37,7 +37,7 @@ namespace S2Plugin
         QLineEdit* mJumpToLineEdit;
 
         QTableView* mFunctionsTable;
-        std::unique_ptr<StyledItemDelegateHTML> mHTMLDelegate;
+        StyledItemDelegateHTML mHTMLDelegate;
         std::unique_ptr<ItemModelVirtualFunctions> mModel;
         std::unique_ptr<SortFilterProxyModelVirtualFunctions> mSortFilterProxy;
 

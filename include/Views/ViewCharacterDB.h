@@ -16,8 +16,8 @@
 
 namespace S2Plugin
 {
-    struct TreeViewMemoryFields;
-    struct ViewToolbar;
+    class TreeViewMemoryFields;
+    class ViewToolbar;
 
     class ViewCharacterDB : public QWidget
     {

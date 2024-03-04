@@ -8,8 +8,8 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct StyledItemDelegateHTML;
+    class ViewToolbar;
+    class StyledItemDelegateHTML;
 
     class ViewThreads : public QWidget
     {

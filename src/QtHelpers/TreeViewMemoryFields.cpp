@@ -579,13 +579,13 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
     {
         std::stringstream ss;
         uint8_t counter = 0;
-        for (int x = size - 1; x >= 0; --x)
+        for (uint8_t x = size - 1;; --x)
         {
             if (counter % 4 == 0)
             {
                 ss << (x + 1) << ": ";
             }
-            if ((value & (1 << x)) == (1 << x))
+            if ((value & (1u << x)) == (1u << x))
             {
                 ss << "<font color='green'>Y</font> ";
             }
@@ -594,6 +594,8 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
                 ss << "<font color='red'>N</font> ";
             }
             counter++;
+            if (x == 0)
+                break;
         }
         return ss;
     };
@@ -924,7 +926,7 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
             };
 
             auto flagIndex = itemField->data(gsRoleFlagIndex).toUInt();
-            auto mask = (1 << (flagIndex - 1));
+            uint mask = (1 << (flagIndex - 1));
             auto flagRef = qvariant_cast<std::string>(itemField->parent()->data(gsRoleRefName));
             auto flagName = Configuration::get()->flagTitle(flagRef, flagIndex);
 
@@ -2365,8 +2367,8 @@ void S2Plugin::TreeViewMemoryFields::dragMoveEvent(QDragMoveEvent* event)
 
 void S2Plugin::TreeViewMemoryFields::dropEvent(QDropEvent* event)
 {
-    auto data = event->mimeData()->data("spelunky/entityoffset");
-    emit entityOffsetDropped(data.toULongLong());
+    auto dropData = event->mimeData()->data("spelunky/entityoffset");
+    emit entityOffsetDropped(dropData.toULongLong());
     event->acceptProposedAction();
 }
 

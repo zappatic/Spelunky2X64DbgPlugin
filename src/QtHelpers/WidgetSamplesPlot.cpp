@@ -35,8 +35,8 @@ void S2Plugin::WidgetSamplesPlot::paintEvent(QPaintEvent* event)
 
         auto [lowerBound, upperBound] = mLogger->sampleBounds(field);
         const auto& samples = mLogger->samplesForField(field.uuid);
-        size_t x = 0;
-        uint16_t mappedY;
+        int x = 0;
+        uint16_t mappedY = 0;
         uint16_t prevX = 0, prevY = 0;
         bool first = true;
         for (const auto& sample : samples)
@@ -129,8 +129,8 @@ void S2Plugin::WidgetSamplesPlot::paintEvent(QPaintEvent* event)
         painter.setPen(Qt::cyan);
         painter.drawLine(mCurrentMousePos.x(), 0, mCurrentMousePos.x(), paintBounds.height());
 
-        int64_t sampleIndex = mCurrentMousePos.x() - gsPlotMargin;
-        if (sampleIndex >= 0 && sampleIndex < mLogger->sampleCount())
+        int64_t sampleIndex = static_cast<int64_t>(mCurrentMousePos.x()) - gsPlotMargin;
+        if (sampleIndex >= 0 && sampleIndex < static_cast<int64_t>(mLogger->sampleCount()))
         {
             auto scrollArea = qobject_cast<QScrollArea*>(parent()->parent());
             auto drawOnLeftSide = (scrollArea->mapFromGlobal(QCursor::pos()).x() > (scrollArea->width() / 2));

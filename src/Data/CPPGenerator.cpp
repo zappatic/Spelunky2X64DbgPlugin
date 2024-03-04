@@ -46,7 +46,7 @@ void S2Plugin::CPPGenerator::generate(const std::string& typeName, CPPSyntaxHigh
     QString qClassName = QString("\\b" + QRegularExpression::escape(QString::fromStdString(className)) + "\\b");
     highlighter->addRule(qClassName, HighlightColor::Type);
 
-    auto skipCounter = 1;
+    // auto skipCounter = 1;
     mGeneratedTypes.insert(typeName);
     mSS << "class " << className;
     if (!parentClassName.empty())

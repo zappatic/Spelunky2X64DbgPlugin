@@ -33,13 +33,13 @@ void S2Plugin::WidgetSpelunkyRooms::paintEvent(QPaintEvent* event)
     QPainter painter(this);
     painter.setRenderHint(QPainter::HighQualityAntialiasing, true);
     painter.setFont(mFont);
-
-    auto rect = QRectF(QPointF(0, 0), sizeHint());
-    rect.adjust(0, 0, -0.5, -0.5);
-    painter.setBrush(Qt::white);
-    painter.setPen(QPen(Qt::darkGray, 1));
-    painter.drawRect(rect);
-
+    {
+        auto rect = QRectF(QPointF(0, 0), sizeHint());
+        rect.adjust(0, 0, -0.5, -0.5);
+        painter.setBrush(Qt::white);
+        painter.setPen(QPen(Qt::darkGray, 1));
+        painter.drawRect(rect);
+    }
     mToolTipRects.clear();
     painter.setBrush(Qt::black);
     uint32_t x = gsMarginHor;
@@ -53,7 +53,6 @@ void S2Plugin::WidgetSpelunkyRooms::paintEvent(QPaintEvent* event)
         auto buffer = std::array<uint8_t, gsBufferSize>();
         Script::Memory::Read(mOffset, buffer.data(), bufferSize, nullptr);
 
-        uint32_t index = 0;
         for (auto counter = 0; counter < bufferSize; ++counter)
         {
             if (mIsMetaData)
@@ -62,8 +61,7 @@ void S2Plugin::WidgetSpelunkyRooms::paintEvent(QPaintEvent* event)
                 {
                     painter.setPen(QPen(Qt::white, 1));
                     painter.setBrush(Qt::black);
-                    auto rect = QRect(x, y - mTextAdvance.height() + 5, mTextAdvance.width(), mTextAdvance.height() - 2);
-                    painter.drawRect(rect);
+                    painter.drawRect(QRect(x, y - mTextAdvance.height() + 5, mTextAdvance.width(), mTextAdvance.height() - 2));
                 }
                 else
                 {

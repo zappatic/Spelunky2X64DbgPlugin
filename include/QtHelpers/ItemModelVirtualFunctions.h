@@ -7,7 +7,7 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
+    class ViewToolbar;
 
     static const uint8_t gsColFunctionIndex = 0;
     static const uint8_t gsColFunctionTableAddress = 1;

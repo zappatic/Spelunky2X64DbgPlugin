@@ -17,13 +17,13 @@
 #include <QPushButton>
 #include <fstream>
 
-S2Plugin::ViewVirtualTable::ViewVirtualTable(ViewToolbar* toolbar, QWidget* parent) : QWidget(parent), mToolbar(toolbar)
+S2Plugin::ViewVirtualTable::ViewVirtualTable(QWidget* parent) : QWidget(parent)
 {
     mHTMLDelegate = std::make_unique<StyledItemDelegateHTML>();
     mModel = std::make_unique<ItemModelVirtualTable>(this);
     mSortFilterProxy = std::make_unique<SortFilterProxyModelVirtualTable>(this);
-    mGatherModel = std::make_unique<ItemModelGatherVirtualData>(toolbar, this);
-    mGatherSortFilterProxy = std::make_unique<SortFilterProxyModelGatherVirtualData>(toolbar, this);
+    mGatherModel = std::make_unique<ItemModelGatherVirtualData>(this);
+    mGatherSortFilterProxy = std::make_unique<SortFilterProxyModelGatherVirtualData>(this);
     mGatherSortFilterProxy->sort(gsColGatherID);
 
     initializeUI();
@@ -248,7 +248,7 @@ void S2Plugin::ViewVirtualTable::tableEntryClicked(const QModelIndex& index)
 
 void S2Plugin::ViewVirtualTable::detectEntities()
 {
-    mModel->detectEntities(mToolbar);
+    mModel->detectEntities();
 }
 
 void S2Plugin::ViewVirtualTable::showImportedSymbolsCheckBoxStateChanged(int state)

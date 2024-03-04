@@ -5,7 +5,7 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
+    class ViewToolbar;
     struct ToolTipRect;
 
     class WidgetSpelunkyRooms : public QWidget
@@ -29,7 +29,7 @@ namespace S2Plugin
         QString mFieldName;
         ViewToolbar* mToolbar;
         bool mIsMetaData = false;
-        size_t mOffset;
+        size_t mOffset{0};
         QFont mFont;
         QSize mTextAdvance;
         uint8_t mSpaceAdvance;

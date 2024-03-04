@@ -11,11 +11,11 @@
 namespace S2Plugin
 {
     class Logger;
-    struct TableViewLogger;
-    struct ItemModelLoggerFields;
-    struct WidgetSampling;
-    struct ItemModelLoggerSamples;
-    struct WidgetSamplesPlot;
+    class TableViewLogger;
+    class ItemModelLoggerFields;
+    class WidgetSampling;
+    class ItemModelLoggerSamples;
+    class WidgetSamplesPlot;
 
     class ViewLogger : public QWidget
     {

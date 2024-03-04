@@ -16,6 +16,6 @@ namespace S2Plugin
       private:
         uintptr_t ptr{0};
 
-        friend class Spelunky2;
+        friend struct Spelunky2;
     };
 } // namespace S2Plugin

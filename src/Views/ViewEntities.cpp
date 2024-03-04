@@ -103,7 +103,7 @@ void S2Plugin::ViewEntities::refreshEntities()
     mMainTreeView->clear();
 
     bool isUIDlookupSuccess = false;
-    uint enteredUID;
+    uint enteredUID = 0;
     if (!mFilterLineEdit->text().isEmpty())
     {
         enteredUID = mFilterLineEdit->text().toUInt(&isUIDlookupSuccess, 0);
@@ -145,7 +145,7 @@ void S2Plugin::ViewEntities::refreshEntities()
         auto ent_list = Script::Memory::ReadQword(layer0 + 0x8);
         auto uid_list = Script::Memory::ReadQword(layer0 + 0x10);
         bool found_uid = false;
-        for (int idx = 0; idx < layer0Count; ++idx)
+        for (uint idx = 0; idx < layer0Count; ++idx)
         {
             auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
             if (enteredUID == uid)
@@ -159,7 +159,7 @@ void S2Plugin::ViewEntities::refreshEntities()
         uid_list = Script::Memory::ReadQword(layer1 + 0x10);
         if (found_uid == false)
         {
-            for (int idx = 0; idx < layer1Count; ++idx)
+            for (uint idx = 0; idx < layer1Count; ++idx)
             {
                 auto uid = Script::Memory::ReadDword(uid_list + idx * sizeof(uint32_t));
                 if (enteredUID == uid)

@@ -6,7 +6,7 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
+    class ViewToolbar;
 
     static const uint8_t gsColTableOffset = 0;
     static const uint8_t gsColCodeAddress = 1;
@@ -28,7 +28,7 @@ namespace S2Plugin
         QModelIndex parent(const QModelIndex& index) const override;
         QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
-        void detectEntities(ViewToolbar* toolbar);
+        void detectEntities();
 
       private:
         uintptr_t mLayer0Offset;

@@ -651,7 +651,7 @@ const std::vector<std::pair<int64_t, std::string>>& S2Plugin::Configuration::ref
     auto it = mRefs.find(fieldName);
     if (it == mRefs.end())
     {
-        dprintf("unknown ref requested in Configuration::refTitlesOfField() (%s)\n", fieldName);
+        dprintf("unknown ref requested in Configuration::refTitlesOfField() (%s)\n", fieldName.c_str());
         static std::vector<std::pair<int64_t, std::string>> empty;
         return empty;
     }
@@ -762,7 +762,7 @@ int S2Plugin::Configuration::getAlingment(const std::string& typeName) const
     {
         if (itr->second > sizeof(uintptr_t))
         {
-            dprintf("wrong alignment provided (%d) for struct (%s), allowed range: 0-8\n", itr->second, itr->first);
+            dprintf("wrong alignment provided (%d) for struct (%s), allowed range: 0-8\n", itr->second, itr->first.c_str());
             return sizeof(uintptr_t);
         }
         return itr->second;
@@ -796,7 +796,7 @@ size_t S2Plugin::Configuration::getTypeSize(const std::string& typeName, bool en
             }
             return new_size;
         }
-        dprintf("could not determinate size for (%s)\n", typeName);
+        dprintf("could not determinate size for (%s)\n", typeName.c_str());
         return 0;
     }
 

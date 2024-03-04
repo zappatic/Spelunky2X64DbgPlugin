@@ -163,7 +163,7 @@ void S2Plugin::ViewStdMap::refreshMapContents()
         parent_field.name = "obj_" + std::to_string(x);
         parent = mMainTreeView->addMemoryField(parent_field, parent_field.name, 0, 0);
 
-        auto key_StandardItem = mMainTreeView->addMemoryField(key_field, key_field.name, _cur.key_ptr(), 0, parent);
+        mMainTreeView->addMemoryField(key_field, key_field.name, _cur.key_ptr(), 0, parent);
 
         if (mMapValueTypeSize == 0) // StdSet
             continue;

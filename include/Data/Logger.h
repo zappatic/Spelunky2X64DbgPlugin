@@ -11,7 +11,7 @@
 
 namespace S2Plugin
 {
-    struct ItemModelLoggerFields;
+    class ItemModelLoggerFields;
     enum class MemoryFieldType;
 
     struct LoggerField

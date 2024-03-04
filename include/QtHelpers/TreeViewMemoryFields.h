@@ -11,7 +11,7 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
+    class ViewToolbar;
     struct MemoryField;
     class StyledItemDelegateHTML;
 

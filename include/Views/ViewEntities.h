@@ -9,8 +9,8 @@
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-    struct TreeViewMemoryFields;
+    class ViewToolbar;
+    class TreeViewMemoryFields;
 
     enum class MASK : uint32_t
     {

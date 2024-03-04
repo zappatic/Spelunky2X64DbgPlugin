@@ -51,9 +51,9 @@ void S2Plugin::TableViewLogger::dropEvent(QDropEvent* event)
 
     auto fieldsModel = qobject_cast<ItemModelLoggerFields*>(model());
 
-    auto data = event->mimeData()->data("spelunky/memoryfield");
+    auto dropData = event->mimeData()->data("spelunky/memoryfield");
     auto codec = QTextCodec::codecForName("UTF-8");
-    auto str = codec->toUnicode(data);
+    auto str = codec->toUnicode(dropData);
 
     auto j = nlohmann::json::parse(str.toStdString());
 

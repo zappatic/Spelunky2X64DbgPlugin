@@ -7,8 +7,8 @@
 namespace S2Plugin
 {
     enum class MemoryFieldType;
-    struct ItemModelStates;
-    struct SortFilterProxyModelStates;
+    class ItemModelStates;
+    class SortFilterProxyModelStates;
 
     class DialogEditState : public QDialog
     {

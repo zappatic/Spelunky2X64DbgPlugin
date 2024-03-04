@@ -27,8 +27,8 @@ namespace S2Plugin
         void paintEvent(QPaintEvent* event) override;
 
       private:
-        size_t mEntitiesOffset;
-        uint32_t mEntitiesCount;
+        size_t mEntitiesOffset{0};
+        uint32_t mEntitiesCount{0};
 
         std::unordered_map<uint32_t, QColor> mEntityMasksToPaint;
         std::unordered_map<uint32_t, QColor> mEntityIDsToPaint;

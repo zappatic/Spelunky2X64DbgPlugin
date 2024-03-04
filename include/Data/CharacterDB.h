@@ -35,6 +35,6 @@ namespace S2Plugin
         CharacterDB(const CharacterDB&) = delete;
         CharacterDB& operator=(const CharacterDB&) = delete;
 
-        friend class Spelunky2;
+        friend struct Spelunky2;
     };
 } // namespace S2Plugin

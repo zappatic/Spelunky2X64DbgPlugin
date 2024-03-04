@@ -29,7 +29,7 @@ namespace S2Plugin
         {
             return mOffsetToTableEntries.at(tableOffset);
         }
-        std::unordered_set<uint32_t> tableOffsetForFunctionAddress(size_t functionAddress) const;
+        std::unordered_set<size_t> tableOffsetForFunctionAddress(size_t functionAddress) const;
         VirtualTableEntry findPrecedingEntryWithSymbols(size_t tableOffset) const;
         size_t tableAddressForEntry(const VirtualTableEntry& entry) const;
 
@@ -50,7 +50,7 @@ namespace S2Plugin
         }
 
       private:
-        std::unordered_map<uint32_t, VirtualTableEntry> mOffsetToTableEntries;
+        std::unordered_map<size_t, VirtualTableEntry> mOffsetToTableEntries;
         uintptr_t mTableStartAddress{0};
 
         VirtualTableLookup() = default;
@@ -58,6 +58,6 @@ namespace S2Plugin
         VirtualTableLookup(const VirtualTableLookup&) = delete;
         VirtualTableLookup& operator=(const VirtualTableLookup&) = delete;
 
-        friend class Spelunky2;
+        friend struct Spelunky2;
     };
 } // namespace S2Plugin

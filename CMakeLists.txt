@@ -172,6 +172,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE 	Qt5::Core
 # Set the plugin as the startup project
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
+target_compile_options(Spelunky2 PRIVATE /W4)
+
 # Copy the plugin to the x64dbg plugins folder
 
 if(CMAKE_GENERATOR STREQUAL "Ninja") # dodgy solution for VS Community having different path to the binary

@@ -231,15 +231,15 @@ void S2Plugin::ViewTextureDB::populateComparisonTableWidget()
     auto& textureDB = Spelunky2::get()->get_TextureDB();
 
     size_t row = 0;
-    for (auto& [textureID, data] : textureDB.textures())
+    for (auto& [textureID, textureData] : textureDB.textures())
     {
         auto item0 = new QTableWidgetItem(QString::asprintf("%03d", textureID));
         item0->setTextAlignment(Qt::AlignCenter);
         mCompareTableWidget->setItem(row, 0, item0);
-        auto name = QString("Texture %1 (%2)").arg(textureID).arg(QString::fromStdString(data.first));
+        auto name = QString("Texture %1 (%2)").arg(textureID).arg(QString::fromStdString(textureData.first));
         mCompareTableWidget->setItem(row, 1, new QTableWidgetItem(QString("<font color='blue'><u>%1</u></font>").arg(name)));
 
-        auto [caption, value] = DB::valueForField(comboboxData, data.second);
+        auto [caption, value] = DB::valueForField(comboboxData, textureData.second);
         auto item = new TableWidgetItemNumeric(caption);
         item->setData(Qt::UserRole, value);
         mCompareTableWidget->setItem(row, 2, item);
@@ -259,9 +259,9 @@ void S2Plugin::ViewTextureDB::populateComparisonTreeWidget()
 
     std::unordered_map<std::string, QVariant> rootValues;
     std::unordered_map<std::string, std::unordered_set<uint32_t>> groupedValues; // valueString -> set<texture id's>
-    for (auto& [textureID, data] : textureDB.textures())
+    for (auto& [textureID, textureData] : textureDB.textures())
     {
-        auto [caption, value] = DB::valueForField(comboboxData, data.second);
+        auto [caption, value] = DB::valueForField(comboboxData, textureData.second);
         auto captionStr = caption.toStdString();
         rootValues[captionStr] = value;
 

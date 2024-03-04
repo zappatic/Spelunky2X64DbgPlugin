@@ -2,11 +2,11 @@
 
 #include <QAbstractItemModel>
 #include <QSortFilterProxyModel>
+#include <cstdint>
+#include <string>
 
 namespace S2Plugin
 {
-    struct ViewToolbar;
-
     static const uint8_t gsColGatherID = 0;
     static const uint8_t gsColGatherName = 1;
     static const uint8_t gsColGatherVirtualTableOffset = 2;
@@ -37,7 +37,7 @@ namespace S2Plugin
         Q_OBJECT
 
       public:
-        ItemModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent = nullptr);
+        ItemModelGatherVirtualData(QObject* parent = nullptr);
 
         Qt::ItemFlags flags(const QModelIndex& index) const override;
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -57,7 +57,6 @@ namespace S2Plugin
         bool isEntryCompleted(size_t index) const;
 
       private:
-        ViewToolbar* mToolbar;
         std::vector<GatheredDataEntry> mEntries;
 
         void parseJSON();
@@ -68,13 +67,12 @@ namespace S2Plugin
         Q_OBJECT
 
       public:
-        SortFilterProxyModelGatherVirtualData(ViewToolbar* toolbar, QObject* parent = nullptr);
+        SortFilterProxyModelGatherVirtualData(QObject* parent = nullptr);
 
         bool filterAcceptsRow(int sourceRow, const QModelIndex& sourceParent) const override;
         void setHideCompleted(bool b);
 
       private:
-        ViewToolbar* mToolbar;
         bool mHideCompleted = false;
     };
 
