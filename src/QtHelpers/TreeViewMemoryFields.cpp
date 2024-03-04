@@ -5,6 +5,7 @@
 #include "Data/Entity.h"
 #include "Data/EntityDB.h"
 #include "Data/ParticleDB.h"
+#include "Data/State.h"
 #include "Data/StdString.h"
 #include "Data/StringsTable.h"
 #include "Data/TextureDB.h"
@@ -1324,19 +1325,22 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
             {
                 if (value.value() < 0)
                 {
-                    itemValue->setData("Nothing", Qt::DisplayRole); // TODO: maybe display the uid value as well?
+                    itemValue->setData(QString::asprintf("(%d) Nothing", value.value()), Qt::DisplayRole);
+                    itemValue->setData(0, gsRoleEntityOffset);
                 }
                 else
                 {
-                    uintptr_t entityOffset = 0 /*Entity::findEntityByUID(value.value(), mToolbar->state())*/; // TODO
+                    uintptr_t entityOffset = S2Plugin::State{Spelunky2::get()->get_StatePtr()}.findEntitybyUID(value.value());
                     if (entityOffset != 0)
                     {
                         auto entityName = Configuration::get()->getEntityName(Entity{entityOffset}.entityTypeID());
                         itemValue->setData(QString::asprintf("<font color='blue'><u>UID %u (%s)</u></font>", value.value(), entityName.c_str()), Qt::DisplayRole);
+                        itemValue->setData(entityOffset, gsRoleEntityOffset);
                     }
                     else
                     {
-                        itemValue->setData("UNKNOWN ENTITY", Qt::DisplayRole); // TODO: display the uid anyway
+                        itemValue->setData(QString::asprintf("(%d) UNKNOWN ENTITY", value.value()), Qt::DisplayRole);
+                        itemValue->setData(0, gsRoleEntityOffset);
                     }
                 }
             }
@@ -1349,21 +1353,22 @@ void S2Plugin::TreeViewMemoryFields::updateRow(int row, std::optional<uintptr_t>
                 {
                     if (comparisonValue.value() < 0)
                     {
-                        itemComparisonValue->setData("Nothing", Qt::DisplayRole);
-                        itemComparisonValue->setData(QVariant{}, gsRoleRawValue);
+                        itemComparisonValue->setData(QString::asprintf("(%d) Nothing", comparisonValue.value()), Qt::DisplayRole);
+                        itemComparisonValue->setData(0, gsRoleEntityOffset);
                     }
                     else
                     {
-                        uintptr_t comparisonEntityOffset = 0 /*Entity::findEntityByUID(comparisonValue.value(), mToolbar->state())*/; // TODO
+                        uintptr_t comparisonEntityOffset = S2Plugin::State{Spelunky2::get()->get_StatePtr()}.findEntitybyUID(comparisonValue.value());
                         if (comparisonEntityOffset != 0)
                         {
                             auto entityName = Configuration::get()->getEntityName(Entity{comparisonEntityOffset}.entityTypeID());
                             itemComparisonValue->setData(QString::asprintf("<font color='blue'><u>UID %u (%s)</u></font>", comparisonValue.value(), entityName.c_str()), Qt::DisplayRole);
+                            itemComparisonValue->setData(comparisonEntityOffset, gsRoleEntityOffset);
                         }
                         else
                         {
-                            itemComparisonValue->setData("UNKNOWN ENTITY", Qt::DisplayRole); // TODO: display the uid anyway
-                            itemComparisonValue->setData(QVariant{}, gsRoleRawValue);
+                            itemComparisonValue->setData(QString::asprintf("(%d) UNKNOWN ENTITY", comparisonValue.value()), Qt::DisplayRole);
+                            itemComparisonValue->setData(0, gsRoleEntityOffset);
                         }
                     }
                 }
@@ -2031,8 +2036,6 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     GuiShowCpu();
                     break;
                 }
-                // case MemoryFieldType::ConstCharPointerPointer:
-                // case MemoryFieldType::ConstCharPointer:
                 case MemoryFieldType::DataPointer:
                 {
                     auto rawValue = clickedItem->data(gsRoleMemoryOffset).toULongLong();
@@ -2043,28 +2046,6 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     }
                     break;
                 }
-                // case MemoryFieldType::UndeterminedThemeInfoPointer:
-                // case MemoryFieldType::ThemeInfoName:
-                //{
-                //     if (rawValue != 0)
-                //     {
-                //         GuiDumpAt(rawValue);
-                //         GuiShowCpu();
-                //     }
-                //     break;
-                // }
-                /*case MemoryFieldType::DefaultStructType:
-                {
-                    if (getDataFrom(index, gsColField, gsRoleIsPointer).toBool())
-                    {
-                        if (rawValue != 0)
-                        {
-                            GuiDumpAt(rawValue);
-                            GuiShowCpu();
-                        }
-                    }
-                    break;
-                }*/
                 case MemoryFieldType::EntityPointer:
                 {
                     auto rawValue = clickedItem->data(gsRoleRawValue).toULongLong(); // TODO check if valid ptr here or in update
@@ -2077,15 +2058,10 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                 case MemoryFieldType::EntityUID:
                 case MemoryFieldType::EntityUIDPointer:
                 {
-                    auto uid = clickedItem->data(gsRoleRawValue);
-                    if (!uid.isNull())
+                    auto offset = clickedItem->data(gsRoleEntityOffset).toULongLong();
+                    if (offset != 0)
                     {
-                        // TODO save offset on update to
-                        auto offset = 0 /*Entity::findEntityByUID(uid.toUInt(), mToolbar->state())*/;
-                        if (offset != 0)
-                        {
-                            mToolbar->showEntity(offset);
-                        }
+                        mToolbar->showEntity(offset);
                     }
                     break;
                 }
@@ -2218,7 +2194,7 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     auto rawValue = clickedItem->data(gsRoleMemoryOffset).toULongLong();
                     if (rawValue != 0)
                     {
-                        auto id = Script::Memory::ReadDword(rawValue); // use pointer
+                        auto id = Script::Memory::ReadDword(rawValue); // TODO: use pointer
                         auto view = mToolbar->showParticleDB();
                         if (view != nullptr)
                         {
@@ -2232,11 +2208,12 @@ void S2Plugin::TreeViewMemoryFields::cellClicked(const QModelIndex& index)
                     auto rawValue = clickedItem->data(gsRoleMemoryOffset).toULongLong();
                     if (rawValue != 0)
                     {
-                        // TODO: maybe use the interpret as vtable? (it's doable)
+                        // TODO: maybe use the "entity interpret as" for vtable? (it's doable)
                         auto vftType = qvariant_cast<std::string>(getDataFrom(index, gsColField, gsRoleRefName));
                         if (vftType == "Entity") // in case of Entity, we have to see what the entity is interpreted as, and show those functions
                         {
-                            auto ent = Entity{getDataFrom(index, gsColMemoryOffset, gsRoleRawValue).toULongLong()}; // rare case, we need the address not the pointer to get entity
+                            // rare case, we need the address not the pointer value to get entity
+                            auto ent = Entity{getDataFrom(index, gsColMemoryOffset, gsRoleRawValue).toULongLong()};
                             mToolbar->showVirtualFunctions(rawValue, ent.entityClassName());
                         }
                         else

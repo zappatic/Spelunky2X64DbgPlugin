@@ -6,23 +6,17 @@
 
 namespace S2Plugin
 {
-    class Statex
+    struct State
     {
-      public:
-        // bool loadState();
+        State(uintptr_t addr) : mStatePtr(addr){};
 
-        ////uint32_t heapOffset();
-        ////uint32_t TEBOffset() const;
-
-        // std::unordered_map<std::string, size_t>& offsets();
-        // void refreshOffsets();
-        // size_t offsetForField(const std::string& fieldName) const;
-
-        /*size_t findNextEntity(size_t entityOffset);*/
+        uintptr_t ptr() const
+        {
+            return mStatePtr;
+        }
+        uintptr_t findEntitybyUID(uint32_t uid) const;
 
       private:
-        size_t mStatePtr = 0;
-        uint32_t mHeapOffset = 0;
-        // std::unordered_map<std::string, size_t> mMemoryOffsets; // fieldname -> offset of field value in memory
+        uintptr_t mStatePtr = 0;
     };
 } // namespace S2Plugin

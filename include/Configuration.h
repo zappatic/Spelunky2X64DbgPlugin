@@ -51,6 +51,7 @@ namespace S2Plugin
     constexpr uint16_t gsRoleStdContainerFirstParameterType = Qt::UserRole + 8;
     constexpr uint16_t gsRoleStdContainerSecondParameterType = Qt::UserRole + 9;
     constexpr uint16_t gsRoleSize = Qt::UserRole + 10;
+    constexpr uint16_t gsRoleEntityOffset = Qt::UserRole + 11; // for entity uid to not look for the uid twice
 
     constexpr char* gsJSONDragDropMemoryField_UID = "uid";
     constexpr char* gsJSONDragDropMemoryField_Offset = "offset";

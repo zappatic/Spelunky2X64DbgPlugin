@@ -1,111 +1,64 @@
 #include "Data/State.h"
 #include "Configuration.h"
-#include "Spelunky2.h"
 #include "pluginmain.h"
 
-// bool S2Plugin::State::loadState()
-//{
-//     auto spel2 = Spelunky2::get();
-//     auto afterBundle = spel2->afterBundle;
-//     auto afterBundleSize = spel2->afterBundleSize;
-//     if (afterBundle == 0)
-//     {
-//         return false;
-//     }
-//     if (mStatePtr != 0)
-//     {
-//         return true;
-//     }
-//
-//     auto instructionOffset = Script::Pattern::FindMem(afterBundle, afterBundleSize, "49 0F 44 C0");
-//     instructionOffset = Script::Pattern::FindMem(instructionOffset + 1, afterBundleSize, "49 0F 44 C0");
-//     instructionOffset = Script::Pattern::FindMem(instructionOffset - 25, afterBundleSize, "48 8B");
-//     auto pcOffset = Script::Memory::ReadDword(instructionOffset + 3);
-//     auto heapOffsetPtr = instructionOffset + pcOffset + 7;
-//     mHeapOffset = Script::Memory::ReadDword(heapOffsetPtr); // 4A0
-//
-//     THREADLIST threadList;
-//     DbgGetThreadList(&threadList);
-//     for (auto x = 0; x < threadList.count; ++x)
-//     {
-//         auto threadAllInfo = threadList.list[x];
-//         if (threadAllInfo.BasicInfo.ThreadNumber == 0)
-//         {
-//             auto tebAddress = DbgGetTebAddress(threadAllInfo.BasicInfo.ThreadId);
-//             auto tebAddress11Ptr = Script::Memory::ReadQword(tebAddress + (11 * sizeof(size_t)));
-//             auto tebAddress11Value = Script::Memory::ReadQword(tebAddress11Ptr);
-//             auto heapBase = Script::Memory::ReadQword(tebAddress11Value + 0x120);
-//             mStatePtr = heapBase + mHeapOffset;
-//             break;
-//         }
-//     }
-//     return true;
-// }
+static uint32_t lowbias32(uint32_t x)
+{
+    x ^= x >> 16;
+    x *= 0x7feb352d;
+    x ^= x >> 15;
+    x *= 0x846ca68b;
+    x ^= x >> 16;
+    return x;
+}
 
-// uint32_t S2Plugin::State::heapOffset()
+// Just for refrence
+// struct RobinHoodTableEntry
 //{
-//     loadState();
-//     return mHeapOffset;
-// }
-//
-// uint32_t S2Plugin::State::TEBOffset() const
-//{
-//     return 0x120;
-// }
+//    uint32_t uid_plus_one;
+//    uint32_t padding;
+//    Entity* entity;
+//};
 
-// void S2Plugin::State::refreshOffsets()
-//{
-//     mMemoryOffsets.clear();
-//     auto offset = mStatePtr;
-//     auto config = Configuration::get();
-//     for (const auto& field : config->typeFields(MemoryFieldType::State))
-//     {
-//         offset = config->setOffsetForField(field, "State." + field.name, offset, mMemoryOffsets);
-//     }
-// }
-//
-// size_t S2Plugin::State::offsetForField(const std::string& fieldName) const
-//{
-//     auto full = "State." + fieldName;
-//     auto r = mMemoryOffsets.find(full);
-//     if (r == mMemoryOffsets.end())
-//     {
-//         return 0;
-//     }
-//     return r->second;
-// }
+uintptr_t S2Plugin::State::findEntitybyUID(uint32_t uid) const
+{
+    // ported from overlunky
+    if (uid == ~0)
+    {
+        return 0;
+    }
 
-// size_t S2Plugin::State::findNextEntity(size_t entityOffset)
-//{
-//     size_t nextOffset = (std::numeric_limits<size_t>::max)();
-//
-//     auto loopEntities = [&nextOffset, entityOffset](size_t entities, uint32_t entityCount)
-//     {
-//         for (auto x = 0; x < (std::min)(10000u, entityCount); ++x)
-//         {
-//             auto entityPtr = Script::Memory::ReadQword(entities + (x * sizeof(size_t)));
-//             if (entityPtr <= entityOffset)
-//             {
-//                 continue;
-//             }
-//             if (entityPtr < nextOffset)
-//             {
-//                 nextOffset = entityPtr;
-//             }
-//         }
-//     };
-//
-//     // auto layer0Entities = Script::Memory::ReadQword(offsetForField("layer0.first_entity*"));
-//     // auto layer0EntityCount = Script::Memory::ReadDword(offsetForField("layer0.size"));
-//     // loopEntities(layer0Entities, layer0EntityCount);
-//
-//     // auto layer1Entities = Script::Memory::ReadQword(offsetForField("layer1.first_entity*"));
-//     // auto layer1EntityCount = Script::Memory::ReadDword(offsetForField("layer1.size"));
-//     // loopEntities(layer1Entities, layer1EntityCount);
-//
-//     if (nextOffset == (std::numeric_limits<size_t>::max)())
-//     {
-//         return 0;
-//     }
-//     return nextOffset;
-// }
+    static size_t mask_offset = Configuration::get()->offsetForField(MemoryFieldType::State, "uid_to_entity_mask");
+    const uint32_t mask = Script::Memory::ReadDword(mStatePtr + mask_offset);
+    const uint32_t target_uid_plus_one = lowbias32(uid + 1u);
+    uint32_t cur_index = target_uid_plus_one & mask;
+    const uintptr_t uid_to_entity_data = Script::Memory::ReadQword(mStatePtr + mask_offset + 0x8u);
+
+    auto getEntry = [uid_to_entity_data](size_t index)
+    {
+        constexpr size_t robinHoodTableEntrySize = 0x10u;
+        return uid_to_entity_data + index * robinHoodTableEntrySize;
+    };
+
+    while (true)
+    {
+        auto entry = getEntry(cur_index);
+        auto uid_plus_one = Script::Memory::ReadDword(entry);
+        if (uid_plus_one == target_uid_plus_one)
+        {
+            return Script::Memory::ReadQword(entry + 0x8u);
+        }
+
+        if (uid_plus_one == 0)
+        {
+            return 0;
+        }
+
+        if (((cur_index - target_uid_plus_one) & mask) > ((cur_index - uid_plus_one) & mask))
+        {
+            return 0;
+        }
+
+        cur_index = (cur_index + 1u) & mask;
+    }
+}
